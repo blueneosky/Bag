@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FastBuildGen.BusinessModel
+namespace FastBuildGen.BusinessModel.Old
 {
     internal interface IFastBuildParamController
     {

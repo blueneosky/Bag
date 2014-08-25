@@ -8,7 +8,7 @@ namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     [XmlType("Target")]
-    public class XmlParamDescriptionHeoTarget : XmlParamDescription<FastBuildGen.BusinessModel.IParamDescriptionHeoTarget>
+    public class XmlParamDescriptionHeoTarget : XmlParamDescription<FastBuildGen.BusinessModel.Old.IParamDescriptionHeoTarget>
     {
         public XmlParamDescriptionHeoTarget()
         {
@@ -27,7 +27,7 @@ namespace FastBuildGen.Xml.Entity
             }
         }
 
-        internal bool Equals(BusinessModel.IParamDescriptionHeoTarget target)
+        internal bool Equals(BusinessModel.Old.IParamDescriptionHeoTarget target)
         {
             IEnumerable<XmlParamDescriptionHeoModule> xmlDependencies = Dependencies.ToArray();  // execute more than once
 
@@ -46,15 +46,15 @@ namespace FastBuildGen.Xml.Entity
             return result;
         }
 
-        protected override void CopyToCore(BusinessModel.IParamDescriptionHeoTarget instance)
+        protected override void CopyToCore(BusinessModel.Old.IParamDescriptionHeoTarget instance)
         {
             base.CopyToCore(instance);
 
             instance.ClearDependencies();
 
-            IEnumerable<BusinessModel.IParamDescriptionHeoModule> dependencies = (Xml04IdDependencies ?? new XmlId[0])
+            IEnumerable<BusinessModel.Old.IParamDescriptionHeoModule> dependencies = (Xml04IdDependencies ?? new XmlId[0])
                     .Select(xmlId => Session.GetInstance(xmlId))
-                    .OfType<FastBuildGen.BusinessModel.IParamDescriptionHeoModule>();
+                    .OfType<FastBuildGen.BusinessModel.Old.IParamDescriptionHeoModule>();
             instance.AddDependencies(dependencies);
         }
 
@@ -65,7 +65,7 @@ namespace FastBuildGen.Xml.Entity
             // nothing
         }
 
-        protected override void SerializeCore(FastBuildGen.BusinessModel.IParamDescriptionHeoTarget instance)
+        protected override void SerializeCore(FastBuildGen.BusinessModel.Old.IParamDescriptionHeoTarget instance)
         {
             base.SerializeCore(instance);
 

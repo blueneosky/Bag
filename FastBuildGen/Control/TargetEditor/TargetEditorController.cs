@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.TargetEditor
 {

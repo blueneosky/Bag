@@ -49,25 +49,35 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BatchNode\FastBuildBatchFile.cs" />
-    <Compile Include="BusinessModel\ConstFastBuildInternalVarModel.cs" />
-    <Compile Include="BusinessModel\ConstIFastBuildModelEvent.cs" />
-    <Compile Include="BusinessModel\ConstIFastBuildParamModelEvent.cs" />
-    <Compile Include="BusinessModel\ConstIParamDescriptionEvent.cs" />
-    <Compile Include="BusinessModel\ConstIParamDescriptionHeoModuleEvent.cs" />
-    <Compile Include="BusinessModel\ConstIParamDescriptionHeoTargetEvent.cs" />
-    <Compile Include="BusinessModel\ExtensionIFastBuildInternalVarModel.cs" />
-    <Compile Include="BusinessModel\ExtensionIFastBuildModel.cs" />
-    <Compile Include="BusinessModel\FastBuildController.cs" />
-    <Compile Include="BusinessModel\FastBuildImportMergeController.cs" />
-    <Compile Include="BusinessModel\FastBuildInternalVarController.cs" />
-    <Compile Include="BusinessModel\FastBuildInternalVarModel.cs" />
-    <Compile Include="BusinessModel\FastBuildParamController.cs" />
-    <Compile Include="BusinessModel\IFastBuildController.cs" />
-    <Compile Include="BusinessModel\IFastBuildInternalVarController.cs" />
-    <Compile Include="BusinessModel\IFastBuildInternalVarModel.cs" />
-    <Compile Include="BusinessModel\IFastBuildModel.cs" />
-    <Compile Include="BusinessModel\IFastBuildParamController.cs" />
-    <Compile Include="BusinessModel\IFastBuildParamModel.cs" />
+    <Compile Include="BusinessModel\Old\ConstFastBuildInternalVarModel.cs" />
+    <Compile Include="BusinessModel\Old\ConstIFastBuildModelEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstIFastBuildParamModelEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstIParamDescriptionEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstIParamDescriptionHeoModuleEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstIParamDescriptionHeoTargetEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstModel.cs" />
+    <Compile Include="BusinessModel\Old\EnumPlatform.cs" />
+    <Compile Include="BusinessModel\Old\ExtensionIFastBuildInternalVarModel.cs" />
+    <Compile Include="BusinessModel\Old\ExtensionIFastBuildModel.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildController.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildImportMergeController.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildInternalVarController.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildInternalVarModel.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildModel.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildParamController.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildParamModel.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildController.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildInternalVarController.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildInternalVarModel.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildModel.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildParamController.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildParamModel.cs" />
+    <Compile Include="BusinessModel\Old\IParamDescription.cs" />
+    <Compile Include="BusinessModel\Old\IParamDescriptionHeoModule.cs" />
+    <Compile Include="BusinessModel\Old\IParamDescriptionHeoTarget.cs" />
+    <Compile Include="BusinessModel\Old\ParamDescription.cs" />
+    <Compile Include="BusinessModel\Old\ParamDescriptionHeoModule.cs" />
+    <Compile Include="BusinessModel\Old\ParamDescriptionHeoTarget.cs" />
     <Compile Include="Common\Control\BaseUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -171,16 +181,6 @@
     <Compile Include="Control\PDEditor\PDEditorUserControl.Designer.cs">
       <DependentUpon>PDEditorUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="BusinessModel\ConstModel.cs" />
-    <Compile Include="BusinessModel\EnumPlatform.cs" />
-    <Compile Include="BusinessModel\FastBuildModel.cs" />
-    <Compile Include="BusinessModel\FastBuildParamModel.cs" />
-    <Compile Include="BusinessModel\IParamDescription.cs" />
-    <Compile Include="BusinessModel\IParamDescriptionHeoModule.cs" />
-    <Compile Include="BusinessModel\IParamDescriptionHeoTarget.cs" />
-    <Compile Include="BusinessModel\ParamDescription.cs" />
-    <Compile Include="BusinessModel\ParamDescriptionHeoModule.cs" />
-    <Compile Include="BusinessModel\ParamDescriptionHeoTarget.cs" />
     <Compile Include="Control\PDEditor\PDEditorModel.cs" />
     <Compile Include="Control\TargetEditor\ConstTargetEditorModelEvent.cs" />
     <Compile Include="Control\TargetEditor\PDEditorModelWrapper.cs" />

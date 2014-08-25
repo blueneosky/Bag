@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.InternalVarEditor
 {

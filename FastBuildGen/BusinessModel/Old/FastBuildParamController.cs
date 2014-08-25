@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.Common;
 
-namespace FastBuildGen.BusinessModel
+namespace FastBuildGen.BusinessModel.Old
 {
     internal class FastBuildParamController : IFastBuildParamController
     {

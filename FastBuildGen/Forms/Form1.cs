@@ -15,6 +15,7 @@ using BatchGen.BatchNode.Sub;
 using BatchGen.Gen;
 using FastBuildGen.BatchNode;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Forms
 {

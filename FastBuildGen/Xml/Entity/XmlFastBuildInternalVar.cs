@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
-    public class XmlFastBuildInternalVar : XmlObjectId<FastBuildGen.BusinessModel.IFastBuildInternalVarModel>
+    public class XmlFastBuildInternalVar : XmlObjectId<FastBuildGen.BusinessModel.Old.IFastBuildInternalVarModel>
     {
         public XmlFastBuildInternalVar()
         {
@@ -22,7 +22,7 @@ namespace FastBuildGen.Xml.Entity
         [XmlElement("Properties")]
         public XmlStringDictionary XmlProperties { get; set; }
 
-        internal bool Equals(BusinessModel.IFastBuildInternalVarModel model)
+        internal bool Equals(BusinessModel.Old.IFastBuildInternalVarModel model)
         {
             IDictionary<string, string> properties = Properties;    // execute more than once
 
@@ -41,7 +41,7 @@ namespace FastBuildGen.Xml.Entity
             return result;
         }
 
-        protected override void CopyToCore(BusinessModel.IFastBuildInternalVarModel instance)
+        protected override void CopyToCore(BusinessModel.Old.IFastBuildInternalVarModel instance)
         {
             instance.ResetToDefault();
 
@@ -58,7 +58,7 @@ namespace FastBuildGen.Xml.Entity
             // nothing
         }
 
-        protected override void SerializeCore(BusinessModel.IFastBuildInternalVarModel instance)
+        protected override void SerializeCore(BusinessModel.Old.IFastBuildInternalVarModel instance)
         {
             Dictionary<string, string> properties = new Dictionary<string, string> { };
             IDictionary<string, string> defaultProperties = instance.DefaultProperties;

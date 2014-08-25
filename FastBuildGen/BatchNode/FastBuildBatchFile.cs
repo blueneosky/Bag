@@ -12,6 +12,7 @@ using BatchGen.BatchNode.Goto;
 using BatchGen.BatchNode.Macro;
 using BatchGen.BatchNode.Sub;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.BatchNode
 {
@@ -1162,7 +1163,7 @@ namespace FastBuildGen.BatchNode
                 // MSBuild Cli Win32
                 blocMacro.Add(new RemBatch("MSBuild configuration (win32)"));
                 IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> win32Modules = ParamDescriptionHeoModules
-                    .Where(pdm => pdm.Platform == BusinessModel.EnumPlatform.Win32)
+                    .Where(pdm => pdm.Platform == BusinessModel.Old.EnumPlatform.Win32)
                     .Select(pdm => new Tuple<BooleanExpressionBase, BatchExpressionBase>(
                         LiteralParamDescriptionByKeyWords[pdm.Keyword].LiteralBoolean
                         , LiteralModuleMSBuildTargetByKeyWords[pdm.Keyword].LiteralValue
@@ -1183,7 +1184,7 @@ namespace FastBuildGen.BatchNode
                 // MSBuild Cli X86
                 blocMacro.Add(new RemBatch("MSBuild configuration (x86)"));
                 IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> x86Modules = ParamDescriptionHeoModules
-                    .Where(pdm => pdm.Platform == BusinessModel.EnumPlatform.X86)
+                    .Where(pdm => pdm.Platform == BusinessModel.Old.EnumPlatform.X86)
                     .Select(pdm => new Tuple<BooleanExpressionBase, BatchExpressionBase>(
                         LiteralParamDescriptionByKeyWords[pdm.Keyword].LiteralBoolean
                         , LiteralModuleMSBuildTargetByKeyWords[pdm.Keyword].LiteralValue

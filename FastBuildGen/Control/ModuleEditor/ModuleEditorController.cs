@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.ModuleEditor
 {

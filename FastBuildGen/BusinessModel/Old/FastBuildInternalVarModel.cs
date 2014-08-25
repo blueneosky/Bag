@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.Common;
 
-namespace FastBuildGen.BusinessModel
+namespace FastBuildGen.BusinessModel.Old
 {
     internal class FastBuildInternalVarModel : IFastBuildInternalVarModel
     {

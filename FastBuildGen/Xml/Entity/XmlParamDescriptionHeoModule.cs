@@ -9,9 +9,9 @@ namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     [XmlType("Module")]
-    public class XmlParamDescriptionHeoModule : XmlParamDescription<FastBuildGen.BusinessModel.IParamDescriptionHeoModule>
+    public class XmlParamDescriptionHeoModule : XmlParamDescription<FastBuildGen.BusinessModel.Old.IParamDescriptionHeoModule>
     {
-        private static EnumConverter ConstEnumPlatformConverter = new EnumConverter(typeof(FastBuildGen.BusinessModel.EnumPlatform));
+        private static EnumConverter ConstEnumPlatformConverter = new EnumConverter(typeof(BusinessModel.Old.EnumPlatform));
 
         public XmlParamDescriptionHeoModule()
         {
@@ -23,9 +23,9 @@ namespace FastBuildGen.Xml.Entity
             get { return Xml05MSBuildTarget; }
         }
 
-        public BusinessModel.EnumPlatform Platform
+        public BusinessModel.Old.EnumPlatform Platform
         {
-            get { return (BusinessModel.EnumPlatform)ConstEnumPlatformConverter.ConvertFromString(Xml04Platform); }
+            get { return (BusinessModel.Old.EnumPlatform)ConstEnumPlatformConverter.ConvertFromString(Xml04Platform); }
         }
 
         [XmlAttribute("Platform")]
@@ -34,7 +34,7 @@ namespace FastBuildGen.Xml.Entity
         [XmlAttribute("Target")]
         public string Xml05MSBuildTarget { get; set; }
 
-        internal bool Equals(BusinessModel.IParamDescriptionHeoModule module)
+        internal bool Equals(BusinessModel.Old.IParamDescriptionHeoModule module)
         {
             bool result = base.Equals(module)
                 && module.Platform == Platform
@@ -44,7 +44,7 @@ namespace FastBuildGen.Xml.Entity
             return result;
         }
 
-        protected override void CopyToCore(BusinessModel.IParamDescriptionHeoModule instance)
+        protected override void CopyToCore(BusinessModel.Old.IParamDescriptionHeoModule instance)
         {
             base.CopyToCore(instance);
 
@@ -59,7 +59,7 @@ namespace FastBuildGen.Xml.Entity
             // nothing
         }
 
-        protected override void SerializeCore(FastBuildGen.BusinessModel.IParamDescriptionHeoModule instance)
+        protected override void SerializeCore(BusinessModel.Old.IParamDescriptionHeoModule instance)
         {
             base.SerializeCore(instance);
 

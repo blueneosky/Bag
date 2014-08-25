@@ -6,6 +6,7 @@ using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
 using FastBuildGen.Xml.Entity;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Xml
 {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FastBuildGen.BusinessModel
+namespace FastBuildGen.BusinessModel.Old
 {
-    internal class FastBuildInternalVarController : FastBuildGen.BusinessModel.IFastBuildInternalVarController
+    internal class FastBuildInternalVarController : FastBuildGen.BusinessModel.Old.IFastBuildInternalVarController
     {
         private readonly IFastBuildInternalVarModel _model;
 

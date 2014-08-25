@@ -8,7 +8,7 @@ namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     [XmlType("Param")]
-    public class XmlFastBuildParam : XmlObjectId<BusinessModel.IFastBuildParamModel>
+    public class XmlFastBuildParam : XmlObjectId<BusinessModel.Old.IFastBuildParamModel>
     {
         public XmlFastBuildParam()
         {
@@ -20,7 +20,7 @@ namespace FastBuildGen.Xml.Entity
         [XmlArray("Targets")]
         public XmlParamDescriptionHeoTarget[] Xml02Targets { get; set; }
 
-        internal bool Equals(BusinessModel.IFastBuildParamModel model)
+        internal bool Equals(BusinessModel.Old.IFastBuildParamModel model)
         {
             bool result = (model != null)
                 && (Xml01Modules != null) && (Xml01Modules.Count() == model.HeoModuleParams.Count())
@@ -49,19 +49,19 @@ namespace FastBuildGen.Xml.Entity
             return result;
         }
 
-        protected override void CopyToCore(BusinessModel.IFastBuildParamModel instance)
+        protected override void CopyToCore(BusinessModel.Old.IFastBuildParamModel instance)
         {
             instance.ClearHeoTargetParams();
             instance.ClearHeoModuleParams();
 
             foreach (XmlParamDescriptionHeoModule xmlModule in (Xml01Modules ?? new XmlParamDescriptionHeoModule[0]))
             {
-                BusinessModel.IParamDescriptionHeoModule module = instance.AddHeoModuleParam(xmlModule.Name, xmlModule.Keyword);
+                BusinessModel.Old.IParamDescriptionHeoModule module = instance.AddHeoModuleParam(xmlModule.Name, xmlModule.Keyword);
                 xmlModule.CopyTo(module);
             }
             foreach (XmlParamDescriptionHeoTarget xmlTarget in (Xml02Targets ?? new XmlParamDescriptionHeoTarget[0]))
             {
-                BusinessModel.IParamDescriptionHeoTarget target = instance.AddHeoTargetParam(xmlTarget.Name, xmlTarget.Keyword);
+                BusinessModel.Old.IParamDescriptionHeoTarget target = instance.AddHeoTargetParam(xmlTarget.Name, xmlTarget.Keyword);
                 xmlTarget.CopyTo(target);
             }
         }
@@ -80,7 +80,7 @@ namespace FastBuildGen.Xml.Entity
             }
         }
 
-        protected override void SerializeCore(BusinessModel.IFastBuildParamModel instance)
+        protected override void SerializeCore(BusinessModel.Old.IFastBuildParamModel instance)
         {
             Xml01Modules = instance.HeoModuleParams
                 .Select(m => Session.GetOrCreateXmlParamDescriptionHeoModule(m))

@@ -8,7 +8,7 @@ namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     public abstract class XmlParamDescription<TInstance> : XmlObjectId<TInstance>
-        where TInstance : class, FastBuildGen.BusinessModel.IParamDescription
+        where TInstance : class, FastBuildGen.BusinessModel.Old.IParamDescription
     {
         public XmlParamDescription()
         {
@@ -41,7 +41,7 @@ namespace FastBuildGen.Xml.Entity
         [XmlAttribute("HelpText")]
         public string Xml03HelpText { get; set; }
 
-        internal bool Equals(BusinessModel.IParamDescription paramDescription)
+        internal bool Equals(BusinessModel.Old.IParamDescription paramDescription)
         {
             bool result = (paramDescription != null)
                 && paramDescription.Keyword == Keyword

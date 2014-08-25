@@ -6,7 +6,7 @@ using System.Text;
 using FastBuildGen.Xml;
 using FastBuildGen.Xml.Entity;
 
-namespace FastBuildGen.BusinessModel
+namespace FastBuildGen.BusinessModel.Old
 {
     internal class FastBuildController : IFastBuildController
     {
