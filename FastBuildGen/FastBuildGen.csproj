@@ -78,6 +78,8 @@
     <Compile Include="BusinessModel\Old\IParamDescription.cs" />
     <Compile Include="BusinessModel\Old\IParamDescriptionHeoModule.cs" />
     <Compile Include="BusinessModel\Old\IParamDescriptionHeoTarget.cs" />
+    <Compile Include="BusinessModel\Old\MSBuildMacroTarget.cs" />
+    <Compile Include="BusinessModel\Old\MSBuildTarget.cs" />
     <Compile Include="BusinessModel\Old\ParamDescription.cs" />
     <Compile Include="BusinessModel\Old\ParamDescriptionHeoModule.cs" />
     <Compile Include="BusinessModel\Old\ParamDescriptionHeoTarget.cs" />
