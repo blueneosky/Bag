@@ -6,13 +6,13 @@ namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     [XmlType("Target")]
-    public class XmlTarget : XmlBaseTarget
+    public class XmlSolutionTarget : XmlBaseTarget
     {
-        public XmlTarget()
+        public XmlSolutionTarget()
         {
         }
 
-        public XmlTarget(FBTarget fbTarget)
+        public XmlSolutionTarget(FBTarget fbTarget)
             : base(fbTarget)
         {
             Xml05MSBuildTarget = fbTarget.MSBuildTarget;

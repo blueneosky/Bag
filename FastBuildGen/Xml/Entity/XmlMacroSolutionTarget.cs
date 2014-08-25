@@ -7,13 +7,13 @@ namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     [XmlType("MacroTarget")]
-    public class XmlMacroTarget : XmlBaseTarget
+    public class XmlMacroSolutionTarget : XmlBaseTarget
     {
-        public XmlMacroTarget()
+        public XmlMacroSolutionTarget()
         {
         }
 
-        public XmlMacroTarget(FBMacroTarget fbMacroTarget)
+        public XmlMacroSolutionTarget(FBMacroTarget fbMacroTarget)
             : base(fbMacroTarget)
         {
             Xml05TargetIds = fbMacroTarget.TargetIds.ToArray();

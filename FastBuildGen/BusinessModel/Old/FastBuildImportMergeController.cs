@@ -77,7 +77,7 @@ namespace FastBuildGen.BusinessModel.Old
             throw new NotImplementedException();
         }
 
-        private bool DetectModulesConflict(XmlTarget[] xmlParamDescriptionHeoModule)
+        private bool DetectModulesConflict(XmlSolutionTarget[] xmlParamDescriptionHeoModule)
         {
 #warning TODO - ALPHA point
             throw new NotImplementedException();
@@ -92,7 +92,7 @@ namespace FastBuildGen.BusinessModel.Old
             return withConflict;
         }
 
-        private bool DetectTargetsConflict(XmlMacroTarget[] xmlParamDescriptionHeoTarget)
+        private bool DetectTargetsConflict(XmlMacroSolutionTarget[] xmlParamDescriptionHeoTarget)
         {
 #warning TODO - ALPHA point
             throw new NotImplementedException();

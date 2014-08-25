@@ -16,20 +16,20 @@ namespace FastBuildGen.Xml.Entity
         public XmlFastBuild(FBModel fbModel)
         {
             Xml01Targets = fbModel.Targets.Values
-                .Select(t => new XmlTarget(t))
+                .Select(t => new XmlSolutionTarget(t))
                 .ToArray();
             Xml02MacroTargets = fbModel.MacroTargets.Values
-                .Select(mt => new XmlMacroTarget(mt))
+                .Select(mt => new XmlMacroSolutionTarget(mt))
                 .ToArray();
             Xml03Properties = new XmlStringDictionary(fbModel.InternalVars);
             Xml04WithEchoOff = fbModel.WithEchoOff;
         }
 
         [XmlArray("Targets")]
-        public XmlTarget[] Xml01Targets { get; set; }
+        public XmlSolutionTarget[] Xml01Targets { get; set; }
 
         [XmlArray("MacroTargets")]
-        public XmlMacroTarget[] Xml02MacroTargets { get; set; }
+        public XmlMacroSolutionTarget[] Xml02MacroTargets { get; set; }
 
         [XmlElement("Properties")]
         public XmlStringDictionary Xml03Properties { get; set; }
