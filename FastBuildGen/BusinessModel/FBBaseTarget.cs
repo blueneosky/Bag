@@ -7,7 +7,7 @@ using FastBuildGen.Common;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal abstract class MSBuildBaseTarget : IMSBuildTarget
+    internal abstract class MSBuildBaseTarget : INotifyPropertyChanged
     {
         private readonly Guid _id;
         private string _helpText;

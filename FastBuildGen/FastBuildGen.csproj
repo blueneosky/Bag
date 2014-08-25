@@ -51,7 +51,6 @@
     <Compile Include="BatchNode\FastBuildBatchFile.cs" />
     <Compile Include="BusinessModel\ConstFBBuisnessModelEvent.cs" />
     <Compile Include="BusinessModel\FBBaseTarget.cs" />
-    <Compile Include="BusinessModel\IFBTarget.cs" />
     <Compile Include="BusinessModel\Old\ConstFastBuildInternalVarModel.cs" />
     <Compile Include="BusinessModel\Old\ConstIFastBuildModelEvent.cs" />
     <Compile Include="BusinessModel\Old\ConstIFastBuildParamModelEvent.cs" />
