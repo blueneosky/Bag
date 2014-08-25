@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal class FBSolutionTarget : FBBaseTarget
+    internal class FBSolutionTarget : FBTarget
     {
         private string _msBuildTarget;
         private bool _enabled;

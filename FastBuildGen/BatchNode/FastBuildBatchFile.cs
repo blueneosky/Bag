@@ -147,17 +147,17 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        private IEnumerable<FBBaseTarget> BaseParamDescriptions
+        private IEnumerable<FBTarget> BaseParamDescriptions
         {
             get { return Enumerable.Concat(ParamDescriptionCommons, ParamDescriptionHeo); }
         }
 
-        private IEnumerable<FBBaseTarget> ParamDescriptionCommons
+        private IEnumerable<FBTarget> ParamDescriptionCommons
         {
             get { return _fbModel.FastBuildParamTargets; }
         }
 
-        private IEnumerable<FBBaseTarget> ParamDescriptionHeo
+        private IEnumerable<FBTarget> ParamDescriptionHeo
         {
             get { return _fbModel.FastBuildHeoParamTargets; }
         }

@@ -68,8 +68,8 @@ namespace FastBuildGen.BusinessModel
 
         #endregion Consts
 
-        private FBBaseTarget[] _fastBuildHeoParamTargets;
-        private FBBaseTarget[] _fastBuildParamTargets;
+        private FBTarget[] _fastBuildHeoParamTargets;
+        private FBTarget[] _fastBuildParamTargets;
 
         public FBModel()
         {
@@ -85,22 +85,22 @@ namespace FastBuildGen.BusinessModel
             // Default configuration
 
             _fastBuildParamTargets = new[] {
-                new FBBaseTarget(ConstGuidHelp   ){ Name = ConstKeywordParamSwitchHelp    , Keyword = ConstKeywordParamSwitchHelp      , HelpText = ConstDescriptionParamSwitchHelp       },
-                new FBBaseTarget(ConstGuidPara   ){ Name = ConstKeywordParamSwitchPara    , Keyword = ConstKeywordParamSwitchPara      , HelpText = ConstDescriptionParamSwitchPara       },
-                new FBBaseTarget(ConstGuidQuiet  ){ Name = ConstKeywordParamSwitchQuiet   , Keyword = ConstKeywordParamSwitchQuiet     , HelpText = ConstDescriptionParamSwitchQuiet      },
-                new FBBaseTarget(ConstGuidRelease){ Name = ConstKeywordParamSwitchRelease , Keyword = ConstKeywordParamSwitchRelease   , HelpText = ConstDescriptionParamSwitchRelease    },
-                new FBBaseTarget(ConstGuidDsac   ){ Name = ConstKeywordParamSwitchDsac    , Keyword = ConstKeywordParamSwitchDsac      , HelpText = ConstDescriptionParamSwitchDsac       },
-                new FBBaseTarget(ConstGuidFxcop  ){ Name = ConstKeywordParamSwitchFxcop   , Keyword = ConstKeywordParamSwitchFxcop     , HelpText = ConstDescriptionParamSwitchFxcop      },
-                new FBBaseTarget(ConstGuidNowarn ){ Name = ConstKeywordParamSwitchNowarn  , Keyword = ConstKeywordParamSwitchNowarn    , HelpText = ConstDescriptionParamSwitchNowarn     },
-                new FBBaseTarget(ConstGuidRebuild){ Name = ConstKeywordParamSwitchRebuild , Keyword = ConstKeywordParamSwitchRebuild   , HelpText = ConstDescriptionParamSwitchRebuild    },
-                new FBBaseTarget(ConstGuidWait   ){ Name = ConstKeywordParamSwitchWait    , Keyword = ConstKeywordParamSwitchWait      , HelpText = ConstDescriptionParamSwitchWait       },
-                new FBBaseTarget(ConstGuidNosgp  ){ Name = ConstKeywordParamSwitchNosgp   , Keyword = ConstKeywordParamSwitchNosgp     , HelpText = ConstDescriptionParamSwitchNosgp      },
-                new FBBaseTarget(ConstGuidVer    ){ Name = ConstKeywordParamSwitchVer     , Keyword = ConstKeywordParamSwitchVer       , HelpText = ConstDescriptionParamSwitchVer        },
+                new FBTarget(ConstGuidHelp   ){ Name = ConstKeywordParamSwitchHelp    , Keyword = ConstKeywordParamSwitchHelp      , HelpText = ConstDescriptionParamSwitchHelp       },
+                new FBTarget(ConstGuidPara   ){ Name = ConstKeywordParamSwitchPara    , Keyword = ConstKeywordParamSwitchPara      , HelpText = ConstDescriptionParamSwitchPara       },
+                new FBTarget(ConstGuidQuiet  ){ Name = ConstKeywordParamSwitchQuiet   , Keyword = ConstKeywordParamSwitchQuiet     , HelpText = ConstDescriptionParamSwitchQuiet      },
+                new FBTarget(ConstGuidRelease){ Name = ConstKeywordParamSwitchRelease , Keyword = ConstKeywordParamSwitchRelease   , HelpText = ConstDescriptionParamSwitchRelease    },
+                new FBTarget(ConstGuidDsac   ){ Name = ConstKeywordParamSwitchDsac    , Keyword = ConstKeywordParamSwitchDsac      , HelpText = ConstDescriptionParamSwitchDsac       },
+                new FBTarget(ConstGuidFxcop  ){ Name = ConstKeywordParamSwitchFxcop   , Keyword = ConstKeywordParamSwitchFxcop     , HelpText = ConstDescriptionParamSwitchFxcop      },
+                new FBTarget(ConstGuidNowarn ){ Name = ConstKeywordParamSwitchNowarn  , Keyword = ConstKeywordParamSwitchNowarn    , HelpText = ConstDescriptionParamSwitchNowarn     },
+                new FBTarget(ConstGuidRebuild){ Name = ConstKeywordParamSwitchRebuild , Keyword = ConstKeywordParamSwitchRebuild   , HelpText = ConstDescriptionParamSwitchRebuild    },
+                new FBTarget(ConstGuidWait   ){ Name = ConstKeywordParamSwitchWait    , Keyword = ConstKeywordParamSwitchWait      , HelpText = ConstDescriptionParamSwitchWait       },
+                new FBTarget(ConstGuidNosgp  ){ Name = ConstKeywordParamSwitchNosgp   , Keyword = ConstKeywordParamSwitchNosgp     , HelpText = ConstDescriptionParamSwitchNosgp      },
+                new FBTarget(ConstGuidVer    ){ Name = ConstKeywordParamSwitchVer     , Keyword = ConstKeywordParamSwitchVer       , HelpText = ConstDescriptionParamSwitchVer        },
             };
             _fastBuildHeoParamTargets = new[]{
-                new FBBaseTarget(ConstGuidVshost            ){ Name = ConstKeywordParamSwitchVshost            , Keyword = ConstKeywordParamSwitchVshost               , HelpText = ConstDescriptionParamSwitchVshost              },
-                new FBBaseTarget(ConstGuidKillheo           ){ Name = ConstKeywordParamSwitchKillheo           , Keyword = ConstKeywordParamSwitchKillheo              , HelpText = ConstDescriptionParamSwitchKillheo             },
-                new FBBaseTarget(ConstGuidForceOutputDirPath){ Name = ConstKeywordParamSwitchForceOutputDirPath, Keyword = ConstKeywordParamSwitchForceOutputDirPath   , HelpText = ConstDescriptionParamSwitchForceOutputDirPath  },
+                new FBTarget(ConstGuidVshost            ){ Name = ConstKeywordParamSwitchVshost            , Keyword = ConstKeywordParamSwitchVshost               , HelpText = ConstDescriptionParamSwitchVshost              },
+                new FBTarget(ConstGuidKillheo           ){ Name = ConstKeywordParamSwitchKillheo           , Keyword = ConstKeywordParamSwitchKillheo              , HelpText = ConstDescriptionParamSwitchKillheo             },
+                new FBTarget(ConstGuidForceOutputDirPath){ Name = ConstKeywordParamSwitchForceOutputDirPath, Keyword = ConstKeywordParamSwitchForceOutputDirPath   , HelpText = ConstDescriptionParamSwitchForceOutputDirPath  },
             };
 
 #warning TODO DELTA point - retirer ce code d'initialisation
@@ -171,12 +171,12 @@ namespace FastBuildGen.BusinessModel
 
         public ObservableDictionary<string, string> InternalVars { get; private set; }
 
-        public IEnumerable<FBBaseTarget> FastBuildHeoParamTargets
+        public IEnumerable<FBTarget> FastBuildHeoParamTargets
         {
             get { return _fastBuildHeoParamTargets; }
         }
 
-        public IEnumerable<FBBaseTarget> FastBuildParamTargets
+        public IEnumerable<FBTarget> FastBuildParamTargets
         {
             get { return _fastBuildParamTargets; }
         }

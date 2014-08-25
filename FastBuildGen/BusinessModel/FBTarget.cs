@@ -4,13 +4,13 @@ using FastBuildGen.Common;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal class FBBaseTarget : INotifyPropertyChanged
+    internal class FBTarget : INotifyPropertyChanged
     {
         private readonly Guid _id;
         private string _helpText;
         private string _keyword;
 
-        public FBBaseTarget(Guid id)
+        public FBTarget(Guid id)
         {
             _id = id;
         }

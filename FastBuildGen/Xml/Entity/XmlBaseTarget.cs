@@ -11,7 +11,7 @@ namespace FastBuildGen.Xml.Entity
         {
         }
 
-        protected XmlBaseTarget(FBBaseTarget fbBaseTarget)
+        protected XmlBaseTarget(FBTarget fbBaseTarget)
         {
             Xml01Guid = fbBaseTarget.Id;
             Xml02Keyword = fbBaseTarget.Keyword;
