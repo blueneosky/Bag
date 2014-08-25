@@ -14,7 +14,7 @@ namespace FastBuildGen.Control.ModuleEditor
         private readonly ModuleEditorModel _model;
 
         public PDEditorModelWrapper(ModuleEditorModel model)
-            : base(model.FastBuildParamModel, model.UndoRedoManager)
+            : base(model.FastBuildParamModel)
         {
             _model = model;
 

@@ -29,8 +29,6 @@ namespace FastBuildGen.Control.PDEditor
 
         public void Initialize(PDEditorModel model, PDEditorController controller)
         {
-            base.Initialize(model, controller);
-
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
 
@@ -243,6 +241,5 @@ namespace FastBuildGen.Control.PDEditor
         }
 
         #endregion User Inputs
-
     }
 }

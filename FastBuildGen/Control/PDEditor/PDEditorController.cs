@@ -6,16 +6,14 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
 
 namespace FastBuildGen.Control.PDEditor
 {
-    internal class PDEditorController : UIControllerBase
+    internal class PDEditorController
     {
         private readonly PDEditorModel _model;
 
         public PDEditorController(PDEditorModel model)
-            : base (model)
         {
             _model = model;
         }

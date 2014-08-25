@@ -108,59 +108,10 @@
     <Compile Include="Common\SortedObservableCollection.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Common\UI\IUIController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UI\IUIModel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UI\UIControllerBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Common\UI\UIDoubleBufferedModeManager.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Common\UI\UIEnableViewRequestedEventArgs.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Common\UI\UIException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UI\UIModelBase.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\BrowsableList.cs" />
-    <Compile Include="Common\UndoRedo\ComposedUndoRedoAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\ConstIUndoRedoManagerEvent.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\ExtensionIUndoRedoManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\IUndoRedoAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\IUndoRedoActionDescription.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\IUndoRedoManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\UndoRedoAction.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\UndoRedoActionCancelledException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\UndoRedoActionMacroBloc.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\UndoRedoManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Common\UndoRedo\UndoRedoUncatchedException.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Control\InternalVarEditor\ConstInternalVarEditorModelEvent.cs" />

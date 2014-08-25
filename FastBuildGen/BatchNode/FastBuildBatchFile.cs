@@ -182,9 +182,7 @@ namespace FastBuildGen.BatchNode
 
         #endregion FastBuild Property wraper
 
-        #region Expressions
 
-        #endregion Expressions
 
         #region Literal
 

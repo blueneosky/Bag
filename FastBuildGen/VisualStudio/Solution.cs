@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
 
 namespace FastBuildGen.VisualStudio
 {
@@ -13,10 +13,10 @@ namespace FastBuildGen.VisualStudio
         //Name: Microsoft.Build.Construction.SolutionParser
         //Assembly: Microsoft.Build, Version=4.0.0.0
 
-        static readonly Type s_SolutionParser;
-        static readonly PropertyInfo s_SolutionParser_solutionReader;
-        static readonly MethodInfo s_SolutionParser_parseSolution;
-        static readonly PropertyInfo s_SolutionParser_projects;
+        private static readonly Type s_SolutionParser;
+        private static readonly PropertyInfo s_SolutionParser_solutionReader;
+        private static readonly MethodInfo s_SolutionParser_parseSolution;
+        private static readonly PropertyInfo s_SolutionParser_projects;
 
         static Solution()
         {
@@ -57,5 +57,4 @@ namespace FastBuildGen.VisualStudio
             get { return Projects.Where(p => p.ProjectType == 1); }
         }
     }
-
 }

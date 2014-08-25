@@ -7,28 +7,23 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.Control.InternalVarEditor
 {
-    internal class InternalVarEditorModel : UIModelBase, INotifyPropertyChanged
+    internal class InternalVarEditorModel : INotifyPropertyChanged
     {
         #region Members
 
         private readonly IFastBuildInternalVarModel _fastBuildInternalVarModel;
-        private readonly IUndoRedoManager _undoRedoManager;
         private string _keyword;
 
         #endregion Members
 
         #region ctor
 
-        public InternalVarEditorModel(IFastBuildInternalVarModel fastBuildInternalVarModel, IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public InternalVarEditorModel(IFastBuildInternalVarModel fastBuildInternalVarModel)
         {
             _fastBuildInternalVarModel = fastBuildInternalVarModel;
-            _undoRedoManager = undoRedoManager;
 
             _fastBuildInternalVarModel.PropertiesChanged += _fastBuildInternalVarModel_PropertiesChanged;
         }

@@ -4,16 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
-using FastBuildGen.Common.UI;
 
 namespace FastBuildGen.Control.TargetEditor
 {
-    internal class TargetEditorController : UIControllerBase
+    internal class TargetEditorController
     {
         private readonly TargetEditorModel _model;
 
         public TargetEditorController(TargetEditorModel model)
-            : base(model)
         {
             _model = model;
         }

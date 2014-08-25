@@ -6,12 +6,10 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.Control.TargetEditor
 {
-    internal class TargetEditorModel : UIModelBase, INotifyPropertyChanged
+    internal class TargetEditorModel : INotifyPropertyChanged
     {
         private readonly IFastBuildParamModel _fastBuildParamModel;
         private IEnumerable<IParamDescriptionHeoModule> _availableModules;
@@ -19,8 +17,7 @@ namespace FastBuildGen.Control.TargetEditor
 
         #region ctor
 
-        public TargetEditorModel(IFastBuildParamModel fastBuildParamModel, IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public TargetEditorModel(IFastBuildParamModel fastBuildParamModel)
         {
             _fastBuildParamModel = fastBuildParamModel;
             _fastBuildParamModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;

@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using BatchGen.Common;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
 using FastBuildGen.Xml.Entity;
-using BatchGen.Common;
 
 namespace FastBuildGen.Xml
 {
@@ -113,7 +113,7 @@ namespace FastBuildGen.Xml
                     Write<XmlFastBuild>(stream, xmlFastBuild);
                 }
             }
-            catch (FastBuildGenException ) { throw; }
+            catch (FastBuildGenException) { throw; }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);

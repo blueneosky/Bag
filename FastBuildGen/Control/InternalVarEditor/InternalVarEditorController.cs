@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
-using FastBuildGen.Common.UndoRedo;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.Common;
 
 namespace FastBuildGen.Control.InternalVarEditor
 {
-    internal class InternalVarEditorController : UIControllerBase
+    internal class InternalVarEditorController
     {
         private readonly InternalVarEditorModel _model;
         private readonly IFastBuildInternalVarController _fastBuildInternalVarController;
 
         public InternalVarEditorController(InternalVarEditorModel model)
-            : base(model)
         {
             _model = model;
             _fastBuildInternalVarController = new FastBuildInternalVarController(model.FastBuildInternalVarModel);
@@ -34,20 +30,7 @@ namespace FastBuildGen.Control.InternalVarEditor
             if (!success)
                 return;
 
-            string name = this.GetType().Name + "_SetValue";
-            string title = "Set '" + newValue + "' to " + keyword;
-            using (_model.UndoRedoManager.NewUndoRedoActionMacroBloc(name, title))
-            {
-                Action uiEnableViewAction = delegate
-                {
-                    bool uiSuccess = _model.UIEnableView(keyword);
-                    Debug.Assert(uiSuccess);
-                };
-
-                SetValueCore(keyword, newValue);
-
-                _model.UndoRedoManager.Do(name, title, null, uiEnableViewAction, uiEnableViewAction);
-            }
+            SetValueCore(keyword, newValue);
         }
 
         private bool CheckValueAvailabality(string value, string keyword)
@@ -65,15 +48,9 @@ namespace FastBuildGen.Control.InternalVarEditor
 
         private void SetValueCore(string keyword, string newValue)
         {
-            string oldValue = _model.FastBuildInternalVarModel[keyword];
-
-            string name = this.GetType().Name + "_SetValueCore";
-            string title = "Set internal var value '" + newValue + "' to " + keyword;
-            Action doAction = delegate { _fastBuildInternalVarController.SetValue(keyword, newValue); };
-            Action undoAction = delegate { _fastBuildInternalVarController.SetValue(keyword, oldValue); };
-            _model.UndoRedoManager.Do(name, title, doAction, undoAction);
+            _fastBuildInternalVarController.SetValue(keyword, newValue);
         }
 
-        #endregion
+        #endregion Core
     }
 }

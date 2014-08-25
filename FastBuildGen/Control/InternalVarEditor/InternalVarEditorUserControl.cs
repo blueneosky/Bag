@@ -27,8 +27,6 @@ namespace FastBuildGen.Control.InternalVarEditor
 
         public void Initialize(InternalVarEditorModel model, InternalVarEditorController controller)
         {
-            base.Initialize(model, controller);
-
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
 

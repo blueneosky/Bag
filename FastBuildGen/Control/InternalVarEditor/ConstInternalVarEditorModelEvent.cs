@@ -19,6 +19,7 @@ namespace FastBuildGen.Control.InternalVarEditor
         #endregion Properties
 
 #warning TODO - à voir si conservé
+
         #region Property values
 
         public const string ConstUICurrentActiveField_Keyword = ConstUICurrentActiveFieldPrefix + "Keyword";

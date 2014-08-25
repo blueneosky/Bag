@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
-using FastBuildGen.Common.UI;
 using FastBuildGen.Control.ModuleEditor;
 
 namespace FastBuildGen.Control.ModulesEditor
@@ -16,7 +14,6 @@ namespace FastBuildGen.Control.ModulesEditor
 
         private ModulesEditorController _controller;
         private ModulesEditorModel _model;
-        private IUIModel _moduleEditorModel;
 
         #endregion Members
 
@@ -46,65 +43,16 @@ namespace FastBuildGen.Control.ModulesEditor
         public void Initialize(ModulesEditorModel model, ModulesEditorController controller
             , ModuleEditorModel moduleEditorModel, ModuleEditorController moduleEditorController)
         {
-            base.Initialize(model, controller);
-
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
 
             _model = model;
             _controller = controller;
 
-            _moduleEditorModel = moduleEditorModel;
-
             _listEditorUserControl.Initialize(_model, _controller);
             _moduleEditorUserControl.Initialize(moduleEditorModel, moduleEditorController);
-
-            _moduleEditorModel.UIEnableViewRequested += OnUIEnableViewRequested;
         }
 
         #endregion ctor
-
-        #region UIEnableView
-
-        protected override void OnUIEnableViewRequested(object sender, UIEnableViewRequestedEventArgs e)
-        {
-            bool success = true;
-            UIEnableViewRequestedEventArgs eventArgs = e;
-
-            if (sender == _moduleEditorModel)
-            {
-                success = UIEnableViewModuleEditor(sender, e);
-                if (success)
-                    eventArgs = new UIEnableViewRequestedEventArgs();
-            }
-
-            if (success)
-            {
-                base.OnUIEnableViewRequested(sender, eventArgs);
-                e.Canceled = eventArgs.Canceled;
-            }
-            else
-            {
-                e.Canceled = true;
-            }
-        }
-
-        private bool UIEnableViewModuleEditor(object sender, UIEnableViewRequestedEventArgs e)
-        {
-            Debug.Assert(sender == _moduleEditorModel);
-
-            if (e == null)
-                return false;
-
-            IParamDescriptionHeoModule module = e.Param as IParamDescriptionHeoModule;
-            if (module == null)
-                return false;
-
-            bool success = _controller.SelectModule(module);
-
-            return success;
-        }
-
-        #endregion UIEnableView
     }
 }

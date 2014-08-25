@@ -5,18 +5,15 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.Control.ModuleEditor
 {
-    internal class ModuleEditorModel : UIModelBase, INotifyPropertyChanged
+    internal class ModuleEditorModel : INotifyPropertyChanged
     {
         private readonly IFastBuildParamModel _fastBuildParamModel;
         private IParamDescriptionHeoModule _module;
 
-        public ModuleEditorModel(IFastBuildParamModel fastBuildParamModel, IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public ModuleEditorModel(IFastBuildParamModel fastBuildParamModel)
         {
             _fastBuildParamModel = fastBuildParamModel;
         }

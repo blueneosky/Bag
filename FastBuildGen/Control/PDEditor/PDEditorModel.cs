@@ -5,18 +5,15 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.Control.PDEditor
 {
-    internal class PDEditorModel : UIModelBase, INotifyPropertyChanged
+    internal class PDEditorModel : INotifyPropertyChanged
     {
         private readonly IFastBuildParamModel _fastBuildParamModel;
         private IParamDescription _paramDescription;
 
-        public PDEditorModel(IFastBuildParamModel fastBuildParamModel, IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public PDEditorModel(IFastBuildParamModel fastBuildParamModel)
         {
             _fastBuildParamModel = fastBuildParamModel;
         }

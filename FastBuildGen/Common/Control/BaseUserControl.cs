@@ -11,8 +11,6 @@ namespace FastBuildGen.Common.Control
     {
         private const int WS_EX_COMPOSITED = 0x02000000;
 
-        private IUIController _uiController;
-        private IUIModel _uiModel;
         private int _updateCounter;
 
         public BaseUserControl()
@@ -39,20 +37,6 @@ namespace FastBuildGen.Common.Control
         protected void EndUpdate()
         {
             _updateCounter--;
-        }
-
-        protected void Initialize(IUIModel uiModel, IUIController uiController)
-        {
-            _uiModel = uiModel;
-            _uiController = uiController;
-        }
-
-        protected virtual void OnUIEnableViewRequested(object sender, UIEnableViewRequestedEventArgs e)
-        {
-            if (e.Canceled)
-                return;
-
-            e.Canceled = !_uiController.UIEnableView(e.Param);
         }
 
         protected virtual void PartialDispose(bool disposing)

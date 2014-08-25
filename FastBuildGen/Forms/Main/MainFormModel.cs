@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.Forms.Main
 {
-    internal class MainFormModel : UIModelBase, INotifyPropertyChanged
+    internal class MainFormModel : INotifyPropertyChanged
     {
         public const string ConstActivePanelInternalVarsEditor = "InternalVarsEditor";
         public const string ConstActivePanelModulesEditor = "ModulesEditor";
@@ -20,8 +18,8 @@ namespace FastBuildGen.Forms.Main
 
         private string _activePanel;
 
-        public MainFormModel(IFastBuildModel fastBuildModel, IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public MainFormModel(IFastBuildModel fastBuildModel)
+            : base()
         {
             _fastBuildModel = fastBuildModel;
 

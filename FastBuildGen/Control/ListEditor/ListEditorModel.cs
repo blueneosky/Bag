@@ -5,26 +5,22 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.Control.ListEditor
 {
-    internal class ListEditorModel : UIModelBase, INotifyPropertyChanged
+    internal class ListEditorModel : INotifyPropertyChanged
     {
         private bool _addEnabled = true;
         private IEnumerable<ListEditorElement> _elements;
         private ListEditorElement _elementSelected;
         private bool _removeEnabled = true;
 
-        public ListEditorModel(IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public ListEditorModel()
         {
             _elements = new ListEditorElement[0];
         }
 
-        public ListEditorModel(IEnumerable<ListEditorElement> elements, IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public ListEditorModel(IEnumerable<ListEditorElement> elements)
         {
             _elements = elements.ToArray();  // duplicate
         }

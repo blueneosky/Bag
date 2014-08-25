@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.BusinessModel
 {

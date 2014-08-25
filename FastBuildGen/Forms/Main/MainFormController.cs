@@ -7,11 +7,10 @@ using System.Windows.Forms;
 using BatchGen.Gen;
 using FastBuildGen.BatchNode;
 using FastBuildGen.BusinessModel;
-using FastBuildGen.Common.UI;
 
 namespace FastBuildGen.Forms.Main
 {
-    internal class MainFormController : UIControllerBase
+    internal class MainFormController
     {
         private const string ConstDialogFilter = "FastBuild config file (*.fbconf)|*.fbconf";
 
@@ -20,7 +19,6 @@ namespace FastBuildGen.Forms.Main
         private readonly MainFormModel _model;
 
         public MainFormController(MainFormModel model)
-            : base(model)
         {
             _model = model;
 
@@ -29,6 +27,7 @@ namespace FastBuildGen.Forms.Main
         }
 
 #warning TODO - re-use it for save
+
         internal void Deploy()
         {
             return;
@@ -80,11 +79,6 @@ namespace FastBuildGen.Forms.Main
             return ImportOrMergeConfigFileCore(true);
         }
 
-        internal void Redo()
-        {
-            _model.UndoRedoManager.Redo();
-        }
-
         internal void SaveFastBuildData()
         {
             SaveFastBuildDataCore();
@@ -133,11 +127,6 @@ namespace FastBuildGen.Forms.Main
             _model.ActivePanel = MainFormModel.ConstActivePanelTargetsEditor;
 
             return true;
-        }
-
-        internal void Undo()
-        {
-            _model.UndoRedoManager.Undo();
         }
 
         #region Private

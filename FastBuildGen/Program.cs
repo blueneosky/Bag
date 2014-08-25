@@ -2,15 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.UI;
-using FastBuildGen.Common.UndoRedo;
 using FastBuildGen.Forms.Main;
-using FastBuildGen.Common;
-using System.Diagnostics;
-using System.Text;
-using FastBuildGen.VisualStudio;
 
 namespace FastBuildGen
 {
@@ -26,15 +22,14 @@ namespace FastBuildGen
         [STAThread]
         private static void Main()
         {
-            string solutionPath = @"D:\_Workspaces\HEO\V1\Developpement\ProduitCommercial\ProduitCommercial.sln";
-            Solution solution = new Solution(solutionPath);
-            solution.Projects
-                .Where(p => p.ProjectType == 1)
-                .Select(p => p.ProjectName)
-                .ToList()
-                .ForEach(t => Debug.WriteLine(t));
+            //string solutionPath = @"D:\_Workspaces\HEO\V1\Developpement\ProduitCommercial\ProduitCommercial.sln";
+            //Solution solution = new Solution(solutionPath);
+            //solution.MSBuildCompatibleProjects
+            //    .Select(p => p.ProjectName)
+            //    .ToList()
+            //    .ForEach(t => Debug.WriteLine(t));
 
-            return;
+            //return;
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, arg) =>
             {
@@ -54,8 +49,7 @@ namespace FastBuildGen
             UIDoubleBufferedModeManager.GlobalDoubleBufferedEx = true;
 
             // Main form
-            IUndoRedoManager undoRedoManager = new UndoRedoManager();
-            MainFormModel mainFormModel = new MainFormModel(model, undoRedoManager);
+            MainFormModel mainFormModel = new MainFormModel(model);
             MainFormController mainFormController = new MainFormController(mainFormModel);
             MainForm mainForm = new MainForm(mainFormModel, mainFormController);
 

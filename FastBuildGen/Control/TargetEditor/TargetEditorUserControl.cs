@@ -39,8 +39,6 @@ namespace FastBuildGen.Control.TargetEditor
         public void Initialize(TargetEditorModel model, TargetEditorController controller
             , PDEditorModel pdEditorModel, PDEditorController pdEditorController)
         {
-            base.Initialize(model, controller);
-
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
 

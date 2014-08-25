@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
 using FastBuildGen.Control.PDEditor;
-using System.Windows.Forms;
 
 namespace FastBuildGen.Control.ModuleEditor
 {
@@ -39,8 +39,6 @@ namespace FastBuildGen.Control.ModuleEditor
         public void Initialize(ModuleEditorModel model, ModuleEditorController controller
             , PDEditorModel pdEditorModel, PDEditorController pdEditorController)
         {
-            base.Initialize(model, controller);
-
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
 
@@ -224,6 +222,5 @@ namespace FastBuildGen.Control.ModuleEditor
         }
 
         #endregion User Inputs
-
     }
 }

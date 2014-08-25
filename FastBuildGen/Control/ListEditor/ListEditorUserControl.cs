@@ -28,8 +28,6 @@ namespace FastBuildGen.Control.ListEditor
 
         public void Initialize(ListEditorModel model, ListEditorController controller)
         {
-            base.Initialize(model, controller);
-
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
 

@@ -12,6 +12,7 @@ namespace BatchGen.BatchNode.ExternCmd
         //[/S système] [/U utilisateur [/P [mot_passe]]]]
         //{ [/FI filtre] [/PID ID_processus | /IM image] } [/T] [/F]
         private bool? _force;
+
         private BatchExpressionBase _imageName;
         private BatchExpressionBase _passWord;
         private BatchExpressionBase _system;

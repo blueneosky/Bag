@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FastBuildGen.Common;
-using FastBuildGen.Common.UI;
 
 namespace FastBuildGen.Control.ListEditor
 {
-    internal abstract class ListEditorController : UIControllerBase
+    internal abstract class ListEditorController 
     {
         private readonly ListEditorModel _model;
 
         public ListEditorController(ListEditorModel model)
-            : base(model)
         {
             _model = model;
         }

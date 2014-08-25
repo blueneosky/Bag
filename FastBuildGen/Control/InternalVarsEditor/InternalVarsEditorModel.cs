@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Control.ListEditor;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.Control.InternalVarsEditor
 {
@@ -13,8 +12,7 @@ namespace FastBuildGen.Control.InternalVarsEditor
     {
         private readonly IFastBuildInternalVarModel _fastBuildInternalVarModel;
 
-        public InternalVarsEditorModel(IFastBuildInternalVarModel fastBuildInternalVarModel, IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public InternalVarsEditorModel(IFastBuildInternalVarModel fastBuildInternalVarModel)
         {
             AddEnabled = false;
             RemoveEnabled = false;

@@ -79,8 +79,6 @@ namespace FastBuildGen.BusinessModel
             PropertyChanged.Notify(sender, e);
         }
 
-
-
         public bool SameAs(object obj)
         {
             if (this == obj)

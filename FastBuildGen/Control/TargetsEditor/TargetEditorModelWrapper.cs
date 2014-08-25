@@ -13,7 +13,7 @@ namespace FastBuildGen.Control.TargetsEditor
         private readonly TargetsEditorModel _model;
 
         public TargetEditorModelWrapper(TargetsEditorModel model)
-            : base(model.FastBuildParamModel, model.UndoRedoManager)
+            : base(model.FastBuildParamModel)
         {
             _model = model;
 

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Control.ListEditor;
-using FastBuildGen.Common.UndoRedo;
 
 namespace FastBuildGen.Control.TargetsEditor
 {
@@ -13,8 +12,7 @@ namespace FastBuildGen.Control.TargetsEditor
     {
         private readonly IFastBuildParamModel _fastBuildParamModel;
 
-        public TargetsEditorModel(IFastBuildParamModel fastBuildParamModel, IUndoRedoManager undoRedoManager)
-            : base(undoRedoManager)
+        public TargetsEditorModel(IFastBuildParamModel fastBuildParamModel)
         {
             _fastBuildParamModel = fastBuildParamModel;
 

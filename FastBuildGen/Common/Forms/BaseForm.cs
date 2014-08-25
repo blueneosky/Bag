@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.Common.UI;
+using ImputationH31per.Util;
 
 namespace FastBuildGen.Common.Forms
 {
@@ -12,32 +13,18 @@ namespace FastBuildGen.Common.Forms
     {
         private const int WS_EX_COMPOSITED = 0x02000000;
 
-        private readonly IUIController _uiController;
-        private readonly IUIModel _uiModel;
-        private int _updateCounter;
         private System.ComponentModel.IContainer components = null;
-
-        public BaseForm(IUIModel uiModel, IUIController uiController)
-        {
-            _uiModel = uiModel;
-            _uiController = uiController;
-
-            InitializeComponent();
-        }
 
         protected BaseForm()
         {
             InitializeComponent();
+
+            Initialize();
         }
 
-        protected bool IsUpdating
+        private void Initialize()
         {
-            get { return _updateCounter > 0; }
-        }
-
-        protected void BeginUpdate()
-        {
-            _updateCounter++;
+            _shortcutsManager = new ShortcutsManager();
         }
 
         protected override void Dispose(bool disposing)
@@ -50,11 +37,6 @@ namespace FastBuildGen.Common.Forms
             base.Dispose(disposing);
         }
 
-        protected void EndUpdate()
-        {
-            _updateCounter--;
-        }
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -62,17 +44,52 @@ namespace FastBuildGen.Common.Forms
             LoadGlobalDoubleBuffered();
         }
 
-        protected virtual void OnUIEnableViewRequested(object sender, UIEnableViewRequestedEventArgs e)
-        {
-            if (e.Canceled)
-                return;
-
-            e.Canceled = !_uiController.UIEnableView(e.Param);
-        }
-
         protected virtual void PartialDispose(bool disposing)
         {
         }
+
+        #region Update management
+
+        private int _updateCounter;
+
+        protected bool IsUpdating
+        {
+            get { return _updateCounter > 0; }
+        }
+
+        protected void BeginUpdate()
+        {
+            _updateCounter++;
+        }
+
+        protected void EndUpdate()
+        {
+            _updateCounter--;
+        }
+
+        #endregion Update management
+
+        #region ShortcutsManager
+
+        private ShortcutsManager _shortcutsManager;
+
+        protected ShortcutsManager ShortcutsManager
+        {
+            get { return _shortcutsManager; }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            bool traite = _shortcutsManager.ProcessKey(keyData);
+            if (traite)
+                return true;
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        #endregion ShortcutsManager
+
+        #region Validation / Error provider
 
         protected void ValidationWithErrorProvider(Action action, System.Windows.Forms.Control control, ErrorProvider errorProvider, CancelEventArgs e, ErrorIconAlignment? errorIconAlignment = null)
         {
@@ -92,6 +109,8 @@ namespace FastBuildGen.Common.Forms
                     e.Cancel = true;
             }
         }
+
+        #endregion Validation / Error provider
 
         #region DoubleBuffered
 

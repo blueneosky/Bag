@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
 using FastBuildGen.Xml.Entity;
-using System.IO;
 
 namespace FastBuildGen.Xml
 {

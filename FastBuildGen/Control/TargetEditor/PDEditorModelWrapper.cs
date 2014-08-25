@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
-using FastBuildGen.Control.PDEditor;
 using FastBuildGen.Common;
+using FastBuildGen.Control.PDEditor;
 
 namespace FastBuildGen.Control.TargetEditor
 {
@@ -14,7 +14,7 @@ namespace FastBuildGen.Control.TargetEditor
         private readonly TargetEditorModel _model;
 
         public PDEditorModelWrapper(TargetEditorModel model)
-            : base(model.FastBuildParamModel, model.UndoRedoManager)
+            : base(model.FastBuildParamModel)
         {
             _model = model;
 

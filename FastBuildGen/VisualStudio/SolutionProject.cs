@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
-using System.Collections;
+using System.Text;
 
 namespace FastBuildGen.VisualStudio
 {
     [DebuggerDisplay("{ProjectName}, {RelativePath}, {ProjectGuid}")]
     public class SolutionProject
     {
-        static readonly Type s_ProjectInSolution;
-        static readonly PropertyInfo s_ProjectInSolution_ProjectName;
+        private static readonly Type s_ProjectInSolution;
+        private static readonly PropertyInfo s_ProjectInSolution_ProjectName;
+
         //static readonly PropertyInfo s_ProjectInSolution_RelativePath;
         //static readonly PropertyInfo s_ProjectInSolution_ProjectGuid;
         //static readonly PropertyInfo s_ProjectInSolution_Dependencies;
         //static readonly PropertyInfo s_ProjectInSolution_AbsolutePath;
         //static readonly PropertyInfo s_ProjectInSolution_ParentProjectGuid;
         //static readonly PropertyInfo s_ProjectInSolution_Extension;
-        static readonly PropertyInfo s_ProjectInSolution_ProjectType;
-        static readonly MethodInfo s_ProjectInSolution_GetUniqueProjectName;
+        private static readonly PropertyInfo s_ProjectInSolution_ProjectType;
+
+        private static readonly MethodInfo s_ProjectInSolution_GetUniqueProjectName;
 
         static SolutionProject()
         {
@@ -40,6 +41,7 @@ namespace FastBuildGen.VisualStudio
         }
 
         public string ProjectName { get; private set; }
+
         //public string RelativePath { get; private set; }
         //public string ProjectGuid { get; private set; }
         //public IEnumerable<string> Dependencies { get; private set; }
@@ -47,6 +49,7 @@ namespace FastBuildGen.VisualStudio
         //public string ParentProjectGuid { get; private set; }
         //public string Extension { get; private set; }
         public int ProjectType { get; private set; }
+
         public string UniqueProjectName { get; private set; }
 
         public SolutionProject(object solutionProject)
