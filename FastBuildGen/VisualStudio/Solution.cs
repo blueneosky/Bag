@@ -51,6 +51,11 @@ namespace FastBuildGen.VisualStudio
             }
             this.Projects = projects;
         }
+
+        public IEnumerable<SolutionProject> MSBuildCompatibleProjects
+        {
+            get { return Projects.Where(p => p.ProjectType == 1); }
+        }
     }
 
 }

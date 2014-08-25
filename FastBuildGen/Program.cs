@@ -28,6 +28,11 @@ namespace FastBuildGen
         {
             string solutionPath = @"D:\_Workspaces\HEO\V1\Developpement\ProduitCommercial\ProduitCommercial.sln";
             Solution solution = new Solution(solutionPath);
+            solution.Projects
+                .Where(p => p.ProjectType == 1)
+                .Select(p => p.ProjectName)
+                .ToList()
+                .ForEach(t => Debug.WriteLine(t));
 
             return;
 
