@@ -15,21 +15,22 @@ namespace FastBuildGen.Xml.Entity
 
         public XmlFastBuild(FBModel fbModel)
         {
-            Xml01Targets = fbModel.Targets.Values
+            Xml01Targets = fbModel.SolutionTargets.Values
                 .Select(t => new XmlSolutionTarget(t))
                 .ToArray();
-            Xml02MacroTargets = fbModel.MacroTargets.Values
+            Xml02MacroSolutionTargets = fbModel.MacroSolutionTargets.Values
                 .Select(mt => new XmlMacroSolutionTarget(mt))
                 .ToArray();
+#warning TODO ALPHA BETA point - ne sérializer que les prop changé
             Xml03Properties = new XmlStringDictionary(fbModel.InternalVars);
             Xml04WithEchoOff = fbModel.WithEchoOff;
         }
 
-        [XmlArray("Targets")]
+        [XmlArray("SolutionTargets")]
         public XmlSolutionTarget[] Xml01Targets { get; set; }
 
-        [XmlArray("MacroTargets")]
-        public XmlMacroSolutionTarget[] Xml02MacroTargets { get; set; }
+        [XmlArray("MacroSolutionTargets")]
+        public XmlMacroSolutionTarget[] Xml02MacroSolutionTargets { get; set; }
 
         [XmlElement("Properties")]
         public XmlStringDictionary Xml03Properties { get; set; }

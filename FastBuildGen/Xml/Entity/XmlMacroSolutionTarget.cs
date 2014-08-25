@@ -6,20 +6,20 @@ using FastBuildGen.BusinessModel;
 namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
-    [XmlType("MacroTarget")]
+    [XmlType("MacroSolutionTarget")]
     public class XmlMacroSolutionTarget : XmlBaseTarget
     {
         public XmlMacroSolutionTarget()
         {
         }
 
-        public XmlMacroSolutionTarget(FBMacroSolutionTarget fbMacroTarget)
-            : base(fbMacroTarget)
+        public XmlMacroSolutionTarget(FBMacroSolutionTarget fbMacroSolutionTarget)
+            : base(fbMacroSolutionTarget)
         {
-            Xml05TargetIds = fbMacroTarget.TargetIds.ToArray();
+            Xml05SolutionTargetIds = fbMacroSolutionTarget.SolutionTargetIds.ToArray();
         }
 
-        [XmlElement("TargetId")]
-        public Guid[] Xml05TargetIds { get; set; }
+        [XmlElement("SolutionTargetId")]
+        public Guid[] Xml05SolutionTargetIds { get; set; }
     }
 }

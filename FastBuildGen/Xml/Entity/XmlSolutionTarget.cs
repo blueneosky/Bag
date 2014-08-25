@@ -5,18 +5,18 @@ using FastBuildGen.BusinessModel;
 namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
-    [XmlType("Target")]
+    [XmlType("SolutionTarget")]
     public class XmlSolutionTarget : XmlBaseTarget
     {
         public XmlSolutionTarget()
         {
         }
 
-        public XmlSolutionTarget(FBSolutionTarget fbTarget)
-            : base(fbTarget)
+        public XmlSolutionTarget(FBSolutionTarget fbSolutionTarget)
+            : base(fbSolutionTarget)
         {
-            Xml05MSBuildTarget = fbTarget.MSBuildTarget;
-            Xml06Enabled = fbTarget.Enabled;
+            Xml05MSBuildTarget = fbSolutionTarget.MSBuildTarget;
+            Xml06Enabled = fbSolutionTarget.Enabled;
         }
 
         [XmlAttribute("MSBuildTarget")]

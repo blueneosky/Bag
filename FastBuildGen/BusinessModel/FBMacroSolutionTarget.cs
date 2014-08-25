@@ -11,9 +11,9 @@ namespace FastBuildGen.BusinessModel
         public FBMacroSolutionTarget(Guid id)
             : base(id)
         {
-            TargetIds = new ObservableCollection<Guid> { };
+            SolutionTargetIds = new ObservableCollection<Guid> { };
         }
 
-        public ObservableCollection<Guid> TargetIds { get; private set; }
+        public ObservableCollection<Guid> SolutionTargetIds { get; private set; }
     }
 }

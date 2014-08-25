@@ -154,22 +154,22 @@ namespace FastBuildGen.BatchNode
 
         private IEnumerable<FBTarget> ParamDescriptionCommons
         {
-            get { return _fbModel.FastBuildParamTargets; }
+            get { return _fbModel.ParamTargets; }
         }
 
         private IEnumerable<FBTarget> ParamDescriptionHeo
         {
-            get { return _fbModel.FastBuildHeoParamTargets; }
+            get { return _fbModel.HeoParamTargets; }
         }
 
         private IEnumerable<FBSolutionTarget> SolutionTargets
         {
-            get { return _fbModel.Targets.Values; }
+            get { return _fbModel.SolutionTargets.Values; }
         }
 
         private IEnumerable<FBMacroSolutionTarget> MacroSolutionTargets
         {
-            get { return _fbModel.MacroTargets.Values; }
+            get { return _fbModel.MacroSolutionTargets.Values; }
         }
 
         private IParamDescription GetParamDescription(string keyWord)

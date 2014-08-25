@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using FastBuildGen.Common;
-using System.Collections.Generic;
 
 namespace FastBuildGen.BusinessModel
 {
@@ -26,7 +26,7 @@ namespace FastBuildGen.BusinessModel
         public static readonly Guid ConstGuidVshost = Guid.Empty;
         public static readonly Guid ConstGuidWait = Guid.Empty;
 
-        #endregion
+        #endregion Param Guid
 
         #region Param switch
 
@@ -68,13 +68,13 @@ namespace FastBuildGen.BusinessModel
 
         #endregion Consts
 
-        private FBTarget[] _fastBuildHeoParamTargets;
-        private FBTarget[] _fastBuildParamTargets;
+        private FBTarget[] _heoParamTargets;
+        private FBTarget[] _paramTargets;
 
         public FBModel()
         {
-            Targets = new ObservableDictionary<Guid, FBSolutionTarget> { };
-            MacroTargets = new ObservableDictionary<Guid, FBMacroSolutionTarget> { };
+            SolutionTargets = new ObservableDictionary<Guid, FBSolutionTarget> { };
+            MacroSolutionTargets = new ObservableDictionary<Guid, FBMacroSolutionTarget> { };
             InternalVars = new ObservableDictionary<string, string> { };
 
             Initialize();
@@ -84,7 +84,7 @@ namespace FastBuildGen.BusinessModel
         {
             // Default configuration
 
-            _fastBuildParamTargets = new[] {
+            _paramTargets = new[] {
                 new FBTarget(ConstGuidHelp   ){ Name = ConstKeywordParamSwitchHelp    , Keyword = ConstKeywordParamSwitchHelp      , HelpText = ConstDescriptionParamSwitchHelp       },
                 new FBTarget(ConstGuidPara   ){ Name = ConstKeywordParamSwitchPara    , Keyword = ConstKeywordParamSwitchPara      , HelpText = ConstDescriptionParamSwitchPara       },
                 new FBTarget(ConstGuidQuiet  ){ Name = ConstKeywordParamSwitchQuiet   , Keyword = ConstKeywordParamSwitchQuiet     , HelpText = ConstDescriptionParamSwitchQuiet      },
@@ -97,7 +97,7 @@ namespace FastBuildGen.BusinessModel
                 new FBTarget(ConstGuidNosgp  ){ Name = ConstKeywordParamSwitchNosgp   , Keyword = ConstKeywordParamSwitchNosgp     , HelpText = ConstDescriptionParamSwitchNosgp      },
                 new FBTarget(ConstGuidVer    ){ Name = ConstKeywordParamSwitchVer     , Keyword = ConstKeywordParamSwitchVer       , HelpText = ConstDescriptionParamSwitchVer        },
             };
-            _fastBuildHeoParamTargets = new[]{
+            _heoParamTargets = new[]{
                 new FBTarget(ConstGuidVshost            ){ Name = ConstKeywordParamSwitchVshost            , Keyword = ConstKeywordParamSwitchVshost               , HelpText = ConstDescriptionParamSwitchVshost              },
                 new FBTarget(ConstGuidKillheo           ){ Name = ConstKeywordParamSwitchKillheo           , Keyword = ConstKeywordParamSwitchKillheo              , HelpText = ConstDescriptionParamSwitchKillheo             },
                 new FBTarget(ConstGuidForceOutputDirPath){ Name = ConstKeywordParamSwitchForceOutputDirPath, Keyword = ConstKeywordParamSwitchForceOutputDirPath   , HelpText = ConstDescriptionParamSwitchForceOutputDirPath  },
@@ -119,23 +119,23 @@ namespace FastBuildGen.BusinessModel
             FBSolutionTarget echModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "ech", Keyword = "ech", HelpText = "compilation module Calcul Echauffement", MSBuildTarget = @"Modules\CalculEchauffement\Heo_CalculEchauffement_Vue", Enabled = true };
             FBSolutionTarget lanceurModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "lanceur", Keyword = "lanceur", HelpText = "compilation module Lanceur", MSBuildTarget = @"Heo_Lanceur", Enabled = true };
 
-            Targets.Add(chiModule.Id, chiModule);
-            Targets.Add(edpModule.Id, edpModule);
-            Targets.Add(edsModule.Id, edsModule);
-            Targets.Add(etqModule.Id, etqModule);
-            Targets.Add(expModule.Id, expModule);
-            Targets.Add(gduModule.Id, gduModule);
-            Targets.Add(gcpModule.Id, gcpModule);
-            Targets.Add(impModule.Id, impModule);
-            Targets.Add(ldmModule.Id, ldmModule);
-            Targets.Add(masModule.Id, masModule);
-            Targets.Add(uasModule.Id, uasModule);
-            Targets.Add(echModule.Id, echModule);
-            Targets.Add(lanceurModule.Id, lanceurModule);
+            SolutionTargets.Add(chiModule.Id, chiModule);
+            SolutionTargets.Add(edpModule.Id, edpModule);
+            SolutionTargets.Add(edsModule.Id, edsModule);
+            SolutionTargets.Add(etqModule.Id, etqModule);
+            SolutionTargets.Add(expModule.Id, expModule);
+            SolutionTargets.Add(gduModule.Id, gduModule);
+            SolutionTargets.Add(gcpModule.Id, gcpModule);
+            SolutionTargets.Add(impModule.Id, impModule);
+            SolutionTargets.Add(ldmModule.Id, ldmModule);
+            SolutionTargets.Add(masModule.Id, masModule);
+            SolutionTargets.Add(uasModule.Id, uasModule);
+            SolutionTargets.Add(echModule.Id, echModule);
+            SolutionTargets.Add(lanceurModule.Id, lanceurModule);
 
             Guid[] minimalTargetDependencies = new[] { lanceurModule.Id, expModule.Id, edpModule.Id };
             FBMacroSolutionTarget minimalTarget = new FBMacroSolutionTarget(Guid.NewGuid()) { Name = "minimal", Keyword = "minimal", HelpText = "compilation de Lanceur, ExplorateurProjet et EditeurProjet" };
-            minimalTarget.TargetIds.AddRange(minimalTargetDependencies);
+            minimalTarget.SolutionTargetIds.AddRange(minimalTargetDependencies);
 
             Guid[] heoTargetDependencies = new[] {
                 chiModule  .Id
@@ -153,32 +153,32 @@ namespace FastBuildGen.BusinessModel
                 , lanceurModule.Id
             };
             FBMacroSolutionTarget heoTarget = new FBMacroSolutionTarget(Guid.NewGuid()) { Name = "heo", Keyword = "heo", HelpText = "compilation Minimal + tous les modules" };
-            heoTarget.TargetIds.AddRange(heoTargetDependencies);
+            heoTarget.SolutionTargetIds.AddRange(heoTargetDependencies);
 
             Guid[] schematiqueAssisteDependencies = new[] { uasModule.Id, masModule.Id };
             FBMacroSolutionTarget schematiqueAssiste = new FBMacroSolutionTarget(Guid.NewGuid()) { Name = "sas", Keyword = "sas", HelpText = "compilation de UAS et MAS" };
-            schematiqueAssiste.TargetIds.AddRange(schematiqueAssisteDependencies);
+            schematiqueAssiste.SolutionTargetIds.AddRange(schematiqueAssisteDependencies);
 
-            MacroTargets.Add(minimalTarget.Id, minimalTarget);
-            MacroTargets.Add(heoTarget.Id, heoTarget);
-            MacroTargets.Add(schematiqueAssiste.Id, schematiqueAssiste);
+            MacroSolutionTargets.Add(minimalTarget.Id, minimalTarget);
+            MacroSolutionTargets.Add(heoTarget.Id, heoTarget);
+            MacroSolutionTargets.Add(schematiqueAssiste.Id, schematiqueAssiste);
 #endif
         }
 
-        public ObservableDictionary<Guid, FBSolutionTarget> Targets { get; private set; }
+        public ObservableDictionary<Guid, FBSolutionTarget> SolutionTargets { get; private set; }
 
-        public ObservableDictionary<Guid, FBMacroSolutionTarget> MacroTargets { get; private set; }
+        public ObservableDictionary<Guid, FBMacroSolutionTarget> MacroSolutionTargets { get; private set; }
 
         public ObservableDictionary<string, string> InternalVars { get; private set; }
 
-        public IEnumerable<FBTarget> FastBuildHeoParamTargets
+        public IEnumerable<FBTarget> HeoParamTargets
         {
-            get { return _fastBuildHeoParamTargets; }
+            get { return _heoParamTargets; }
         }
 
-        public IEnumerable<FBTarget> FastBuildParamTargets
+        public IEnumerable<FBTarget> ParamTargets
         {
-            get { return _fastBuildParamTargets; }
+            get { return _paramTargets; }
         }
 
         private bool _withEchoOff;
