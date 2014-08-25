@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 using BatchGen.Common;
-using FastBuildGen.BusinessModel;
+using FastBuildGen.BusinessModel.Old;
 using FastBuildGen.Common;
 using FastBuildGen.Xml.Entity;
-using FastBuildGen.BusinessModel.Old;
+using FastBuildGen.BusinessModel;
 
 namespace FastBuildGen.Xml
 {
@@ -29,7 +26,7 @@ namespace FastBuildGen.Xml
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
-                throw new FastBuildGenException("XmlFastBuild loading from file failed", e);
+                throw new FastBuildGenException("XmlFastBuild loading failed from file", e);
             }
 
             return result;
@@ -46,7 +43,7 @@ namespace FastBuildGen.Xml
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
-                throw new FastBuildGenException("XmlFastBuild reading from Stream failed", e);
+                throw new FastBuildGenException("XmlFastBuild reading failed from Stream", e);
             }
 
             return result;
@@ -100,25 +97,22 @@ namespace FastBuildGen.Xml
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
-                throw new FastBuildGenException("IFastBuildModel saving into File failed", e);
+                throw new FastBuildGenException("FBModel saving into File failed", e);
             }
         }
 
-        public static void Write(Stream stream, IFastBuildModel model)
+        public static void Write(Stream stream, FBModel fbModel)
         {
             try
             {
-                using (XmlSession session = new XmlSession())
-                {
-                    XmlFastBuild xmlFastBuild = session.GetOrCreateXmlFastBuild(model);
-                    Write<XmlFastBuild>(stream, xmlFastBuild);
-                }
+                XmlFastBuild xmlFastBuild = new XmlFastBuild(fbModel);
+                Write<XmlFastBuild>(stream, xmlFastBuild);
             }
             catch (FastBuildGenException) { throw; }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
-                throw new FastBuildGenException("IFastBuildModel serialization into Stream failed", e);
+                throw new FastBuildGenException("FBModel serialization into Stream failed", e);
             }
         }
 
@@ -132,7 +126,6 @@ namespace FastBuildGen.Xml
                 writer.Indentation = 2;
 
                 writer.WriteStartDocument();
-                writer.WriteComment("Keep values of XmlId valid and uniq for each node!");
 
                 XmlSerializer serializer = new XmlSerializer(type);
                 serializer.Serialize(writer, data);

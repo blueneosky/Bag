@@ -11,9 +11,9 @@ namespace FastBuildGen.BusinessModel
         public FBMacroTarget(Guid id)
             : base(id)
         {
-            Ids = new ObservableCollection<Guid> { };
+            TargetIds = new ObservableCollection<Guid> { };
         }
 
-        public ObservableCollection<Guid> Ids { get; private set; }
+        public ObservableCollection<Guid> TargetIds { get; private set; }
     }
 }

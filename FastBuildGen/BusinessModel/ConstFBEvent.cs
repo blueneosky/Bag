@@ -5,8 +5,10 @@ using System.Text;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal static class ConstFBBuisnessModelEvent
+    internal static class ConstFBEvent
     {
+        public const string ConstFBModelWithEchoOff = "FBModelWithEchoOff";
+
         public const string ConstFBTargetHelpText = "FBTargetHelpText";
         public const string ConstFBTargetKeyword = "FBTargetKeyword";
         public const string ConstFBTargetName = "FBTargetName";
@@ -14,6 +16,6 @@ namespace FastBuildGen.BusinessModel
         public const string ConstFBTargetSwitchKeyword = "FBTargetSwitchKeyword";
         public const string ConstFBTargetVarName = "FBTargetVarName";
         public const string ConstFBTargetMSBuildTarget = "FBTargetMSBuildTarget";
-        public const string _ConstFBTarget = "FBTarget";
+        public const string ConstFBTargetEnabled = "FBTargetEnabled";
     }
 }

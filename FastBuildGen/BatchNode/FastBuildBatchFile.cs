@@ -34,7 +34,7 @@ namespace FastBuildGen.BatchNode
 
 #if DEBUG
             result = new RemBatch("FastBuildBatchFile." + comment);
-            result = new BlocMacro();
+            //result = new BlocMacro();
 #else
                 result = new BlocMacro();
 #endif
@@ -44,12 +44,12 @@ namespace FastBuildGen.BatchNode
 
         #endregion Debug
 
-        private IFastBuildModel _fastBuildModel;
+        private FBModel _fbModel;
 
-        public FastBuildBatchFile(IFastBuildModel fastBuildModel)
-            : base(fastBuildModel.WithEchoOff)
+        public FastBuildBatchFile(FBModel fbModel)
+            : base(fbModel.WithEchoOff)
         {
-            _fastBuildModel = fastBuildModel;
+            _fbModel = fbModel;
 
             FileNodes = GetFileContent();
         }
@@ -130,7 +130,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_remSeparatorCache == null)
-                    _remSeparatorCache = new RemBatch(_fastBuildModel.LabelTextRemSeparator());
+                    _remSeparatorCache = new RemBatch(_fbModel.LabelTextRemSeparator());
                 return _remSeparatorCache;
             }
         }
@@ -154,22 +154,22 @@ namespace FastBuildGen.BatchNode
 
         private IEnumerable<IParamDescription> ParamDescriptionCommons
         {
-            get { return _fastBuildModel.FastBuildParamModel.FastBuildParams; }
+            get { return _fbModel.FastBuildParamModel.FastBuildParams; }
         }
 
         private IEnumerable<IParamDescription> ParamDescriptionHeo
         {
-            get { return _fastBuildModel.FastBuildParamModel.FastBuildHeoParams; }
+            get { return _fbModel.FastBuildParamModel.FastBuildHeoParams; }
         }
 
         private IEnumerable<IParamDescriptionHeoModule> ParamDescriptionHeoModules
         {
-            get { return _fastBuildModel.FastBuildParamModel.HeoModuleParams; }
+            get { return _fbModel.FastBuildParamModel.HeoModuleParams; }
         }
 
         private IEnumerable<IParamDescriptionHeoTarget> ParamDescriptionHeoTargets
         {
-            get { return _fastBuildModel.FastBuildParamModel.HeoTargetParams; }
+            get { return _fbModel.FastBuildParamModel.HeoTargetParams; }
         }
 
         private IParamDescription GetParamDescription(string keyWord)
@@ -224,7 +224,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalConfigurationPathCache == null)
-                    _literalConfigurationPathCache = new LiteralBatch(_fastBuildModel.LiteralConfigurationPath());
+                    _literalConfigurationPathCache = new LiteralBatch(_fbModel.LiteralConfigurationPath());
                 return _literalConfigurationPathCache;
             }
         }
@@ -234,7 +234,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalEnvSystemVcvarsallCheckStatusCache == null)
-                    _literalEnvSystemVcvarsallCheckStatusCache = new LiteralBatch(_fastBuildModel.LiteralEnvSystemVcvarsallCheckStatus());
+                    _literalEnvSystemVcvarsallCheckStatusCache = new LiteralBatch(_fbModel.LiteralEnvSystemVcvarsallCheckStatus());
                 return _literalEnvSystemVcvarsallCheckStatusCache;
             }
         }
@@ -244,7 +244,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalHeoForcedOutputDirPathCache == null)
-                    _literalHeoForcedOutputDirPathCache = new LiteralBatch(_fastBuildModel.LiteralHeoForcedOutputDirPath());
+                    _literalHeoForcedOutputDirPathCache = new LiteralBatch(_fbModel.LiteralHeoForcedOutputDirPath());
                 return _literalHeoForcedOutputDirPathCache;
             }
         }
@@ -254,7 +254,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalHeoLanceurBinPathCache == null)
-                    _literalHeoLanceurBinPathCache = new LiteralBatch(_fastBuildModel.LiteralHeoLanceurBinPath());
+                    _literalHeoLanceurBinPathCache = new LiteralBatch(_fbModel.LiteralHeoLanceurBinPath());
                 return _literalHeoLanceurBinPathCache;
             }
         }
@@ -264,7 +264,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalHeoLanceurPathCache == null)
-                    _literalHeoLanceurPathCache = new LiteralBatch(_fastBuildModel.LiteralHeoLanceurPath());
+                    _literalHeoLanceurPathCache = new LiteralBatch(_fbModel.LiteralHeoLanceurPath());
                 return _literalHeoLanceurPathCache;
             }
         }
@@ -290,7 +290,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildCliWin32Cache == null)
-                    _literalMSBuildCliWin32Cache = new LiteralBatch(_fastBuildModel.LiteralMSBuildCliWin32());
+                    _literalMSBuildCliWin32Cache = new LiteralBatch(_fbModel.LiteralMSBuildCliWin32());
                 return _literalMSBuildCliWin32Cache;
             }
         }
@@ -300,7 +300,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildCliX86Cache == null)
-                    _literalMSBuildCliX86Cache = new LiteralBatch(_fastBuildModel.LiteralMSBuildCliX86());
+                    _literalMSBuildCliX86Cache = new LiteralBatch(_fbModel.LiteralMSBuildCliX86());
                 return _literalMSBuildCliX86Cache;
             }
         }
@@ -310,7 +310,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildConfigurationCache == null)
-                    _literalMSBuildConfigurationCache = new LiteralBatch(_fastBuildModel.LiteralMSBuildConfiguration());
+                    _literalMSBuildConfigurationCache = new LiteralBatch(_fbModel.LiteralMSBuildConfiguration());
                 return _literalMSBuildConfigurationCache;
             }
         }
@@ -320,7 +320,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildLogFileCache == null)
-                    _literalMSBuildLogFileCache = new LiteralBatch(_fastBuildModel.LiteralMSBuildLogFile());
+                    _literalMSBuildLogFileCache = new LiteralBatch(_fbModel.LiteralMSBuildLogFile());
                 return _literalMSBuildLogFileCache;
             }
         }
@@ -330,7 +330,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildPlatformValue == null)
-                    _literalMSBuildPlatformValue = new LiteralBatch(_fastBuildModel.LiteralMSBuildPlatform());
+                    _literalMSBuildPlatformValue = new LiteralBatch(_fbModel.LiteralMSBuildPlatform());
                 return _literalMSBuildPlatformValue;
             }
         }
@@ -340,7 +340,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildsWithTargetsCache == null)
-                    _literalMSBuildsWithTargetsCache = new LiteralBatch(_fastBuildModel.LiteralMSBuildsWithTargets());
+                    _literalMSBuildsWithTargetsCache = new LiteralBatch(_fbModel.LiteralMSBuildsWithTargets());
                 return _literalMSBuildsWithTargetsCache;
             }
         }
@@ -350,7 +350,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildTryLoopCondCache == null)
-                    _literalMSBuildTryLoopCondCache = new LiteralBatch(_fastBuildModel.LiteralMSBuildTryLoopCond());
+                    _literalMSBuildTryLoopCondCache = new LiteralBatch(_fbModel.LiteralMSBuildTryLoopCond());
                 return _literalMSBuildTryLoopCondCache;
             }
         }
@@ -360,7 +360,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildWin32NeedRunCache == null)
-                    _literalMSBuildWin32NeedRunCache = new LiteralBatch(_fastBuildModel.LiteralMSBuildWin32NeedRun());
+                    _literalMSBuildWin32NeedRunCache = new LiteralBatch(_fbModel.LiteralMSBuildWin32NeedRun());
                 return _literalMSBuildWin32NeedRunCache;
             }
         }
@@ -370,7 +370,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildWithWin32TargetsCache == null)
-                    _literalMSBuildWithWin32TargetsCache = new LiteralBatch(_fastBuildModel.LiteralMSBuildWithWin32Targets());
+                    _literalMSBuildWithWin32TargetsCache = new LiteralBatch(_fbModel.LiteralMSBuildWithWin32Targets());
                 return _literalMSBuildWithWin32TargetsCache;
             }
         }
@@ -380,7 +380,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildWithX86TargetsCache == null)
-                    _literalMSBuildWithX86TargetsCache = new LiteralBatch(_fastBuildModel.LiteralMSBuildWithX86Targets());
+                    _literalMSBuildWithX86TargetsCache = new LiteralBatch(_fbModel.LiteralMSBuildWithX86Targets());
                 return _literalMSBuildWithX86TargetsCache;
             }
         }
@@ -390,7 +390,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalMSBuildX86NeedRunCache == null)
-                    _literalMSBuildX86NeedRunCache = new LiteralBatch(_fastBuildModel.LiteralMSBuildX86NeedRun());
+                    _literalMSBuildX86NeedRunCache = new LiteralBatch(_fbModel.LiteralMSBuildX86NeedRun());
                 return _literalMSBuildX86NeedRunCache;
             }
         }
@@ -418,7 +418,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalSGenPlusCliCache == null)
-                    _literalSGenPlusCliCache = new LiteralBatch(_fastBuildModel.LiteralSGenPlusCli());
+                    _literalSGenPlusCliCache = new LiteralBatch(_fbModel.LiteralSGenPlusCli());
                 return _literalSGenPlusCliCache;
             }
         }
@@ -428,7 +428,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalSGenPlusConfigFilePathCache == null)
-                    _literalSGenPlusConfigFilePathCache = new LiteralBatch(_fastBuildModel.LiteralSGenPlusConfigFilePath());
+                    _literalSGenPlusConfigFilePathCache = new LiteralBatch(_fbModel.LiteralSGenPlusConfigFilePath());
                 return _literalSGenPlusConfigFilePathCache;
             }
         }
@@ -438,7 +438,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalSGenPlusNeedRunCache == null)
-                    _literalSGenPlusNeedRunCache = new LiteralBatch(_fastBuildModel.LiteralSGenPlusNeedRun());
+                    _literalSGenPlusNeedRunCache = new LiteralBatch(_fbModel.LiteralSGenPlusNeedRun());
                 return _literalSGenPlusNeedRunCache;
             }
         }
@@ -448,7 +448,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalSGenPlusTargetBinaryPathCache == null)
-                    _literalSGenPlusTargetBinaryPathCache = new LiteralBatch(_fastBuildModel.LiteralSGenPlusTargetBinaryPath());
+                    _literalSGenPlusTargetBinaryPathCache = new LiteralBatch(_fbModel.LiteralSGenPlusTargetBinaryPath());
                 return _literalSGenPlusTargetBinaryPathCache;
             }
         }
@@ -458,7 +458,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalStartTimeCache == null)
-                    _literalStartTimeCache = new LiteralBatch(_fastBuildModel.LiteralStartTime());
+                    _literalStartTimeCache = new LiteralBatch(_fbModel.LiteralStartTime());
                 return _literalStartTimeCache;
             }
         }
@@ -468,7 +468,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalVersionCache == null)
-                    _literalVersionCache = new LiteralBatch(_fastBuildModel.LiteralVersionName());
+                    _literalVersionCache = new LiteralBatch(_fbModel.LiteralVersionName());
                 return _literalVersionCache;
             }
         }
@@ -478,7 +478,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_literalVersionNumberCache == null)
-                    _literalVersionNumberCache = new LiteralBatch(_fastBuildModel.LiteralVersionNumberName());
+                    _literalVersionNumberCache = new LiteralBatch(_fbModel.LiteralVersionNumberName());
                 return _literalVersionNumberCache;
             }
         }
@@ -496,7 +496,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_labelGotoEndCache == null)
-                    _labelGotoEndCache = new LabelGotoBatch(_fastBuildModel.LabelGotoEnd());
+                    _labelGotoEndCache = new LabelGotoBatch(_fbModel.LabelGotoEnd());
                 return _labelGotoEndCache;
             }
         }
@@ -506,7 +506,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_labelGotoHelpCache == null)
-                    _labelGotoHelpCache = new LabelGotoBatch(_fastBuildModel.LabelGotoHelp());
+                    _labelGotoHelpCache = new LabelGotoBatch(_fbModel.LabelGotoHelp());
                 return _labelGotoHelpCache;
             }
         }
@@ -516,7 +516,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_labelGotoVersionCache == null)
-                    _labelGotoVersionCache = new LabelGotoBatch(_fastBuildModel.LabelGotoVersion());
+                    _labelGotoVersionCache = new LabelGotoBatch(_fbModel.LabelGotoVersion());
                 return _labelGotoVersionCache;
             }
         }
@@ -549,7 +549,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_labelSubKillHeoCache == null)
-                    _labelSubKillHeoCache = new LabelSubBatch(_fastBuildModel.LabelSubKillHeo());
+                    _labelSubKillHeoCache = new LabelSubBatch(_fbModel.LabelSubKillHeo());
                 return _labelSubKillHeoCache;
             }
         }
@@ -559,7 +559,7 @@ namespace FastBuildGen.BatchNode
             get
             {
                 if (_labelSubKillHeoVsHostCache == null)
-                    _labelSubKillHeoVsHostCache = new LabelSubBatch(_fastBuildModel.LabelSubKillHeoVsHost());
+                    _labelSubKillHeoVsHostCache = new LabelSubBatch(_fbModel.LabelSubKillHeoVsHost());
                 return _labelSubKillHeoVsHostCache;
             }
         }
@@ -620,7 +620,7 @@ namespace FastBuildGen.BatchNode
                             .Concat(new[]
                             {
                                 String.Empty,       // line field
-                                _fastBuildModel.LabelTextSectionHeoModules(),
+                                _fbModel.LabelTextSectionHeoModules(),
                             })
                             .Concat(heoParamDescriptions.Select(pd => TranslateParamDescriptionToHelpLine(pd, padingHeoParamDescriptions)));
                     }
@@ -679,10 +679,10 @@ namespace FastBuildGen.BatchNode
                 // set LiteralVersionNumber={ValueVersionNumber}
                 // set LiteralVersion={LabelFastBuild} v%LiteralValueVersionNumber%
                 // <line field>
-                blocMacro.Add(new SetExpressionCmd(LiteralVersionNumber, new ValueExpression(_fastBuildModel.ValueVersionNumber())));
+                blocMacro.Add(new SetExpressionCmd(LiteralVersionNumber, new ValueExpression(_fbModel.ValueVersionNumber())));
                 blocMacro.Add(new SetExpressionCmd(
                     LiteralVersion
-                    , new ComposedExpression(new ValueExpression(_fastBuildModel.LabelTextFastBuild()), new ValueExpression(" v"), LiteralVersionNumber.LiteralValue)
+                    , new ComposedExpression(new ValueExpression(_fbModel.LabelTextFastBuild()), new ValueExpression(" v"), LiteralVersionNumber.LiteralValue)
                 ));
                 blocMacro.Add(Nop);
 
@@ -814,7 +814,7 @@ namespace FastBuildGen.BatchNode
                 WhileMacro whileMacro = new WhileMacro(
                     whileTest
                     , ParametersAnalyseParsingCmds
-                    , _fastBuildModel.BaseLabelMacroParametersParsing()
+                    , _fbModel.BaseLabelMacroParametersParsing()
                 );
                 blocMacro.Add(whileMacro);
 
@@ -965,7 +965,7 @@ namespace FastBuildGen.BatchNode
                     new QuotedValueExpression(LiteralEnvSystemVcvarsallCheckStatus.LiteralValue)
                     , macroThenVcvarsall
                     , macroElseVcvarsall
-                    , _fastBuildModel.BaseLabelMacroVcvarsall()
+                    , _fbModel.BaseLabelMacroVcvarsall()
                     , true
                 );
                 blocMacro.Add(macroVcvarsall);
@@ -977,19 +977,19 @@ namespace FastBuildGen.BatchNode
                     new QuotedValueExpression(EnvSystemLiteral.ProgramW6432)
                     , macroThenVcvarsallX32X64
                     , macroElseVcvarsallX32X64
-                    , _fastBuildModel.BaseLabelMacroVcvarsallX32X64()
+                    , _fbModel.BaseLabelMacroVcvarsallX32X64()
                     , true
                 );
                 macroThenVcvarsall.Add(macroVcvarsallX32X64);
 
-                macroElseVcvarsall.Add(new EchoCmd(_fastBuildModel.LabelTextVcvarsallAlreadyinMemory()));
+                macroElseVcvarsall.Add(new EchoCmd(_fbModel.LabelTextVcvarsallAlreadyinMemory()));
 
                 BatchExpressionBase baseLabelTitleVcvarsall = new ComposedExpression(
-                    new ValueExpression(_fastBuildModel.LabelTextVcvarsall())
+                    new ValueExpression(_fbModel.LabelTextVcvarsall())
                     , new ValueExpression(" ")
                 );
 
-                string valueRelativePathVcvarsallBatchFile = _fastBuildModel.ValueRelativePathVcvarsallBatchFile();
+                string valueRelativePathVcvarsallBatchFile = _fbModel.ValueRelativePathVcvarsallBatchFile();
 
                 // rem System 32 bit
                 // echo vcvarsall %ProgramFiles%
@@ -1057,7 +1057,7 @@ namespace FastBuildGen.BatchNode
                     , EnvSystemLiteral.Time
                     );
                 EchoCmd logEchoCmd = new EchoCmd(logExpression);
-                PipeToFileCmd logPipeToFileCmd = new PipeToFileCmd(logEchoCmd, _fastBuildModel.ValuePathMeasureBuildLogFile());
+                PipeToFileCmd logPipeToFileCmd = new PipeToFileCmd(logEchoCmd, _fbModel.ValuePathMeasureBuildLogFile());
                 blocMacro.Add(logPipeToFileCmd);
 
                 return blocMacro;
@@ -1101,8 +1101,8 @@ namespace FastBuildGen.BatchNode
 
                 // set varfb_logfile=fastbuild.log
                 // set varfb_fichierConfigurationSGenPlus=SgenPlusListeExclusion.txt
-                blocMacro.Add(new SetExpressionCmd(LiteralMSBuildLogFile, new ValueExpression(_fastBuildModel.ValueMSBuildLogFile())));
-                blocMacro.Add(new SetExpressionCmd(LiteralSGenPlusConfigFilePath, new ValueExpression(_fastBuildModel.ValueSGenPlusConfigFilePath())));
+                blocMacro.Add(new SetExpressionCmd(LiteralMSBuildLogFile, new ValueExpression(_fbModel.ValueMSBuildLogFile())));
+                blocMacro.Add(new SetExpressionCmd(LiteralSGenPlusConfigFilePath, new ValueExpression(_fbModel.ValueSGenPlusConfigFilePath())));
 
                 blocMacro.Add(Nop);
 
@@ -1134,7 +1134,7 @@ namespace FastBuildGen.BatchNode
                 blocMacro.Add(new SetExpressionCmd(LiteralMSBuildConfiguration, MSBuildCmd.ConstExpressionConfigurationDebug));
                 blocMacro.Add(new IfCmd(
                     new IsTrueConditional(LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchDsac])
-                    , new SetExpressionCmd(LiteralMSBuildConfiguration, new ValueExpression(_fastBuildModel.ValueMSBuildConfigurationDsac()))
+                    , new SetExpressionCmd(LiteralMSBuildConfiguration, new ValueExpression(_fbModel.ValueMSBuildConfigurationDsac()))
                     ));
                 blocMacro.Add(new IfCmd(
                     new IsTrueConditional(LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchRelease])
@@ -1146,9 +1146,9 @@ namespace FastBuildGen.BatchNode
                 // SET varfb_ConfigurationPath=bin\x86\%varfb_MSBuildConfiguration%
                 // SET varfb_HeoLanceurBinPath=%varfb_HeoLanceurPath%\%varfb_ConfigurationPath%
                 // set varfb_outputDir=.%HeoLanceurBinPath%
-                blocMacro.Add(new SetExpressionCmd(LiteralHeoLanceurPath, new ValueExpression(_fastBuildModel.ValueHeoLanceurPath())));
+                blocMacro.Add(new SetExpressionCmd(LiteralHeoLanceurPath, new ValueExpression(_fbModel.ValueHeoLanceurPath())));
                 blocMacro.Add(new SetExpressionCmd(LiteralConfigurationPath, new ComposedExpression(
-                    new ValueExpression(_fastBuildModel.ValuePathBin())
+                    new ValueExpression(_fbModel.ValuePathBin())
                     , new ValueExpression("\\")
                     , LiteralMSBuildConfiguration.LiteralValue
                     )));
@@ -1341,9 +1341,9 @@ namespace FastBuildGen.BatchNode
 
                 BatchFileNodeBase fastBuildCoreBuildWin32Node = GetFastBuildCoreBuild(
                     LiteralMSBuildWin32NeedRun
-                    , _fastBuildModel.BaseLabelMacroMSBuildWin32NeedRun()
+                    , _fbModel.BaseLabelMacroMSBuildWin32NeedRun()
                     , LiteralMSBuildCliWin32
-                    , _fastBuildModel.BaseLabelMacroMSBuildWin32TryLoop());
+                    , _fbModel.BaseLabelMacroMSBuildWin32TryLoop());
                 blocMacro.Add(fastBuildCoreBuildWin32Node);
 
                 return blocMacro;
@@ -1360,9 +1360,9 @@ namespace FastBuildGen.BatchNode
 
                 BatchFileNodeBase fastBuildCoreBuildWin32Node = GetFastBuildCoreBuild(
                     LiteralMSBuildX86NeedRun
-                    , _fastBuildModel.BaseLAbelMacroMSBuildX86NeedRun()
+                    , _fbModel.BaseLAbelMacroMSBuildX86NeedRun()
                     , LiteralMSBuildCliX86
-                    , _fastBuildModel.BaseLabelMacroMSBuildX86TryLoop());
+                    , _fbModel.BaseLabelMacroMSBuildX86TryLoop());
                 blocMacro.Add(fastBuildCoreBuildWin32Node);
 
                 return blocMacro;
@@ -1398,7 +1398,7 @@ namespace FastBuildGen.BatchNode
                     new IsTrueConditional(LiteralSGenPlusNeedRun)
                     , blocMacroSGenPlus
                     , null
-                    , _fastBuildModel.BaseLabelMacroSGenPlusNeedRun()
+                    , _fbModel.BaseLabelMacroSGenPlusNeedRun()
                     ));
                 // SET varfb_SGenPlusTargetBinaryPath=%varfb_HeoLanceurBinPath%
                 // SET varfb_SGenPlusCli=/cur:"%varfb_SGenPlusTargetBinaryPath%" /opt:"%varfb_SGenPlusConfigFilePath%"
@@ -1424,7 +1424,7 @@ namespace FastBuildGen.BatchNode
                 BlocMacro blocMacroThenSGenPlusStatus = new BlocMacro();
                 BlocMacro blocMacroElseSGenPlusStatus = new BlocMacro();
                 // IF NOT ERRORLEVEL 0 (...) ELSE (...)
-                blocMacroSGenPlus.Add(new IfGotoMacro(0, blocMacroThenSGenPlusStatus, blocMacroElseSGenPlusStatus, _fastBuildModel.BaseLabelMacroSGenPlusStatus()));
+                blocMacroSGenPlus.Add(new IfGotoMacro(0, blocMacroThenSGenPlusStatus, blocMacroElseSGenPlusStatus, _fbModel.BaseLabelMacroSGenPlusStatus()));
                 // :: SGenPlus success
                 // ECHO SGenPlus success
                 blocMacroThenSGenPlusStatus.Add(new RemBatch("SGenPlus success"));
@@ -1593,8 +1593,8 @@ namespace FastBuildGen.BatchNode
 
                 BlocMacro nodeThen = new BlocMacro();
                 nodeThen.Add(new EchoCmd(String.Empty));
-                nodeThen.Add(new EchoCmd(_fastBuildModel.LabelTextKillHeoVsHost()));
-                nodeThen.Add(new TaskKillCmd(new ValueExpression(_fastBuildModel.ValueHeoVsHostImageName()), force: true));
+                nodeThen.Add(new EchoCmd(_fbModel.LabelTextKillHeoVsHost()));
+                nodeThen.Add(new TaskKillCmd(new ValueExpression(_fbModel.ValueHeoVsHostImageName()), force: true));
                 nodeThen.Add(new EchoCmd(String.Empty));
 
                 IfMacro ifMacro = new IfMacro(
@@ -1628,8 +1628,8 @@ namespace FastBuildGen.BatchNode
 
                 BlocMacro nodeThen = new BlocMacro();
                 nodeThen.Add(new EchoCmd(String.Empty));
-                nodeThen.Add(new EchoCmd(_fastBuildModel.LabelTextKillHeo()));
-                nodeThen.Add(new TaskKillCmd(new ValueExpression(_fastBuildModel.ValueHeoImageName()), force: true));
+                nodeThen.Add(new EchoCmd(_fbModel.LabelTextKillHeo()));
+                nodeThen.Add(new TaskKillCmd(new ValueExpression(_fbModel.ValueHeoImageName()), force: true));
                 nodeThen.Add(new EchoCmd(String.Empty));
 
                 IfMacro ifMacro = new IfMacro(

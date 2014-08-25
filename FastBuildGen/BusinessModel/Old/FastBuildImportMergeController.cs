@@ -64,9 +64,9 @@ namespace FastBuildGen.BusinessModel.Old
         private bool DetectConflict(XmlFastBuild xmlFastBuild)
         {
             bool withConflict =
-                DetectInternalVarsConflict(xmlFastBuild.Xml02FastBuildInternalVar)
+                DetectInternalVarsConflict(xmlFastBuild.Xml03FastBuildInternalVar)
                 && DetectParamConflict(xmlFastBuild.Xml01FastBuildParam)
-                && (_fastBuildModel.WithEchoOff != xmlFastBuild.Xml03WithEchoOff);
+                && (_fastBuildModel.WithEchoOff != xmlFastBuild.Xml04WithEchoOff);
 
             return withConflict;
         }
@@ -77,7 +77,7 @@ namespace FastBuildGen.BusinessModel.Old
             throw new NotImplementedException();
         }
 
-        private bool DetectModulesConflict(XmlParamDescriptionHeoModule[] xmlParamDescriptionHeoModule)
+        private bool DetectModulesConflict(XmlTarget[] xmlParamDescriptionHeoModule)
         {
 #warning TODO - ALPHA point
             throw new NotImplementedException();
@@ -92,7 +92,7 @@ namespace FastBuildGen.BusinessModel.Old
             return withConflict;
         }
 
-        private bool DetectTargetsConflict(XmlParamDescriptionHeoTarget[] xmlParamDescriptionHeoTarget)
+        private bool DetectTargetsConflict(XmlMacroTarget[] xmlParamDescriptionHeoTarget)
         {
 #warning TODO - ALPHA point
             throw new NotImplementedException();

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using FastBuildGen.Xml;
 using FastBuildGen.Xml.Entity;
 
@@ -37,15 +34,12 @@ namespace FastBuildGen.BusinessModel.Old
         {
             bool success = false;
 
-            using (XmlSession xmlSession = new XmlSession())
+            XmlFastBuild xmlFastBuild = DeserializeFastBuildConfig(configFilePath);
+            if (xmlFastBuild != null)
             {
-                XmlFastBuild xmlFastBuild = DeserializeFastBuildConfig(configFilePath, xmlSession);
-                if (xmlFastBuild != null)
-                {
-                    xmlSession.CopyTo(_model, xmlFastBuild);
-                    _model.ResetDataChanged();
-                    success = true;
-                }
+                xmlSession.CopyTo(_model, xmlFastBuild);
+                _model.ResetDataChanged();
+                success = true;
             }
 
             return success;
@@ -67,21 +61,9 @@ namespace FastBuildGen.BusinessModel.Old
             get { return ConstDefaultPreferenceFilePath; }
         }
 
-        private XmlFastBuild DeserializeFastBuildConfig(string configFilePath, XmlSession xmlSession = null)
+        private XmlFastBuild DeserializeFastBuildConfig(string configFilePath)
         {
-            XmlFastBuild xmlFastBuild = null;
-            if (xmlSession == null)
-            {
-                using (xmlSession = new XmlSession())
-                {
-                    DeserializeFastBuildConfig(configFilePath, xmlSession);
-                }
-            }
-            else
-            {
-                xmlFastBuild = XmlService.LoadXmlFastBuild(configFilePath);
-                xmlSession.Deserialize(xmlFastBuild);
-            }
+            XmlFastBuild xmlFastBuild = XmlService.LoadXmlFastBuild(configFilePath);
 
             return xmlFastBuild;
         }

@@ -29,11 +29,11 @@ namespace FastBuildGen.File
             return result;
         }
 
-        public static void Write(string fileName, FBModel fastBuildModel)
+        public static void Write(string fileName, FBModel fbModel)
         {
             using (FBFile file = new FBFile(fileName, FileMode.Create))
             {
-                file.Write(fastBuildModel);
+                file.Write(fbModel);
             }
         }
 
@@ -75,7 +75,7 @@ namespace FastBuildGen.File
 
         public XmlFastBuild XmlConfig
         {
-            get { return GetXmlConfig(null); }
+            get { return GetXmlConfig(); }
         }
 
         public Stream XmlConfigStream
@@ -89,21 +89,9 @@ namespace FastBuildGen.File
             }
         }
 
-        public XmlFastBuild GetXmlConfig(XmlSession xmlSession)
+        public XmlFastBuild GetXmlConfig()
         {
-            XmlFastBuild result = null;
-            if (xmlSession == null)
-            {
-                using (XmlSession session = new XmlSession())
-                {
-                    result = GetXmlConfig(session);
-                }
-            }
-            else
-            {
-                result = XmlService.ReadXmlFastBuild(XmlConfigStream);
-                xmlSession.Deserialize<IFastBuildModel>(result);
-            }
+            XmlFastBuild result = XmlService.ReadXmlFastBuild(XmlConfigStream);
 
             return result;
         }
@@ -126,11 +114,11 @@ namespace FastBuildGen.File
             }
         }
 
-        public void Write(IFastBuildModel fastBuildModel)
+        public void Write(FBModel fbModel)
         {
             try
             {
-                WriteCore(fastBuildModel);
+                WriteCore(fbModel);
             }
             catch (FBFileException)
             {
@@ -196,20 +184,20 @@ namespace FastBuildGen.File
             }
         }
 
-        private void WriteCore(IFastBuildModel fastBuildModel)
+        private void WriteCore(FBModel fbModel)
         {
             ResetDataStream();
 
             // batch code
             _batchCodeStream = new MemoryStream();
-            FastBuildBatchFile file = new FastBuildBatchFile(fastBuildModel);
+            FastBuildBatchFile file = new FastBuildBatchFile(fbModel);
             BatchGenerator generator = new BatchGenerator(file, _batchCodeStream);
             generator.Write();
             _batchCodeStream.Seek(0, SeekOrigin.Begin);
 
             // config data
             _xmlConfigStream = new MemoryStream();
-            XmlService.Write(_xmlConfigStream, fastBuildModel);
+            XmlService.Write(_xmlConfigStream, fbModel);
             _xmlConfigStream.Seek(0, SeekOrigin.Begin);
 
             // Note : ProxyStream don't forward Flush() to its inner stream
