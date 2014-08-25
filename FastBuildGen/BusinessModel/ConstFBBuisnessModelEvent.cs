@@ -13,6 +13,7 @@ namespace FastBuildGen.BusinessModel
         public const string ConstFBTargetParamVarName = "FBTargetParamVarName";
         public const string ConstFBTargetSwitchKeyword = "FBTargetSwitchKeyword";
         public const string ConstFBTargetVarName = "FBTargetVarName";
+        public const string ConstFBTargetMSBuildTarget = "FBTargetMSBuildTarget";
         public const string _ConstFBTarget = "FBTarget";
     }
 }

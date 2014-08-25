@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace FastBuildGen.BusinessModel
 {
-    class FBTarget : MSBuildBaseTarget
+    internal class FBTarget : MSBuildBaseTarget
     {
-        public FBTarget(Guid id)
-            :base(id)
-        {
+        private string _msBuildTarget;
 
+        public FBTarget(Guid id)
+            : base(id)
+        {
         }
 
-
-#warning TODO ALPHA ALPHA point
+        public string MSBuildTarget
+        {
+            get { return _msBuildTarget; }
+            set
+            {
+                _msBuildTarget = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBBuisnessModelEvent.ConstFBTargetMSBuildTarget));
+            }
+        }
     }
 }

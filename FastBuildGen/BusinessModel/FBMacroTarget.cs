@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -10,8 +11,9 @@ namespace FastBuildGen.BusinessModel
         public FBMacroTarget(Guid id)
             : base(id)
         {
+            Ids = new ObservableCollection<Guid> { };
         }
 
-#warning TODO ALPHA ALPHA point
+        public ObservableCollection<Guid> Ids { get; private set; }
     }
 }
