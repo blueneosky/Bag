@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BatchNode\FastBuildBatchFile.cs" />
     <Compile Include="BusinessModel\ConstFBEvent.cs" />
+    <Compile Include="BusinessModel\ExtensionFBModel.cs" />
     <Compile Include="BusinessModel\FBBaseTarget.cs" />
     <Compile Include="BusinessModel\FBModel.cs" />
     <Compile Include="BusinessModel\Old\ConstFastBuildInternalVarModel.cs" />

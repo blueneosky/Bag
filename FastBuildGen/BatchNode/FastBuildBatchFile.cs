@@ -142,34 +142,34 @@ namespace FastBuildGen.BatchNode
             get
             {
                 yield return BaseParamDescriptions;
-                yield return ParamDescriptionHeoModules;
-                yield return ParamDescriptionHeoTargets;
+                yield return SolutionTargets;
+                yield return MacroSolutionTargets;
             }
         }
 
-        private IEnumerable<IParamDescription> BaseParamDescriptions
+        private IEnumerable<FBBaseTarget> BaseParamDescriptions
         {
             get { return Enumerable.Concat(ParamDescriptionCommons, ParamDescriptionHeo); }
         }
 
-        private IEnumerable<IParamDescription> ParamDescriptionCommons
+        private IEnumerable<FBBaseTarget> ParamDescriptionCommons
         {
-            get { return _fbModel.FastBuildParamModel.FastBuildParams; }
+            get { return _fbModel.FastBuildParamTargets; }
         }
 
-        private IEnumerable<IParamDescription> ParamDescriptionHeo
+        private IEnumerable<FBBaseTarget> ParamDescriptionHeo
         {
-            get { return _fbModel.FastBuildParamModel.FastBuildHeoParams; }
+            get { return _fbModel.FastBuildHeoParamTargets; }
         }
 
-        private IEnumerable<IParamDescriptionHeoModule> ParamDescriptionHeoModules
+        private IEnumerable<FBTarget> SolutionTargets
         {
-            get { return _fbModel.FastBuildParamModel.HeoModuleParams; }
+            get { return _fbModel.Targets.Values; }
         }
 
-        private IEnumerable<IParamDescriptionHeoTarget> ParamDescriptionHeoTargets
+        private IEnumerable<FBMacroTarget> MacroSolutionTargets
         {
-            get { return _fbModel.FastBuildParamModel.HeoTargetParams; }
+            get { return _fbModel.MacroTargets.Values; }
         }
 
         private IParamDescription GetParamDescription(string keyWord)
@@ -275,7 +275,7 @@ namespace FastBuildGen.BatchNode
             {
                 if (_literalModuleMSBuildTargetByKeyWordsCache == null)
                 {
-                    _literalModuleMSBuildTargetByKeyWordsCache = ParamDescriptionHeoModules
+                    _literalModuleMSBuildTargetByKeyWordsCache = SolutionTargets
                         .ToDictionary(
                             pd => pd.Keyword
                             , pd => new LiteralBatch(pd.VarName)
@@ -607,8 +607,8 @@ namespace FastBuildGen.BatchNode
                 {
                     IEnumerable<IParamDescription> baseParamDescriptions = BaseParamDescriptions.ToArray();
                     IEnumerable<IParamDescription> heoParamDescriptions = Enumerable.Concat<IParamDescription>(
-                            ParamDescriptionHeoModules
-                            , ParamDescriptionHeoTargets
+                            SolutionTargets
+                            , MacroSolutionTargets
                         )
                         .ToArray();
                     int padingBaseParamDescriptions = baseParamDescriptions.Any() ? baseParamDescriptions.Max(pd => pd.SwitchKeyword.Length) : 0;
@@ -1108,7 +1108,7 @@ namespace FastBuildGen.BatchNode
 
                 // modules
                 blocMacro.Add(new RemBatch("HEO Modules constants"));
-                foreach (ParamDescriptionHeoModule paramDescription in ParamDescriptionHeoModules)
+                foreach (ParamDescriptionHeoModule paramDescription in SolutionTargets)
                 {
                     blocMacro.Add(new SetExpressionCmd(LiteralModuleMSBuildTargetByKeyWords[paramDescription.Keyword], new ValueExpression(paramDescription.MSBuildTarget)));
                 }
@@ -1162,7 +1162,7 @@ namespace FastBuildGen.BatchNode
 
                 // MSBuild Cli Win32
                 blocMacro.Add(new RemBatch("MSBuild configuration (win32)"));
-                IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> win32Modules = ParamDescriptionHeoModules
+                IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> win32Modules = SolutionTargets
                     .Where(pdm => pdm.Platform == FastBuildGen.BusinessModel.Old.EnumPlatform.Win32)
                     .Select(pdm => new Tuple<BooleanExpressionBase, BatchExpressionBase>(
                         LiteralParamDescriptionByKeyWords[pdm.Keyword].LiteralBoolean
@@ -1183,7 +1183,7 @@ namespace FastBuildGen.BatchNode
 
                 // MSBuild Cli X86
                 blocMacro.Add(new RemBatch("MSBuild configuration (x86)"));
-                IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> x86Modules = ParamDescriptionHeoModules
+                IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> x86Modules = SolutionTargets
                     .Where(pdm => pdm.Platform == FastBuildGen.BusinessModel.Old.EnumPlatform.X86)
                     .Select(pdm => new Tuple<BooleanExpressionBase, BatchExpressionBase>(
                         LiteralParamDescriptionByKeyWords[pdm.Keyword].LiteralBoolean

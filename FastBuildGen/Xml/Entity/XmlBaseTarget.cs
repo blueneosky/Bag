@@ -7,11 +7,11 @@ namespace FastBuildGen.Xml.Entity
     [Serializable]
     public abstract class XmlBaseTarget
     {
-        public XmlBaseTarget()
+        protected XmlBaseTarget()
         {
         }
 
-        public XmlBaseTarget(FBBaseTarget fbBaseTarget)
+        protected XmlBaseTarget(FBBaseTarget fbBaseTarget)
         {
             Xml01Guid = fbBaseTarget.Id;
             Xml02Keyword = fbBaseTarget.Keyword;
