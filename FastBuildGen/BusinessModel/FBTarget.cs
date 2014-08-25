@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal class FBTarget : MSBuildBaseTarget
+    internal class FBTarget : FBBaseTarget
     {
         private string _msBuildTarget;
+        private bool _enabled;
 
         public FBTarget(Guid id)
             : base(id)
@@ -20,8 +18,20 @@ namespace FastBuildGen.BusinessModel
             get { return _msBuildTarget; }
             set
             {
+                if (_msBuildTarget == value) return;
                 _msBuildTarget = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBBuisnessModelEvent.ConstFBTargetMSBuildTarget));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetMSBuildTarget));
+            }
+        }
+
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                if (_enabled == value) return;
+                _enabled = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetEnabled));
             }
         }
     }

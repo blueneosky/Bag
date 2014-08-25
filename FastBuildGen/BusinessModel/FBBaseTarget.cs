@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using FastBuildGen.Common;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal abstract class MSBuildBaseTarget : INotifyPropertyChanged
+    internal abstract class FBBaseTarget : INotifyPropertyChanged
     {
         private readonly Guid _id;
         private string _helpText;
         private string _keyword;
 
-        public MSBuildBaseTarget(Guid id)
+        public FBBaseTarget(Guid id)
         {
             _id = id;
         }
@@ -25,8 +22,9 @@ namespace FastBuildGen.BusinessModel
             get { return _helpText; }
             set
             {
+                if (_helpText == value) return;
                 _helpText = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBBuisnessModelEvent.ConstFBTargetHelpText));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetHelpText));
             }
         }
 
@@ -35,9 +33,10 @@ namespace FastBuildGen.BusinessModel
             get { return _keyword; }
             set
             {
+                if (_keyword == value) return;
                 _keyword = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBBuisnessModelEvent.ConstFBTargetKeyword));
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBBuisnessModelEvent.ConstFBTargetSwitchKeyword));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetKeyword));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetSwitchKeyword));
             }
         }
 
@@ -48,10 +47,11 @@ namespace FastBuildGen.BusinessModel
             get { return _name; }
             set
             {
+                if (_name == value) return;
                 _name = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBBuisnessModelEvent.ConstFBTargetName));
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBBuisnessModelEvent.ConstFBTargetParamVarName));
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBBuisnessModelEvent.ConstFBTargetVarName));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetName));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetParamVarName));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetVarName));
             }
         }
 

@@ -29,7 +29,7 @@ namespace FastBuildGen.File
             return result;
         }
 
-        public static void Write(string fileName, IFastBuildModel fastBuildModel)
+        public static void Write(string fileName, FBModel fastBuildModel)
         {
             using (FBFile file = new FBFile(fileName, FileMode.Create))
             {

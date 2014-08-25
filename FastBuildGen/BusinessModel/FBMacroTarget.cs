@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal class FBMacroTarget : MSBuildBaseTarget
+    internal class FBMacroTarget : FBBaseTarget
     {
         public FBMacroTarget(Guid id)
             : base(id)
