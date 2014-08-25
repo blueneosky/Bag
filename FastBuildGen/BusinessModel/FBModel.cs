@@ -73,8 +73,8 @@ namespace FastBuildGen.BusinessModel
 
         public FBModel()
         {
-            Targets = new ObservableDictionary<Guid, FBTarget> { };
-            MacroTargets = new ObservableDictionary<Guid, FBMacroTarget> { };
+            Targets = new ObservableDictionary<Guid, FBSolutionTarget> { };
+            MacroTargets = new ObservableDictionary<Guid, FBMacroSolutionTarget> { };
             InternalVars = new ObservableDictionary<string, string> { };
 
             Initialize();
@@ -105,19 +105,19 @@ namespace FastBuildGen.BusinessModel
 
 #warning TODO DELTA point - retirer ce code d'initialisation
 #if DEBUG
-            FBTarget chiModule = new FBTarget(Guid.NewGuid()) { Name = "chi", Keyword = "chi", HelpText = "compilation module Chiffrage", MSBuildTarget = @"Modules\Chiffrage\Heo_Chiffrage_Vue", Enabled = true };
-            FBTarget edpModule = new FBTarget(Guid.NewGuid()) { Name = "edp", Keyword = "edp", HelpText = "compilation module EditeurProjet", MSBuildTarget = @"Modules\EditeurProjet\Heo_EditeurProjet_Vue", Enabled = true };
-            FBTarget edsModule = new FBTarget(Guid.NewGuid()) { Name = "eds", Keyword = "eds", HelpText = "compilation module EditeurSymbole", MSBuildTarget = @"Modules\EditeurSymbole\Heo_EditeurSymbole_Vue", Enabled = true };
-            FBTarget etqModule = new FBTarget(Guid.NewGuid()) { Name = "etq", Keyword = "etq", HelpText = "compilation module Etiquette", MSBuildTarget = @"Modules\Etiquette\Heo_Etiquette_Vue", Enabled = true };
-            FBTarget expModule = new FBTarget(Guid.NewGuid()) { Name = "exp", Keyword = "exp", HelpText = "compilation module ExplorateurProjet", MSBuildTarget = @"Modules\ExplorateurProjet\Heo_ExplorateurProjet_Vue", Enabled = true };
-            FBTarget gduModule = new FBTarget(Guid.NewGuid()) { Name = "gdu", Keyword = "gdu", HelpText = "compilation module GDU", MSBuildTarget = @"Modules\GDU\Heo_GestionnaireDonneeUtilisateur_Vue", Enabled = true };
-            FBTarget gcpModule = new FBTarget(Guid.NewGuid()) { Name = "gcp", Keyword = "gcp", HelpText = "compilation module GuideChoixProduit", MSBuildTarget = @"Modules\GuideChoixProduit\Heo_GuideChoixProduit_Vue", Enabled = true };
-            FBTarget impModule = new FBTarget(Guid.NewGuid()) { Name = "imp", Keyword = "imp", HelpText = "compilation module Implantation", MSBuildTarget = @"Modules\Implantation\Heo_Implantation_Vue", Enabled = true };
-            FBTarget ldmModule = new FBTarget(Guid.NewGuid()) { Name = "ldm", Keyword = "ldm", HelpText = "compilation module ListeMateriel", MSBuildTarget = @"Modules\ListeMateriel\Heo_ListeMateriel_Vue", Enabled = true };
-            FBTarget masModule = new FBTarget(Guid.NewGuid()) { Name = "mas", Keyword = "mas", HelpText = "compilation module MultifilaireAssiste", MSBuildTarget = @"Modules\MultifilaireAssiste\Heo_MultifilaireAssiste_Vue", Enabled = true };
-            FBTarget uasModule = new FBTarget(Guid.NewGuid()) { Name = "uas", Keyword = "uas", HelpText = "compilation module UnifilaireAssiste", MSBuildTarget = @"Modules\UnifilaireAssiste\Heo_UnifilaireAssiste_Vue", Enabled = true };
-            FBTarget echModule = new FBTarget(Guid.NewGuid()) { Name = "ech", Keyword = "ech", HelpText = "compilation module Calcul Echauffement", MSBuildTarget = @"Modules\CalculEchauffement\Heo_CalculEchauffement_Vue", Enabled = true };
-            FBTarget lanceurModule = new FBTarget(Guid.NewGuid()) { Name = "lanceur", Keyword = "lanceur", HelpText = "compilation module Lanceur", MSBuildTarget = @"Heo_Lanceur", Enabled = true };
+            FBSolutionTarget chiModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "chi", Keyword = "chi", HelpText = "compilation module Chiffrage", MSBuildTarget = @"Modules\Chiffrage\Heo_Chiffrage_Vue", Enabled = true };
+            FBSolutionTarget edpModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "edp", Keyword = "edp", HelpText = "compilation module EditeurProjet", MSBuildTarget = @"Modules\EditeurProjet\Heo_EditeurProjet_Vue", Enabled = true };
+            FBSolutionTarget edsModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "eds", Keyword = "eds", HelpText = "compilation module EditeurSymbole", MSBuildTarget = @"Modules\EditeurSymbole\Heo_EditeurSymbole_Vue", Enabled = true };
+            FBSolutionTarget etqModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "etq", Keyword = "etq", HelpText = "compilation module Etiquette", MSBuildTarget = @"Modules\Etiquette\Heo_Etiquette_Vue", Enabled = true };
+            FBSolutionTarget expModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "exp", Keyword = "exp", HelpText = "compilation module ExplorateurProjet", MSBuildTarget = @"Modules\ExplorateurProjet\Heo_ExplorateurProjet_Vue", Enabled = true };
+            FBSolutionTarget gduModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "gdu", Keyword = "gdu", HelpText = "compilation module GDU", MSBuildTarget = @"Modules\GDU\Heo_GestionnaireDonneeUtilisateur_Vue", Enabled = true };
+            FBSolutionTarget gcpModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "gcp", Keyword = "gcp", HelpText = "compilation module GuideChoixProduit", MSBuildTarget = @"Modules\GuideChoixProduit\Heo_GuideChoixProduit_Vue", Enabled = true };
+            FBSolutionTarget impModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "imp", Keyword = "imp", HelpText = "compilation module Implantation", MSBuildTarget = @"Modules\Implantation\Heo_Implantation_Vue", Enabled = true };
+            FBSolutionTarget ldmModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "ldm", Keyword = "ldm", HelpText = "compilation module ListeMateriel", MSBuildTarget = @"Modules\ListeMateriel\Heo_ListeMateriel_Vue", Enabled = true };
+            FBSolutionTarget masModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "mas", Keyword = "mas", HelpText = "compilation module MultifilaireAssiste", MSBuildTarget = @"Modules\MultifilaireAssiste\Heo_MultifilaireAssiste_Vue", Enabled = true };
+            FBSolutionTarget uasModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "uas", Keyword = "uas", HelpText = "compilation module UnifilaireAssiste", MSBuildTarget = @"Modules\UnifilaireAssiste\Heo_UnifilaireAssiste_Vue", Enabled = true };
+            FBSolutionTarget echModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "ech", Keyword = "ech", HelpText = "compilation module Calcul Echauffement", MSBuildTarget = @"Modules\CalculEchauffement\Heo_CalculEchauffement_Vue", Enabled = true };
+            FBSolutionTarget lanceurModule = new FBSolutionTarget(Guid.NewGuid()) { Name = "lanceur", Keyword = "lanceur", HelpText = "compilation module Lanceur", MSBuildTarget = @"Heo_Lanceur", Enabled = true };
 
             Targets.Add(chiModule.Id, chiModule);
             Targets.Add(edpModule.Id, edpModule);
@@ -134,7 +134,7 @@ namespace FastBuildGen.BusinessModel
             Targets.Add(lanceurModule.Id, lanceurModule);
 
             Guid[] minimalTargetDependencies = new[] { lanceurModule.Id, expModule.Id, edpModule.Id };
-            FBMacroTarget minimalTarget = new FBMacroTarget(Guid.NewGuid()) { Name = "minimal", Keyword = "minimal", HelpText = "compilation de Lanceur, ExplorateurProjet et EditeurProjet" };
+            FBMacroSolutionTarget minimalTarget = new FBMacroSolutionTarget(Guid.NewGuid()) { Name = "minimal", Keyword = "minimal", HelpText = "compilation de Lanceur, ExplorateurProjet et EditeurProjet" };
             minimalTarget.TargetIds.AddRange(minimalTargetDependencies);
 
             Guid[] heoTargetDependencies = new[] {
@@ -152,11 +152,11 @@ namespace FastBuildGen.BusinessModel
                 , echModule.Id
                 , lanceurModule.Id
             };
-            FBMacroTarget heoTarget = new FBMacroTarget(Guid.NewGuid()) { Name = "heo", Keyword = "heo", HelpText = "compilation Minimal + tous les modules" };
+            FBMacroSolutionTarget heoTarget = new FBMacroSolutionTarget(Guid.NewGuid()) { Name = "heo", Keyword = "heo", HelpText = "compilation Minimal + tous les modules" };
             heoTarget.TargetIds.AddRange(heoTargetDependencies);
 
             Guid[] schematiqueAssisteDependencies = new[] { uasModule.Id, masModule.Id };
-            FBMacroTarget schematiqueAssiste = new FBMacroTarget(Guid.NewGuid()) { Name = "sas", Keyword = "sas", HelpText = "compilation de UAS et MAS" };
+            FBMacroSolutionTarget schematiqueAssiste = new FBMacroSolutionTarget(Guid.NewGuid()) { Name = "sas", Keyword = "sas", HelpText = "compilation de UAS et MAS" };
             schematiqueAssiste.TargetIds.AddRange(schematiqueAssisteDependencies);
 
             MacroTargets.Add(minimalTarget.Id, minimalTarget);
@@ -165,9 +165,9 @@ namespace FastBuildGen.BusinessModel
 #endif
         }
 
-        public ObservableDictionary<Guid, FBTarget> Targets { get; private set; }
+        public ObservableDictionary<Guid, FBSolutionTarget> Targets { get; private set; }
 
-        public ObservableDictionary<Guid, FBMacroTarget> MacroTargets { get; private set; }
+        public ObservableDictionary<Guid, FBMacroSolutionTarget> MacroTargets { get; private set; }
 
         public ObservableDictionary<string, string> InternalVars { get; private set; }
 

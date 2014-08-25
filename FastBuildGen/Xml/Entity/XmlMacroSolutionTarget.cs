@@ -13,7 +13,7 @@ namespace FastBuildGen.Xml.Entity
         {
         }
 
-        public XmlMacroSolutionTarget(FBMacroTarget fbMacroTarget)
+        public XmlMacroSolutionTarget(FBMacroSolutionTarget fbMacroTarget)
             : base(fbMacroTarget)
         {
             Xml05TargetIds = fbMacroTarget.TargetIds.ToArray();

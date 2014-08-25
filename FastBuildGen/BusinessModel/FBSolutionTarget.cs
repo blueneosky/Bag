@@ -3,12 +3,12 @@ using System.ComponentModel;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal class FBTarget : FBBaseTarget
+    internal class FBSolutionTarget : FBBaseTarget
     {
         private string _msBuildTarget;
         private bool _enabled;
 
-        public FBTarget(Guid id)
+        public FBSolutionTarget(Guid id)
             : base(id)
         {
         }

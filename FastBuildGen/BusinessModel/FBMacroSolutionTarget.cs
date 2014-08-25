@@ -6,9 +6,9 @@ using System.Text;
 
 namespace FastBuildGen.BusinessModel
 {
-    internal class FBMacroTarget : FBBaseTarget
+    internal class FBMacroSolutionTarget : FBBaseTarget
     {
-        public FBMacroTarget(Guid id)
+        public FBMacroSolutionTarget(Guid id)
             : base(id)
         {
             TargetIds = new ObservableCollection<Guid> { };

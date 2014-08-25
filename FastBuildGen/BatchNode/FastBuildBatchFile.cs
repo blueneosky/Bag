@@ -162,12 +162,12 @@ namespace FastBuildGen.BatchNode
             get { return _fbModel.FastBuildHeoParamTargets; }
         }
 
-        private IEnumerable<FBTarget> SolutionTargets
+        private IEnumerable<FBSolutionTarget> SolutionTargets
         {
             get { return _fbModel.Targets.Values; }
         }
 
-        private IEnumerable<FBMacroTarget> MacroSolutionTargets
+        private IEnumerable<FBMacroSolutionTarget> MacroSolutionTargets
         {
             get { return _fbModel.MacroTargets.Values; }
         }

@@ -12,7 +12,7 @@ namespace FastBuildGen.Xml.Entity
         {
         }
 
-        public XmlSolutionTarget(FBTarget fbTarget)
+        public XmlSolutionTarget(FBSolutionTarget fbTarget)
             : base(fbTarget)
         {
             Xml05MSBuildTarget = fbTarget.MSBuildTarget;
