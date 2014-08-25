@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     [XmlType("Target")]
-    public class XmlParamDescriptionHeoTarget : XmlParamDescription<FastBuildGen.BusinessModel.Old.IParamDescriptionHeoTarget>
+    public class XmlParamDescriptionHeoTarget : XmlParamDescription<IParamDescriptionHeoTarget>
     {
         public XmlParamDescriptionHeoTarget()
         {
@@ -27,7 +28,7 @@ namespace FastBuildGen.Xml.Entity
             }
         }
 
-        internal bool Equals(BusinessModel.Old.IParamDescriptionHeoTarget target)
+        internal bool Equals(IParamDescriptionHeoTarget target)
         {
             IEnumerable<XmlParamDescriptionHeoModule> xmlDependencies = Dependencies.ToArray();  // execute more than once
 
@@ -46,15 +47,15 @@ namespace FastBuildGen.Xml.Entity
             return result;
         }
 
-        protected override void CopyToCore(BusinessModel.Old.IParamDescriptionHeoTarget instance)
+        protected override void CopyToCore(IParamDescriptionHeoTarget instance)
         {
             base.CopyToCore(instance);
 
             instance.ClearDependencies();
 
-            IEnumerable<BusinessModel.Old.IParamDescriptionHeoModule> dependencies = (Xml04IdDependencies ?? new XmlId[0])
+            IEnumerable<IParamDescriptionHeoModule> dependencies = (Xml04IdDependencies ?? new XmlId[0])
                     .Select(xmlId => Session.GetInstance(xmlId))
-                    .OfType<FastBuildGen.BusinessModel.Old.IParamDescriptionHeoModule>();
+                    .OfType<IParamDescriptionHeoModule>();
             instance.AddDependencies(dependencies);
         }
 
@@ -65,7 +66,7 @@ namespace FastBuildGen.Xml.Entity
             // nothing
         }
 
-        protected override void SerializeCore(FastBuildGen.BusinessModel.Old.IParamDescriptionHeoTarget instance)
+        protected override void SerializeCore(IParamDescriptionHeoTarget instance)
         {
             base.SerializeCore(instance);
 

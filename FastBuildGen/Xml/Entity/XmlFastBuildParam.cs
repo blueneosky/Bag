@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     [XmlType("Param")]
-    public class XmlFastBuildParam : XmlObjectId<BusinessModel.Old.IFastBuildParamModel>
+    public class XmlFastBuildParam : XmlObjectId<IFastBuildParamModel>
     {
         public XmlFastBuildParam()
         {
@@ -20,7 +21,7 @@ namespace FastBuildGen.Xml.Entity
         [XmlArray("Targets")]
         public XmlParamDescriptionHeoTarget[] Xml02Targets { get; set; }
 
-        internal bool Equals(BusinessModel.Old.IFastBuildParamModel model)
+        internal bool Equals(IFastBuildParamModel model)
         {
             bool result = (model != null)
                 && (Xml01Modules != null) && (Xml01Modules.Count() == model.HeoModuleParams.Count())
@@ -49,19 +50,19 @@ namespace FastBuildGen.Xml.Entity
             return result;
         }
 
-        protected override void CopyToCore(BusinessModel.Old.IFastBuildParamModel instance)
+        protected override void CopyToCore(IFastBuildParamModel instance)
         {
             instance.ClearHeoTargetParams();
             instance.ClearHeoModuleParams();
 
             foreach (XmlParamDescriptionHeoModule xmlModule in (Xml01Modules ?? new XmlParamDescriptionHeoModule[0]))
             {
-                BusinessModel.Old.IParamDescriptionHeoModule module = instance.AddHeoModuleParam(xmlModule.Name, xmlModule.Keyword);
+                IParamDescriptionHeoModule module = instance.AddHeoModuleParam(xmlModule.Name, xmlModule.Keyword);
                 xmlModule.CopyTo(module);
             }
             foreach (XmlParamDescriptionHeoTarget xmlTarget in (Xml02Targets ?? new XmlParamDescriptionHeoTarget[0]))
             {
-                BusinessModel.Old.IParamDescriptionHeoTarget target = instance.AddHeoTargetParam(xmlTarget.Name, xmlTarget.Keyword);
+                IParamDescriptionHeoTarget target = instance.AddHeoTargetParam(xmlTarget.Name, xmlTarget.Keyword);
                 xmlTarget.CopyTo(target);
             }
         }
@@ -80,7 +81,7 @@ namespace FastBuildGen.Xml.Entity
             }
         }
 
-        protected override void SerializeCore(BusinessModel.Old.IFastBuildParamModel instance)
+        protected override void SerializeCore(IFastBuildParamModel instance)
         {
             Xml01Modules = instance.HeoModuleParams
                 .Select(m => Session.GetOrCreateXmlParamDescriptionHeoModule(m))

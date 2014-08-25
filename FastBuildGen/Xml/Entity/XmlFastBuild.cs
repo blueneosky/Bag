@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     [XmlType("FastBuild")]
-    public class XmlFastBuild : XmlObjectId<BusinessModel.Old.IFastBuildModel>
+    public class XmlFastBuild : XmlObjectId<IFastBuildModel>
     {
         public XmlFastBuild()
         {
@@ -23,7 +24,7 @@ namespace FastBuildGen.Xml.Entity
         [XmlElement("WithEchoOff")]
         public bool Xml03WithEchoOff { get; set; }
 
-        internal bool Equals(BusinessModel.Old.IFastBuildModel model)
+        internal bool Equals(IFastBuildModel model)
         {
             bool result = (model != null)
                 && (Xml01FastBuildParam != null) && Xml01FastBuildParam.Equals(model.FastBuildParamModel)
@@ -32,7 +33,7 @@ namespace FastBuildGen.Xml.Entity
             return result;
         }
 
-        protected override void CopyToCore(BusinessModel.Old.IFastBuildModel instance)
+        protected override void CopyToCore(IFastBuildModel instance)
         {
             if (Xml01FastBuildParam != null)
                 Xml01FastBuildParam.CopyTo(instance.FastBuildParamModel);
@@ -49,7 +50,7 @@ namespace FastBuildGen.Xml.Entity
                 Session.Deserialize(Xml02FastBuildInternalVar);
         }
 
-        protected override void SerializeCore(BusinessModel.Old.IFastBuildModel instance)
+        protected override void SerializeCore(IFastBuildModel instance)
         {
             Xml01FastBuildParam = Session.GetOrCreateXmlFastBuildParam(instance.FastBuildParamModel);
             Xml02FastBuildInternalVar = Session.GetOrCreateXmlFastBuildInternalVar(instance.FastBuildInternalVarModel);

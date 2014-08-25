@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Xml.Entity
 {
     [Serializable]
     public abstract class XmlParamDescription<TInstance> : XmlObjectId<TInstance>
-        where TInstance : class, FastBuildGen.BusinessModel.Old.IParamDescription
+        where TInstance : class, IParamDescription
     {
         public XmlParamDescription()
         {
@@ -41,7 +42,7 @@ namespace FastBuildGen.Xml.Entity
         [XmlAttribute("HelpText")]
         public string Xml03HelpText { get; set; }
 
-        internal bool Equals(BusinessModel.Old.IParamDescription paramDescription)
+        internal bool Equals(IParamDescription paramDescription)
         {
             bool result = (paramDescription != null)
                 && paramDescription.Keyword == Keyword

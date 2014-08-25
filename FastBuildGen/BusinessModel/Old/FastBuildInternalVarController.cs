@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FastBuildGen.BusinessModel.Old
 {
-    internal class FastBuildInternalVarController : FastBuildGen.BusinessModel.Old.IFastBuildInternalVarController
+    internal class FastBuildInternalVarController : IFastBuildInternalVarController
     {
         private readonly IFastBuildInternalVarModel _model;
 
