@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FastBuildGen.BusinessModel.Old
+namespace FastBuildGen.BusinessModel
 {
-    internal static class ConstModel
+    internal static class ConstFBModel
     {
-        public const string ConstMSBuildTargetVarNamePrefix = ConstModel.ConstVarNamePrefix + "msbuild_target_";
-        public const string ConstParamVarNamePrefix = ConstModel.ConstVarNamePrefix + "param_";
+        public const string ConstMSBuildTargetVarNamePrefix = ConstVarNamePrefix + "msbuild_target_";
+        public const string ConstParamVarNamePrefix = ConstVarNamePrefix + "param_";
         public const string ContParamSwitchPrefix = "/";
 
         private const string ConstLabelCallPrefix = "labelCall";
@@ -41,29 +41,29 @@ namespace FastBuildGen.BusinessModel.Old
 
         #region ConstLiteral
 
-        public const string ConstLiteralConfigurationPathDefaultValue = ConstModel.ConstVarNamePrefix + "ConfigurationPath";
+        public const string ConstLiteralConfigurationPathDefaultValue = ConstVarNamePrefix + "ConfigurationPath";
         public const string ConstLiteralEnvSystemVcvarsallCheckStatusDefaultValue = "DevEnvDir";
-        public const string ConstLiteralHeoForcedOutputDirPathDefaultValue = ConstModel.ConstVarNamePrefix + "HeoForcedOutputDirPath";
-        public const string ConstLiteralHeoLanceurBinPathDefaultValue = ConstModel.ConstVarNamePrefix + "HeoLanceurBinPath";
-        public const string ConstLiteralHeoLanceurPathDefaultValue = ConstModel.ConstVarNamePrefix + "HeoLanceurPath";
-        public const string ConstLiteralMSBuildCliWin32DefaultValue = ConstModel.ConstVarNamePrefix + "MSBuild_Cli_Win32";
-        public const string ConstLiteralMSBuildCliX86DefaultValue = ConstModel.ConstVarNamePrefix + "MSBuild_Cli_X86";
-        public const string ConstLiteralMSBuildConfigurationDefaultValue = ConstModel.ConstVarNamePrefix + "MSBuildConfiguration";
-        public const string ConstLiteralMSBuildLogFileDefaultValue = ConstModel.ConstVarNamePrefix + "MSBuildLogFile";
-        public const string ConstLiteralMSBuildPlatformDefaultValue = ConstModel.ConstVarNamePrefix + "MSBuildPlatform";
-        public const string ConstLiteralMSBuildsWithTargetsDefaultValue = ConstModel.ConstVarNamePrefix + "MSBuildsWithTargets";
-        public const string ConstLiteralMSBuildTryLoopCondDefaultValue = ConstModel.ConstVarNamePrefix + "LiteralMSBuildTryLoopCond";
-        public const string ConstLiteralMSBuildWin32NeedRunDefaultValue = ConstModel.ConstVarNamePrefix + "MSBuildWin32NeedRun";
-        public const string ConstLiteralMSBuildWithWin32TargetsDefaultValue = ConstModel.ConstVarNamePrefix + "MSBuildWithWin32Targets";
-        public const string ConstLiteralMSBuildWithX86TargetsDefaultValue = ConstModel.ConstVarNamePrefix + "MSBuildWithX86Targets";
-        public const string ConstLiteralMSBuildX86NeedRunDefaultValue = ConstModel.ConstVarNamePrefix + "MSBuildX86NeedRun";
-        public const string ConstLiteralSGenPlusCliDefaultValue = ConstModel.ConstVarNamePrefix + "SGenPlusCli";
-        public const string ConstLiteralSGenPlusConfigFilePathDefaultValue = ConstModel.ConstVarNamePrefix + "SGenPlusConfigFilePath";
-        public const string ConstLiteralSGenPlusNeedRunDefaultValue = ConstModel.ConstVarNamePrefix + "SGenPlusNeedRun";
-        public const string ConstLiteralSGenPlusTargetBinaryPathDefaultValue = ConstModel.ConstVarNamePrefix + "SGenPlusTargetBinaryPath";
-        public const string ConstLiteralStartTimeDefaultValue = ConstModel.ConstVarNamePrefix + "StartTime";
-        public const string ConstLiteralVersionNameDefaultValue = ConstModel.ConstVarNamePrefix + "Version";
-        public const string ConstLiteralVersionNumberNameDefaultValue = ConstModel.ConstVarNamePrefix + "VersionNumber";
+        public const string ConstLiteralHeoForcedOutputDirPathDefaultValue = ConstVarNamePrefix + "HeoForcedOutputDirPath";
+        public const string ConstLiteralHeoLanceurBinPathDefaultValue = ConstVarNamePrefix + "HeoLanceurBinPath";
+        public const string ConstLiteralHeoLanceurPathDefaultValue = ConstVarNamePrefix + "HeoLanceurPath";
+        public const string ConstLiteralMSBuildCliWin32DefaultValue = ConstVarNamePrefix + "MSBuild_Cli_Win32";
+        public const string ConstLiteralMSBuildCliX86DefaultValue = ConstVarNamePrefix + "MSBuild_Cli_X86";
+        public const string ConstLiteralMSBuildConfigurationDefaultValue = ConstVarNamePrefix + "MSBuildConfiguration";
+        public const string ConstLiteralMSBuildLogFileDefaultValue = ConstVarNamePrefix + "MSBuildLogFile";
+        public const string ConstLiteralMSBuildPlatformDefaultValue = ConstVarNamePrefix + "MSBuildPlatform";
+        public const string ConstLiteralMSBuildsWithTargetsDefaultValue = ConstVarNamePrefix + "MSBuildsWithTargets";
+        public const string ConstLiteralMSBuildTryLoopCondDefaultValue = ConstVarNamePrefix + "LiteralMSBuildTryLoopCond";
+        public const string ConstLiteralMSBuildWin32NeedRunDefaultValue = ConstVarNamePrefix + "MSBuildWin32NeedRun";
+        public const string ConstLiteralMSBuildWithWin32TargetsDefaultValue = ConstVarNamePrefix + "MSBuildWithWin32Targets";
+        public const string ConstLiteralMSBuildWithX86TargetsDefaultValue = ConstVarNamePrefix + "MSBuildWithX86Targets";
+        public const string ConstLiteralMSBuildX86NeedRunDefaultValue = ConstVarNamePrefix + "MSBuildX86NeedRun";
+        public const string ConstLiteralSGenPlusCliDefaultValue = ConstVarNamePrefix + "SGenPlusCli";
+        public const string ConstLiteralSGenPlusConfigFilePathDefaultValue = ConstVarNamePrefix + "SGenPlusConfigFilePath";
+        public const string ConstLiteralSGenPlusNeedRunDefaultValue = ConstVarNamePrefix + "SGenPlusNeedRun";
+        public const string ConstLiteralSGenPlusTargetBinaryPathDefaultValue = ConstVarNamePrefix + "SGenPlusTargetBinaryPath";
+        public const string ConstLiteralStartTimeDefaultValue = ConstVarNamePrefix + "StartTime";
+        public const string ConstLiteralVersionNameDefaultValue = ConstVarNamePrefix + "Version";
+        public const string ConstLiteralVersionNumberNameDefaultValue = ConstVarNamePrefix + "VersionNumber";
 
         #endregion ConstLiteral
 
@@ -96,8 +96,8 @@ namespace FastBuildGen.BusinessModel.Old
 
         #region ConstLabelSub
 
-        public const string ConstLabelSubKillHeoDefaultValue = ConstModel.ConstLabelCallPrefix + "KillHeo";
-        public const string ConstLabelSubKillHeoVsHostDefaultValue = ConstModel.ConstLabelCallPrefix + "KillVsHost";
+        public const string ConstLabelSubKillHeoDefaultValue = ConstLabelCallPrefix + "KillHeo";
+        public const string ConstLabelSubKillHeoVsHostDefaultValue = ConstLabelCallPrefix + "KillVsHost";
 
         #endregion ConstLabelSub
 

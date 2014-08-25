@@ -49,13 +49,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BatchNode\FastBuildBatchFile.cs" />
+    <Compile Include="BusinessModel\ConstFBBuisnessModelEvent.cs" />
+    <Compile Include="BusinessModel\MSBuildBaseTarget.cs" />
+    <Compile Include="BusinessModel\IMSBuildTarget.cs" />
     <Compile Include="BusinessModel\Old\ConstFastBuildInternalVarModel.cs" />
     <Compile Include="BusinessModel\Old\ConstIFastBuildModelEvent.cs" />
     <Compile Include="BusinessModel\Old\ConstIFastBuildParamModelEvent.cs" />
     <Compile Include="BusinessModel\Old\ConstIParamDescriptionEvent.cs" />
     <Compile Include="BusinessModel\Old\ConstIParamDescriptionHeoModuleEvent.cs" />
     <Compile Include="BusinessModel\Old\ConstIParamDescriptionHeoTargetEvent.cs" />
-    <Compile Include="BusinessModel\Old\ConstModel.cs" />
+    <Compile Include="BusinessModel\ConstFBModel.cs" />
     <Compile Include="BusinessModel\Old\EnumPlatform.cs" />
     <Compile Include="BusinessModel\Old\ExtensionIFastBuildInternalVarModel.cs" />
     <Compile Include="BusinessModel\Old\ExtensionIFastBuildModel.cs" />

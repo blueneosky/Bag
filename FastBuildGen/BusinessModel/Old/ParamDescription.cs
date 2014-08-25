@@ -61,17 +61,17 @@ namespace FastBuildGen.BusinessModel.Old
 
         public string ParamVarName
         {
-            get { return ConstModel.ConstParamVarNamePrefix + _name.Replace("?", "help"); }
+            get { return ConstFBModel.ConstParamVarNamePrefix + _name.Replace("?", "help"); }
         }
 
         public string SwitchKeyword
         {
-            get { return ConstModel.ContParamSwitchPrefix + _keyword; }
+            get { return ConstFBModel.ContParamSwitchPrefix + _keyword; }
         }
 
         public string VarName
         {
-            get { return ConstModel.ConstMSBuildTargetVarNamePrefix + _name.Replace("?", "help"); }
+            get { return ConstFBModel.ConstMSBuildTargetVarNamePrefix + _name.Replace("?", "help"); }
         }
 
         protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
