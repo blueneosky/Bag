@@ -233,9 +233,9 @@
     <Compile Include="VisualStudio\SolutionProject.cs" />
     <Compile Include="VisualStudio\Solution.cs" />
     <Compile Include="Xml\Entity\XmlFastBuild.cs" />
-    <Compile Include="Xml\Entity\XmlBaseTarget.cs" />
     <Compile Include="Xml\Entity\XmlSolutionTarget.cs" />
     <Compile Include="Xml\Entity\XmlMacroSolutionTarget.cs" />
+    <Compile Include="Xml\Entity\XmlTarget.cs" />
     <Compile Include="Xml\XmlStringDictionary.cs" />
     <Compile Include="Xml\XmlService.cs" />
     <EmbeddedResource Include="Common\Forms\BaseForm.resx">

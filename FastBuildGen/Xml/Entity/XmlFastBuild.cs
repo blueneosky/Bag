@@ -15,12 +15,17 @@ namespace FastBuildGen.Xml.Entity
 
         public XmlFastBuild(FBModel fbModel)
         {
+#warning TODO ALPHA ALPHA ALPHA ALPHA - rendre Serialize et Deserialize static et cette fct aussi...
             Xml01Targets = fbModel.SolutionTargets.Values
-                .Select(t => new XmlSolutionTarget(t))
+                .Select(t => new XmlSolutionTarget().Serialize(t))
                 .ToArray();
             Xml02MacroSolutionTargets = fbModel.MacroSolutionTargets.Values
-                .Select(mt => new XmlMacroSolutionTarget(mt))
+                .Select(mt => new XmlMacroSolutionTarget().Serialize(mt))
                 .ToArray();
+            foreach (var item in collection)
+            {
+                
+            }
 #warning TODO ALPHA BETA point - ne sérializer que les prop changé
             Xml03Properties = new XmlStringDictionary(fbModel.InternalVars);
             Xml04WithEchoOff = fbModel.WithEchoOff;
