@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F4924F5B-F6D9-422A-96A7-0CA2E3ADD36B}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ImputationH31per</RootNamespace>
+    <AssemblyName>ImputationH31per</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>ImputationH31per.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Main.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|x86'">
+    <OutputPath>..\..\..\..\..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>none</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisLogFile>bin\Release\ImputationH31per.exe.CodeAnalysisLog.xml</CodeAnalysisLogFile>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
+    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
+    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <CodeAnalysisFailOnMissingRules>false</CodeAnalysisFailOnMissingRules>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\Entite\DatData.cs" />
+    <Compile Include="Data\Entite\DatIHFormParametre.cs" />
+    <Compile Include="Data\Entite\DatImputationTfs.cs" />
+    <Compile Include="Data\Entite\DatTacheTfs.cs" />
+    <Compile Include="Data\Entite\DatTicketTfs.cs" />
+    <Compile Include="Data\Entite\IDatData.cs" />
+    <Compile Include="Data\Entite\IDatIHFormParametre.cs" />
+    <Compile Include="Data\Entite\IDatImputationTfs.cs" />
+    <Compile Include="Data\Entite\IDatTacheTfs.cs" />
+    <Compile Include="Data\Entite\IDatTicketTfs.cs" />
+    <Compile Include="Data\FabriqueServiceData.cs" />
+    <Compile Include="Data\IServiceData.cs" />
+    <Compile Include="Data\Xml\V0_9999\DatDataXml.cs" />
+    <Compile Include="Data\Xml\V0_9999\DatIHFormParametreXml.cs" />
+    <Compile Include="Data\Xml\V0_9999\DatImputationTfsXml.cs" />
+    <Compile Include="Data\Xml\V0_9999\DatTacheTfsXml.cs" />
+    <Compile Include="Data\Xml\V0_9999\DatTicketTfsXml.cs" />
+    <Compile Include="Data\Xml\ServiceConversion.cs" />
+    <Compile Include="Data\Xml\ServiceDataXml.cs" />
+    <Compile Include="Controle\ImputationTfsListView\ImputationTfsListViewControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controle\ImputationTfsListView\ImputationTfsListViewControl.Designer.cs">
+      <DependentUpon>ImputationTfsListViewControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controle\ImputationTfsListView\Modele\ConstanteIImputationTfsListViewControlModele.cs" />
+    <Compile Include="Controle\ImputationTfsListView\Modele\EditionImputationTfsFormControleur.cs" />
+    <Compile Include="Controle\ImputationTfsListView\Modele\EditionImputationTfsFormModele.cs" />
+    <Compile Include="Controle\ImputationTfsListView\Modele\IImputationTfsListViewControlControleur.cs" />
+    <Compile Include="Controle\ImputationTfsListView\Modele\IImputationTfsListViewControlModele.cs" />
+    <Compile Include="Controle\ImputationTfsListView\Modele\ImputationTfsListViewControlControleurBase.cs" />
+    <Compile Include="Controle\ImputationTfsListView\Modele\ImputationTfsListViewControlModeleBase.cs" />
+    <Compile Include="Data\Xml\DataRootXml.cs" />
+    <Compile Include="Data\Xml\V1_0a\DatDataXml.cs" />
+    <Compile Include="Data\Xml\V1_0a\DatIHFormParametreXml.cs" />
+    <Compile Include="Data\Xml\V1_0a\DatImputationTfsXml.cs" />
+    <Compile Include="Data\Xml\V1_0a\DatTacheTfsXml.cs" />
+    <Compile Include="Data\Xml\V1_0a\DatTicketTfsXml.cs" />
+    <Compile Include="Data\Xml\V1_0b\DatDataXml.cs" />
+    <Compile Include="Data\Xml\V1_0b\DatIHFormParametreXml.cs" />
+    <Compile Include="Data\Xml\V1_0b\DatImputationTfsXml.cs" />
+    <Compile Include="Data\Xml\V1_0b\DatTacheTfsXml.cs" />
+    <Compile Include="Data\Xml\V1_0b\DatTicketTfsXml.cs" />
+    <Compile Include="Data\Xml\XmlSerialization.cs" />
+    <Compile Include="Modele\ConstanteIImputationH31perModele.cs" />
+    <Compile Include="Modele\Entite\ConstanteIImputationTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\ConstanteIInformationImputationTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\ConstanteIInformationTacheTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\ConstanteIInformationTicketTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\ConstanteITacheTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\ConstanteITicketTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\ExtensionInformationImputationTfs.cs" />
+    <Compile Include="Modele\Entite\ExtensionInformationTacheTfs.cs" />
+    <Compile Include="Modele\Entite\ExtensionInformationTicketTfs.cs" />
+    <Compile Include="Modele\Entite\ExtensionTacheTfs.cs" />
+    <Compile Include="Modele\Entite\ExtensionTicketTfs.cs" />
+    <Compile Include="Modele\Entite\IImputationTfs.cs" />
+    <Compile Include="Modele\Entite\IImputationTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\IInformationImputationTfs.cs" />
+    <Compile Include="Modele\Entite\IInformationImputationTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\IInformationTacheTfs.cs" />
+    <Compile Include="Modele\Entite\IInformationTacheTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\IInformationTicketTfs.cs" />
+    <Compile Include="Modele\Entite\IInformationTicketTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\ImputationTfs.cs" />
+    <Compile Include="Modele\Entite\ImputationTfsBase.cs" />
+    <Compile Include="Modele\Entite\ImputationTfsData.cs" />
+    <Compile Include="Modele\Entite\InformationImputationTfs.cs" />
+    <Compile Include="Modele\Entite\InformationImputationTfsBase.cs" />
+    <Compile Include="Modele\Entite\InformationTacheTfs.cs" />
+    <Compile Include="Modele\Entite\InformationTacheTfsBase.cs" />
+    <Compile Include="Modele\Entite\InformationTicketTfs.cs" />
+    <Compile Include="Modele\Entite\InformationTicketTfsBase.cs" />
+    <Compile Include="Modele\Entite\ITacheTfs.cs" />
+    <Compile Include="Modele\Entite\ITacheTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\ITicketTfs.cs" />
+    <Compile Include="Modele\Entite\ITicketTfsNotifiable.cs" />
+    <Compile Include="Modele\Entite\TacheTfs.cs" />
+    <Compile Include="Modele\Entite\TacheTfsBase.cs" />
+    <Compile Include="Modele\Entite\TicketTfs.cs" />
+    <Compile Include="Modele\Entite\TicketTfsBase.cs" />
+    <Compile Include="Modele\ExtensionImputationHelperControleur.cs" />
+    <Compile Include="Modele\ExtensionImputationHelperModele.cs" />
+    <Compile Include="Modele\IImputationHelperControleur.cs" />
+    <Compile Include="Modele\IImputationHelperModele.cs" />
+    <Compile Include="Modele\ImputationHelperControleur.cs" />
+    <Compile Include="Modele\ImputationHelperModele.cs" />
+    <Compile Include="Modele\ServicePreferenceModele.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\ExtensionDateTime.cs" />
+    <Compile Include="Util\ExtensionDateTimeOffset.cs" />
+    <Compile Include="Util\ExtensionEnumerable.cs" />
+    <Compile Include="Util\ExtensionEventHandler.cs" />
+    <Compile Include="Util\ExtensionIDictionary.cs" />
+    <Compile Include="Util\GestionnaireRaccourcis.cs" />
+    <Compile Include="Util\IHException.cs" />
+    <Compile Include="Util\IHForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Modele\IHFormControleur.cs" />
+    <Compile Include="Modele\IHFormModele.cs" />
+    <Compile Include="Util\IIHFormControleur.cs" />
+    <Compile Include="Util\IIHFormModele.cs" />
+    <Compile Include="Util\IHUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Util\ObservableDictionary.cs" />
+    <Compile Include="Util\SortedObservableCollection.cs" />
+    <Compile Include="Util\WeakEventHandler.cs" />
+    <Compile Include="Vue\EditeurImputationTfs\EditeurImputationTfsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vue\EditeurImputationTfs\EditeurImputationTfsForm.Designer.cs">
+      <DependentUpon>EditeurImputationTfsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vue\EditeurImputationTfs\Modele\ConstanteIEditeurImputationTfsFormModele.cs" />
+    <Compile Include="Vue\EditeurImputationTfs\Modele\ConstanteImputationTfsDataEditeur.cs" />
+    <Compile Include="Vue\EditeurImputationTfs\Modele\EditeurImputationTfsFormControleurBase.cs" />
+    <Compile Include="Vue\EditeurImputationTfs\Modele\EditeurImputationTfsFormModeleBase.cs" />
+    <Compile Include="Vue\EditeurImputationTfs\Modele\IEditeurImputationTfsChoixSourceModele.cs" />
+    <Compile Include="Vue\EditeurImputationTfs\Modele\IEditeurImputationTfsFormControleur.cs" />
+    <Compile Include="Vue\EditeurImputationTfs\Modele\IEditeurImputationTfsFormModele.cs" />
+    <Compile Include="Vue\EditeurImputationTfs\Modele\ImputationTfsDataEditeur.cs" />
+    <Compile Include="Vue\ImportDepuisExcel\ImportDepuisExcelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vue\ImportDepuisExcel\ImportDepuisExcelForm.Designer.cs">
+      <DependentUpon>ImportDepuisExcelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vue\ImportDepuisExcel\Modele\IImportDepuisExcelFormControleur.cs" />
+    <Compile Include="Vue\ImportDepuisExcel\Modele\IImportDepuisExcelFormModele.cs" />
+    <Compile Include="Vue\ImportDepuisExcel\Modele\ImportDepuisExcelFormControleur.cs" />
+    <Compile Include="Vue\ImportDepuisExcel\Modele\ImportDepuisExcelFormModele.cs" />
+    <Compile Include="Vue\ImportDepuisExcel\Modele\ImputationTfsListViewControlControleur.cs" />
+    <Compile Include="Vue\ImportDepuisExcel\Modele\ImputationTfsListViewControlModele.cs" />
+    <Compile Include="Vue\ImputationsCourantes\ImputationsCourantesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vue\ImputationsCourantes\ImputationsCourantesForm.Designer.cs">
+      <DependentUpon>ImputationsCourantesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vue\ImputationsCourantes\Modele\AjoutImputationTfsFormControleur.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\AjoutImputationTfsFormModele.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\ConstanteIImputationsCourantesFormModele.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\IAjoutImputationTfsFormModele.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\IImputationsCourantesFormControleur.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\IImputationsCourantesFormModele.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\ImputationsCourantesFormControleur.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\ImputationsCourantesFormModele.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\ImputationTfsListViewControlControleur.cs" />
+    <Compile Include="Vue\ImputationsCourantes\Modele\ImputationTfsListViewControlModele.cs" />
+    <Compile Include="Vue\Main\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vue\Main\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vue\Main\Modele\ConstanteMainFormModele.cs" />
+    <Compile Include="Vue\Main\Modele\IMainFormControleur.cs" />
+    <Compile Include="Vue\Main\Modele\IMainFormModele.cs" />
+    <Compile Include="Vue\Main\Modele\ImputationTfsListViewControlControleur.cs" />
+    <Compile Include="Vue\Main\Modele\ImputationTfsListViewControlModele.cs" />
+    <Compile Include="Vue\Main\Modele\MainFormControleur.cs" />
+    <Compile Include="Vue\Main\Modele\MainFormModele.cs" />
+    <Compile Include="Vue\RapportMail\Modele\ConstanteIRapportMailFormModele.cs" />
+    <Compile Include="Vue\RapportMail\Modele\IRapportMailFormControleur.cs" />
+    <Compile Include="Vue\RapportMail\Modele\IRapportMailFormModele.cs" />
+    <Compile Include="Vue\RapportMail\Modele\RapportMailFormControleur.cs" />
+    <Compile Include="Vue\RapportMail\Modele\RapportMailFormModele.cs" />
+    <Compile Include="Vue\RapportMail\RapportMailForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vue\RapportMail\RapportMailForm.Designer.cs">
+      <DependentUpon>RapportMailForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vue\RapportMensuel\Modele\IRapportMensuelFormControleur.cs" />
+    <Compile Include="Vue\RapportMensuel\Modele\IRapportMensuelFormModele.cs" />
+    <Compile Include="Vue\RapportMensuel\RapportMensuelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Vue\RapportMensuel\RapportMensuelForm.Designer.cs">
+      <DependentUpon>RapportMensuelForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Vue\RapportMensuel\Modele\RapportMensuelFormControleur.cs" />
+    <Compile Include="Vue\RapportMensuel\Modele\RapportMensuelFormModele.cs" />
+    <EmbeddedResource Include="Controle\ImputationTfsListView\ImputationTfsListViewControl.resx">
+      <DependentUpon>ImputationTfsListViewControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Util\IHForm.resx">
+      <DependentUpon>IHForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Util\IHUserControl.resx">
+      <DependentUpon>IHUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vue\EditeurImputationTfs\EditeurImputationTfsForm.resx">
+      <DependentUpon>EditeurImputationTfsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vue\ImportDepuisExcel\ImportDepuisExcelForm.resx">
+      <DependentUpon>ImportDepuisExcelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vue\ImputationsCourantes\ImputationsCourantesForm.resx">
+      <DependentUpon>ImputationsCourantesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vue\Main\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vue\RapportMail\RapportMailForm.resx">
+      <DependentUpon>RapportMailForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vue\RapportMensuel\RapportMensuelForm.resx">
+      <DependentUpon>RapportMensuelForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Modele\Entite\ClassDiagram1.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Main.ico" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

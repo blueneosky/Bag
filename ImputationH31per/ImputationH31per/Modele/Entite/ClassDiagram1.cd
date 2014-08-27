@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ImputationH31per.Modele.Entite.InformationTacheTfsBase" Collapsed="true">
+    <Position X="15" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAIAAAAAAAAAAAAIAhCAAIAAAAAAAAAABAAA=</HashCode>
+      <FileName>Modele\Entite\InformationTacheTfsBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.InformationTicketTfsBase" Collapsed="true">
+    <Position X="18.25" Y="3.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAACAAYAACAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\InformationTicketTfsBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.InformationImputationTfsBase" Collapsed="true">
+    <Position X="21.5" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAABAAAAAAEAAQQAAAAAAIAIAIAAAgAAAEAAAA=</HashCode>
+      <FileName>Modele\Entite\InformationImputationTfsBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.TacheTfsBase&lt;TTicketTfs, TImputationTfs&gt;" Collapsed="true">
+    <Position X="14.75" Y="5.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAAAAAAAAQAABEAAAAAAAAACAAAgAA=</HashCode>
+      <FileName>Modele\Entite\TacheTfsBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.TicketTfsBase&lt;TImputationTfs&gt;" Collapsed="true">
+    <Position X="18.25" Y="5.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQEAABACIA=</HashCode>
+      <FileName>Modele\Entite\TicketTfsBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.ImputationTfsBase" Collapsed="true">
+    <Position X="21.5" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\ImputationTfsBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.InformationTacheTfs" Collapsed="true">
+    <Position X="15" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\InformationTacheTfs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.InformationTicketTfs" Collapsed="true">
+    <Position X="18.25" Y="2.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\InformationTicketTfs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.InformationImputationTfs" Collapsed="true">
+    <Position X="21.5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\InformationImputationTfs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.ImputationTfs" Collapsed="true">
+    <Position X="21" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAgYIgAQAAAIAcAACLAACAAAAAAAAAAABCBIEA=</HashCode>
+      <FileName>Modele\Entite\ImputationTfs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.TicketTfs" Collapsed="true">
+    <Position X="18.25" Y="6.75" Width="1.5" />
+    <InheritanceLine Type="ImputationH31per.Modele.Entite.TicketTfsBase&lt;TImputationTfs&gt;" FixedFromPoint="true">
+      <Path>
+        <Point X="19" Y="5.941" />
+        <Point X="19" Y="6.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AgAAAgABAIAAAAAAAAMAAAIAACAAAgAAAEQAAAABDIA=</HashCode>
+      <FileName>Modele\Entite\TicketTfs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.TacheTfs" Collapsed="true">
+    <Position X="15.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAACAAAAAAAAQAQAAAEAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Modele\Entite\TacheTfs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ImputationH31per.Modele.Entite.ImputationTfsData" Collapsed="true">
+    <Position X="22.75" Y="6.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\ImputationTfsData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ImputationH31per.Modele.Entite.IInformationTacheTfs" Collapsed="true">
+    <Position X="1.75" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAACAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>Modele\Entite\IInformationTacheTfs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.IInformationTacheTfsNotifiable" Collapsed="true">
+    <Position X="1.5" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\IInformationTacheTfsNotifiable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.IInformationTicketTfs" Collapsed="true">
+    <Position X="5.25" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAQAACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\IInformationTicketTfs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.IInformationTicketTfsNotifiable" Collapsed="true">
+    <Position X="5.25" Y="2.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\IInformationTicketTfsNotifiable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.IInformationImputationTfs" Collapsed="true">
+    <Position X="8.5" Y="4" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQAAAAAAAIAIAIAAAgAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\IInformationImputationTfs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.IInformationImputationTfsNotifiable" Collapsed="true">
+    <Position X="8.5" Y="2.25" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\IInformationImputationTfsNotifiable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.ITacheTfs&lt;TTicketTfs, TImputationTfs&gt;" Collapsed="true">
+    <Position X="1" Y="5.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\ITacheTfs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.ITicketTfs&lt;TImputationTfs&gt;" Collapsed="true">
+    <Position X="5.25" Y="5.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\ITicketTfs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.IImputationTfs" Collapsed="true">
+    <Position X="8.75" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\IImputationTfs.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="System.ComponentModel.INotifyPropertyChanged" Collapsed="true">
+    <Position X="1.75" Y="0.75" Width="2" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.ITacheTfsNotifiable&lt;TTicketTfs, TImputationTfs&gt;" Collapsed="true">
+    <Position X="0.75" Y="7" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\ITacheTfsNotifiable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.ITicketTfsNotifiable&lt;TImputationTfs&gt;" Collapsed="true">
+    <Position X="5" Y="7" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Modele\Entite\ITicketTfsNotifiable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ImputationH31per.Modele.Entite.IImputationTfsNotifiable" Collapsed="true">
+    <Position X="8.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Modele\Entite\IImputationTfsNotifiable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
