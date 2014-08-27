@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentsParser", "ArgumentsParser\ArgumentsParser.csproj", "{21EE79A5-548A-4348-851E-E32952B1F9E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArgumentsParser.Test", "ArgumentsParser.Test\ArgumentsParser.Test.csproj", "{3BD28766-67A2-490F-97E4-9EEE562D4AC4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CE71760D-FA82-4F0E-8590-BB7176CFA028}"
+	ProjectSection(SolutionItems) = preProject
+		ArgumentsParser.vsmdi = ArgumentsParser.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = ArgumentsParser.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21EE79A5-548A-4348-851E-E32952B1F9E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21EE79A5-548A-4348-851E-E32952B1F9E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21EE79A5-548A-4348-851E-E32952B1F9E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21EE79A5-548A-4348-851E-E32952B1F9E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BD28766-67A2-490F-97E4-9EEE562D4AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BD28766-67A2-490F-97E4-9EEE562D4AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BD28766-67A2-490F-97E4-9EEE562D4AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BD28766-67A2-490F-97E4-9EEE562D4AC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
