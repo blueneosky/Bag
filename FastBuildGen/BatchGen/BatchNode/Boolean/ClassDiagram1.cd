@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BatchGen.BatchNode.Boolean.BooleanConditionalBase" Collapsed="true">
+    <Position X="5.5" Y="8" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>BatchNode\Boolean\BooleanConditionalBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.BooleanExpressionBase" Collapsed="true">
+    <Position X="7.5" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\BooleanExpressionBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.BooleanValueExpressionBase" Collapsed="true">
+    <Position X="3.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAIAAAAAAAAgAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\BooleanValueExpressionBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.FalseConditional" Collapsed="true">
+    <Position X="1.75" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>BatchNode\Boolean\FalseConditional.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.FalseValueExpression" Collapsed="true">
+    <Position X="4.75" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>BatchNode\Boolean\FalseValueExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.IsFalseConditional" Collapsed="true">
+    <Position X="4.25" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\IsFalseConditional.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.IsTrueConditional" Collapsed="true">
+    <Position X="6.75" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\IsTrueConditional.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.SetBooleanCmd" Collapsed="true">
+    <Position X="2.75" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\SetBooleanCmd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.SetFalseCmd" Collapsed="true">
+    <Position X="1.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\SetFalseCmd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.SetTrueCmd" Collapsed="true">
+    <Position X="3.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\SetTrueCmd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.TrueConditional" Collapsed="true">
+    <Position X="9.25" Y="9.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>BatchNode\Boolean\TrueConditional.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.TrueValueExpression" Collapsed="true">
+    <Position X="2" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>BatchNode\Boolean\TrueValueExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Integer.SetIntegerCmd" Collapsed="true">
+    <Position X="2.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQAQAAAIAAAwAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Integer\SetIntegerCmd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.ConditionalCodeNode" Collapsed="true">
+    <Position X="5.5" Y="6.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EIAAAAACAAAAAEBAECIEAAIAAAAAgQwACACAACAAEAA=</HashCode>
+      <FileName>BatchNode\ConditionalCodeNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Integer.IntegerExpressionBase" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Integer\IntegerExpressionBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.BooleanOperatorExpression" Collapsed="true">
+    <Position X="7.5" Y="3.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAEAIEA=</HashCode>
+      <FileName>BatchNode\Boolean\BooleanOperatorExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.LiteralBooleanExpression" Collapsed="true">
+    <Position X="10.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\LiteralBooleanExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Boolean.NotBooleanExpression" Collapsed="true">
+    <Position X="13.25" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAEA=</HashCode>
+      <FileName>BatchNode\Boolean\NotBooleanExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="BatchGen.BatchNode.Boolean.EnumBooleanOperator" Collapsed="true">
+    <Position X="16" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAEAAAAAAAAAAAAAAAAAAAAAgAAgAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Boolean\EnumBooleanOperator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
