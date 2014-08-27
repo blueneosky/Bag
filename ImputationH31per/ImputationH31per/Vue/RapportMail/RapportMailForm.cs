@@ -39,6 +39,7 @@ namespace ImputationH31per.Vue.RapportMail
                 { Keys.Control | Keys.C, _controleur.CopierPressePapier },
                 { Keys.Control | Keys.Q , this.Close },
                 { Keys.Control | Keys.W , this.Close },
+                { Keys.Escape , this.Close },
             };
 
             _modele.PropertyChanged += _modele_PropertyChanged;
