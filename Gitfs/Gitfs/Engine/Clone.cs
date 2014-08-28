@@ -9,17 +9,37 @@ namespace Gitfs.Engine
 {
     internal class Clone : Command
     {
+        bool? _isDeep = null;
+        bool? _withTag = null;
+        string _projectcollection = null;
+        string _serverpath = null;
+        string _directory = null;
+
         public override bool Proceed(string[] args)
         {
             Debug.Assert(args.Any() && String.Equals(args[0], Commands.ConstClone, StringComparison.OrdinalIgnoreCase));
             args = args.Skip(1).ToArray();
 
-            bool? isDeep = null;
-            bool? withTag = null;
-            string projectcollection = null;
-            string serverpath = null;
-            string directory = null;
+            bool success = ExtractArgs(ref args);
+            if (false == success)
+            {
+                ShowHelp();
+                return false;
+            }
 
+            Output.WriteLine("deep : " + _isDeep);
+            Output.WriteLine("tag : " + _withTag);
+            Output.WriteLine("projectcollection : " + _projectcollection);
+            Output.WriteLine("serverpath : " + _serverpath);
+            Output.WriteLine("directory : " + _directory);
+
+#warning TODO ALPHA point
+            return true;
+
+        }
+
+        private bool ExtractArgs(ref string[] args)
+        {
             int targetCount = 0;
             while (args.Any())
             {
@@ -29,23 +49,22 @@ namespace Gitfs.Engine
                     switch (arg)
                     {
                         case "--deep":
-                            isDeep = isDeep ?? true;
+                            _isDeep = _isDeep ?? true;
                             break;
 
                         case "--shallow":
-                            isDeep = isDeep ?? false;
+                            _isDeep = _isDeep ?? false;
                             break;
 
                         case "--tag":
-                            withTag = withTag ?? true;
+                            _withTag = _withTag ?? true;
                             break;
 
                         case "--no-tag":
-                            withTag = withTag ?? false;
+                            _withTag = _withTag ?? false;
                             break;
 
                         default:
-                            ShowHelp();
                             return false;
                     }
                 }
@@ -54,19 +73,18 @@ namespace Gitfs.Engine
                     switch (targetCount)
                     {
                         case 0:
-                            projectcollection = arg;
+                            _projectcollection = arg;
                             break;
 
                         case 1:
-                            serverpath = arg;
+                            _serverpath = arg;
                             break;
 
                         case 2:
-                            directory = arg;
+                            _directory = arg;
                             break;
 
                         default:
-                            ShowHelp();
                             return false;
                     }
                     targetCount++;
@@ -74,26 +92,18 @@ namespace Gitfs.Engine
                 args = args.Skip(1).ToArray();
             }
 
-            if (String.IsNullOrEmpty(projectcollection)
-                || String.IsNullOrEmpty(serverpath))
+            if (String.IsNullOrEmpty(_projectcollection)
+                || String.IsNullOrEmpty(_serverpath))
             {
-                ShowHelp();
                 return false;
             }
 
-            isDeep = isDeep ?? true;    // default value
-            withTag = withTag ?? true;  // default value
-            directory = directory ?? "./" + serverpath.Split('/', '\\').LastOrDefault();
-            directory = Path.GetFullPath(directory);
+            _isDeep = _isDeep ?? true;    // default value
+            _withTag = _withTag ?? true;  // default value
+            _directory = _directory ?? "./" + _serverpath.Split('/', '\\').LastOrDefault();
+            _directory = Path.GetFullPath(_directory);
 
-            Output.WriteLine("deep : " + isDeep);
-            Output.WriteLine("tag : " + withTag);
-            Output.WriteLine("projectcollection : " + projectcollection);
-            Output.WriteLine("serverpath : " + serverpath);
-            Output.WriteLine("directory : " + directory);
-
-#warning TODO ALPHA point
-            return false;
+            return true;
         }
 
         public override void ShowHelp()
