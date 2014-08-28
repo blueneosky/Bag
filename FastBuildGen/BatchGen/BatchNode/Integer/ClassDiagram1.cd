@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BatchGen.BatchNode.Integer.IntegerExpressionBase" Collapsed="true">
+    <Position X="6" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Integer\IntegerExpressionBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Integer.IntegerOperatorExpression" Collapsed="true">
+    <Position X="2" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAIAAAAAAAAgAAAAAAAAAEAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>BatchNode\Integer\IntegerOperatorExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Integer.IntegerUnaryOperatorExpression" Collapsed="true">
+    <Position X="4.5" Y="3.25" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAIAAAQAAAAAAAAAAAAAAAAAAAAAABAABAAAA=</HashCode>
+      <FileName>BatchNode\Integer\IntegerUnaryOperatorExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Integer.IntegerValueExpression" Collapsed="true">
+    <Position X="9.5" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>BatchNode\Integer\IntegerValueExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Integer.LiteralIntegerExpression" Collapsed="true">
+    <Position X="7.25" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIQAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Integer\LiteralIntegerExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Integer.SetIntegerCmd" Collapsed="true">
+    <Position X="12.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIQAQAAAIAAAwAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Integer\SetIntegerCmd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchCmdBase" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\BatchCmdBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.Expression.BatchExpressionBase" Collapsed="true">
+    <Position X="6" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\Expression\BatchExpressionBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="BatchGen.BatchNode.Integer.EnumIntegerOperator" Collapsed="true">
+    <Position X="15.75" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gAIAgAAAAAAAABAgAAAAAAAABAQAAAAAAAAAAAAAAUQ=</HashCode>
+      <FileName>BatchNode\Integer\EnumIntegerOperator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BatchGen.BatchNode.Integer.EnumUnaryIntegerOperator" Collapsed="true">
+    <Position X="15.75" Y="1" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAIAAAAAAAACAAAAAAAAAAACAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>BatchNode\Integer\EnumUnaryIntegerOperator.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

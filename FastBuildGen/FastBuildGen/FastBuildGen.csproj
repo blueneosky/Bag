@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9DF48424-A681-4B07-9E73-78D595673B9A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FastBuildGen</RootNamespace>
+    <AssemblyName>FastBuildGen</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BatchNode\FastBuildBatchFile.cs" />
+    <Compile Include="BusinessModel\ConstFBEvent.cs" />
+    <Compile Include="BusinessModel\ExtensionFBModel.cs" />
+    <Compile Include="BusinessModel\FBTarget.cs" />
+    <Compile Include="BusinessModel\FBModel.cs" />
+    <Compile Include="BusinessModel\Old\ConstFastBuildInternalVarModel.cs" />
+    <Compile Include="BusinessModel\Old\ConstIFastBuildModelEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstIFastBuildParamModelEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstIParamDescriptionEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstIParamDescriptionHeoModuleEvent.cs" />
+    <Compile Include="BusinessModel\Old\ConstIParamDescriptionHeoTargetEvent.cs" />
+    <Compile Include="BusinessModel\ConstFBModel.cs" />
+    <Compile Include="BusinessModel\Old\EnumPlatform.cs" />
+    <Compile Include="BusinessModel\Old\ExtensionIFastBuildInternalVarModel.cs" />
+    <Compile Include="BusinessModel\Old\ExtensionIFastBuildModel.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildController.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildImportMergeController.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildInternalVarController.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildInternalVarModel.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildModel.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildParamController.cs" />
+    <Compile Include="BusinessModel\Old\FastBuildParamModel.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildController.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildInternalVarController.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildInternalVarModel.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildModel.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildParamController.cs" />
+    <Compile Include="BusinessModel\Old\IFastBuildParamModel.cs" />
+    <Compile Include="BusinessModel\Old\IParamDescription.cs" />
+    <Compile Include="BusinessModel\Old\IParamDescriptionHeoModule.cs" />
+    <Compile Include="BusinessModel\Old\IParamDescriptionHeoTarget.cs" />
+    <Compile Include="BusinessModel\FBMacroSolutionTarget.cs" />
+    <Compile Include="BusinessModel\FBSolutionTarget.cs" />
+    <Compile Include="BusinessModel\Old\ParamDescription.cs" />
+    <Compile Include="BusinessModel\Old\ParamDescriptionHeoModule.cs" />
+    <Compile Include="BusinessModel\Old\ParamDescriptionHeoTarget.cs" />
+    <Compile Include="Common\Control\BaseUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Common\Control\ListViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Common\Control\ModuleItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ExtensionEventHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ExtensionICollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ExtensionIEnumerable.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\FastBuildGenException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\Forms\BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Common\IBrowsableList.cs" />
+    <Compile Include="Common\ListBoxItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ListViewItemValue.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ObservableDictionary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ShortcutsManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\SortedObservableCollection.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\UI\UIDoubleBufferedModeManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\UI\UIException.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Control\InternalVarEditor\ConstInternalVarEditorModelEvent.cs" />
+    <Compile Include="Control\InternalVarEditor\InternalVarEditorController.cs" />
+    <Compile Include="Control\InternalVarEditor\InternalVarEditorModel.cs" />
+    <Compile Include="Control\InternalVarEditor\InternalVarEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\InternalVarEditor\InternalVarEditorUserControl.Designer.cs">
+      <DependentUpon>InternalVarEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\InternalVarsEditor\InternalVarEditorModelWrapper.cs" />
+    <Compile Include="Control\InternalVarsEditor\InternalVarsEditorController.cs" />
+    <Compile Include="Control\InternalVarsEditor\InternalVarsEditorModel.cs" />
+    <Compile Include="Control\InternalVarsEditor\InternalVarsEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\InternalVarsEditor\InternalVarsEditorUserControl.Designer.cs">
+      <DependentUpon>InternalVarsEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\InternalVarsEditor\KeywordElement.cs" />
+    <Compile Include="Control\ListEditor\ConstListEditorElementEvent.cs" />
+    <Compile Include="Control\ListEditor\ListEditorElement.cs" />
+    <Compile Include="Control\ListEditor\ListViewItemElement.cs" />
+    <Compile Include="Control\ListEditor\ListEditorController.cs" />
+    <Compile Include="Control\ListEditor\ListEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ListEditor\ListEditorUserControl.Designer.cs">
+      <DependentUpon>ListEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ModulesEditor\ModuleElement.cs" />
+    <Compile Include="Control\ModulesEditor\ModulesEditorController.cs" />
+    <Compile Include="Control\ModulesEditor\ModulesEditorModel.cs" />
+    <Compile Include="Control\ModulesEditor\ModulesEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ModulesEditor\ModulesEditorUserControl.Designer.cs">
+      <DependentUpon>ModulesEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\ModulesEditor\ModuleEditorModelWrapper.cs" />
+    <Compile Include="Control\PDEditor\ConstPDEditorModelEvent.cs" />
+    <Compile Include="Control\ModuleEditor\ConstModuleEditorModelEvent.cs" />
+    <Compile Include="Control\ModuleEditor\PDEditorModelWrapper.cs" />
+    <Compile Include="Control\ModuleEditor\ModuleEditorController.cs" />
+    <Compile Include="Control\ModuleEditor\ModuleEditorModel.cs" />
+    <Compile Include="Control\ModuleEditor\ModuleEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\ModuleEditor\ModuleEditorUserControl.Designer.cs">
+      <DependentUpon>ModuleEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PDEditor\PDEditorController.cs" />
+    <Compile Include="Control\PDEditor\PDEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\PDEditor\PDEditorUserControl.Designer.cs">
+      <DependentUpon>PDEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\PDEditor\PDEditorModel.cs" />
+    <Compile Include="Control\TargetEditor\ConstTargetEditorModelEvent.cs" />
+    <Compile Include="Control\TargetEditor\PDEditorModelWrapper.cs" />
+    <Compile Include="Control\TargetEditor\TargetEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\TargetEditor\TargetEditorUserControl.Designer.cs">
+      <DependentUpon>TargetEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\TargetEditor\TargetEditorController.cs" />
+    <Compile Include="Control\TargetEditor\TargetEditorModel.cs" />
+    <Compile Include="Control\ListEditor\ConstListEditorModelEvent.cs" />
+    <Compile Include="Control\ListEditor\ListEditorModel.cs" />
+    <Compile Include="Control\TargetsEditor\TargetEditorModelWrapper.cs" />
+    <Compile Include="Control\TargetsEditor\TargetsEditorModel.cs" />
+    <Compile Include="Control\TargetsEditor\TargetElement.cs" />
+    <Compile Include="Control\TargetsEditor\TargetsEditorController.cs" />
+    <Compile Include="Control\TargetsEditor\TargetsEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\TargetsEditor\TargetsEditorUserControl.Designer.cs">
+      <DependentUpon>TargetsEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="File\FBFile.cs" />
+    <Compile Include="File\FBFileException.cs" />
+    <Compile Include="File\WrongFBFileException.cs" />
+    <Compile Include="Forms\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Main\ConstMainFormModelEvent.cs" />
+    <Compile Include="Forms\Main\MainFormController.cs" />
+    <Compile Include="Forms\Main\MainFormModel.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Forms\Main\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Main\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="VisualStudio\SolutionProject.cs" />
+    <Compile Include="VisualStudio\Solution.cs" />
+    <Compile Include="Xml\Entity\XmlFastBuild.cs" />
+    <Compile Include="Xml\Entity\XmlSolutionTarget.cs" />
+    <Compile Include="Xml\Entity\XmlMacroSolutionTarget.cs" />
+    <Compile Include="Xml\Entity\XmlTarget.cs" />
+    <Compile Include="Xml\XmlStringDictionary.cs" />
+    <Compile Include="Xml\XmlService.cs" />
+    <EmbeddedResource Include="Common\Forms\BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\InternalVarEditor\InternalVarEditorUserControl.resx">
+      <DependentUpon>InternalVarEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\InternalVarsEditor\InternalVarsEditorUserControl.resx">
+      <DependentUpon>InternalVarsEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\ListEditor\ListEditorUserControl.resx">
+      <DependentUpon>ListEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\ModulesEditor\ModulesEditorUserControl.resx">
+      <DependentUpon>ModulesEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\PDEditor\PDEditorUserControl.resx">
+      <DependentUpon>PDEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\ModuleEditor\ModuleEditorUserControl.resx">
+      <DependentUpon>ModuleEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\TargetEditor\TargetEditorUserControl.resx">
+      <DependentUpon>TargetEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\TargetsEditor\TargetsEditorUserControl.resx">
+      <DependentUpon>TargetsEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <EmbeddedResource Include="Forms\Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Main\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BatchGen\BatchGen.csproj">
+      <Project>{D5554D2F-EF84-488D-A481-33824B2B8439}</Project>
+      <Name>BatchGen</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Lib\BatchGen.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>find "$(ConfigurationName)" "$(ProjectDir)Lib\configuration.txt" &gt; null
+if (%25ERRORLEVEL%25) ==(1) (del "$(ProjectDir)Lib\BatchGen.dll")
+xcopy "$(SolutionDir)BatchGen\$(OutDir)BatchGen.dll" "$(ProjectDir)Lib\" /Y /D
+echo $(ConfigurationName) &gt; "$(ProjectDir)Lib\configuration.txt"
+</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

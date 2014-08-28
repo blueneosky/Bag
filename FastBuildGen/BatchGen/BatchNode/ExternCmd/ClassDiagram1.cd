@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BatchGen.BatchNode.ExternCmd.MSBuildCliMacro" Collapsed="true">
+    <Position X="10.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>gMAAAgAABggDEgAAACoEQAAEAAAgAUAAiCEoCAAgAQQ=</HashCode>
+      <FileName>BatchNode\ExternCmd\MSBuildCliMacro.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.ExternCmd.MSBuildCmd" Collapsed="true">
+    <Position X="8.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAIAAAAAAgAAQAAAAAAAAAIAgAAACAAAAAAAEAAAA=</HashCode>
+      <FileName>BatchNode\ExternCmd\MSBuildCmd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.ExternCmd.TaskKillCmd" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQBAgAAAIAAAAAAAAAAAQAAAAAABIBACAAEAAAKAAA=</HashCode>
+      <FileName>BatchNode\ExternCmd\TaskKillCmd.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchCmdBase" Collapsed="true">
+    <Position X="7.25" Y="2" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\BatchCmdBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchStatementNodeBase" Collapsed="true">
+    <Position X="8.25" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\BatchStatementNodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="BatchGen.BatchNode.ExternCmd.EnumPlatform" Collapsed="true">
+    <Position X="13.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAgQAAAAAIAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>BatchNode\ExternCmd\EnumPlatform.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

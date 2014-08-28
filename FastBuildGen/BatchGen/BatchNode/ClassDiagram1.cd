@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BatchGen.BatchNode.BatchCmdBase" Collapsed="true">
+    <Position X="11" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\BatchCmdBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchCodeNodeBase" Collapsed="true">
+    <Position X="20" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\BatchCodeNodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchFile" Collapsed="true">
+    <Position X="23.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAABAAAAAAABAQAAAABAQAAAAAAAAAAAAAAABQIAA=</HashCode>
+      <FileName>BatchNode\BatchFile.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchFileBase" Collapsed="true">
+    <Position X="23.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AKAAAAAAAAAAABAAAAAAAAAAAAAAAAAAABAAAAAAAAQ=</HashCode>
+      <FileName>BatchNode\BatchFileBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchFileNodeBase" Collapsed="true">
+    <Position X="12.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\BatchFileNodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchNodeBase" Collapsed="true">
+    <Position X="16.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\BatchNodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.BatchStatementNodeBase" Collapsed="true">
+    <Position X="13.5" Y="4" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\BatchStatementNodeBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.ConditionalCodeNode" Collapsed="true">
+    <Position X="21" Y="4" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>EIAAAAACAAAAAEBAECIEAAIAAAAAgQwACACAACAAEAA=</HashCode>
+      <FileName>BatchNode\ConditionalCodeNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.LabelBatchBase" Collapsed="true">
+    <Position X="9" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\LabelBatchBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.LiteralBatch" Collapsed="true">
+    <Position X="18.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAIBAAAAAAAAAAAAAAAAQEAAAAgAAAAAAAAAkAIAA=</HashCode>
+      <FileName>BatchNode\LiteralBatch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.NopBatch" Collapsed="true">
+    <Position X="16" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\NopBatch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.NotConditionalCodeNode" Collapsed="true">
+    <Position X="21" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\NotConditionalCodeNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BatchGen.BatchNode.RemBatch" Collapsed="true">
+    <Position X="13.5" Y="5.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAEEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\RemBatch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="BatchGen.BatchNode.IBatchNodeVisitor" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BatchNode\IBatchNodeVisitor.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
