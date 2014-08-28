@@ -11,7 +11,8 @@ namespace Gitfs
         static int Main(string[] args)
         {
 #if DEBUG
-            args = "clone titi toto"
+            args = "clone http://obestfsp01:8080/ $/HEO F:/HEO"
+            //args = "clone -v http://obestfsp01:8080/ $/HEO F:/HEO"
                 .Split(' ');
 #endif
             return Proceed(args) ? 0 : -1;

@@ -4,16 +4,18 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.TeamFoundation.Client;
+using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace Gitfs.Engine
 {
     internal class Clone : Command
     {
-        bool? _isDeep = null;
-        bool? _withTag = null;
-        string _projectcollection = null;
-        string _serverpath = null;
-        string _directory = null;
+
+
+        private List<int> _changesetIds;
+
+        private bool VerboseMode { get { return Env.VerboseMode; } }
 
         public override bool Proceed(string[] args)
         {
@@ -27,33 +29,160 @@ namespace Gitfs.Engine
                 return false;
             }
 
-            Output.WriteLine("deep : " + _isDeep);
-            Output.WriteLine("tag : " + _withTag);
-            Output.WriteLine("projectcollection : " + _projectcollection);
-            Output.WriteLine("serverpath : " + _serverpath);
-            Output.WriteLine("directory : " + _directory);
+            try
+            {
+                if (false == Proceed())
+                    return false;
+            }
+            catch (Exception e)
+            {
+                Output.WriteLine(e.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool Proceed()
+        {
+            GetAllChangesets();
+
+            if (false == VerboseMode)
+            {
+                Output.InitiateCursorPosition("Checkout from " + Env.VirtualServerPath + ": ");
+                Output.WriteAtCursor("0%");
+            }
+
+            VersionControlServer server = Env.VersionControlServer;
+
+            HashSet<ChangeType> changeTypes = new HashSet<ChangeType> { };
+
+            int percent = 0;
+            for (int i = 0; i < _changesetIds.Count; i++)
+            {
+                int changesetId = _changesetIds[i];
+                Changeset changeset = server.GetChangeset(changesetId, true, true);
+                string commiter = changeset.Committer;
+                DateTime date = changeset.CreationDate;
+                string comment = changeset.Comment;
+
+                if (VerboseMode)
+                {
+                    Output.WriteLine(changesetId + " (" + commiter + ") " + date + " " + comment);
+                }
+                else
+                {
+                    int newPercent = i * 100 / _changesetIds.Count;
+                    if (newPercent > percent)
+                    {
+                        percent = newPercent;
+                        Output.WriteAtCursor(percent + "%");
+                    }
+                }
+
+                Change[] changes = changeset.Changes;
+                foreach (Change change in changes)
+                {
+                    //change.ChangeType== ChangeType.
+                    changeTypes.Add(change.ChangeType);
+                }
+            }
+
+            if (false == VerboseMode)
+            {
+                Output.LastWriteAtCursor("Done");
+                Output.WriteLine("");
+            }
+
+//Add, Encoding
+//Add, Edit, Encoding
+//Edit
+//Delete
+//Rename
+//Edit, Rename
+//Rename, Delete
+//Edit, Merge
+//Merge
+//Encoding, Branch
+//Edit, Rename, Merge
+//Encoding, Branch, Merge
+//Delete, Merge
+//Rename, Merge
+//Edit, Encoding, Branch, Merge
+//Undelete
+//Undelete, Merge
+//Edit, Undelete, Merge
+//Edit, Undelete
+//Rename, Delete, Merge
+
+            foreach (ChangeType changeType in changeTypes)
+            {
+                Output.WriteLine(changeType.ToString());
+            }
 
 #warning TODO ALPHA point
             return true;
+        }
 
+        private void GetAllChangesets()
+        {
+            Output.InitiateCursorPosition("Get changesets from " + Env.VirtualServerPath + ": ");
+            Output.WriteAtCursor("0%");
+
+            VersionControlServer server = Env.VersionControlServer;
+
+            _changesetIds = new List<int> { };
+            IEnumerable<Changeset> query = server.QueryHistory(Env.Serverpath, VersionSpec.Latest, 0, RecursionType.Full, null, null, null, Int32.MaxValue, false, true)
+                .OfType<Changeset>();
+            int? lastChangesetId = null;
+            int percent = 0;
+            foreach (Changeset changeset in query)
+            {
+                int changesetId = changeset.ChangesetId;
+                if (lastChangesetId == null)
+                    lastChangesetId = changesetId;
+                int newPercent = (lastChangesetId.Value - changesetId) * 100 / lastChangesetId.Value;
+                if (newPercent > percent)
+                {
+                    percent = newPercent;
+                    Output.WriteAtCursor(percent + "%");
+                }
+
+                _changesetIds.Add(changesetId);
+            }
+            _changesetIds.Reverse();
+            Output.LastWriteAtCursor("Done");
+            Output.WriteLine("");
         }
 
         private bool ExtractArgs(ref string[] args)
         {
+            bool? _verboseMode = null;
+            bool? _deepMode = null;
+            bool? _withTag = null;
+            string _projectcollection = null;
+            string _serverpath = null;
+            string _directory = null;
+
             int targetCount = 0;
             while (args.Any())
             {
                 string arg = args[0];
-                if (arg.StartsWith("--", StringComparison.OrdinalIgnoreCase))
+                if (arg.StartsWith("-", StringComparison.OrdinalIgnoreCase))
                 {
                     switch (arg)
                     {
+                        case "-v":
+                        case "--verbose":
+                            _verboseMode = _verboseMode ?? true;
+                            break;
+
                         case "--deep":
-                            _isDeep = _isDeep ?? true;
+                            _deepMode = _deepMode ?? true;
                             break;
 
                         case "--shallow":
-                            _isDeep = _isDeep ?? false;
+                            _deepMode = _deepMode ?? false;
                             break;
 
                         case "--tag":
@@ -98,10 +227,14 @@ namespace Gitfs.Engine
                 return false;
             }
 
-            _isDeep = _isDeep ?? true;    // default value
-            _withTag = _withTag ?? true;  // default value
             _directory = _directory ?? "./" + _serverpath.Split('/', '\\').LastOrDefault();
-            _directory = Path.GetFullPath(_directory);
+
+            Env.VerboseMode = _verboseMode ?? false;   // default value
+            Env.DeepMode = _deepMode ?? true;          // default value
+            Env.WithTag = _withTag ?? true;            // default value
+            Env.Projectcollection = _projectcollection;
+            Env.Serverpath = _serverpath;
+            Env.Directory = Path.GetFullPath(_directory);
 
             return true;
         }
@@ -112,6 +245,7 @@ namespace Gitfs.Engine
                 .AppendLine("usage: git-tfs clone [--deep|--shallow] <projectcollection> <serverpath> [<directory>]")
                 .AppendLine("")
                 .AppendLine("Arguments:")
+                .AppendLine("    --verbose, -v         Verbose mode (default: none)")
                 .AppendLine("    --deep, --shallow")
                 .AppendLine("                          Creates a shallow clone of the specified depth, or a deep clone of all TFS changesets, and sets the default depth for pull operations (default: --deep)")
                 .AppendLine("    --tag, --no-tag       Determine whether to tag all commits that map to changesets downloaded from TFS (default: --tag)")
