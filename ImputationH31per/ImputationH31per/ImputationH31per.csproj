@@ -50,7 +50,7 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|x86'">
-    <OutputPath>..\..\..\..\..\bin\</OutputPath>
+    <OutputPath>bin\Deploy\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>none</DebugType>
@@ -304,6 +304,7 @@
       <DependentUpon>RapportMensuelForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Modele\Entite\ClassDiagram1.cd" />
+    <None Include="postbuild.bat" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Main.ico" />
@@ -311,8 +312,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>call $(ProjectDir)postbuild.bat "$(ConfigurationName)" "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
