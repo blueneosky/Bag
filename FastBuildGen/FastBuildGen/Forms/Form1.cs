@@ -266,8 +266,7 @@ namespace FastBuildGen.Forms
         {
             bool withEchoOff = _withEchoOff.Checked;
 
-            FastBuildModel model = new FastBuildModel();
-            model.Initialize();
+            FBModel model = new FBModel();
 
             // configuration
             model.WithEchoOff = withEchoOff;
