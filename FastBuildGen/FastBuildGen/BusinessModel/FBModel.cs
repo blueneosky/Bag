@@ -75,7 +75,7 @@ namespace FastBuildGen.BusinessModel
         {
             SolutionTargets = new ObservableDictionary<Guid, FBSolutionTarget> { };
             MacroSolutionTargets = new ObservableDictionary<Guid, FBMacroSolutionTarget> { };
-            InternalVars = new ObservableDictionary<string, string> { };
+            InternalVars = new ReadOnlyDictionary<string, string>(ConstFBModel.InternalVarDefaultProperties);
 
             Initialize();
         }
@@ -169,7 +169,7 @@ namespace FastBuildGen.BusinessModel
 
         public ObservableDictionary<Guid, FBMacroSolutionTarget> MacroSolutionTargets { get; private set; }
 
-        public ObservableDictionary<string, string> InternalVars { get; private set; }
+        public ReadOnlyDictionary<string, string> InternalVars { get; private set; }
 
         public IEnumerable<FBTarget> HeoParamTargets
         {

@@ -66,7 +66,7 @@ namespace FastBuildGen.BusinessModel.Old
             bool withConflict =
                 DetectInternalVarsConflict(xmlFastBuild.Xml03FastBuildInternalVar)
                 && DetectParamConflict(xmlFastBuild.Xml01FastBuildParam)
-                && (_fastBuildModel.WithEchoOff != xmlFastBuild.Xml04WithEchoOff);
+                && (_fastBuildModel.WithEchoOff != xmlFastBuild.Xml03WithEchoOff);
 
             return withConflict;
         }

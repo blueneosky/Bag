@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Xml.Serialization;
 using FastBuildGen.BusinessModel;
+using System.Collections.Generic;
+using FastBuildGen.Common;
 
 namespace FastBuildGen.Xml.Entity
 {
@@ -13,34 +15,41 @@ namespace FastBuildGen.Xml.Entity
         {
         }
 
-        public XmlFastBuild(FBModel fbModel)
-        {
-#warning TODO ALPHA ALPHA ALPHA ALPHA - rendre Serialize et Deserialize static et cette fct aussi...
-            Xml01Targets = fbModel.SolutionTargets.Values
-                .Select(t => new XmlSolutionTarget().Serialize(t))
-                .ToArray();
-            Xml02MacroSolutionTargets = fbModel.MacroSolutionTargets.Values
-                .Select(mt => new XmlMacroSolutionTarget().Serialize(mt))
-                .ToArray();
-            foreach (var item in collection)
-            {
-                
-            }
-#warning TODO ALPHA BETA point - ne sérializer que les prop changé
-            Xml03Properties = new XmlStringDictionary(fbModel.InternalVars);
-            Xml04WithEchoOff = fbModel.WithEchoOff;
-        }
-
         [XmlArray("SolutionTargets")]
-        public XmlSolutionTarget[] Xml01Targets { get; set; }
+        public XmlSolutionTarget[] Xml01SolutionTargets { get; set; }
 
         [XmlArray("MacroSolutionTargets")]
         public XmlMacroSolutionTarget[] Xml02MacroSolutionTargets { get; set; }
 
-        [XmlElement("Properties")]
-        public XmlStringDictionary Xml03Properties { get; set; }
-
         [XmlElement("WithEchoOff")]
-        public bool Xml04WithEchoOff { get; set; }
+        public bool Xml03WithEchoOff { get; set; }
+
+        internal XmlFastBuild Serialize(FBModel fbModel)
+        {
+            Xml01SolutionTargets = fbModel.SolutionTargets.Values
+               .Select(t => new XmlSolutionTarget().Serialize(t))
+               .ToArray();
+            Xml02MacroSolutionTargets = fbModel.MacroSolutionTargets.Values
+                .Select(mt => new XmlMacroSolutionTarget().Serialize(mt))
+                .ToArray();
+            Xml03WithEchoOff = fbModel.WithEchoOff;
+
+            return this;
+        }
+
+        internal FBModel Deserializase(XmlFastBuild xmlFastBuild)
+        {
+            FBModel result= new FBModel();
+
+            IEnumerable<FBSolutionTarget> solutionTargets = xmlFastBuild.Xml01SolutionTargets
+                .Select(xst => xst.Deserialize());
+            IEnumerable<FBMacroSolutionTarget> macroSolutionTargets = xmlFastBuild.Xml02MacroSolutionTargets
+                .Select(xst => xst.Deserialize());
+
+            result.SolutionTargets.AddRange(solutionTargets, st => st.Id);
+            result.MacroSolutionTargets.AddRange(macroSolutionTargets, mst => mst.Id);
+
+            return result;
+        }
     }
 }

@@ -37,19 +37,6 @@ namespace FastBuildGen.BusinessModel
                 _keyword = value;
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetKeyword));
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetSwitchKeyword));
-            }
-        }
-
-        private string _name;
-
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (_name == value) return;
-                _name = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetName));
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetParamVarName));
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetVarName));
             }
@@ -62,7 +49,7 @@ namespace FastBuildGen.BusinessModel
 
         public string ParamVarName
         {
-            get { return ConstFBModel.ConstParamVarNamePrefix + _name.Replace("?", "help"); }
+            get { return ConstFBModel.ConstParamVarNamePrefix + _keyword.Replace("?", "help"); }
         }
 
         public string SwitchKeyword
@@ -72,7 +59,7 @@ namespace FastBuildGen.BusinessModel
 
         public string VarName
         {
-            get { return ConstFBModel.ConstMSBuildTargetVarNamePrefix + _name.Replace("?", "help"); }
+            get { return ConstFBModel.ConstMSBuildTargetVarNamePrefix + _keyword.Replace("?", "help"); }
         }
 
         #endregion IFBTarget Membres

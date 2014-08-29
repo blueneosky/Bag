@@ -17,18 +17,15 @@ namespace FastBuildGen.Xml.Entity
         [XmlAttribute("Keyword")]
         public string Xml02Keyword { get; set; }
 
-        [XmlAttribute("Name")]
-        public string Xml03Name { get; set; }
 
         [XmlAttribute("HelpText")]
-        public string Xml04HelpText { get; set; }
+        public string Xml03HelpText { get; set; }
 
         internal XmlTarget Serialize(FBTarget fbTarget)
         {
             Xml01Id = fbTarget.Id;
             Xml02Keyword = fbTarget.Keyword;
-            Xml03Name = fbTarget.Name;
-            Xml04HelpText = fbTarget.HelpText;
+            Xml03HelpText = fbTarget.HelpText;
 
             return this;
         }
@@ -36,8 +33,7 @@ namespace FastBuildGen.Xml.Entity
         internal FBTarget Deserialize(FBTarget fbTarget)
         {
             fbTarget.Keyword = Xml02Keyword;
-            fbTarget.Name = Xml03Name;
-            fbTarget.HelpText = Xml04HelpText;
+            fbTarget.HelpText = Xml03HelpText;
 
             return fbTarget;
         }

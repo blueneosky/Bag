@@ -99,6 +99,7 @@
     <Compile Include="Common\ExtensionICollection.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\ExtensionIDictionary.cs" />
     <Compile Include="Common\ExtensionIEnumerable.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -118,6 +119,7 @@
     <Compile Include="Common\ObservableDictionary.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Common\ReadOnlyDictionary.cs" />
     <Compile Include="Common\ShortcutsManager.cs">
       <SubType>Code</SubType>
     </Compile>
