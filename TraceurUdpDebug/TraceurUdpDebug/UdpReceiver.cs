@@ -46,6 +46,7 @@ namespace TraceurUdpDebug
             catch (Exception)
             {
                 // exit from dispose
+                _console.WriteLine("[UDP: end of reception]");
                 return;
             }
         }
@@ -54,7 +55,7 @@ namespace TraceurUdpDebug
         {
             while (true)
             {
-                if (_udpClient.Available > 0)
+                while (_udpClient.Available > 0)
                 {
                     byte[] buffer = _udpClient.Receive(ref _localEp);
                     int count = buffer.Length;
@@ -63,7 +64,7 @@ namespace TraceurUdpDebug
                         Write(buffer, count);
                     }
                 }
-                if (_udpClient.Available == 0)
+                while (_udpClient.Available == 0)
                     Thread.Sleep(10);
             }
         }
@@ -85,8 +86,9 @@ namespace TraceurUdpDebug
                     _buffering = value;
                     if (_buffering)
                     {
-                        if (_buffer == null)
-                            _buffer = new MemoryStream();
+                        if (_buffer != null)
+                            _buffer.Dispose();
+                        _buffer = new MemoryStream();
                         _buffer.Seek(0, SeekOrigin.Begin);
                     }
                     else
