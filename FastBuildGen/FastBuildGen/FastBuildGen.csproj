@@ -144,27 +144,7 @@
     <Compile Include="Control\ListEditor\ListEditorUserControl.Designer.cs">
       <DependentUpon>ListEditorUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Control\ModulesEditor\ModuleElement.cs" />
-    <Compile Include="Control\ModulesEditor\ModulesEditorController.cs" />
-    <Compile Include="Control\ModulesEditor\ModulesEditorModel.cs" />
-    <Compile Include="Control\ModulesEditor\ModulesEditorUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Control\ModulesEditor\ModulesEditorUserControl.Designer.cs">
-      <DependentUpon>ModulesEditorUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Control\ModulesEditor\ModuleEditorModelWrapper.cs" />
     <Compile Include="Control\PDEditor\ConstPDEditorModelEvent.cs" />
-    <Compile Include="Control\ModuleEditor\ConstModuleEditorModelEvent.cs" />
-    <Compile Include="Control\ModuleEditor\PDEditorModelWrapper.cs" />
-    <Compile Include="Control\ModuleEditor\ModuleEditorController.cs" />
-    <Compile Include="Control\ModuleEditor\ModuleEditorModel.cs" />
-    <Compile Include="Control\ModuleEditor\ModuleEditorUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Control\ModuleEditor\ModuleEditorUserControl.Designer.cs">
-      <DependentUpon>ModuleEditorUserControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Control\PDEditor\PDEditorController.cs" />
     <Compile Include="Control\PDEditor\PDEditorUserControl.cs">
       <SubType>UserControl</SubType>
@@ -173,6 +153,26 @@
       <DependentUpon>PDEditorUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Control\PDEditor\PDEditorModel.cs" />
+    <Compile Include="Control\SolutionTargetEditor\ConstModuleEditorModelEvent.cs" />
+    <Compile Include="Control\SolutionTargetEditor\ModuleEditorController.cs" />
+    <Compile Include="Control\SolutionTargetEditor\ModuleEditorModel.cs" />
+    <Compile Include="Control\SolutionTargetEditor\ModuleEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\SolutionTargetEditor\ModuleEditorUserControl.Designer.cs">
+      <DependentUpon>ModuleEditorUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Control\SolutionTargetEditor\PDEditorModelWrapper.cs" />
+    <Compile Include="Control\SolutionTargetsEditor\ModuleEditorModelWrapper.cs" />
+    <Compile Include="Control\SolutionTargetsEditor\ModuleElement.cs" />
+    <Compile Include="Control\SolutionTargetsEditor\ModulesEditorController.cs" />
+    <Compile Include="Control\SolutionTargetsEditor\ModulesEditorModel.cs" />
+    <Compile Include="Control\SolutionTargetsEditor\ModulesEditorUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\SolutionTargetsEditor\ModulesEditorUserControl.Designer.cs">
+      <DependentUpon>ModulesEditorUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Control\TargetEditor\ConstTargetEditorModelEvent.cs" />
     <Compile Include="Control\TargetEditor\PDEditorModelWrapper.cs" />
     <Compile Include="Control\TargetEditor\TargetEditorUserControl.cs">
@@ -229,14 +229,14 @@
     <EmbeddedResource Include="Control\ListEditor\ListEditorUserControl.resx">
       <DependentUpon>ListEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Control\ModulesEditor\ModulesEditorUserControl.resx">
-      <DependentUpon>ModulesEditorUserControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Control\PDEditor\PDEditorUserControl.resx">
       <DependentUpon>PDEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Control\ModuleEditor\ModuleEditorUserControl.resx">
+    <EmbeddedResource Include="Control\SolutionTargetEditor\ModuleEditorUserControl.resx">
       <DependentUpon>ModuleEditorUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Control\SolutionTargetsEditor\ModulesEditorUserControl.resx">
+      <DependentUpon>ModulesEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Control\TargetEditor\TargetEditorUserControl.resx">
       <DependentUpon>TargetEditorUserControl.cs</DependentUpon>

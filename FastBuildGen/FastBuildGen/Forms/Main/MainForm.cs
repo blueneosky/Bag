@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.Common.Forms;
-using FastBuildGen.Control.InternalVarsEditor;
-using FastBuildGen.Control.ModulesEditor;
+using FastBuildGen.Control.SolutionTargetsEditor;
 using FastBuildGen.Control.TargetsEditor;
 using ImputationH31per.Util;
 
@@ -32,27 +27,21 @@ namespace FastBuildGen.Forms.Main
             TargetsEditorModel targetsEditorModel = new TargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
             TargetsEditorController targetsEditorController = new TargetsEditorController(targetsEditorModel);
 
-            InternalVarsEditorModel internalVarsEditorModel = new InternalVarsEditorModel(model.FastBuildModel.FastBuildInternalVarModel);
-            InternalVarsEditorController internalVarsEditorController = new InternalVarsEditorController(internalVarsEditorModel);
-
             Initialize(model, controller
                 , modulesEditorModel, modulesEditorController
-                , targetsEditorModel, targetsEditorController
-                , internalVarsEditorModel, internalVarsEditorController);
+                , targetsEditorModel, targetsEditorController);
         }
 
         public MainForm(MainFormModel model, MainFormController controller
             , ModulesEditorModel modulesEditorModel, ModulesEditorController modulesEditorController
-            , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController
-            , InternalVarsEditorModel internalVarsEditorModel, InternalVarsEditorController internalVarsEditorController)
+            , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController)
             : base()
         {
             InitializeComponent();
 
             Initialize(model, controller
                 , modulesEditorModel, modulesEditorController
-                , targetsEditorModel, targetsEditorController
-                , internalVarsEditorModel, internalVarsEditorController);
+                , targetsEditorModel, targetsEditorController);
         }
 
         private MainForm()
@@ -68,10 +57,6 @@ namespace FastBuildGen.Forms.Main
                     RefreshFastBuildDataChanged();
                     break;
 
-                case ConstMainFormModelEvent.ConstActivePanel:
-                    RefreshActivePanel();
-                    break;
-
                 default:
                     // ignored
                     break;
@@ -80,8 +65,7 @@ namespace FastBuildGen.Forms.Main
 
         private void Initialize(MainFormModel model, MainFormController controller
             , ModulesEditorModel modulesEditorModel, ModulesEditorController modulesEditorController
-            , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController
-            , InternalVarsEditorModel internalVarsEditorModel, InternalVarsEditorController internalVarsEditorController)
+            , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController)
         {
             _model = model;
             _controller = controller;
@@ -90,7 +74,6 @@ namespace FastBuildGen.Forms.Main
 
             _modulesEditorUserControl.Initialize(modulesEditorModel, modulesEditorController);
             _targetsEditorUserControl.Initialize(targetsEditorModel, targetsEditorController);
-            _internalVarsEditorUserControl.Initialize(internalVarsEditorModel, internalVarsEditorController);
 
             _model.PropertyChanged += _model_PropertyChanged;
 
@@ -120,32 +103,6 @@ namespace FastBuildGen.Forms.Main
 
         #region Refresh
 
-        private void RefreshActivePanel()
-        {
-            string activePanel = _model.ActivePanel;
-            switch (activePanel)
-            {
-                case MainFormModel.ConstActivePanelModulesEditor:
-                    if (_mainTabControl.SelectedTab != _modulesTabPage)
-                        _mainTabControl.SelectedTab = _modulesTabPage;
-                    break;
-
-                case MainFormModel.ConstActivePanelTargetsEditor:
-                    if (_mainTabControl.SelectedTab != _targetsTabPage)
-                        _mainTabControl.SelectedTab = _targetsTabPage;
-                    break;
-
-                case MainFormModel.ConstActivePanelInternalVarsEditor:
-                    if (_mainTabControl.SelectedTab != _propertiesTabPage)
-                        _mainTabControl.SelectedTab = _propertiesTabPage;
-                    break;
-
-                default:
-                    Debug.Fail("Non managed case");
-                    break;
-            }
-        }
-
         private void RefreshFastBuildDataChanged()
         {
             bool state = _model.FastBuildDataChanged;
@@ -157,7 +114,6 @@ namespace FastBuildGen.Forms.Main
         private void RefreshModel()
         {
             RefreshFastBuildDataChanged();
-            RefreshActivePanel();
         }
 
         #endregion Refresh
@@ -167,26 +123,6 @@ namespace FastBuildGen.Forms.Main
         private void _importToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _controller.ImportConfigFile();
-        }
-
-        private void _mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_mainTabControl.SelectedTab == _modulesTabPage)
-            {
-                _controller.SelectModulesEditor();
-            }
-            else if (_mainTabControl.SelectedTab == _targetsTabPage)
-            {
-                _controller.SelectTargetsEditor();
-            }
-            else if (_mainTabControl.SelectedTab == _propertiesTabPage)
-            {
-                _controller.SelectInternalVarsEditor();
-            }
-            else
-            {
-                Debug.Fail("Unexpected case");
-            }
         }
 
         private void _mergeToolStripMenuItem_Click(object sender, EventArgs e)

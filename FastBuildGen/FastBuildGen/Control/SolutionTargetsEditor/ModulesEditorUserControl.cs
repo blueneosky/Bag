@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using FastBuildGen.Common.Control;
-using FastBuildGen.Control.ModuleEditor;
+using FastBuildGen.Control.SolutionTargetEditor;
 
-namespace FastBuildGen.Control.ModulesEditor
+namespace FastBuildGen.Control.SolutionTargetsEditor
 {
     internal partial class ModulesEditorUserControl : BaseUserControl
     {

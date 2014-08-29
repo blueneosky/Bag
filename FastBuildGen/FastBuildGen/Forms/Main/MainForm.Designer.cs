@@ -30,11 +30,9 @@
         {
             this._mainTabControl = new System.Windows.Forms.TabControl();
             this._modulesTabPage = new System.Windows.Forms.TabPage();
-            this._modulesEditorUserControl = new FastBuildGen.Control.ModulesEditor.ModulesEditorUserControl();
+            this._modulesEditorUserControl = new FastBuildGen.Control.SolutionTargetsEditor.ModulesEditorUserControl();
             this._targetsTabPage = new System.Windows.Forms.TabPage();
             this._targetsEditorUserControl = new FastBuildGen.Control.TargetsEditor.TargetsEditorUserControl();
-            this._propertiesTabPage = new System.Windows.Forms.TabPage();
-            this._internalVarsEditorUserControl = new FastBuildGen.Control.InternalVarsEditor.InternalVarsEditorUserControl();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this._menuStrip = new System.Windows.Forms.MenuStrip();
             this._fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,7 +48,6 @@
             this._mainTabControl.SuspendLayout();
             this._modulesTabPage.SuspendLayout();
             this._targetsTabPage.SuspendLayout();
-            this._propertiesTabPage.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -61,7 +58,6 @@
             // 
             this._mainTabControl.Controls.Add(this._modulesTabPage);
             this._mainTabControl.Controls.Add(this._targetsTabPage);
-            this._mainTabControl.Controls.Add(this._propertiesTabPage);
             this._mainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this._mainTabControl.Location = new System.Drawing.Point(3, 3);
             this._mainTabControl.Name = "_mainTabControl";
@@ -109,26 +105,6 @@
             this._targetsEditorUserControl.Name = "_targetsEditorUserControl";
             this._targetsEditorUserControl.Size = new System.Drawing.Size(186, 68);
             this._targetsEditorUserControl.TabIndex = 0;
-            // 
-            // _propertiesTabPage
-            // 
-            this._propertiesTabPage.Controls.Add(this._internalVarsEditorUserControl);
-            this._propertiesTabPage.Location = new System.Drawing.Point(4, 22);
-            this._propertiesTabPage.Name = "_propertiesTabPage";
-            this._propertiesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this._propertiesTabPage.Size = new System.Drawing.Size(840, 456);
-            this._propertiesTabPage.TabIndex = 2;
-            this._propertiesTabPage.Text = "Properties";
-            this._propertiesTabPage.UseVisualStyleBackColor = true;
-            // 
-            // _internalVarsEditorUserControl
-            // 
-            this._internalVarsEditorUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._internalVarsEditorUserControl.DoubleBufferedEx = false;
-            this._internalVarsEditorUserControl.Location = new System.Drawing.Point(3, 3);
-            this._internalVarsEditorUserControl.Name = "_internalVarsEditorUserControl";
-            this._internalVarsEditorUserControl.Size = new System.Drawing.Size(186, 68);
-            this._internalVarsEditorUserControl.TabIndex = 0;
             // 
             // toolStripContainer1
             // 
@@ -244,7 +220,6 @@
             this._mainTabControl.ResumeLayout(false);
             this._modulesTabPage.ResumeLayout(false);
             this._targetsTabPage.ResumeLayout(false);
-            this._propertiesTabPage.ResumeLayout(false);
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.PerformLayout();
@@ -261,7 +236,7 @@
         private System.Windows.Forms.TabControl _mainTabControl;
         private System.Windows.Forms.TabPage _modulesTabPage;
         private System.Windows.Forms.TabPage _targetsTabPage;
-        private Control.ModulesEditor.ModulesEditorUserControl _modulesEditorUserControl;
+        private Control.SolutionTargetsEditor.ModulesEditorUserControl _modulesEditorUserControl;
         private Control.TargetsEditor.TargetsEditorUserControl _targetsEditorUserControl;
         private System.Windows.Forms.MenuStrip _menuStrip;
         private System.Windows.Forms.ToolStripMenuItem _fileToolStripMenuItem;
@@ -272,8 +247,6 @@
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem _mergeToolStripMenuItem;
-        private System.Windows.Forms.TabPage _propertiesTabPage;
-        private Control.InternalVarsEditor.InternalVarsEditorUserControl _internalVarsEditorUserControl;
         private System.Windows.Forms.ToolStripMenuItem _saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem _newToolStripMenuItem;

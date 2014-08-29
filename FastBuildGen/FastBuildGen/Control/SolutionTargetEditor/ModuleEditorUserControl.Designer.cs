@@ -1,4 +1,4 @@
-﻿namespace FastBuildGen.Control.ModuleEditor
+﻿namespace FastBuildGen.Control.SolutionTargetEditor
 {
     partial class ModuleEditorUserControl
     {

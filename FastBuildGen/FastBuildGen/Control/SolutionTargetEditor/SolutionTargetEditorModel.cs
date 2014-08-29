@@ -7,7 +7,7 @@ using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
 using FastBuildGen.BusinessModel.Old;
 
-namespace FastBuildGen.Control.ModuleEditor
+namespace FastBuildGen.Control.SolutionTargetEditor
 {
     internal class ModuleEditorModel : INotifyPropertyChanged
     {

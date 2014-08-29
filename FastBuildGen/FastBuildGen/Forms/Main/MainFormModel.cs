@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using FastBuildGen.BusinessModel;
-using FastBuildGen.Common;
+﻿using System.ComponentModel;
 using FastBuildGen.BusinessModel.Old;
+using FastBuildGen.Common;
 
 namespace FastBuildGen.Forms.Main
 {
     internal class MainFormModel : INotifyPropertyChanged
     {
-        public const string ConstActivePanelInternalVarsEditor = "InternalVarsEditor";
-        public const string ConstActivePanelModulesEditor = "ModulesEditor";
-        public const string ConstActivePanelTargetsEditor = "TargetsEditor";
-
         private readonly IFastBuildModel _fastBuildModel;
 
         private string _activePanel;
@@ -25,22 +16,6 @@ namespace FastBuildGen.Forms.Main
             _fastBuildModel = fastBuildModel;
 
             _fastBuildModel.PropertyChanged += _fastBuildModel_PropertyChanged;
-
-            ActivePanel = ConstActivePanelModulesEditor;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string ActivePanel
-        {
-            get { return _activePanel; }
-            set
-            {
-                if (_activePanel == value)
-                    return;
-                _activePanel = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstActivePanel));
-            }
         }
 
         public bool FastBuildDataChanged
@@ -51,11 +26,6 @@ namespace FastBuildGen.Forms.Main
         public IFastBuildModel FastBuildModel
         {
             get { return _fastBuildModel; }
-        }
-
-        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            PropertyChanged.Notify(sender, e);
         }
 
         private void _fastBuildModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -77,5 +47,16 @@ namespace FastBuildGen.Forms.Main
             // notify
             OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstFastBuildDataChanged));
         }
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged.Notify(sender, e);
+        }
+
+        #endregion INotifyPropertyChanged
     }
 }

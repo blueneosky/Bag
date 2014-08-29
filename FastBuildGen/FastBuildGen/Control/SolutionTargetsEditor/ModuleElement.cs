@@ -7,7 +7,7 @@ using FastBuildGen.BusinessModel;
 using FastBuildGen.Control.ListEditor;
 using FastBuildGen.BusinessModel.Old;
 
-namespace FastBuildGen.Control.ModulesEditor
+namespace FastBuildGen.Control.SolutionTargetsEditor
 {
     internal class ModuleElement : ListEditorElement
     {
