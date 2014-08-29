@@ -70,7 +70,7 @@ namespace FastBuildGen.Common
             return GetEnumerator();
         }
 
-        public TValue IDictionary<TKey, TValue>.this[TKey key]
+        TValue IDictionary<TKey, TValue>.this[TKey key]
         {
             get
             {
@@ -78,38 +78,38 @@ namespace FastBuildGen.Common
             }
             set
             {
-                throw ReadOnlyException;
+                throw ReadOnlyException();
             }
         }
 
         void IDictionary<TKey, TValue>.Add(TKey key, TValue value)
         {
-            throw ReadOnlyException;
+            throw ReadOnlyException();
         }
 
         bool IDictionary<TKey, TValue>.Remove(TKey key)
         {
-            throw ReadOnlyException;
+            throw ReadOnlyException();
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
-            throw ReadOnlyException;
+            throw ReadOnlyException();
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.Clear()
         {
-            throw ReadOnlyException;
+            throw ReadOnlyException();
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            throw ReadOnlyException;
+            throw ReadOnlyException();
         }
 
-        private static Exception ReadOnlyException
+        private static Exception ReadOnlyException()
         {
-            get { return new NotSupportedException("ReadOnlyDictionnary means 'read only' ..."); }
+            return new NotSupportedException("ReadOnlyDictionnary means 'read only' ...");
         }
     }
 }
