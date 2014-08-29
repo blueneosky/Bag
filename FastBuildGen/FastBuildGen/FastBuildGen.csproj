@@ -173,16 +173,16 @@
     <Compile Include="Control\SolutionTargetsEditor\SolutionTargetsEditorUserControl.Designer.cs">
       <DependentUpon>SolutionTargetsEditorUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Control\TargetEditor\ConstTargetEditorModelEvent.cs" />
-    <Compile Include="Control\TargetEditor\PDEditorModelWrapper.cs" />
-    <Compile Include="Control\TargetEditor\TargetEditorUserControl.cs">
+    <Compile Include="Control\MacroSolutionTargetEditor\ConstTargetEditorModelEvent.cs" />
+    <Compile Include="Control\MacroSolutionTargetEditor\PDEditorModelWrapper.cs" />
+    <Compile Include="Control\MacroSolutionTargetEditor\TargetEditorUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Control\TargetEditor\TargetEditorUserControl.Designer.cs">
+    <Compile Include="Control\MacroSolutionTargetEditor\TargetEditorUserControl.Designer.cs">
       <DependentUpon>TargetEditorUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Control\TargetEditor\TargetEditorController.cs" />
-    <Compile Include="Control\TargetEditor\TargetEditorModel.cs" />
+    <Compile Include="Control\MacroSolutionTargetEditor\TargetEditorController.cs" />
+    <Compile Include="Control\MacroSolutionTargetEditor\TargetEditorModel.cs" />
     <Compile Include="Control\ListEditor\ConstListEditorModelEvent.cs" />
     <Compile Include="Control\ListEditor\ListEditorModel.cs" />
     <Compile Include="Control\TargetsEditor\TargetEditorModelWrapper.cs" />
@@ -238,7 +238,7 @@
     <EmbeddedResource Include="Control\SolutionTargetsEditor\SolutionTargetsEditorUserControl.resx">
       <DependentUpon>SolutionTargetsEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Control\TargetEditor\TargetEditorUserControl.resx">
+    <EmbeddedResource Include="Control\MacroSolutionTargetEditor\TargetEditorUserControl.resx">
       <DependentUpon>TargetEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Control\TargetsEditor\TargetsEditorUserControl.resx">
