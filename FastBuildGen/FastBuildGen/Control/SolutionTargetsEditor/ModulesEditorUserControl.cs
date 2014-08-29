@@ -35,13 +35,13 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         public void Initialize(ModulesEditorModel model, ModulesEditorController controller)
         {
             ModuleEditorModelWrapper moduleEditorModel = new ModuleEditorModelWrapper(model);
-            ModuleEditorController moduleEditorController = new ModuleEditorController(moduleEditorModel);
+            SolutionTargetEditorController moduleEditorController = new SolutionTargetEditorController(moduleEditorModel);
 
             Initialize(model, controller, moduleEditorModel, moduleEditorController);
         }
 
         public void Initialize(ModulesEditorModel model, ModulesEditorController controller
-            , ModuleEditorModel moduleEditorModel, ModuleEditorController moduleEditorController)
+            , SolutionTargetEditorModel moduleEditorModel, SolutionTargetEditorController moduleEditorController)
         {
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);

@@ -1,6 +1,6 @@
 ﻿namespace FastBuildGen.Control.SolutionTargetEditor
 {
-    partial class ModuleEditorUserControl
+    partial class SolutionTargetEditorUserControl
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.

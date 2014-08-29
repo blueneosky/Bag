@@ -9,12 +9,12 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.SolutionTargetEditor
 {
-    internal class ModuleEditorModel : INotifyPropertyChanged
+    internal class SolutionTargetEditorModel : INotifyPropertyChanged
     {
         private readonly IFastBuildParamModel _fastBuildParamModel;
         private IParamDescriptionHeoModule _module;
 
-        public ModuleEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public SolutionTargetEditorModel(IFastBuildParamModel fastBuildParamModel)
         {
             _fastBuildParamModel = fastBuildParamModel;
         }
@@ -34,7 +34,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
                 if (Object.Equals(_module, value))
                     return;
                 _module = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstModuleEditorModelEvent.ConstModule));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstSolutionTargetEditorModelEvent.ConstModule));
             }
         }
 

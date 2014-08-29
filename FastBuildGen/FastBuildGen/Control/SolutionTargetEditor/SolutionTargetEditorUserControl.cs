@@ -11,12 +11,12 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.SolutionTargetEditor
 {
-    internal partial class ModuleEditorUserControl : BaseUserControl
+    internal partial class SolutionTargetEditorUserControl : BaseUserControl
     {
         #region Members
 
-        private ModuleEditorController _controller;
-        private ModuleEditorModel _model;
+        private SolutionTargetEditorController _controller;
+        private SolutionTargetEditorModel _model;
 
         private IParamDescriptionHeoModule _module;
 
@@ -24,12 +24,12 @@ namespace FastBuildGen.Control.SolutionTargetEditor
 
         #region ctor
 
-        public ModuleEditorUserControl()
+        public SolutionTargetEditorUserControl()
         {
             InitializeComponent();
         }
 
-        public void Initialize(ModuleEditorModel model, ModuleEditorController controller)
+        public void Initialize(SolutionTargetEditorModel model, SolutionTargetEditorController controller)
         {
             PDEditorModel pdEditorModel = new PDEditorModelWrapper(model);
             PDEditorController pdEditorController = new PDEditorController(pdEditorModel);
@@ -37,7 +37,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             Initialize(model, controller, pdEditorModel, pdEditorController);
         }
 
-        public void Initialize(ModuleEditorModel model, ModuleEditorController controller
+        public void Initialize(SolutionTargetEditorModel model, SolutionTargetEditorController controller
             , PDEditorModel pdEditorModel, PDEditorController pdEditorController)
         {
             Debug.Assert(_model == null);
@@ -97,7 +97,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         {
             switch (e.PropertyName)
             {
-                case ConstModuleEditorModelEvent.ConstModule:
+                case ConstSolutionTargetEditorModelEvent.ConstModule:
                     UpdateModule();
                     break;
 

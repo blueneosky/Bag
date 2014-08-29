@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FastBuildGen.Control.SolutionTargetEditor
 {
-    internal static class ConstModuleEditorModelEvent
+    internal static class ConstSolutionTargetEditorModelEvent
     {
         public const string ConstModule = ConstPrefix + "Module";
         private const string ConstPrefix = "ModuleEditorModel_";

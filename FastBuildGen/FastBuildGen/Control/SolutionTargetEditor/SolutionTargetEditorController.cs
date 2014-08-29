@@ -5,13 +5,13 @@ using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.BusinessModel.Old;
 
-namespace FastBuildGen.Control.ModuleEditor
+namespace FastBuildGen.Control.SolutionTargetEditor
 {
-    internal class ModuleEditorController
+    internal class SolutionTargetEditorController
     {
-        private readonly ModuleEditorModel _model;
+        private readonly SolutionTargetEditorModel _model;
 
-        public ModuleEditorController(ModuleEditorModel model)
+        public SolutionTargetEditorController(SolutionTargetEditorModel model)
         {
             _model = model;
         }

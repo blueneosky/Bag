@@ -8,7 +8,7 @@ using FastBuildGen.Control.SolutionTargetEditor;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
-    internal class ModuleEditorModelWrapper : ModuleEditorModel
+    internal class ModuleEditorModelWrapper : SolutionTargetEditorModel
     {
         private readonly ModulesEditorModel _model;
 
