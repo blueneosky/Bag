@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FastBuildGen.Control.TargetEditor
+namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
     internal static class ConstTargetEditorModelEvent
     {

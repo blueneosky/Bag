@@ -9,7 +9,7 @@ using FastBuildGen.Common.Control;
 using FastBuildGen.Control.PDEditor;
 using FastBuildGen.BusinessModel.Old;
 
-namespace FastBuildGen.Control.TargetEditor
+namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
     internal partial class TargetEditorUserControl : BaseUserControl
     {

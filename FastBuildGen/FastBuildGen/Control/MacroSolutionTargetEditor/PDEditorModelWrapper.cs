@@ -8,7 +8,7 @@ using FastBuildGen.Common;
 using FastBuildGen.Control.PDEditor;
 using FastBuildGen.BusinessModel.Old;
 
-namespace FastBuildGen.Control.TargetEditor
+namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
     internal class PDEditorModelWrapper : PDEditorModel
     {

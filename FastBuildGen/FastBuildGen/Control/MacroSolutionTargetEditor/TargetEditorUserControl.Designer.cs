@@ -1,4 +1,4 @@
-﻿namespace FastBuildGen.Control.TargetEditor
+﻿namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
     partial class TargetEditorUserControl
     {

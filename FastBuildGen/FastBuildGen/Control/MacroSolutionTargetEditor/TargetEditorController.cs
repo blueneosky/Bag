@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.BusinessModel.Old;
 
-namespace FastBuildGen.Control.TargetEditor
+namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
     internal class TargetEditorController
     {

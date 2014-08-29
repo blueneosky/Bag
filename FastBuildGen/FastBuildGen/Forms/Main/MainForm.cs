@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using FastBuildGen.Common.Forms;
 using FastBuildGen.Control.SolutionTargetsEditor;
-using FastBuildGen.Control.TargetsEditor;
+using FastBuildGen.Control.MacroSolutionTargetsEditor;
 using ImputationH31per.Util;
 
 namespace FastBuildGen.Forms.Main

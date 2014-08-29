@@ -1,4 +1,4 @@
-﻿namespace FastBuildGen.Control.TargetsEditor
+﻿namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
     partial class TargetsEditorUserControl
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this._listEditorUserControl = new FastBuildGen.Control.ListEditor.ListEditorUserControl();
-            this._targetEditorUserControl = new FastBuildGen.Control.TargetEditor.TargetEditorUserControl();
+            this._targetEditorUserControl = new FastBuildGen.Control.MacroSolutionTargetEditor.TargetEditorUserControl();
             this.SuspendLayout();
             // 
             // _listEditorUserControl

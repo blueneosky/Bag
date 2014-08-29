@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.Common.Control;
-using FastBuildGen.Control.TargetEditor;
+using FastBuildGen.Control.MacroSolutionTargetEditor;
 
-namespace FastBuildGen.Control.TargetsEditor
+namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
     internal partial class TargetsEditorUserControl : BaseUserControl
     {

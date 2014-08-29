@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using FastBuildGen.Control.ListEditor;
-using FastBuildGen.Control.TargetEditor;
+using FastBuildGen.Control.MacroSolutionTargetEditor;
 
-namespace FastBuildGen.Control.TargetsEditor
+namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
     internal class TargetEditorModelWrapper : TargetEditorModel
     {
