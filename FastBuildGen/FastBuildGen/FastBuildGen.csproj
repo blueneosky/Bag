@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BatchNode\FastBuildBatchFile.cs" />
+    <Compile Include="BusinessModel\ApplicationController.cs" />
+    <Compile Include="BusinessModel\ApplicationModel.cs" />
     <Compile Include="BusinessModel\ConstFBEvent.cs" />
     <Compile Include="BusinessModel\ExtensionFBModel.cs" />
     <Compile Include="BusinessModel\FBTarget.cs" />
