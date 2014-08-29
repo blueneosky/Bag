@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace TraceurUdpDebug
 {
@@ -71,6 +72,10 @@ namespace TraceurUdpDebug
 
             _baseTitle = Console.Title;
 
+#if DEBUG
+            new Thread(TestFloodRandomTexte).Start();
+#endif
+
             using (UdpReceiver receiver = new UdpReceiver(Console.Out, fileStream))
             {
                 Loop(receiver);
@@ -80,6 +85,24 @@ namespace TraceurUdpDebug
                 fileStream.Dispose();
 
             Console.Title = _baseTitle;
+        }
+
+        private static void TestFloodRandomTexte()
+        {
+            Random random = new Random();
+            byte[] buffer = new byte[20];
+            char[] bufferTexte = new char[20];
+            while (false == _exitRequested)
+            {
+                random.NextBytes(buffer);
+                for (int i = 0; i < bufferTexte.Length; i++)
+                {
+                    bufferTexte[i] = (char)(buffer[i] % (127 - 32) + 32);
+                }
+                string texte = new string(bufferTexte);
+                System.Diagnostics.TraceurUdpDebug.Tracer(texte);
+                Thread.Sleep(100);
+            }
         }
 
         private static void SwitchBuffer(UdpReceiver udpReceiver)
