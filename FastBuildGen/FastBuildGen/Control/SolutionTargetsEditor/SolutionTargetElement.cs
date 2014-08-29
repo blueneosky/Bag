@@ -9,11 +9,11 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
-    internal class ModuleElement : ListEditorElement
+    internal class SolutionTargetElement : ListEditorElement
     {
         private readonly IParamDescriptionHeoModule _module;
 
-        public ModuleElement(IParamDescriptionHeoModule module)
+        public SolutionTargetElement(IParamDescriptionHeoModule module)
             : base(module)
         {
             _module = module;

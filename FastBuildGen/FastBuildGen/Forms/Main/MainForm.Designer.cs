@@ -30,7 +30,7 @@
         {
             this._mainTabControl = new System.Windows.Forms.TabControl();
             this._modulesTabPage = new System.Windows.Forms.TabPage();
-            this._modulesEditorUserControl = new FastBuildGen.Control.SolutionTargetsEditor.ModulesEditorUserControl();
+            this._modulesEditorUserControl = new FastBuildGen.Control.SolutionTargetsEditor.SolutionTargetsEditorUserControl();
             this._targetsTabPage = new System.Windows.Forms.TabPage();
             this._targetsEditorUserControl = new FastBuildGen.Control.TargetsEditor.TargetsEditorUserControl();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
@@ -236,7 +236,7 @@
         private System.Windows.Forms.TabControl _mainTabControl;
         private System.Windows.Forms.TabPage _modulesTabPage;
         private System.Windows.Forms.TabPage _targetsTabPage;
-        private Control.SolutionTargetsEditor.ModulesEditorUserControl _modulesEditorUserControl;
+        private Control.SolutionTargetsEditor.SolutionTargetsEditorUserControl _modulesEditorUserControl;
         private Control.TargetsEditor.TargetsEditorUserControl _targetsEditorUserControl;
         private System.Windows.Forms.MenuStrip _menuStrip;
         private System.Windows.Forms.ToolStripMenuItem _fileToolStripMenuItem;

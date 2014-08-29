@@ -21,8 +21,8 @@ namespace FastBuildGen.Forms.Main
         {
             InitializeComponent();
 
-            ModulesEditorModel modulesEditorModel = new ModulesEditorModel(model.FastBuildModel.FastBuildParamModel);
-            ModulesEditorController modulesEditorController = new ModulesEditorController(modulesEditorModel);
+            SolutionTargetsEditorModel modulesEditorModel = new SolutionTargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
+            SolutionTargetsEditorController modulesEditorController = new SolutionTargetsEditorController(modulesEditorModel);
 
             TargetsEditorModel targetsEditorModel = new TargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
             TargetsEditorController targetsEditorController = new TargetsEditorController(targetsEditorModel);
@@ -33,7 +33,7 @@ namespace FastBuildGen.Forms.Main
         }
 
         public MainForm(MainFormModel model, MainFormController controller
-            , ModulesEditorModel modulesEditorModel, ModulesEditorController modulesEditorController
+            , SolutionTargetsEditorModel modulesEditorModel, SolutionTargetsEditorController modulesEditorController
             , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController)
             : base()
         {
@@ -64,7 +64,7 @@ namespace FastBuildGen.Forms.Main
         }
 
         private void Initialize(MainFormModel model, MainFormController controller
-            , ModulesEditorModel modulesEditorModel, ModulesEditorController modulesEditorController
+            , SolutionTargetsEditorModel modulesEditorModel, SolutionTargetsEditorController modulesEditorController
             , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController)
         {
             _model = model;

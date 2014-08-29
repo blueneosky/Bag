@@ -8,12 +8,12 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
-    internal class ModulesEditorController : ListEditorController
+    internal class SolutionTargetsEditorController : ListEditorController
     {
         private readonly IFastBuildParamController _fastBuildParamController;
-        private readonly ModulesEditorModel _model;
+        private readonly SolutionTargetsEditorModel _model;
 
-        public ModulesEditorController(ModulesEditorModel model)
+        public SolutionTargetsEditorController(SolutionTargetsEditorModel model)
             : base(model)
         {
             _model = model;
@@ -49,7 +49,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
 
         protected override bool RemoveCore(ListEditorElement element)
         {
-            ModuleElement moduleElement = element as ModuleElement;
+            SolutionTargetElement moduleElement = element as SolutionTargetElement;
             if (moduleElement == null)
                 return false;
 

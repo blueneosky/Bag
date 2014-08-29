@@ -9,11 +9,11 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
-    internal class ModulesEditorModel : ListEditorModel
+    internal class SolutionTargetsEditorModel : ListEditorModel
     {
         private readonly IFastBuildParamModel _fastBuildParamModel;
 
-        public ModulesEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public SolutionTargetsEditorModel(IFastBuildParamModel fastBuildParamModel)
         {
             _fastBuildParamModel = fastBuildParamModel;
 
@@ -31,7 +31,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         {
             get
             {
-                ModuleElement moduleElement = ElementSelected as ModuleElement;
+                SolutionTargetElement moduleElement = ElementSelected as SolutionTargetElement;
                 IParamDescriptionHeoModule module = (moduleElement != null) ? moduleElement.Module : null;
 
                 return module;
@@ -47,8 +47,8 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         {
             IEnumerable<IParamDescriptionHeoModule> modules = _fastBuildParamModel.HeoModuleParams;
 
-            IEnumerable<ModuleElement> elements = modules
-                .Select(t => new ModuleElement(t));
+            IEnumerable<SolutionTargetElement> elements = modules
+                .Select(t => new SolutionTargetElement(t));
             Elements = elements;
         }
     }

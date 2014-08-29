@@ -8,11 +8,11 @@ using FastBuildGen.Control.SolutionTargetEditor;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
-    internal class ModuleEditorModelWrapper : SolutionTargetEditorModel
+    internal class SolutionTargetEditorModelWrapper : SolutionTargetEditorModel
     {
-        private readonly ModulesEditorModel _model;
+        private readonly SolutionTargetsEditorModel _model;
 
-        public ModuleEditorModelWrapper(ModulesEditorModel model)
+        public SolutionTargetEditorModelWrapper(SolutionTargetsEditorModel model)
             : base(model.FastBuildParamModel)
         {
             _model = model;

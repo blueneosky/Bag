@@ -8,18 +8,18 @@ using FastBuildGen.Control.SolutionTargetEditor;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
-    internal partial class ModulesEditorUserControl : BaseUserControl
+    internal partial class SolutionTargetsEditorUserControl : BaseUserControl
     {
         #region Members
 
-        private ModulesEditorController _controller;
-        private ModulesEditorModel _model;
+        private SolutionTargetsEditorController _controller;
+        private SolutionTargetsEditorModel _model;
 
         #endregion Members
 
         #region ctor
 
-        public ModulesEditorUserControl()
+        public SolutionTargetsEditorUserControl()
         {
             InitializeComponent();
 
@@ -32,15 +32,15 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
             }
         }
 
-        public void Initialize(ModulesEditorModel model, ModulesEditorController controller)
+        public void Initialize(SolutionTargetsEditorModel model, SolutionTargetsEditorController controller)
         {
-            ModuleEditorModelWrapper moduleEditorModel = new ModuleEditorModelWrapper(model);
+            SolutionTargetEditorModelWrapper moduleEditorModel = new SolutionTargetEditorModelWrapper(model);
             SolutionTargetEditorController moduleEditorController = new SolutionTargetEditorController(moduleEditorModel);
 
             Initialize(model, controller, moduleEditorModel, moduleEditorController);
         }
 
-        public void Initialize(ModulesEditorModel model, ModulesEditorController controller
+        public void Initialize(SolutionTargetsEditorModel model, SolutionTargetsEditorController controller
             , SolutionTargetEditorModel moduleEditorModel, SolutionTargetEditorController moduleEditorController)
         {
             Debug.Assert(_model == null);
