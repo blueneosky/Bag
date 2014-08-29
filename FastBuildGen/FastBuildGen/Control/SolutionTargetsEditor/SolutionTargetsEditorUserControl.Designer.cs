@@ -66,7 +66,7 @@
         #endregion
 
         private ListEditor.ListEditorUserControl _listEditorUserControl;
-        private ModuleEditor.ModuleEditorUserControl _moduleEditorUserControl;
+        private SolutionTargetEditor.SolutionTargetEditorUserControl _moduleEditorUserControl;
 
     }
 }

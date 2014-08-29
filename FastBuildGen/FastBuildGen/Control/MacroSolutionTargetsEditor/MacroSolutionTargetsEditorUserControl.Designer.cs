@@ -66,6 +66,6 @@
         #endregion
 
         private ListEditor.ListEditorUserControl _listEditorUserControl;
-        private TargetEditor.TargetEditorUserControl _targetEditorUserControl;
+        private MacroSolutionTargetEditor.MacroSolutionTargetEditorUserControl _targetEditorUserControl;
     }
 }

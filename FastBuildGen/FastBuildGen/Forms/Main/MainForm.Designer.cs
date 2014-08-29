@@ -237,7 +237,7 @@
         private System.Windows.Forms.TabPage _modulesTabPage;
         private System.Windows.Forms.TabPage _targetsTabPage;
         private Control.SolutionTargetsEditor.SolutionTargetsEditorUserControl _modulesEditorUserControl;
-        private Control.TargetsEditor.TargetsEditorUserControl _targetsEditorUserControl;
+        private Control.MacroSolutionTargetsEditor.MacroSolutionTargetsEditorUserControl _targetsEditorUserControl;
         private System.Windows.Forms.MenuStrip _menuStrip;
         private System.Windows.Forms.ToolStripMenuItem _fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _importToolStripMenuItem;

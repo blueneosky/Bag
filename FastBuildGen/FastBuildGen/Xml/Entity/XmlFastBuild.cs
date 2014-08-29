@@ -37,17 +37,18 @@ namespace FastBuildGen.Xml.Entity
             return this;
         }
 
-        internal FBModel Deserializase(XmlFastBuild xmlFastBuild)
+        internal FBModel Deserializase()
         {
             FBModel result= new FBModel();
 
-            IEnumerable<FBSolutionTarget> solutionTargets = xmlFastBuild.Xml01SolutionTargets
+            IEnumerable<FBSolutionTarget> solutionTargets = Xml01SolutionTargets
                 .Select(xst => xst.Deserialize());
-            IEnumerable<FBMacroSolutionTarget> macroSolutionTargets = xmlFastBuild.Xml02MacroSolutionTargets
+            IEnumerable<FBMacroSolutionTarget> macroSolutionTargets = Xml02MacroSolutionTargets
                 .Select(xst => xst.Deserialize());
 
             result.SolutionTargets.AddRange(solutionTargets, st => st.Id);
             result.MacroSolutionTargets.AddRange(macroSolutionTargets, mst => mst.Id);
+            result.WithEchoOff = Xml03WithEchoOff;
 
             return result;
         }

@@ -37,7 +37,7 @@ namespace FastBuildGen.BusinessModel.Old
             XmlFastBuild xmlFastBuild = DeserializeFastBuildConfig(configFilePath);
             if (xmlFastBuild != null)
             {
-                xmlSession.CopyTo(_model, xmlFastBuild);
+                //xmlSession.CopyTo(_model, xmlFastBuild);
                 _model.ResetDataChanged();
                 success = true;
             }

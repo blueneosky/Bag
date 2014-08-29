@@ -105,7 +105,7 @@ namespace FastBuildGen.Xml
         {
             try
             {
-                XmlFastBuild xmlFastBuild = new XmlFastBuild(fbModel);
+                XmlFastBuild xmlFastBuild = new XmlFastBuild().Serialize(fbModel);
                 Write<XmlFastBuild>(stream, xmlFastBuild);
             }
             catch (FastBuildGenException) { throw; }
