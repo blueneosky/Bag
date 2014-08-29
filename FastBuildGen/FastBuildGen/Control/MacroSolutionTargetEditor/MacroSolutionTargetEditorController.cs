@@ -8,11 +8,11 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
-    internal class TargetEditorController
+    internal class MacroSolutionTargetEditorController
     {
-        private readonly TargetEditorModel _model;
+        private readonly MacroSolutionTargetEditorModel _model;
 
-        public TargetEditorController(TargetEditorModel model)
+        public MacroSolutionTargetEditorController(MacroSolutionTargetEditorModel model)
         {
             _model = model;
         }

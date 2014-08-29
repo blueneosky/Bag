@@ -12,9 +12,9 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
     internal class PDEditorModelWrapper : PDEditorModel
     {
-        private readonly TargetEditorModel _model;
+        private readonly MacroSolutionTargetEditorModel _model;
 
-        public PDEditorModelWrapper(TargetEditorModel model)
+        public PDEditorModelWrapper(MacroSolutionTargetEditorModel model)
             : base(model.FastBuildParamModel)
         {
             _model = model;
@@ -30,7 +30,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         private void _model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == ConstTargetEditorModelEvent.ConstTarget)
+            if (e.PropertyName == ConstMacroSolutionTargetEditorModelEvent.ConstTarget)
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstParamDescription));
         }
     }

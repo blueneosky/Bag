@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this._listEditorUserControl = new FastBuildGen.Control.ListEditor.ListEditorUserControl();
-            this._targetEditorUserControl = new FastBuildGen.Control.MacroSolutionTargetEditor.TargetEditorUserControl();
+            this._targetEditorUserControl = new FastBuildGen.Control.MacroSolutionTargetEditor.MacroSolutionTargetEditorUserControl();
             this.SuspendLayout();
             // 
             // _listEditorUserControl

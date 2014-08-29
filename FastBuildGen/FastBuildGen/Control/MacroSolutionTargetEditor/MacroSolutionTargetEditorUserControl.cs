@@ -11,12 +11,12 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
-    internal partial class TargetEditorUserControl : BaseUserControl
+    internal partial class MacroSolutionTargetEditorUserControl : BaseUserControl
     {
         #region Members
 
-        private TargetEditorController _controller;
-        private TargetEditorModel _model;
+        private MacroSolutionTargetEditorController _controller;
+        private MacroSolutionTargetEditorModel _model;
 
         private IParamDescriptionHeoTarget _target;
 
@@ -24,12 +24,12 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         #region ctor
 
-        public TargetEditorUserControl()
+        public MacroSolutionTargetEditorUserControl()
         {
             InitializeComponent();
         }
 
-        public void Initialize(TargetEditorModel model, TargetEditorController controller)
+        public void Initialize(MacroSolutionTargetEditorModel model, MacroSolutionTargetEditorController controller)
         {
             PDEditorModel pdEditorModel = new PDEditorModelWrapper(model);
             PDEditorController pdEditorController = new PDEditorController(pdEditorModel);
@@ -37,7 +37,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             Initialize(model, controller, pdEditorModel, pdEditorController);
         }
 
-        public void Initialize(TargetEditorModel model, TargetEditorController controller
+        public void Initialize(MacroSolutionTargetEditorModel model, MacroSolutionTargetEditorController controller
             , PDEditorModel pdEditorModel, PDEditorController pdEditorController)
         {
             Debug.Assert(_model == null);
@@ -100,11 +100,11 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         {
             switch (e.PropertyName)
             {
-                case ConstTargetEditorModelEvent.ConstTarget:
+                case ConstMacroSolutionTargetEditorModelEvent.ConstTarget:
                     UpdateTarget();
                     break;
 
-                case ConstTargetEditorModelEvent.ConstAvailableModules:
+                case ConstMacroSolutionTargetEditorModelEvent.ConstAvailableModules:
                     RefreshAvailableModules();
                     break;
 

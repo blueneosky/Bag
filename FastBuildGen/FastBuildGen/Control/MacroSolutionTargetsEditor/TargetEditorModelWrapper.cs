@@ -8,7 +8,7 @@ using FastBuildGen.Control.MacroSolutionTargetEditor;
 
 namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
-    internal class TargetEditorModelWrapper : TargetEditorModel
+    internal class TargetEditorModelWrapper : MacroSolutionTargetEditorModel
     {
         private readonly TargetsEditorModel _model;
 

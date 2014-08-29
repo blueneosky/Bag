@@ -36,13 +36,13 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
         public void Initialize(TargetsEditorModel model, TargetsEditorController controller)
         {
             TargetEditorModelWrapper moduleEditorModel = new TargetEditorModelWrapper(model);
-            TargetEditorController moduleEditorController = new TargetEditorController(moduleEditorModel);
+            MacroSolutionTargetEditorController moduleEditorController = new MacroSolutionTargetEditorController(moduleEditorModel);
 
             Initialize(model, controller, moduleEditorModel, moduleEditorController);
         }
 
         public void Initialize(TargetsEditorModel model, TargetsEditorController controller
-            , TargetEditorModel targetEditorModel, TargetEditorController targetEditorController)
+            , MacroSolutionTargetEditorModel targetEditorModel, MacroSolutionTargetEditorController targetEditorController)
         {
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);

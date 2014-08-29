@@ -10,7 +10,7 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
-    internal class TargetEditorModel : INotifyPropertyChanged
+    internal class MacroSolutionTargetEditorModel : INotifyPropertyChanged
     {
         private readonly IFastBuildParamModel _fastBuildParamModel;
         private IEnumerable<IParamDescriptionHeoModule> _availableModules;
@@ -18,7 +18,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         #region ctor
 
-        public TargetEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public MacroSolutionTargetEditorModel(IFastBuildParamModel fastBuildParamModel)
         {
             _fastBuildParamModel = fastBuildParamModel;
             _fastBuildParamModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;
@@ -26,7 +26,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             UpdateAvailableModules();
         }
 
-        ~TargetEditorModel()
+        ~MacroSolutionTargetEditorModel()
         {
             Target = null;
         }
@@ -41,7 +41,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             private set
             {
                 _availableModules = value.Execute();
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstTargetEditorModelEvent.ConstAvailableModules));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMacroSolutionTargetEditorModelEvent.ConstAvailableModules));
             }
         }
 
@@ -66,7 +66,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
                 {
                     _target.DependenciesChanged += _target_DependenciesChanged;
                 }
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstTargetEditorModelEvent.ConstTarget));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMacroSolutionTargetEditorModelEvent.ConstTarget));
                 UpdateAvailableModules();
             }
         }

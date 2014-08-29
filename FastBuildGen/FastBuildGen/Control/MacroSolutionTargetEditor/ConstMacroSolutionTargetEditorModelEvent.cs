@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
-    internal static class ConstTargetEditorModelEvent
+    internal static class ConstMacroSolutionTargetEditorModelEvent
     {
         public const string ConstAvailableModules = ConstPrefix + "AvailableModules";
         public const string ConstTarget = ConstPrefix + "Target";
