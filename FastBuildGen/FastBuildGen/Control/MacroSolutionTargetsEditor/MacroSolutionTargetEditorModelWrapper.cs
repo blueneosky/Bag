@@ -8,11 +8,11 @@ using FastBuildGen.Control.MacroSolutionTargetEditor;
 
 namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
-    internal class TargetEditorModelWrapper : MacroSolutionTargetEditorModel
+    internal class MacroSolutionTargetEditorModelWrapper : MacroSolutionTargetEditorModel
     {
-        private readonly TargetsEditorModel _model;
+        private readonly MacroSolutionTargetsEditorModel _model;
 
-        public TargetEditorModelWrapper(TargetsEditorModel model)
+        public MacroSolutionTargetEditorModelWrapper(MacroSolutionTargetsEditorModel model)
             : base(model.FastBuildParamModel)
         {
             _model = model;

@@ -185,15 +185,15 @@
     <Compile Include="Control\MacroSolutionTargetEditor\MacroSolutionTargetEditorModel.cs" />
     <Compile Include="Control\ListEditor\ConstListEditorModelEvent.cs" />
     <Compile Include="Control\ListEditor\ListEditorModel.cs" />
-    <Compile Include="Control\MacroSolutionTargetsEditor\TargetEditorModelWrapper.cs" />
-    <Compile Include="Control\MacroSolutionTargetsEditor\TargetsEditorModel.cs" />
-    <Compile Include="Control\MacroSolutionTargetsEditor\TargetElement.cs" />
-    <Compile Include="Control\MacroSolutionTargetsEditor\TargetsEditorController.cs" />
-    <Compile Include="Control\MacroSolutionTargetsEditor\TargetsEditorUserControl.cs">
+    <Compile Include="Control\MacroSolutionTargetsEditor\MacroSolutionTargetEditorModelWrapper.cs" />
+    <Compile Include="Control\MacroSolutionTargetsEditor\MacroSolutionTargetsEditorModel.cs" />
+    <Compile Include="Control\MacroSolutionTargetsEditor\MacroSolutionTargetElement.cs" />
+    <Compile Include="Control\MacroSolutionTargetsEditor\MacroSolutionTargetsEditorController.cs" />
+    <Compile Include="Control\MacroSolutionTargetsEditor\MacroSolutionTargetsEditorUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Control\MacroSolutionTargetsEditor\TargetsEditorUserControl.Designer.cs">
-      <DependentUpon>TargetsEditorUserControl.cs</DependentUpon>
+    <Compile Include="Control\MacroSolutionTargetsEditor\MacroSolutionTargetsEditorUserControl.Designer.cs">
+      <DependentUpon>MacroSolutionTargetsEditorUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="File\FBFile.cs" />
     <Compile Include="File\FBFileException.cs" />
@@ -241,8 +241,8 @@
     <EmbeddedResource Include="Control\MacroSolutionTargetEditor\MacroSolutionTargetEditorUserControl.resx">
       <DependentUpon>MacroSolutionTargetEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Control\MacroSolutionTargetsEditor\TargetsEditorUserControl.resx">
-      <DependentUpon>TargetsEditorUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="Control\MacroSolutionTargetsEditor\MacroSolutionTargetsEditorUserControl.resx">
+      <DependentUpon>MacroSolutionTargetsEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

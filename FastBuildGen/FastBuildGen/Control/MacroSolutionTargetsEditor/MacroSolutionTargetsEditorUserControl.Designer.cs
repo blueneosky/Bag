@@ -1,6 +1,6 @@
 ﻿namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
-    partial class TargetsEditorUserControl
+    partial class MacroSolutionTargetsEditorUserControl
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.

@@ -32,7 +32,7 @@
             this._modulesTabPage = new System.Windows.Forms.TabPage();
             this._modulesEditorUserControl = new FastBuildGen.Control.SolutionTargetsEditor.SolutionTargetsEditorUserControl();
             this._targetsTabPage = new System.Windows.Forms.TabPage();
-            this._targetsEditorUserControl = new FastBuildGen.Control.MacroSolutionTargetsEditor.TargetsEditorUserControl();
+            this._targetsEditorUserControl = new FastBuildGen.Control.MacroSolutionTargetsEditor.MacroSolutionTargetsEditorUserControl();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this._menuStrip = new System.Windows.Forms.MenuStrip();
             this._fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();

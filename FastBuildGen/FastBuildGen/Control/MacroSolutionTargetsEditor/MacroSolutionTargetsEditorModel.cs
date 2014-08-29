@@ -9,11 +9,11 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
-    internal class TargetsEditorModel : ListEditorModel
+    internal class MacroSolutionTargetsEditorModel : ListEditorModel
     {
         private readonly IFastBuildParamModel _fastBuildParamModel;
 
-        public TargetsEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public MacroSolutionTargetsEditorModel(IFastBuildParamModel fastBuildParamModel)
         {
             _fastBuildParamModel = fastBuildParamModel;
 
@@ -31,7 +31,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
         {
             get
             {
-                TargetElement targetElement = ElementSelected as TargetElement;
+                MacroSolutionTargetElement targetElement = ElementSelected as MacroSolutionTargetElement;
                 IParamDescriptionHeoTarget target = (targetElement != null) ? targetElement.Target : null;
 
                 return target;
@@ -47,8 +47,8 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
         {
             IEnumerable<IParamDescriptionHeoTarget> targets = _fastBuildParamModel.HeoTargetParams;
 
-            IEnumerable<TargetElement> elements = targets
-                .Select(t => new TargetElement(t));
+            IEnumerable<MacroSolutionTargetElement> elements = targets
+                .Select(t => new MacroSolutionTargetElement(t));
             Elements = elements;
         }
     }

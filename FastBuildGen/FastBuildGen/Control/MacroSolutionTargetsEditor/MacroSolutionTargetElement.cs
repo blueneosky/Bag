@@ -9,11 +9,11 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
-    internal class TargetElement : ListEditorElement
+    internal class MacroSolutionTargetElement : ListEditorElement
     {
         private readonly IParamDescriptionHeoTarget _target;
 
-        public TargetElement(IParamDescriptionHeoTarget target)
+        public MacroSolutionTargetElement(IParamDescriptionHeoTarget target)
             : base(target)
         {
             _target = target;

@@ -9,18 +9,18 @@ using FastBuildGen.Control.MacroSolutionTargetEditor;
 
 namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
-    internal partial class TargetsEditorUserControl : BaseUserControl
+    internal partial class MacroSolutionTargetsEditorUserControl : BaseUserControl
     {
         #region Members
 
-        private TargetsEditorController _controller;
-        private TargetsEditorModel _model;
+        private MacroSolutionTargetsEditorController _controller;
+        private MacroSolutionTargetsEditorModel _model;
 
         #endregion Members
 
         #region ctor
 
-        public TargetsEditorUserControl()
+        public MacroSolutionTargetsEditorUserControl()
         {
             InitializeComponent();
 
@@ -33,15 +33,15 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
             }
         }
 
-        public void Initialize(TargetsEditorModel model, TargetsEditorController controller)
+        public void Initialize(MacroSolutionTargetsEditorModel model, MacroSolutionTargetsEditorController controller)
         {
-            TargetEditorModelWrapper moduleEditorModel = new TargetEditorModelWrapper(model);
+            MacroSolutionTargetEditorModelWrapper moduleEditorModel = new MacroSolutionTargetEditorModelWrapper(model);
             MacroSolutionTargetEditorController moduleEditorController = new MacroSolutionTargetEditorController(moduleEditorModel);
 
             Initialize(model, controller, moduleEditorModel, moduleEditorController);
         }
 
-        public void Initialize(TargetsEditorModel model, TargetsEditorController controller
+        public void Initialize(MacroSolutionTargetsEditorModel model, MacroSolutionTargetsEditorController controller
             , MacroSolutionTargetEditorModel targetEditorModel, MacroSolutionTargetEditorController targetEditorController)
         {
             Debug.Assert(_model == null);

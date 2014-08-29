@@ -24,8 +24,8 @@ namespace FastBuildGen.Forms.Main
             SolutionTargetsEditorModel modulesEditorModel = new SolutionTargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
             SolutionTargetsEditorController modulesEditorController = new SolutionTargetsEditorController(modulesEditorModel);
 
-            TargetsEditorModel targetsEditorModel = new TargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
-            TargetsEditorController targetsEditorController = new TargetsEditorController(targetsEditorModel);
+            MacroSolutionTargetsEditorModel targetsEditorModel = new MacroSolutionTargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
+            MacroSolutionTargetsEditorController targetsEditorController = new MacroSolutionTargetsEditorController(targetsEditorModel);
 
             Initialize(model, controller
                 , modulesEditorModel, modulesEditorController
@@ -34,7 +34,7 @@ namespace FastBuildGen.Forms.Main
 
         public MainForm(MainFormModel model, MainFormController controller
             , SolutionTargetsEditorModel modulesEditorModel, SolutionTargetsEditorController modulesEditorController
-            , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController)
+            , MacroSolutionTargetsEditorModel targetsEditorModel, MacroSolutionTargetsEditorController targetsEditorController)
             : base()
         {
             InitializeComponent();
@@ -65,7 +65,7 @@ namespace FastBuildGen.Forms.Main
 
         private void Initialize(MainFormModel model, MainFormController controller
             , SolutionTargetsEditorModel modulesEditorModel, SolutionTargetsEditorController modulesEditorController
-            , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController)
+            , MacroSolutionTargetsEditorModel targetsEditorModel, MacroSolutionTargetsEditorController targetsEditorController)
         {
             _model = model;
             _controller = controller;
