@@ -134,25 +134,6 @@
     <Compile Include="Common\UI\UIException.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Control\InternalVarEditor\ConstInternalVarEditorModelEvent.cs" />
-    <Compile Include="Control\InternalVarEditor\InternalVarEditorController.cs" />
-    <Compile Include="Control\InternalVarEditor\InternalVarEditorModel.cs" />
-    <Compile Include="Control\InternalVarEditor\InternalVarEditorUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Control\InternalVarEditor\InternalVarEditorUserControl.Designer.cs">
-      <DependentUpon>InternalVarEditorUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Control\InternalVarsEditor\InternalVarEditorModelWrapper.cs" />
-    <Compile Include="Control\InternalVarsEditor\InternalVarsEditorController.cs" />
-    <Compile Include="Control\InternalVarsEditor\InternalVarsEditorModel.cs" />
-    <Compile Include="Control\InternalVarsEditor\InternalVarsEditorUserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Control\InternalVarsEditor\InternalVarsEditorUserControl.Designer.cs">
-      <DependentUpon>InternalVarsEditorUserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Control\InternalVarsEditor\KeywordElement.cs" />
     <Compile Include="Control\ListEditor\ConstListEditorElementEvent.cs" />
     <Compile Include="Control\ListEditor\ListEditorElement.cs" />
     <Compile Include="Control\ListEditor\ListViewItemElement.cs" />
@@ -244,12 +225,6 @@
     <Compile Include="Xml\XmlService.cs" />
     <EmbeddedResource Include="Common\Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Control\InternalVarEditor\InternalVarEditorUserControl.resx">
-      <DependentUpon>InternalVarEditorUserControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Control\InternalVarsEditor\InternalVarsEditorUserControl.resx">
-      <DependentUpon>InternalVarsEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Control\ListEditor\ListEditorUserControl.resx">
       <DependentUpon>ListEditorUserControl.cs</DependentUpon>
