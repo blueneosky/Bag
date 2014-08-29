@@ -185,14 +185,14 @@
     <Compile Include="Control\MacroSolutionTargetEditor\TargetEditorModel.cs" />
     <Compile Include="Control\ListEditor\ConstListEditorModelEvent.cs" />
     <Compile Include="Control\ListEditor\ListEditorModel.cs" />
-    <Compile Include="Control\TargetsEditor\TargetEditorModelWrapper.cs" />
-    <Compile Include="Control\TargetsEditor\TargetsEditorModel.cs" />
-    <Compile Include="Control\TargetsEditor\TargetElement.cs" />
-    <Compile Include="Control\TargetsEditor\TargetsEditorController.cs" />
-    <Compile Include="Control\TargetsEditor\TargetsEditorUserControl.cs">
+    <Compile Include="Control\MacroSolutionTargetsEditor\TargetEditorModelWrapper.cs" />
+    <Compile Include="Control\MacroSolutionTargetsEditor\TargetsEditorModel.cs" />
+    <Compile Include="Control\MacroSolutionTargetsEditor\TargetElement.cs" />
+    <Compile Include="Control\MacroSolutionTargetsEditor\TargetsEditorController.cs" />
+    <Compile Include="Control\MacroSolutionTargetsEditor\TargetsEditorUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Control\TargetsEditor\TargetsEditorUserControl.Designer.cs">
+    <Compile Include="Control\MacroSolutionTargetsEditor\TargetsEditorUserControl.Designer.cs">
       <DependentUpon>TargetsEditorUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="File\FBFile.cs" />
@@ -241,7 +241,7 @@
     <EmbeddedResource Include="Control\MacroSolutionTargetEditor\TargetEditorUserControl.resx">
       <DependentUpon>TargetEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Control\TargetsEditor\TargetsEditorUserControl.resx">
+    <EmbeddedResource Include="Control\MacroSolutionTargetsEditor\TargetsEditorUserControl.resx">
       <DependentUpon>TargetsEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
