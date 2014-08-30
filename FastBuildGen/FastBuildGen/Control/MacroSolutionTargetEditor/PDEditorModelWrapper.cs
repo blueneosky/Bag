@@ -15,7 +15,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         private readonly MacroSolutionTargetEditorModel _model;
 
         public PDEditorModelWrapper(MacroSolutionTargetEditorModel model)
-            : base(model.FastBuildParamModel)
+            : base(model.ApplicationModel)
         {
             _model = model;
 
@@ -24,13 +24,13 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         public override IParamDescription ParamDescription
         {
-            get { return _model.Target; }
+            get { return _model.MacroSolutionTarget; }
             set { throw new FastBuildGenException("Not permitted"); }
         }
 
         private void _model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == ConstMacroSolutionTargetEditorModelEvent.ConstTarget)
+            if (e.PropertyName == ConstMacroSolutionTargetEditorModelEvent.ConstMacroSolutionTarget)
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstParamDescription));
         }
     }

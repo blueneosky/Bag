@@ -15,16 +15,12 @@ namespace FastBuildGen.Forms.Main
     {
         private const string ConstDialogFilter = "FastBuild config file (*.fbconf)|*.fbconf";
 
-        private readonly IFastBuildController _fastBuildController;
-        private readonly IFastBuildModel _fastBuildModel;
         private readonly MainFormModel _model;
 
         public MainFormController(MainFormModel model)
         {
             _model = model;
 
-            _fastBuildModel = _model.FastBuildModel;
-            _fastBuildController = new FastBuildController(_fastBuildModel);
         }
 
 #warning TODO - re-use it for save
@@ -37,7 +33,8 @@ namespace FastBuildGen.Forms.Main
                 string filePath = null;
                 //string filePath = _fastBuildModel.PreferenceModel.DeployFilePath;
 
-                FastBuildBatchFile file = new FastBuildBatchFile(_fastBuildModel);
+#warning TODO DELTA point - review this code (need to moved)
+                FastBuildBatchFile file = new FastBuildBatchFile(_model.ApplicationModel.FBModel);
                 string text = BatchGenerator.GetText(file);
                 using (StreamWriter writer = new StreamWriter(filePath))
                 {
@@ -88,7 +85,7 @@ namespace FastBuildGen.Forms.Main
         internal bool SaveFastBuildDataBeforeClosing()
         {
             // no change
-            if (false == _fastBuildModel.DataChanged)
+            if (false == _model.FastBuildDataChanged)
                 return true;
 
             DialogResult dialogResult = MessageBox.Show(
@@ -109,26 +106,6 @@ namespace FastBuildGen.Forms.Main
             return true;
         }
 
-        internal bool SelectInternalVarsEditor()
-        {
-            _model.ActivePanel = MainFormModel.ConstActivePanelInternalVarsEditor;
-
-            return true;
-        }
-
-        internal bool SelectModulesEditor()
-        {
-            _model.ActivePanel = MainFormModel.ConstActivePanelModulesEditor;
-
-            return true;
-        }
-
-        internal bool SelectTargetsEditor()
-        {
-            _model.ActivePanel = MainFormModel.ConstActivePanelTargetsEditor;
-
-            return true;
-        }
 
         #region Private
 
@@ -138,7 +115,8 @@ namespace FastBuildGen.Forms.Main
 
             try
             {
-                _fastBuildController.SaveFastBuildConfig(configFilePath);
+#warning TODO - check if modele get new file name or not ...
+                //_fastBuildController.SaveFastBuildConfig(configFilePath);
                 success = true;
             }
             catch (Exception e)
@@ -155,7 +133,8 @@ namespace FastBuildGen.Forms.Main
 
             try
             {
-                success = _fastBuildController.LoadFastBuildConfig(configFilePath);
+#warning TODO - check if modele get new file name or not ...
+                //success = _fastBuildController.LoadFastBuildConfig(configFilePath);
                 if (false == success)
                 {
                     MessageBox.Show("Import failed.");
@@ -213,9 +192,11 @@ namespace FastBuildGen.Forms.Main
 
         private bool MergeConfigFileCore(string configFilePath)
         {
-            bool success = new FastBuildImportMergeController(_fastBuildModel).ImportWithMerge(configFilePath);
+#warning TODO - check if modele get new file name or not ...
+            //bool success = new FastBuildImportMergeController(_fastBuildModel).ImportWithMerge(configFilePath);
 
-            return success;
+            //return success;
+            return false;
         }
 
         private void SaveFastBuildDataCore()

@@ -11,28 +11,29 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
 {
     internal class SolutionTargetsEditorModel : ListEditorModel
     {
-        private readonly IFastBuildParamModel _fastBuildParamModel;
+        private readonly ApplicationModel _applicationModel;
 
-        public SolutionTargetsEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public SolutionTargetsEditorModel(ApplicationModel applicationModel)
         {
-            _fastBuildParamModel = fastBuildParamModel;
+            _applicationModel = applicationModel;
 
-            _fastBuildParamModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;
+#warning TODO DELTA point - review code for event mngmt
+            //_applicationModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;
 
             UpdateModules();
         }
 
-        public IFastBuildParamModel FastBuildParamModel
+        public ApplicationModel ApplicationModel
         {
-            get { return _fastBuildParamModel; }
+            get { return _applicationModel; }
         }
 
-        public IParamDescriptionHeoModule ModuleSelected
+        public FBSolutionTarget SolutionTargetSelected
         {
             get
             {
                 SolutionTargetElement moduleElement = ElementSelected as SolutionTargetElement;
-                IParamDescriptionHeoModule module = (moduleElement != null) ? moduleElement.Module : null;
+                FBSolutionTarget module = (moduleElement != null) ? moduleElement.SolutionTarget : null;
 
                 return module;
             }
@@ -45,9 +46,18 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
 
         private void UpdateModules()
         {
-            IEnumerable<IParamDescriptionHeoModule> modules = _fastBuildParamModel.HeoModuleParams;
+            FBModel fbModel = _applicationModel.FBModel;
+            IEnumerable<FBSolutionTarget> solutionTargets;
+            if (fbModel != null)
+            {
+                solutionTargets = fbModel.SolutionTargets.Values;
+            }
+            else
+            {
+                solutionTargets = new FBSolutionTarget[0];
+            }
 
-            IEnumerable<SolutionTargetElement> elements = modules
+            IEnumerable<SolutionTargetElement> elements = solutionTargets
                 .Select(t => new SolutionTargetElement(t));
             Elements = elements;
         }

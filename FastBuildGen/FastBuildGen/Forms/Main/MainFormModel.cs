@@ -1,34 +1,35 @@
 ﻿using System.ComponentModel;
 using FastBuildGen.BusinessModel.Old;
 using FastBuildGen.Common;
+using FastBuildGen.BusinessModel;
 
 namespace FastBuildGen.Forms.Main
 {
     internal class MainFormModel : INotifyPropertyChanged
     {
-        private readonly IFastBuildModel _fastBuildModel;
+        private readonly ApplicationModel _applicationModel;
 
         private string _activePanel;
 
-        public MainFormModel(IFastBuildModel fastBuildModel)
+        public MainFormModel(ApplicationModel applicationModel)
             : base()
         {
-            _fastBuildModel = fastBuildModel;
+            _applicationModel = applicationModel;
 
-            _fastBuildModel.PropertyChanged += _fastBuildModel_PropertyChanged;
+            _applicationModel.PropertyChanged += _applicationModel_PropertyChanged;
         }
 
         public bool FastBuildDataChanged
         {
-            get { return _fastBuildModel.DataChanged; }
+            get { return _applicationModel.DataChanged; }
         }
 
-        public IFastBuildModel FastBuildModel
+        public ApplicationModel ApplicationModel
         {
-            get { return _fastBuildModel; }
+            get { return _applicationModel; }
         }
 
-        private void _fastBuildModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void _applicationModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {

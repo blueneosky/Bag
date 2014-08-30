@@ -13,7 +13,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
         private readonly MacroSolutionTargetsEditorModel _model;
 
         public MacroSolutionTargetEditorModelWrapper(MacroSolutionTargetsEditorModel model)
-            : base(model.FastBuildParamModel)
+            : base(model.ApplicationModel)
         {
             _model = model;
 
@@ -24,7 +24,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
         {
             if (e.PropertyName == ConstListEditorModelEvent.ConstElementSelected)
             {
-                this.Target = _model.TargetSelected;
+                this.MacroSolutionTarget = _model.MacroSolutionTargetSelected;
             }
         }
     }

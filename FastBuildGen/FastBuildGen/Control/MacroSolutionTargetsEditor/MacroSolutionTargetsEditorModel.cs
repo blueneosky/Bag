@@ -11,28 +11,29 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
     internal class MacroSolutionTargetsEditorModel : ListEditorModel
     {
-        private readonly IFastBuildParamModel _fastBuildParamModel;
+        private readonly ApplicationModel _applicationModel;
 
-        public MacroSolutionTargetsEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public MacroSolutionTargetsEditorModel(ApplicationModel applicationModel)
         {
-            _fastBuildParamModel = fastBuildParamModel;
+            _applicationModel = applicationModel;
 
-            _fastBuildParamModel.HeoTargetParamsChanged += _fastBuildParamModel_HeoTargetParamsChanged;
+#warning TODO Beta point - review event mngmt
+            //_applicationModel.HeoTargetParamsChanged += _fastBuildParamModel_HeoTargetParamsChanged;
 
             UpdateTargets();
         }
 
-        public IFastBuildParamModel FastBuildParamModel
+        public ApplicationModel ApplicationModel
         {
-            get { return _fastBuildParamModel; }
+            get { return _applicationModel; }
         }
 
-        public IParamDescriptionHeoTarget TargetSelected
+        public FBMacroSolutionTarget MacroSolutionTargetSelected
         {
             get
             {
                 MacroSolutionTargetElement targetElement = ElementSelected as MacroSolutionTargetElement;
-                IParamDescriptionHeoTarget target = (targetElement != null) ? targetElement.Target : null;
+                FBMacroSolutionTarget target = (targetElement != null) ? targetElement.MacroSolutionTarget : null;
 
                 return target;
             }
@@ -45,9 +46,18 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 
         private void UpdateTargets()
         {
-            IEnumerable<IParamDescriptionHeoTarget> targets = _fastBuildParamModel.HeoTargetParams;
+            FBModel fbModel = _applicationModel.FBModel;
+            IEnumerable<FBMacroSolutionTarget> macroSolutionTargets;
+            if (fbModel != null)
+            {
+                macroSolutionTargets = fbModel.MacroSolutionTargets.Values;
+            }
+            else
+            {
+                macroSolutionTargets = new FBMacroSolutionTarget[0];
+            }
 
-            IEnumerable<MacroSolutionTargetElement> elements = targets
+            IEnumerable<MacroSolutionTargetElement> elements = macroSolutionTargets
                 .Select(t => new MacroSolutionTargetElement(t));
             Elements = elements;
         }

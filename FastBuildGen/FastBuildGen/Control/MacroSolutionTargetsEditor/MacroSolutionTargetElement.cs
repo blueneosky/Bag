@@ -11,21 +11,21 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
     internal class MacroSolutionTargetElement : ListEditorElement
     {
-        private readonly IParamDescriptionHeoTarget _target;
+        private readonly FBMacroSolutionTarget _macroSolutionTarget;
 
-        public MacroSolutionTargetElement(IParamDescriptionHeoTarget target)
-            : base(target)
+        public MacroSolutionTargetElement(FBMacroSolutionTarget macroSolutionTarget)
+            : base(macroSolutionTarget)
         {
-            _target = target;
+            _macroSolutionTarget = macroSolutionTarget;
 
-            _target.PropertyChanged += _target_PropertyChanged;
+            _macroSolutionTarget.PropertyChanged += _target_PropertyChanged;
 
             UpdateText();
         }
 
-        public IParamDescriptionHeoTarget Target
+        public FBMacroSolutionTarget MacroSolutionTarget
         {
-            get { return _target; }
+            get { return _macroSolutionTarget; }
         }
 
         private void _target_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -43,7 +43,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 
         private void UpdateText()
         {
-            Text = _target.Name;
+            Text = _macroSolutionTarget.Keyword;
         }
     }
 }

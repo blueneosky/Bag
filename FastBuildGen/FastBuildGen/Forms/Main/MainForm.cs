@@ -21,10 +21,10 @@ namespace FastBuildGen.Forms.Main
         {
             InitializeComponent();
 
-            SolutionTargetsEditorModel modulesEditorModel = new SolutionTargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
+            SolutionTargetsEditorModel modulesEditorModel = new SolutionTargetsEditorModel(model.ApplicationModel);
             SolutionTargetsEditorController modulesEditorController = new SolutionTargetsEditorController(modulesEditorModel);
 
-            MacroSolutionTargetsEditorModel targetsEditorModel = new MacroSolutionTargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
+            MacroSolutionTargetsEditorModel targetsEditorModel = new MacroSolutionTargetsEditorModel(model.ApplicationModel);
             MacroSolutionTargetsEditorController targetsEditorController = new MacroSolutionTargetsEditorController(targetsEditorModel);
 
             Initialize(model, controller

@@ -24,7 +24,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
             try
             {
-                _model.Target.AddDependency(dependency);
+                _model.MacroSolutionTarget.AddDependency(dependency);
             }
             catch (Exception e)
             {
@@ -39,7 +39,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             try
             {
                 if (dependency != null)
-                    success = _model.Target.RemoveDependency(dependency.Name);
+                    success = _model.MacroSolutionTarget.RemoveDependency(dependency.Name);
             }
             catch (Exception e)
             {

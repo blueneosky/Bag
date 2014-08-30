@@ -17,7 +17,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
             : base(model)
         {
             _model = model;
-            _fastBuildParamController = new FastBuildParamController(model.FastBuildParamModel);
+            _fastBuildParamController = new FastBuildParamController(model.ApplicationModel);
         }
 
         internal bool SelectTarget(IParamDescriptionHeoTarget target)
@@ -53,7 +53,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
             if (targetElement == null)
                 return false;
 
-            IParamDescriptionHeoTarget target = targetElement.Target;
+            IParamDescriptionHeoTarget target = targetElement.MacroSolutionTarget;
             bool success = _fastBuildParamController.DeleteTarget(target.Name);
 
             return success;

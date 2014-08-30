@@ -12,62 +12,65 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
     internal class MacroSolutionTargetEditorModel : INotifyPropertyChanged
     {
-        private readonly IFastBuildParamModel _fastBuildParamModel;
-        private IEnumerable<IParamDescriptionHeoModule> _availableModules;
-        private IParamDescriptionHeoTarget _target;
+        private readonly ApplicationModel _applicationModel;
+        private IEnumerable<FBSolutionTarget> _availableSolutionTargets;
+        private FBMacroSolutionTarget _macroSolutionTarget;
 
         #region ctor
 
-        public MacroSolutionTargetEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public MacroSolutionTargetEditorModel(ApplicationModel applicationModel)
         {
-            _fastBuildParamModel = fastBuildParamModel;
-            _fastBuildParamModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;
+            _applicationModel = applicationModel;
+#warning TODO BETA point - event mangmt
+            //_applicationModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;
 
-            UpdateAvailableModules();
+            UpdateAvailableSolutionTargets();
         }
 
         ~MacroSolutionTargetEditorModel()
         {
-            Target = null;
+            MacroSolutionTarget = null;
         }
 
         #endregion ctor
 
         #region Properties
 
-        public IEnumerable<IParamDescriptionHeoModule> AvailableModules
+        public IEnumerable<FBSolutionTarget> AvailableSolutionTargets
         {
-            get { return _availableModules; }
+            get { return _availableSolutionTargets; }
             private set
             {
-                _availableModules = value.Execute();
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMacroSolutionTargetEditorModelEvent.ConstAvailableModules));
+                _availableSolutionTargets = value.Execute();
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMacroSolutionTargetEditorModelEvent.ConstAvailableSolutionTargets));
             }
         }
 
-        public IFastBuildParamModel FastBuildParamModel
+        public ApplicationModel ApplicationModel
         {
-            get { return _fastBuildParamModel; }
+            get { return _applicationModel; }
         }
 
-        public IParamDescriptionHeoTarget Target
+        public FBMacroSolutionTarget MacroSolutionTarget
         {
-            get { return _target; }
+            get { return _macroSolutionTarget; }
             set
             {
-                if (Object.Equals(_target, value))
+                if (Object.Equals(_macroSolutionTarget, value))
                     return;
-                if (_target != null)
+                if (_macroSolutionTarget != null)
                 {
-                    _target.DependenciesChanged -= _target_DependenciesChanged;
+#warning TODO BETA point - event mangmt
+                    //_macroSolutionTarget.DependenciesChanged -= _target_DependenciesChanged;
                 }
-                _target = value;
-                if (_target != null)
+                _macroSolutionTarget = value;
+                if (_macroSolutionTarget != null)
                 {
-                    _target.DependenciesChanged += _target_DependenciesChanged;
+#warning TODO BETA point - event mangmt
+                    //_macroSolutionTarget.DependenciesChanged += _target_DependenciesChanged;
                 }
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMacroSolutionTargetEditorModelEvent.ConstTarget));
-                UpdateAvailableModules();
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMacroSolutionTargetEditorModelEvent.ConstMacroSolutionTarget));
+                UpdateAvailableSolutionTargets();
             }
         }
 
@@ -77,31 +80,30 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         private void _fastBuildParamModel_HeoModuleParamsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            UpdateAvailableModules();
+            UpdateAvailableSolutionTargets();
         }
 
         private void _target_DependenciesChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            UpdateAvailableModules();
+            UpdateAvailableSolutionTargets();
         }
 
         #endregion Model events
 
         #region Updates
 
-        private void UpdateAvailableModules()
+        private void UpdateAvailableSolutionTargets()
         {
-            IEnumerable<IParamDescriptionHeoModule> availableModules = new IParamDescriptionHeoModule[0];
-            if (Target != null)
+            IEnumerable<FBSolutionTarget> availableSolutionTargets = new FBSolutionTarget[0];
+            if (MacroSolutionTarget != null)
             {
-                HashSet<string> modulesNameUsed = Target.Dependencies
-                    .Select(m => m.Name)
+                HashSet<Guid> solutionIdsUsed = MacroSolutionTarget.SolutionTargetIds
                     .ToHashSet();
-                availableModules = _fastBuildParamModel.HeoModuleParams
-                    .Where(m => false == modulesNameUsed.Contains(m.Name));
+                availableSolutionTargets = _applicationModel.FBModel.SolutionTargets.Values
+                    .Where(m => false == solutionIdsUsed.Contains(m.Id));
             }
 
-            AvailableModules = availableModules;
+            AvailableSolutionTargets = availableSolutionTargets;
         }
 
         #endregion Updates

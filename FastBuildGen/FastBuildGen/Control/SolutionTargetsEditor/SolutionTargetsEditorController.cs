@@ -17,7 +17,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
             : base(model)
         {
             _model = model;
-            _fastBuildParamController = new FastBuildParamController(model.FastBuildParamModel);
+            _fastBuildParamController = new FastBuildParamController(model.ApplicationModel);
         }
 
         internal bool SelectModule(IParamDescriptionHeoModule module)
@@ -53,7 +53,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
             if (moduleElement == null)
                 return false;
 
-            IParamDescriptionHeoModule module = moduleElement.Module;
+            IParamDescriptionHeoModule module = moduleElement.SolutionTarget;
             bool success = _fastBuildParamController.DeleteModule(module.Name);
 
             return success;

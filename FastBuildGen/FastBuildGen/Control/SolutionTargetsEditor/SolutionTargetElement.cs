@@ -11,24 +11,24 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
 {
     internal class SolutionTargetElement : ListEditorElement
     {
-        private readonly IParamDescriptionHeoModule _module;
+        private readonly FBSolutionTarget _solutionTarget;
 
-        public SolutionTargetElement(IParamDescriptionHeoModule module)
-            : base(module)
+        public SolutionTargetElement(FBSolutionTarget SolutionTarget)
+            : base(SolutionTarget)
         {
-            _module = module;
+            _solutionTarget = SolutionTarget;
 
-            _module.PropertyChanged += _module_PropertyChanged;
+            _solutionTarget.PropertyChanged += _solutionTarget_PropertyChanged;
 
             UpdateText();
         }
 
-        public IParamDescriptionHeoModule Module
+        public FBSolutionTarget SolutionTarget
         {
-            get { return _module; }
+            get { return _solutionTarget; }
         }
 
-        private void _module_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void _solutionTarget_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -43,7 +43,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
 
         private void UpdateText()
         {
-            Text = _module.Name;
+            Text = _solutionTarget.Keyword;
         }
     }
 }

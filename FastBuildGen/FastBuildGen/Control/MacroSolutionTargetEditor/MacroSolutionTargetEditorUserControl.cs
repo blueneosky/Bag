@@ -100,11 +100,11 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         {
             switch (e.PropertyName)
             {
-                case ConstMacroSolutionTargetEditorModelEvent.ConstTarget:
+                case ConstMacroSolutionTargetEditorModelEvent.ConstMacroSolutionTarget:
                     UpdateTarget();
                     break;
 
-                case ConstMacroSolutionTargetEditorModelEvent.ConstAvailableModules:
+                case ConstMacroSolutionTargetEditorModelEvent.ConstAvailableSolutionTargets:
                     RefreshAvailableModules();
                     break;
 
@@ -136,7 +136,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         private void UpdateTarget()
         {
-            Target = _model.Target;
+            Target = _model.MacroSolutionTarget;
 
             RefreshModule();
         }
@@ -150,7 +150,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             BeginUpdate();
             _availableListBox.BeginUpdate();
 
-            IEnumerable<IParamDescriptionHeoModule> availableModules = _model.AvailableModules;
+            IEnumerable<IParamDescriptionHeoModule> availableModules = _model.AvailableSolutionTargets;
 
             _availableListBox.Items.Clear();
             object[] items = availableModules

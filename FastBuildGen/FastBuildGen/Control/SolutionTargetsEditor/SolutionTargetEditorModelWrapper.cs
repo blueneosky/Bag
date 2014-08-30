@@ -13,7 +13,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         private readonly SolutionTargetsEditorModel _model;
 
         public SolutionTargetEditorModelWrapper(SolutionTargetsEditorModel model)
-            : base(model.FastBuildParamModel)
+            : base(model.ApplicationModel)
         {
             _model = model;
 
@@ -24,7 +24,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         {
             if (e.PropertyName == ConstListEditorModelEvent.ConstElementSelected)
             {
-                this.Module = _model.ModuleSelected;
+                this.Module = _model.SolutionTargetSelected;
             }
         }
     }
