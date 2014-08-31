@@ -97,7 +97,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         {
             switch (e.PropertyName)
             {
-                case ConstSolutionTargetEditorModelEvent.ConstModule:
+                case ConstSolutionTargetEditorModelEvent.ConstSolutionTarget:
                     UpdateModule();
                     break;
 
@@ -131,7 +131,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
 
         private void UpdateModule()
         {
-            Module = _model.Module;
+            Module = _model.SolutionTarget;
 
             RefreshModule();
         }

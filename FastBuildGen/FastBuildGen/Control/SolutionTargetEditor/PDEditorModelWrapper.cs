@@ -15,23 +15,23 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         private readonly SolutionTargetEditorModel _model;
 
         public PDEditorModelWrapper(SolutionTargetEditorModel model)
-            : base(model.FastBuildParamModel)
+            : base(model.ApplicationModel)
         {
             _model = model;
 
             _model.PropertyChanged += _model_PropertyChanged;
         }
 
-        public override IParamDescription ParamDescription
+        public override FBTarget Target
         {
-            get { return _model.Module; }
+            get { return _model.SolutionTarget; }
             set { throw new FastBuildGenException("Not permitted"); }
         }
 
         private void _model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == ConstSolutionTargetEditorModelEvent.ConstModule)
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstParamDescription));
+            if (e.PropertyName == ConstSolutionTargetEditorModelEvent.ConstSolutionTarget)
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstTarget));
         }
     }
 }

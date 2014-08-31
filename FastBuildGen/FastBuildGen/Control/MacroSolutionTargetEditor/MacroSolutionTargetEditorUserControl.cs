@@ -18,7 +18,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         private MacroSolutionTargetEditorController _controller;
         private MacroSolutionTargetEditorModel _model;
 
-        private IParamDescriptionHeoTarget _target;
+        private FBMacroSolutionTarget _macroSolutionTarget;
 
         #endregion Members
 
@@ -57,23 +57,23 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         #region Properties
 
-        private IParamDescriptionHeoTarget Target
+        private FBMacroSolutionTarget MacroSolutionTarget
         {
-            get { return _target; }
+            get { return _macroSolutionTarget; }
             set
             {
-                if (Object.Equals(_target, value))
+                if (Object.Equals(_macroSolutionTarget, value))
                     return;
-                if (_target != null)
+                if (_macroSolutionTarget != null)
                 {
-                    _target.PropertyChanged -= _target_PropertyChanged;
-                    _target.DependenciesChanged -= _target_DependenciesChanged;
+                    _macroSolutionTarget.PropertyChanged -= _target_PropertyChanged;
+                    _macroSolutionTarget.SolutionTargetIds.CollectionChanged -= SolutionTargetIds_CollectionChanged;
                 }
-                _target = value;
-                if (_target != null)
+                _macroSolutionTarget = value;
+                if (_macroSolutionTarget != null)
                 {
-                    _target.PropertyChanged += _target_PropertyChanged;
-                    _target.DependenciesChanged += _target_DependenciesChanged;
+                    _macroSolutionTarget.PropertyChanged += _target_PropertyChanged;
+                    _macroSolutionTarget.SolutionTargetIds.CollectionChanged += SolutionTargetIds_CollectionChanged;
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             if (disposing && (_model != null))
             {
                 _model.PropertyChanged -= _model_PropertyChanged;
-                Target = null;
+                MacroSolutionTarget = null;
             }
             base.PartialDispose(disposing);
         }
@@ -114,7 +114,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             }
         }
 
-        private void _target_DependenciesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void SolutionTargetIds_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // for any new state
             RefreshDependecies();
@@ -136,7 +136,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         private void UpdateTarget()
         {
-            Target = _model.MacroSolutionTarget;
+            MacroSolutionTarget = _model.MacroSolutionTarget;
 
             RefreshModule();
         }
@@ -150,11 +150,11 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             BeginUpdate();
             _availableListBox.BeginUpdate();
 
-            IEnumerable<IParamDescriptionHeoModule> availableModules = _model.AvailableSolutionTargets;
+            IEnumerable<FBSolutionTarget> availableSolutionTargets = _model.AvailableSolutionTargets;
 
             _availableListBox.Items.Clear();
-            object[] items = availableModules
-                .Select(m => new ModuleItem(m))
+            object[] items = availableSolutionTargets
+                .Select(m => new SolutionTargetItem(m))
                 .OrderBy(m => m.ToString())
                 .ToArray();
             _availableListBox.Items.AddRange(items);
@@ -168,11 +168,15 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             BeginUpdate();
             _modulesListBox.BeginUpdate();
 
-            IEnumerable<IParamDescriptionHeoModule> modules = (Target != null) ? Target.Dependencies : new IParamDescriptionHeoModule[0];
+            IEnumerable<FBSolutionTarget> solutionTargets = new FBSolutionTarget[0];
+            if ((MacroSolutionTarget != null)){
+                solutionTargets = MacroSolutionTarget.SolutionTargetIds
+                    .Join(_model.ApplicationModel.FBModel.SolutionTargets.Values, id => id, st => st.Id, (id, st) => st);
+            }
 
             _modulesListBox.Items.Clear();
-            object[] items = modules
-                .Select(m => new ModuleItem(m))
+            object[] items = solutionTargets
+                .Select(m => new SolutionTargetItem(m))
                 .OrderBy(m => m.ToString())
                 .ToArray();
             _modulesListBox.Items.AddRange(items);
@@ -185,7 +189,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         {
             BeginUpdate();
 
-            bool withTarget = (Target != null);
+            bool withTarget = (MacroSolutionTarget != null);
             this.Enabled = withTarget;
 
             RefreshDependecies();
@@ -202,13 +206,13 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             if (IsUpdating)
                 return;
 
-            ModuleItem item = _availableListBox.SelectedItem as ModuleItem;
+            SolutionTargetItem item = _availableListBox.SelectedItem as SolutionTargetItem;
             if (item == null)
                 return;
-            IParamDescriptionHeoModule module = item.Value;
-            Debug.Assert(module != null);
+            FBSolutionTarget solutionTarget = item.Value;
+            Debug.Assert(solutionTarget != null);
 
-            _controller.AddDependency(module);
+            _controller.AddDependency(solutionTarget);
         }
 
         private void _modulesListBox_DoubleClick(object sender, EventArgs e)
@@ -216,13 +220,13 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             if (IsUpdating)
                 return;
 
-            ModuleItem item = _modulesListBox.SelectedItem as ModuleItem;
+            SolutionTargetItem item = _modulesListBox.SelectedItem as SolutionTargetItem;
             if (item == null)
                 return;
-            IParamDescriptionHeoModule module = item.Value;
-            Debug.Assert(module != null);
+            FBSolutionTarget solutionTarget = item.Value;
+            Debug.Assert(solutionTarget != null);
 
-            _controller.RemoveDependency(module);
+            _controller.RemoveDependency(solutionTarget);
         }
 
         #endregion User Inputs

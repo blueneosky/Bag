@@ -21,14 +21,14 @@ namespace FastBuildGen.Control.PDEditor
 
         public void SetHelpText(string value)
         {
-            _model.ParamDescription.HelpText = value;
+            _model.Target.HelpText = value;
         }
 
         public void SetKeyword(string value, bool feedBackByException = false)
         {
             value = value.Trim();
 
-            if (_model.ParamDescription.Keyword == value)
+            if (_model.Target.Keyword == value)
                 return;
 
             bool success =
@@ -37,28 +37,12 @@ namespace FastBuildGen.Control.PDEditor
             if (!success)
                 return;
 
-            _model.ParamDescription.Keyword = value;
+            _model.Target.Keyword = value;
         }
 
-        public void SetName(string value, bool feedBackByException = false)
+        public void SetTargetDescription(FBTarget value)
         {
-            value = value.Trim();
-
-            if (_model.ParamDescription.Name == value)
-                return;
-
-            bool success =
-                CheckValueFormat(value, feedBackByException)
-                && CheckNameAvailability(value, feedBackByException);
-            if (!success)
-                return;
-
-            _model.ParamDescription.Name = value;
-        }
-
-        public void SetParamDescription(IParamDescription value)
-        {
-            _model.ParamDescription = value;
+            _model.Target = value;
         }
 
         protected void ProcedFeedBack(string message, bool feedBackByException)
@@ -76,7 +60,7 @@ namespace FastBuildGen.Control.PDEditor
 
         private bool CheckKeywordAvailability(string value, bool feedBackByException)
         {
-            bool isKeywordUsed = _model.FastBuildParamModel.IsKeywordUsed(value);
+            bool isKeywordUsed = _model.ApplicationModel.IsKeywordUsed(value);
             if (isKeywordUsed)
             {
                 ProcedFeedBack("This keyword is allready used by an other module or target.", feedBackByException);
@@ -88,7 +72,7 @@ namespace FastBuildGen.Control.PDEditor
 
         private bool CheckNameAvailability(string value, bool feedBackByException)
         {
-            bool isNameUsed = _model.FastBuildParamModel.IsNameUsed(value);
+            bool isNameUsed = _model.ApplicationModel.IsNameUsed(value);
             if (isNameUsed)
             {
                 ProcedFeedBack("This name is allready used by an other module or target.", feedBackByException);

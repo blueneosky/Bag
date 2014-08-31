@@ -11,30 +11,30 @@ namespace FastBuildGen.Control.SolutionTargetEditor
 {
     internal class SolutionTargetEditorModel : INotifyPropertyChanged
     {
-        private readonly IFastBuildParamModel _fastBuildParamModel;
-        private IParamDescriptionHeoModule _module;
+        private readonly ApplicationModel _applicationModel;
+        private FBSolutionTarget _solutionTarget;
 
-        public SolutionTargetEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public SolutionTargetEditorModel(ApplicationModel applicationModel)
         {
-            _fastBuildParamModel = fastBuildParamModel;
+            _applicationModel = applicationModel;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IFastBuildParamModel FastBuildParamModel
+        public ApplicationModel ApplicationModel
         {
-            get { return _fastBuildParamModel; }
+            get { return _applicationModel; }
         }
 
-        public IParamDescriptionHeoModule Module
+        public FBSolutionTarget SolutionTarget
         {
-            get { return _module; }
+            get { return _solutionTarget; }
             set
             {
-                if (Object.Equals(_module, value))
+                if (Object.Equals(_solutionTarget, value))
                     return;
-                _module = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstSolutionTargetEditorModelEvent.ConstModule));
+                _solutionTarget = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstSolutionTargetEditorModelEvent.ConstSolutionTarget));
             }
         }
 

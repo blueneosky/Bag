@@ -7,7 +7,7 @@ namespace FastBuildGen.Control.PDEditor
 {
     internal static class ConstPDEditorModelEvent
     {
-        public const string ConstParamDescription = ConstPrefix + "ParamDescription";
+        public const string ConstTarget = ConstPrefix + "Target";
         private const string ConstPrefix = "PDEditorModel_";
     }
 }

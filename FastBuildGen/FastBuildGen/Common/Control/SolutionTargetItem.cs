@@ -7,16 +7,16 @@ using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Common.Control
 {
-    internal class ModuleItem : ListBoxItem<IParamDescriptionHeoModule>
+    internal class SolutionTargetItem : ListBoxItem<FBSolutionTarget>
     {
-        public ModuleItem(IParamDescriptionHeoModule value)
+        public SolutionTargetItem(FBSolutionTarget value)
             : base(value)
         {
         }
 
         public override string ToString()
         {
-            return Value.Name;
+            return Value.Keyword;
         }
     }
 }

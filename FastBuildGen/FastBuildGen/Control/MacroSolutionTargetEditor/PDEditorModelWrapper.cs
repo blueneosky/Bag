@@ -22,7 +22,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             _model.PropertyChanged += _model_PropertyChanged;
         }
 
-        public override IParamDescription ParamDescription
+        public override FBTarget Target
         {
             get { return _model.MacroSolutionTarget; }
             set { throw new FastBuildGenException("Not permitted"); }
@@ -31,7 +31,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         private void _model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == ConstMacroSolutionTargetEditorModelEvent.ConstMacroSolutionTarget)
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstParamDescription));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstTarget));
         }
     }
 }

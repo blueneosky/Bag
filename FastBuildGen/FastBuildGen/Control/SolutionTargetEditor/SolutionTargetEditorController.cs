@@ -18,17 +18,17 @@ namespace FastBuildGen.Control.SolutionTargetEditor
 
         public void SetMSBuildTarget(string value)
         {
-            _model.Module.MSBuildTarget = value;
+            _model.SolutionTarget.MSBuildTarget = value;
         }
 
         public void SetParamDescriptionHeoModule(IParamDescriptionHeoModule value)
         {
-            _model.Module = value;
+            _model.SolutionTarget = value;
         }
 
         public void SetPlatform(EnumPlatform value)
         {
-            _model.Module.Platform = value;
+            _model.SolutionTarget.Platform = value;
         }
     }
 }

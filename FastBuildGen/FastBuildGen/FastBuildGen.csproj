@@ -92,7 +92,7 @@
     <Compile Include="Common\Control\ListViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\Control\ModuleItem.cs">
+    <Compile Include="Common\Control\SolutionTargetItem.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common\ExtensionEventHandler.cs">

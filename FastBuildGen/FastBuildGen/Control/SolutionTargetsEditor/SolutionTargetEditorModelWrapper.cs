@@ -24,7 +24,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         {
             if (e.PropertyName == ConstListEditorModelEvent.ConstElementSelected)
             {
-                this.Module = _model.SolutionTargetSelected;
+                this.SolutionTarget = _model.SolutionTargetSelected;
             }
         }
     }

@@ -86,7 +86,7 @@ namespace FastBuildGen.Control.PDEditor
         {
             switch (e.PropertyName)
             {
-                case ConstPDEditorModelEvent.ConstParamDescription:
+                case ConstPDEditorModelEvent.ConstTarget:
                     UpdateParamDescription();
                     break;
 
@@ -136,7 +136,7 @@ namespace FastBuildGen.Control.PDEditor
 
         private void UpdateParamDescription()
         {
-            ParamDescription = _model.ParamDescription;
+            ParamDescription = _model.Target;
 
             RefreshParamDescription();
         }

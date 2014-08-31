@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
@@ -17,14 +13,14 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             _model = model;
         }
 
-        public void AddDependency(IParamDescriptionHeoModule dependency)
+        public void AddDependency(FBSolutionTarget solutionTarget)
         {
-            if (dependency == null)
+            if (solutionTarget == null)
                 return;
 
             try
             {
-                _model.MacroSolutionTarget.AddDependency(dependency);
+                _model.MacroSolutionTarget.SolutionTargetIds.Add(solutionTarget.Id);
             }
             catch (Exception e)
             {
@@ -32,14 +28,14 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             }
         }
 
-        public bool RemoveDependency(IParamDescriptionHeoModule dependency)
+        public bool RemoveDependency(FBSolutionTarget solutionTarget)
         {
             bool success = false;
 
             try
             {
-                if (dependency != null)
-                    success = _model.MacroSolutionTarget.RemoveDependency(dependency.Name);
+                if (solutionTarget != null)
+                    success = _model.MacroSolutionTarget.SolutionTargetIds.Remove(solutionTarget.Id);
             }
             catch (Exception e)
             {

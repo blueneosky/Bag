@@ -11,30 +11,30 @@ namespace FastBuildGen.Control.PDEditor
 {
     internal class PDEditorModel : INotifyPropertyChanged
     {
-        private readonly IFastBuildParamModel _fastBuildParamModel;
-        private IParamDescription _paramDescription;
+        private readonly ApplicationModel _applicationModel;
+        private FBTarget _target;
 
-        public PDEditorModel(IFastBuildParamModel fastBuildParamModel)
+        public PDEditorModel(ApplicationModel applicationModel)
         {
-            _fastBuildParamModel = fastBuildParamModel;
+            _applicationModel = applicationModel;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IFastBuildParamModel FastBuildParamModel
+        public ApplicationModel ApplicationModel
         {
-            get { return _fastBuildParamModel; }
+            get { return _applicationModel; }
         }
 
-        public virtual IParamDescription ParamDescription
+        public virtual FBTarget Target
         {
-            get { return _paramDescription; }
+            get { return _target; }
             set
             {
-                if (Object.Equals(_paramDescription, value))
+                if (Object.Equals(_target, value))
                     return;
-                _paramDescription = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstParamDescription));
+                _target = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstTarget));
             }
         }
 
