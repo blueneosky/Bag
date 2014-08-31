@@ -18,7 +18,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         private SolutionTargetEditorController _controller;
         private SolutionTargetEditorModel _model;
 
-        private IParamDescriptionHeoModule _module;
+        private FBSolutionTarget _solutionTarget;
 
         #endregion Members
 
@@ -49,28 +49,28 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             _model.PropertyChanged += _model_PropertyChanged;
             _pdEditorUserControl.Initialize(pdEditorModel, pdEditorController);
 
-            UpdateModule();
+            UpdateSolutionTarget();
         }
 
         #endregion ctor
 
         #region Properties
 
-        private IParamDescriptionHeoModule Module
+        private FBSolutionTarget SolutionTarget
         {
-            get { return _module; }
+            get { return _solutionTarget; }
             set
             {
-                if (Object.Equals(_module, value))
+                if (Object.Equals(_solutionTarget, value))
                     return;
-                if (_module != null)
+                if (_solutionTarget != null)
                 {
-                    _module.PropertyChanged -= _module_PropertyChanged;
+                    _solutionTarget.PropertyChanged -= _solutionTarget_PropertyChanged;
                 }
-                _module = value;
-                if (_module != null)
+                _solutionTarget = value;
+                if (_solutionTarget != null)
                 {
-                    _module.PropertyChanged += _module_PropertyChanged;
+                    _solutionTarget.PropertyChanged += _solutionTarget_PropertyChanged;
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             if (disposing && (_model != null))
             {
                 _model.PropertyChanged -= _model_PropertyChanged;
-                Module = null;
+                SolutionTarget = null;
             }
             base.PartialDispose(disposing);
         }
@@ -98,7 +98,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             switch (e.PropertyName)
             {
                 case ConstSolutionTargetEditorModelEvent.ConstSolutionTarget:
-                    UpdateModule();
+                    UpdateSolutionTarget();
                     break;
 
                 default:
@@ -107,7 +107,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             }
         }
 
-        private void _module_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void _solutionTarget_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -129,9 +129,9 @@ namespace FastBuildGen.Control.SolutionTargetEditor
 
         #region Modele Update
 
-        private void UpdateModule()
+        private void UpdateSolutionTarget()
         {
-            Module = _model.SolutionTarget;
+            SolutionTarget = _model.SolutionTarget;
 
             RefreshModule();
         }
@@ -144,7 +144,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         {
             BeginUpdate();
 
-            bool withModule = (Module != null);
+            bool withModule = (SolutionTarget != null);
             this.Enabled = withModule;
 
             RefreshMSBuildTarget();
@@ -156,7 +156,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         private void RefreshMSBuildTarget()
         {
             BeginUpdate();
-            string text = (Module != null) ? Module.MSBuildTarget : String.Empty;
+            string text = (SolutionTarget != null) ? SolutionTarget.MSBuildTarget : String.Empty;
             _msBuildTargetTextBox.Text = text;
             EndUpdate();
         }
@@ -164,30 +164,31 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         private void RefreshPlatform()
         {
             BeginUpdate();
+#warning TODO BETA point - reactivate this code - replace Platform by Enabled ... (and rename stuff)
 
-            if (Module != null)
-            {
-                switch (Module.Platform)
-                {
-                    case EnumPlatform.Win32:
-                        _win32PlatformRadioButton.Checked = true;
-                        break;
+            //if (SolutionTarget != null)
+            //{
+            //    switch (SolutionTarget.Platform)
+            //    {
+            //        case EnumPlatform.Win32:
+            //            _win32PlatformRadioButton.Checked = true;
+            //            break;
 
-                    case EnumPlatform.X86:
-                        _x86PlatformRadioButton.Checked = true;
-                        break;
+            //        case EnumPlatform.X86:
+            //            _x86PlatformRadioButton.Checked = true;
+            //            break;
 
-                    case EnumPlatform.Default:
-                    default:
-                        Debug.Fail("Non managed case");
-                        break;
-                }
-            }
-            else
-            {
-                _win32PlatformRadioButton.Checked = false;
-                _x86PlatformRadioButton.Checked = false;
-            }
+            //        case EnumPlatform.Default:
+            //        default:
+            //            Debug.Fail("Non managed case");
+            //            break;
+            //    }
+            //}
+            //else
+            //{
+            //    _win32PlatformRadioButton.Checked = false;
+            //    _x86PlatformRadioButton.Checked = false;
+            //}
             EndUpdate();
         }
 
@@ -206,20 +207,22 @@ namespace FastBuildGen.Control.SolutionTargetEditor
 
         private void _x86PlatformRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (IsUpdating)
-                return;
+#warning TODO BETA point - reactivate this code - replace Platform by Enabled ... (and rename stuff)
+            //if (IsUpdating)
+            //    return;
 
-            if (_x86PlatformRadioButton.Checked)
-                _controller.SetPlatform(EnumPlatform.X86);
+            //if (_x86PlatformRadioButton.Checked)
+            //    _controller.SetPlatform(EnumPlatform.X86);
         }
 
         private void win32PlatformRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            if (IsUpdating)
-                return;
+#warning TODO BETA point - reactivate this code - replace Platform by Enabled ... (and rename stuff)
+            //if (IsUpdating)
+            //    return;
 
-            if (_win32PlatformRadioButton.Checked)
-                _controller.SetPlatform(EnumPlatform.Win32);
+            //if (_win32PlatformRadioButton.Checked)
+            //    _controller.SetPlatform(EnumPlatform.Win32);
         }
 
         #endregion User Inputs

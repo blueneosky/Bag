@@ -10,14 +10,14 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
     internal class MacroSolutionTargetsEditorController : ListEditorController
     {
-        private readonly IFastBuildParamController _fastBuildParamController;
+        private readonly ApplicationController _applicationController;
         private readonly MacroSolutionTargetsEditorModel _model;
 
         public MacroSolutionTargetsEditorController(MacroSolutionTargetsEditorModel model)
             : base(model)
         {
             _model = model;
-            _fastBuildParamController = new FastBuildParamController(model.ApplicationModel);
+            _applicationController = new ApplicationController(model.ApplicationModel);
         }
 
         internal bool SelectTarget(IParamDescriptionHeoTarget target)
@@ -39,10 +39,10 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 
         protected override void NewElementCore()
         {
-            string baseName = "newTarget";
-            IParamDescriptionHeoTarget newTarget = _fastBuildParamController.NewTarget(baseName);
+            string newKeyword = "newTarget";
+            FBMacroSolutionTarget newMacroSolutionTarget = _applicationController.NewMacroSolutionTarget(newKeyword);
             ListEditorElement newElement = _model.Elements
-                .Where(e => Object.Equals(e.Value, newTarget))
+                .Where(e => Object.Equals(e.Value, newMacroSolutionTarget))
                 .FirstOrDefault();
             SelectElement(newElement);
         }
@@ -53,8 +53,8 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
             if (targetElement == null)
                 return false;
 
-            IParamDescriptionHeoTarget target = targetElement.MacroSolutionTarget;
-            bool success = _fastBuildParamController.DeleteTarget(target.Name);
+            FBMacroSolutionTarget macroSolutionTarget = targetElement.MacroSolutionTarget;
+            bool success = _applicationController.DeleteMacroSolutionTarget(macroSolutionTarget.Id);
 
             return success;
         }

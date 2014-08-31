@@ -32,8 +32,6 @@
             this.components = new System.ComponentModel.Container();
             this._keywordLabel = new System.Windows.Forms.Label();
             this._keywordTextBox = new System.Windows.Forms.TextBox();
-            this._nameLabel = new System.Windows.Forms.Label();
-            this._nameTextBox = new System.Windows.Forms.TextBox();
             this._helpTextTextBox = new System.Windows.Forms.TextBox();
             this._switchKeywordTextBox = new System.Windows.Forms.TextBox();
             this._paramVarNameTextBox = new System.Windows.Forms.TextBox();
@@ -68,27 +66,6 @@
             this._keywordTextBox.Size = new System.Drawing.Size(517, 20);
             this._keywordTextBox.TabIndex = 1;
             this._keywordTextBox.Validating += new System.ComponentModel.CancelEventHandler(this._keywordTextBox_Validating);
-            // 
-            // _nameLabel
-            // 
-            this._nameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this._nameLabel.AutoSize = true;
-            this._nameLabel.Location = new System.Drawing.Point(3, 35);
-            this._nameLabel.Name = "_nameLabel";
-            this._nameLabel.Size = new System.Drawing.Size(35, 13);
-            this._nameLabel.TabIndex = 2;
-            this._nameLabel.Text = "Name";
-            // 
-            // _nameTextBox
-            // 
-            this._nameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this._nameTextBox.Location = new System.Drawing.Point(103, 31);
-            this._nameTextBox.Name = "_nameTextBox";
-            this._nameTextBox.Size = new System.Drawing.Size(517, 20);
-            this._nameTextBox.TabIndex = 3;
-            this._nameTextBox.Validating += new System.ComponentModel.CancelEventHandler(this._nameTextBox_Validating);
             // 
             // _helpTextTextBox
             // 
@@ -182,22 +159,19 @@
             this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._tableLayoutPanel.Controls.Add(this._keywordTextBox, 1, 0);
-            this._tableLayoutPanel.Controls.Add(this._varNameTextBox, 1, 5);
-            this._tableLayoutPanel.Controls.Add(this._varNameLabel, 0, 5);
-            this._tableLayoutPanel.Controls.Add(this._paramVarNameTextBox, 1, 4);
+            this._tableLayoutPanel.Controls.Add(this._varNameTextBox, 1, 4);
+            this._tableLayoutPanel.Controls.Add(this._varNameLabel, 0, 4);
+            this._tableLayoutPanel.Controls.Add(this._paramVarNameTextBox, 1, 3);
             this._tableLayoutPanel.Controls.Add(this._keywordLabel, 0, 0);
-            this._tableLayoutPanel.Controls.Add(this._switchKeywordTextBox, 1, 3);
-            this._tableLayoutPanel.Controls.Add(this._paramVarNameLabel, 0, 4);
-            this._tableLayoutPanel.Controls.Add(this._nameLabel, 0, 1);
-            this._tableLayoutPanel.Controls.Add(this._switchKeywordLabel, 0, 3);
-            this._tableLayoutPanel.Controls.Add(this._helpTextLabel, 0, 2);
-            this._tableLayoutPanel.Controls.Add(this._helpTextTextBox, 1, 2);
-            this._tableLayoutPanel.Controls.Add(this._nameTextBox, 1, 1);
+            this._tableLayoutPanel.Controls.Add(this._switchKeywordTextBox, 1, 2);
+            this._tableLayoutPanel.Controls.Add(this._paramVarNameLabel, 0, 3);
+            this._tableLayoutPanel.Controls.Add(this._switchKeywordLabel, 0, 2);
+            this._tableLayoutPanel.Controls.Add(this._helpTextLabel, 0, 1);
+            this._tableLayoutPanel.Controls.Add(this._helpTextTextBox, 1, 1);
             this._tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._tableLayoutPanel.Name = "_tableLayoutPanel";
-            this._tableLayoutPanel.RowCount = 7;
-            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this._tableLayoutPanel.RowCount = 6;
             this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
             this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
             this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
@@ -229,8 +203,6 @@
 
         private System.Windows.Forms.Label _keywordLabel;
         private System.Windows.Forms.TextBox _keywordTextBox;
-        private System.Windows.Forms.Label _nameLabel;
-        private System.Windows.Forms.TextBox _nameTextBox;
         private System.Windows.Forms.TextBox _helpTextTextBox;
         private System.Windows.Forms.TextBox _switchKeywordTextBox;
         private System.Windows.Forms.TextBox _paramVarNameTextBox;

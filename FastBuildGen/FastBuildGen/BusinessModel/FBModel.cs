@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using FastBuildGen.Common;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using FastBuildGen.Common;
 
 namespace FastBuildGen.BusinessModel
 {
@@ -193,6 +194,17 @@ namespace FastBuildGen.BusinessModel
                 _withEchoOff = value;
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBModelWithEchoOff));
             }
+        }
+
+        internal bool IsKeywordUsed(string value)
+        {
+            bool isKeywordUsed = ParamTargets
+                .Concat(HeoParamTargets)
+                .Concat(SolutionTargets)
+                .Concat(MacroSolutionTargets)
+                .Any(t => t.Keyword == value);
+
+            return isKeywordUsed;
         }
 
         #region INotifyPropertyChanged Membres

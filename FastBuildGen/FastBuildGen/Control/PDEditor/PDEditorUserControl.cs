@@ -17,7 +17,7 @@ namespace FastBuildGen.Control.PDEditor
         private PDEditorController _controller;
         private PDEditorModel _model;
 
-        private IParamDescription _paramDescription;
+        private FBTarget _target;
 
         #endregion Members
 
@@ -45,21 +45,21 @@ namespace FastBuildGen.Control.PDEditor
 
         #region Properties
 
-        private IParamDescription ParamDescription
+        private FBTarget Target
         {
-            get { return _paramDescription; }
+            get { return _target; }
             set
             {
-                if (Object.Equals(_paramDescription, value))
+                if (Object.Equals(_target, value))
                     return;
-                if (_paramDescription != null)
+                if (_target != null)
                 {
-                    _paramDescription.PropertyChanged -= _paramDescription_PropertyChanged;
+                    _target.PropertyChanged -= _target_PropertyChanged;
                 }
-                _paramDescription = value;
-                if (_paramDescription != null)
+                _target = value;
+                if (_target != null)
                 {
-                    _paramDescription.PropertyChanged += _paramDescription_PropertyChanged;
+                    _target.PropertyChanged += _target_PropertyChanged;
                 }
             }
         }
@@ -73,7 +73,7 @@ namespace FastBuildGen.Control.PDEditor
             if (disposing && (_model != null))
             {
                 _model.PropertyChanged -= _model_PropertyChanged;
-                ParamDescription = null;
+                Target = null;
             }
             base.PartialDispose(disposing);
         }
@@ -96,31 +96,27 @@ namespace FastBuildGen.Control.PDEditor
             }
         }
 
-        private void _paramDescription_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void _target_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case ConstIParamDescriptionEvent.ConstKeyword:
+                case ConstFBEvent.ConstFBTargetKeyword:
                     RefreshKeyword();
                     break;
 
-                case ConstIParamDescriptionEvent.ConstName:
-                    RefreshName();
-                    break;
-
-                case ConstIParamDescriptionEvent.ConstHelpText:
+                case ConstFBEvent.ConstFBTargetHelpText:
                     RefreshHelpText();
                     break;
 
-                case ConstIParamDescriptionEvent.ConstSwitchKeyword:
+                case ConstFBEvent.ConstFBTargetSwitchKeyword:
                     RefreshSwitchKeyboard();
                     break;
 
-                case ConstIParamDescriptionEvent.ConstParamVarName:
+                case ConstFBEvent.ConstFBTargetParamVarName:
                     RefreshParamVarName();
                     break;
 
-                case ConstIParamDescriptionEvent.ConstVarName:
+                case ConstFBEvent.ConstFBTargetVarName:
                     RefreshVarName();
                     break;
 
@@ -136,7 +132,7 @@ namespace FastBuildGen.Control.PDEditor
 
         private void UpdateParamDescription()
         {
-            ParamDescription = _model.Target;
+            Target = _model.Target;
 
             RefreshParamDescription();
         }
@@ -148,7 +144,7 @@ namespace FastBuildGen.Control.PDEditor
         private void RefreshHelpText()
         {
             BeginUpdate();
-            string text = (ParamDescription != null) ? ParamDescription.HelpText : String.Empty;
+            string text = (Target != null) ? Target.HelpText : String.Empty;
             _helpTextTextBox.Text = text;
             EndUpdate();
         }
@@ -156,28 +152,20 @@ namespace FastBuildGen.Control.PDEditor
         private void RefreshKeyword()
         {
             BeginUpdate();
-            string text = (ParamDescription != null) ? ParamDescription.Keyword : String.Empty;
+            string text = (Target != null) ? Target.Keyword : String.Empty;
             _keywordTextBox.Text = text;
             EndUpdate();
         }
 
-        private void RefreshName()
-        {
-            BeginUpdate();
-            string text = (ParamDescription != null) ? ParamDescription.Name : String.Empty;
-            _nameTextBox.Text = text;
-            EndUpdate();
-        }
 
         private void RefreshParamDescription()
         {
             BeginUpdate();
 
-            bool withParamDescription = (ParamDescription != null);
+            bool withParamDescription = (Target != null);
             this.Enabled = withParamDescription;
 
             RefreshKeyword();
-            RefreshName();
             RefreshHelpText();
             RefreshSwitchKeyboard();
             RefreshParamVarName();
@@ -189,7 +177,7 @@ namespace FastBuildGen.Control.PDEditor
         private void RefreshParamVarName()
         {
             BeginUpdate();
-            string text = (ParamDescription != null) ? ParamDescription.ParamVarName : String.Empty;
+            string text = (Target != null) ? Target.ParamVarName : String.Empty;
             _paramVarNameTextBox.Text = text;
             EndUpdate();
         }
@@ -197,7 +185,7 @@ namespace FastBuildGen.Control.PDEditor
         private void RefreshSwitchKeyboard()
         {
             BeginUpdate();
-            string text = (ParamDescription != null) ? ParamDescription.SwitchKeyword : String.Empty;
+            string text = (Target != null) ? Target.SwitchKeyword : String.Empty;
             _switchKeywordTextBox.Text = text;
             EndUpdate();
         }
@@ -205,7 +193,7 @@ namespace FastBuildGen.Control.PDEditor
         private void RefreshVarName()
         {
             BeginUpdate();
-            string text = (ParamDescription != null) ? ParamDescription.VarName : String.Empty;
+            string text = (Target != null) ? Target.VarName : String.Empty;
             _varNameTextBox.Text = text;
             EndUpdate();
         }
@@ -232,14 +220,6 @@ namespace FastBuildGen.Control.PDEditor
             ValidationWithErrorProvider(action, _keywordTextBox, _errorProvider, e, ErrorIconAlignment.MiddleLeft);
         }
 
-        private void _nameTextBox_Validating(object sender, CancelEventArgs e)
-        {
-            if (IsUpdating)
-                return;
-
-            Action action = delegate { _controller.SetName(_nameTextBox.Text, true); };
-            ValidationWithErrorProvider(action, _nameTextBox, _errorProvider, e, ErrorIconAlignment.MiddleLeft);
-        }
 
         #endregion User Inputs
     }

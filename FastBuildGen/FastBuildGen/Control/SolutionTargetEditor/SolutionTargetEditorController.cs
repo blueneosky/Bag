@@ -21,14 +21,10 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             _model.SolutionTarget.MSBuildTarget = value;
         }
 
-        public void SetParamDescriptionHeoModule(IParamDescriptionHeoModule value)
+        public void SetSolutionTarget(FBSolutionTarget value)
         {
             _model.SolutionTarget = value;
         }
 
-        public void SetPlatform(EnumPlatform value)
-        {
-            _model.SolutionTarget.Platform = value;
-        }
     }
 }

@@ -39,10 +39,8 @@ namespace FastBuildGen
                 return null;
             };
 
-            // create business model
-            IFastBuildModel model = new FastBuildModel();
-            IFastBuildController controller = new FastBuildController(model);
-            model.Initialize();
+            // create application model
+            ApplicationModel applicationModel = new ApplicationModel();
 
             // Style
             Application.EnableVisualStyles();
@@ -50,7 +48,7 @@ namespace FastBuildGen
             UIDoubleBufferedModeManager.GlobalDoubleBufferedEx = true;
 
             // Main form
-            MainFormModel mainFormModel = new MainFormModel(model);
+            MainFormModel mainFormModel = new MainFormModel(applicationModel);
             MainFormController mainFormController = new MainFormController(mainFormModel);
             MainForm mainForm = new MainForm(mainFormModel, mainFormController);
 

@@ -60,22 +60,10 @@ namespace FastBuildGen.Control.PDEditor
 
         private bool CheckKeywordAvailability(string value, bool feedBackByException)
         {
-            bool isKeywordUsed = _model.ApplicationModel.IsKeywordUsed(value);
+            bool isKeywordUsed = _model.ApplicationModel.FBModel.IsKeywordUsed(value);
             if (isKeywordUsed)
             {
                 ProcedFeedBack("This keyword is allready used by an other module or target.", feedBackByException);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool CheckNameAvailability(string value, bool feedBackByException)
-        {
-            bool isNameUsed = _model.ApplicationModel.IsNameUsed(value);
-            if (isNameUsed)
-            {
-                ProcedFeedBack("This name is allready used by an other module or target.", feedBackByException);
                 return false;
             }
 
