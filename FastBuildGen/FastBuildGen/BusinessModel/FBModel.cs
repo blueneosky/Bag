@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using FastBuildGen.Common;
+using System.Collections.ObjectModel;
 
 namespace FastBuildGen.BusinessModel
 {
@@ -73,8 +74,8 @@ namespace FastBuildGen.BusinessModel
 
         public FBModel()
         {
-            SolutionTargets = new ObservableDictionary<Guid, FBSolutionTarget> { };
-            MacroSolutionTargets = new ObservableDictionary<Guid, FBMacroSolutionTarget> { };
+            SolutionTargets = new ObservableCollection<FBSolutionTarget> { };
+            MacroSolutionTargets = new ObservableCollection<FBMacroSolutionTarget> { };
             InternalVars = new ReadOnlyDictionary<string, string>(ConstFBModel.InternalVarDefaultProperties);
 
             Initialize();
@@ -119,19 +120,19 @@ namespace FastBuildGen.BusinessModel
             FBSolutionTarget echModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "ech", HelpText = "compilation module Calcul Echauffement", MSBuildTarget = @"Modules\CalculEchauffement\Heo_CalculEchauffement_Vue", Enabled = true };
             FBSolutionTarget lanceurModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "lanceur", HelpText = "compilation module Lanceur", MSBuildTarget = @"Heo_Lanceur", Enabled = true };
 
-            SolutionTargets.Add(chiModule.Id, chiModule);
-            SolutionTargets.Add(edpModule.Id, edpModule);
-            SolutionTargets.Add(edsModule.Id, edsModule);
-            SolutionTargets.Add(etqModule.Id, etqModule);
-            SolutionTargets.Add(expModule.Id, expModule);
-            SolutionTargets.Add(gduModule.Id, gduModule);
-            SolutionTargets.Add(gcpModule.Id, gcpModule);
-            SolutionTargets.Add(impModule.Id, impModule);
-            SolutionTargets.Add(ldmModule.Id, ldmModule);
-            SolutionTargets.Add(masModule.Id, masModule);
-            SolutionTargets.Add(uasModule.Id, uasModule);
-            SolutionTargets.Add(echModule.Id, echModule);
-            SolutionTargets.Add(lanceurModule.Id, lanceurModule);
+            SolutionTargets.Add(chiModule);
+            SolutionTargets.Add(edpModule);
+            SolutionTargets.Add(edsModule);
+            SolutionTargets.Add(etqModule);
+            SolutionTargets.Add(expModule);
+            SolutionTargets.Add(gduModule);
+            SolutionTargets.Add(gcpModule);
+            SolutionTargets.Add(impModule);
+            SolutionTargets.Add(ldmModule);
+            SolutionTargets.Add(masModule);
+            SolutionTargets.Add(uasModule);
+            SolutionTargets.Add(echModule);
+            SolutionTargets.Add(lanceurModule);
 
             Guid[] minimalTargetDependencies = new[] { lanceurModule.Id, expModule.Id, edpModule.Id };
             FBMacroSolutionTarget minimalTarget = new FBMacroSolutionTarget(Guid.NewGuid()) { Keyword = "minimal", HelpText = "compilation de Lanceur, ExplorateurProjet et EditeurProjet" };
@@ -159,15 +160,15 @@ namespace FastBuildGen.BusinessModel
             FBMacroSolutionTarget schematiqueAssiste = new FBMacroSolutionTarget(Guid.NewGuid()) { Keyword = "sas", HelpText = "compilation de UAS et MAS" };
             schematiqueAssiste.SolutionTargetIds.AddRange(schematiqueAssisteDependencies);
 
-            MacroSolutionTargets.Add(minimalTarget.Id, minimalTarget);
-            MacroSolutionTargets.Add(heoTarget.Id, heoTarget);
-            MacroSolutionTargets.Add(schematiqueAssiste.Id, schematiqueAssiste);
+            MacroSolutionTargets.Add(minimalTarget);
+            MacroSolutionTargets.Add(heoTarget);
+            MacroSolutionTargets.Add(schematiqueAssiste);
 #endif
         }
 
-        public ObservableDictionary<Guid, FBSolutionTarget> SolutionTargets { get; private set; }
+        public ObservableCollection<FBSolutionTarget> SolutionTargets { get; private set; }
 
-        public ObservableDictionary<Guid, FBMacroSolutionTarget> MacroSolutionTargets { get; private set; }
+        public ObservableCollection<FBMacroSolutionTarget> MacroSolutionTargets { get; private set; }
 
         public ReadOnlyDictionary<string, string> InternalVars { get; private set; }
 

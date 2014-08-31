@@ -164,12 +164,12 @@ namespace FastBuildGen.BatchNode
 
         private IEnumerable<FBSolutionTarget> SolutionTargets
         {
-            get { return _fbModel.SolutionTargets.Values; }
+            get { return _fbModel.SolutionTargets; }
         }
 
         private IEnumerable<FBMacroSolutionTarget> MacroSolutionTargets
         {
-            get { return _fbModel.MacroSolutionTargets.Values; }
+            get { return _fbModel.MacroSolutionTargets; }
         }
 
         private FBTarget GetFBTarget(string keyWord)

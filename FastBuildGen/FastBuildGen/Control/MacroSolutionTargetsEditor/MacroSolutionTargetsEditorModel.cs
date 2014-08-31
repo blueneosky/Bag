@@ -50,7 +50,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
             IEnumerable<FBMacroSolutionTarget> macroSolutionTargets;
             if (fbModel != null)
             {
-                macroSolutionTargets = fbModel.MacroSolutionTargets.Values;
+                macroSolutionTargets = fbModel.MacroSolutionTargets;
             }
             else
             {

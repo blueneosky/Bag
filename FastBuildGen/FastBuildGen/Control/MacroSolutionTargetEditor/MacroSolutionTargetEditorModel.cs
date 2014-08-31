@@ -99,7 +99,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             {
                 HashSet<Guid> solutionIdsUsed = MacroSolutionTarget.SolutionTargetIds
                     .ToHashSet();
-                availableSolutionTargets = _applicationModel.FBModel.SolutionTargets.Values
+                availableSolutionTargets = _applicationModel.FBModel.SolutionTargets
                     .Where(m => false == solutionIdsUsed.Contains(m.Id));
             }
 

@@ -26,10 +26,10 @@ namespace FastBuildGen.Xml.Entity
 
         internal XmlFastBuild Serialize(FBModel fbModel)
         {
-            Xml01SolutionTargets = fbModel.SolutionTargets.Values
+            Xml01SolutionTargets = fbModel.SolutionTargets
                .Select(t => new XmlSolutionTarget().Serialize(t))
                .ToArray();
-            Xml02MacroSolutionTargets = fbModel.MacroSolutionTargets.Values
+            Xml02MacroSolutionTargets = fbModel.MacroSolutionTargets
                 .Select(mt => new XmlMacroSolutionTarget().Serialize(mt))
                 .ToArray();
             Xml03WithEchoOff = fbModel.WithEchoOff;
@@ -46,8 +46,8 @@ namespace FastBuildGen.Xml.Entity
             IEnumerable<FBMacroSolutionTarget> macroSolutionTargets = Xml02MacroSolutionTargets
                 .Select(xst => xst.Deserialize());
 
-            result.SolutionTargets.AddRange(solutionTargets, st => st.Id);
-            result.MacroSolutionTargets.AddRange(macroSolutionTargets, mst => mst.Id);
+            result.SolutionTargets.AddRange(solutionTargets);
+            result.MacroSolutionTargets.AddRange(macroSolutionTargets);
             result.WithEchoOff = Xml03WithEchoOff;
 
             return result;
