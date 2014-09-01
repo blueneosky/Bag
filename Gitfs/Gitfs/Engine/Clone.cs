@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using Gitfs.Util;
 
 namespace Gitfs.Engine
 {

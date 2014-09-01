@@ -70,7 +70,7 @@
     <Compile Include="Engine\Env.cs" />
     <Compile Include="Engine\Help.cs" />
     <Compile Include="Engine\Pull.cs" />
-    <Compile Include="Output.cs" />
+    <Compile Include="Util\Output.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +78,7 @@
     <None Include="app.config" />
     <None Include="postbuild.bat" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(ProjectDir)postbuild.bat" "$(ConfigurationName)" "$(TargetPath)"</PostBuildEvent>
