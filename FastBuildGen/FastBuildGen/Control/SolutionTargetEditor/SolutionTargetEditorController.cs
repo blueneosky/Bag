@@ -25,5 +25,9 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             _model.SolutionTarget = value;
         }
 
+        public void SetEnabled(bool value)
+        {
+            _model.SolutionTarget.Enabled = value;
+        }
     }
 }

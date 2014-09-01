@@ -72,7 +72,7 @@
             this._helpTextTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this._helpTextTextBox.Location = new System.Drawing.Point(103, 59);
+            this._helpTextTextBox.Location = new System.Drawing.Point(103, 31);
             this._helpTextTextBox.Multiline = true;
             this._helpTextTextBox.Name = "_helpTextTextBox";
             this._helpTextTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -85,7 +85,7 @@
             this._switchKeywordTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this._switchKeywordTextBox.Location = new System.Drawing.Point(103, 101);
+            this._switchKeywordTextBox.Location = new System.Drawing.Point(103, 73);
             this._switchKeywordTextBox.Name = "_switchKeywordTextBox";
             this._switchKeywordTextBox.ReadOnly = true;
             this._switchKeywordTextBox.Size = new System.Drawing.Size(517, 20);
@@ -96,7 +96,7 @@
             this._paramVarNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this._paramVarNameTextBox.Location = new System.Drawing.Point(103, 129);
+            this._paramVarNameTextBox.Location = new System.Drawing.Point(103, 101);
             this._paramVarNameTextBox.Name = "_paramVarNameTextBox";
             this._paramVarNameTextBox.ReadOnly = true;
             this._paramVarNameTextBox.Size = new System.Drawing.Size(517, 20);
@@ -107,7 +107,7 @@
             this._varNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this._varNameTextBox.Location = new System.Drawing.Point(103, 157);
+            this._varNameTextBox.Location = new System.Drawing.Point(103, 129);
             this._varNameTextBox.Name = "_varNameTextBox";
             this._varNameTextBox.ReadOnly = true;
             this._varNameTextBox.Size = new System.Drawing.Size(517, 20);
@@ -117,7 +117,7 @@
             // 
             this._helpTextLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this._helpTextLabel.AutoSize = true;
-            this._helpTextLabel.Location = new System.Drawing.Point(3, 70);
+            this._helpTextLabel.Location = new System.Drawing.Point(3, 42);
             this._helpTextLabel.Name = "_helpTextLabel";
             this._helpTextLabel.Size = new System.Drawing.Size(49, 13);
             this._helpTextLabel.TabIndex = 8;
@@ -127,7 +127,7 @@
             // 
             this._switchKeywordLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this._switchKeywordLabel.AutoSize = true;
-            this._switchKeywordLabel.Location = new System.Drawing.Point(3, 105);
+            this._switchKeywordLabel.Location = new System.Drawing.Point(3, 77);
             this._switchKeywordLabel.Name = "_switchKeywordLabel";
             this._switchKeywordLabel.Size = new System.Drawing.Size(82, 13);
             this._switchKeywordLabel.TabIndex = 9;
@@ -137,7 +137,7 @@
             // 
             this._paramVarNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this._paramVarNameLabel.AutoSize = true;
-            this._paramVarNameLabel.Location = new System.Drawing.Point(3, 133);
+            this._paramVarNameLabel.Location = new System.Drawing.Point(3, 105);
             this._paramVarNameLabel.Name = "_paramVarNameLabel";
             this._paramVarNameLabel.Size = new System.Drawing.Size(84, 13);
             this._paramVarNameLabel.TabIndex = 10;
@@ -147,7 +147,7 @@
             // 
             this._varNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this._varNameLabel.AutoSize = true;
-            this._varNameLabel.Location = new System.Drawing.Point(3, 161);
+            this._varNameLabel.Location = new System.Drawing.Point(3, 133);
             this._varNameLabel.Name = "_varNameLabel";
             this._varNameLabel.Size = new System.Drawing.Size(52, 13);
             this._varNameLabel.TabIndex = 11;

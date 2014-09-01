@@ -163,31 +163,16 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         private void RefreshEnable()
         {
             BeginUpdate();
-#warning TODO BETA point - reactivate this code - replace Platform by Enabled ... (and rename stuff)
 
-            //if (SolutionTarget != null)
-            //{
-            //    switch (SolutionTarget.Platform)
-            //    {
-            //        case EnumPlatform.Win32:
-            //            _win32PlatformRadioButton.Checked = true;
-            //            break;
+            if (SolutionTarget != null)
+            {
+                _enabledCheckBox.Checked = SolutionTarget.Enabled;
+            }
+            else
+            {
+                _enabledCheckBox.CheckState = CheckState.Indeterminate;
+            }
 
-            //        case EnumPlatform.X86:
-            //            _x86PlatformRadioButton.Checked = true;
-            //            break;
-
-            //        case EnumPlatform.Default:
-            //        default:
-            //            Debug.Fail("Non managed case");
-            //            break;
-            //    }
-            //}
-            //else
-            //{
-            //    _win32PlatformRadioButton.Checked = false;
-            //    _x86PlatformRadioButton.Checked = false;
-            //}
             EndUpdate();
         }
 
@@ -204,24 +189,12 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             ValidationWithErrorProvider(action, _msBuildTargetTextBox, _errorProvider, e, ErrorIconAlignment.MiddleLeft);
         }
 
-        private void _x86PlatformRadioButton_CheckedChanged(object sender, EventArgs e)
+        private void _enabledCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-#warning TODO BETA point - reactivate this code - replace Platform by Enabled ... (and rename stuff)
-            //if (IsUpdating)
-            //    return;
+            if (IsUpdating)
+                return;
 
-            //if (_x86PlatformRadioButton.Checked)
-            //    _controller.SetPlatform(EnumPlatform.X86);
-        }
-
-        private void win32PlatformRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-#warning TODO BETA point - reactivate this code - replace Platform by Enabled ... (and rename stuff)
-            //if (IsUpdating)
-            //    return;
-
-            //if (_win32PlatformRadioButton.Checked)
-            //    _controller.SetPlatform(EnumPlatform.Win32);
+            _controller.SetEnabled(_enabledCheckBox.Checked);
         }
 
         #endregion User Inputs
