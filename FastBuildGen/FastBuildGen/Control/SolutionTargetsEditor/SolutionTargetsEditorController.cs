@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Control.ListEditor;
+using System.Diagnostics;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
@@ -38,24 +39,13 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
 
         protected override void NewElementCore()
         {
-            string baseKeyword = "newTarget";
-            FBSolutionTarget newSolutionTarget = _applicationController.NewSolutionTarget(baseKeyword);
-            ListEditorElement newElement = _model.Elements
-                .Where(e => Object.Equals(e.Value, newSolutionTarget))
-                .FirstOrDefault();
-            SelectElement(newElement);
+            Debug.Fail("Must not called");
         }
 
         protected override bool RemoveCore(ListEditorElement element)
         {
-            SolutionTargetElement moduleElement = element as SolutionTargetElement;
-            if (moduleElement == null)
-                return false;
-
-            FBSolutionTarget solutionTarget = moduleElement.SolutionTarget;
-            bool success = _applicationController.DeleteSolutionTarget(solutionTarget.Id);
-
-            return success;
+            Debug.Fail("Must not called");
+            return false;
         }
     }
 }

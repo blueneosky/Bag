@@ -12,6 +12,7 @@ using BatchGen.BatchNode.Goto;
 using BatchGen.BatchNode.Macro;
 using BatchGen.BatchNode.Sub;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.BusinessModel.Extension;
 
 namespace FastBuildGen.BatchNode
 {

@@ -20,6 +20,9 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
             //_applicationModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;
 
             UpdateModules();
+
+            AddEnabled = false;
+            RemoveEnabled = false;
         }
 
         public ApplicationModel ApplicationModel

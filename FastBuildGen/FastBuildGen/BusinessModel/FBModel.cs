@@ -196,6 +196,17 @@ namespace FastBuildGen.BusinessModel
             }
         }
 
+        public IEnumerable<FBTarget> AllTargets
+        {
+            get
+            {
+                return ParamTargets
+                    .Concat(HeoParamTargets)
+                    .Concat(SolutionTargets)
+                    .Concat(MacroSolutionTargets);
+            }
+        }
+
         internal bool IsKeywordUsed(string value)
         {
             bool isKeywordUsed = ParamTargets
