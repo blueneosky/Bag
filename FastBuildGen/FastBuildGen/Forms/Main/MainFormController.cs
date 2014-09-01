@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using BatchGen.Gen;
 using FastBuildGen.BatchNode;
 using FastBuildGen.BusinessModel;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Forms.Main
 {

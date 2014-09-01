@@ -1,7 +1,11 @@
-﻿using System.ComponentModel;
-using FastBuildGen.BusinessModel.Old;
-using FastBuildGen.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Text;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.Common;
 
 namespace FastBuildGen.Forms.Main
 {
@@ -33,8 +37,8 @@ namespace FastBuildGen.Forms.Main
         {
             switch (e.PropertyName)
             {
-                case ConstIFastBuildModelEvent.ConstDataChanged:
-                    UpdateFastBuildDataChanged();
+                case ConstFBEvent.ConstApplicationModelDataChanged:
+                    UpdateApplicationModelDataChanged();
                     break;
 
                 default:
@@ -43,10 +47,10 @@ namespace FastBuildGen.Forms.Main
             }
         }
 
-        private void UpdateFastBuildDataChanged()
+        private void UpdateApplicationModelDataChanged()
         {
             // notify
-            OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstFastBuildDataChanged));
+            OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstApplicationModelDataChanged));
         }
 
         #region INotifyPropertyChanged

@@ -53,7 +53,7 @@ namespace FastBuildGen.Forms.Main
         {
             switch (e.PropertyName)
             {
-                case ConstMainFormModelEvent.ConstFastBuildDataChanged:
+                case ConstMainFormModelEvent.ConstApplicationModelDataChanged:
                     RefreshFastBuildDataChanged();
                     break;
 

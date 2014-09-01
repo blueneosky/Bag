@@ -7,7 +7,7 @@ namespace FastBuildGen.Forms.Main
 {
     internal static class ConstMainFormModelEvent
     {
-        public const string ConstFastBuildDataChanged = ConstPrefix + "FastBuildDataChanged";
+        public const string ConstApplicationModelDataChanged = ConstPrefix + "ApplicationModelDataChanged";
         private const string ConstPrefix = "MainFormModel_";
     }
 }

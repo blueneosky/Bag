@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Control.ListEditor;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
@@ -20,13 +19,13 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
             _applicationController = new ApplicationController(model.ApplicationModel);
         }
 
-        internal bool SelectTarget(IParamDescriptionHeoTarget target)
+        internal bool SelectTarget(FBMacroSolutionTarget macroSOlutionTarget)
         {
             ListEditorElement element = null;
-            if (target != null)
+            if (macroSOlutionTarget != null)
             {
                 element = _model.Elements
-                    .Where(e => target.SameAs(e.Value))
+                    .Where(e => macroSOlutionTarget.SameAs(e.Value))
                     .FirstOrDefault();
                 if (element == null)
                     return false;

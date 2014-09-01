@@ -4,7 +4,6 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using BatchGen.Common;
-using FastBuildGen.BusinessModel.Old;
 using FastBuildGen.Common;
 using FastBuildGen.Xml.Entity;
 using FastBuildGen.BusinessModel;
@@ -84,13 +83,13 @@ namespace FastBuildGen.Xml
 
         #region Save
 
-        public static void Save(string filePath, IFastBuildModel model)
+        public static void Save(string filePath, FBModel fbModel)
         {
             try
             {
                 using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
                 {
-                    Write(fileStream, model);
+                    Write(fileStream, fbModel);
                 }
             }
             catch (FastBuildGenException) { throw; }

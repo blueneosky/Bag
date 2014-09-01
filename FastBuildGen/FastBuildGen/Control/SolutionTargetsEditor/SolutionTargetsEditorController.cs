@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Control.ListEditor;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
@@ -20,13 +19,13 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
             _applicationController = new ApplicationController(model.ApplicationModel);
         }
 
-        internal bool SelectModule(IParamDescriptionHeoModule module)
+        internal bool SelectModule(FBSolutionTarget solutionTarget)
         {
             ListEditorElement element = null;
-            if (module != null)
+            if (solutionTarget != null)
             {
                 element = _model.Elements
-                  .Where(e => module.SameAs(e.Value))
+                  .Where(e => solutionTarget.SameAs(e.Value))
                   .FirstOrDefault();
                 if (element == null)
                     return false;

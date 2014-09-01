@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Control.ListEditor;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
@@ -32,7 +31,7 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         {
             switch (e.PropertyName)
             {
-                case ConstIParamDescriptionEvent.ConstName:
+                case ConstFBEvent.ConstFBTargetKeyword:
                     UpdateText();
                     break;
 

@@ -26,7 +26,7 @@ namespace FastBuildGen.BusinessModel
                 {
                     _fbModel.PropertyChanged += _fbModel_PropertyChanged;
                 }
-#warning TODO BETA point - add fire event
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstApplicationModelFBModel));
             }
         }
 

@@ -7,7 +7,6 @@ using System.Linq;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
 using FastBuildGen.Control.PDEditor;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {

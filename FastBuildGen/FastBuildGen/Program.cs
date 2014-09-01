@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.UI;
 using FastBuildGen.Forms.Main;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen
 {

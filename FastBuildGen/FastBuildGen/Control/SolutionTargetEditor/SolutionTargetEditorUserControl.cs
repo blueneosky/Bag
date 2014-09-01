@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
 using FastBuildGen.Control.PDEditor;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.SolutionTargetEditor
 {
@@ -111,12 +110,12 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         {
             switch (e.PropertyName)
             {
-                case ConstIParamDescriptionHeoModuleEvent.ConstMSBuildTarget:
+                case ConstFBEvent.ConstFBTargetMSBuildTarget:
                     RefreshMSBuildTarget();
                     break;
 
-                case ConstIParamDescriptionHeoModuleEvent.ConstPlatform:
-                    RefreshPlatform();
+                case ConstFBEvent.ConstFBTargetEnabled:
+                    RefreshEnable();
                     break;
 
                 default:
@@ -148,7 +147,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             this.Enabled = withModule;
 
             RefreshMSBuildTarget();
-            RefreshPlatform();
+            RefreshEnable();
 
             EndUpdate();
         }
@@ -161,7 +160,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             EndUpdate();
         }
 
-        private void RefreshPlatform()
+        private void RefreshEnable()
         {
             BeginUpdate();
 #warning TODO BETA point - reactivate this code - replace Platform by Enabled ... (and rename stuff)

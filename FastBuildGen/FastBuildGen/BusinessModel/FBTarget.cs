@@ -15,7 +15,6 @@ namespace FastBuildGen.BusinessModel
             _id = id;
         }
 
-        #region IFBTarget Membres
 
         public string HelpText
         {
@@ -62,7 +61,19 @@ namespace FastBuildGen.BusinessModel
             get { return ConstFBModel.ConstMSBuildTargetVarNamePrefix + _keyword.Replace("?", "help"); }
         }
 
-        #endregion IFBTarget Membres
+        public bool SameAs(object obj)
+        {
+            if (Object.ReferenceEquals(this, obj))
+                return true;
+
+            FBTarget target = obj as FBTarget;
+            if (target == null)
+                return false;
+
+            bool areSame = Id == target.Id;
+
+            return areSame;
+        }
 
         #region INotifyPropertyChanged Membres
 

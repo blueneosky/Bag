@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.PDEditor
 {

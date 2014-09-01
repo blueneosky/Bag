@@ -47,9 +47,9 @@ namespace FastBuildGen.BusinessModel.Old
 
         public void SaveFastBuildConfig(string configFilePath)
         {
-            XmlService.Save(configFilePath, _model);
-#warning TODO - need to be checked
-            _model.ResetDataChanged();
+//            XmlService.Save(configFilePath, _model);
+//#warning TODO - need to be checked
+//            _model.ResetDataChanged();
         }
 
         #endregion IFastBuildController

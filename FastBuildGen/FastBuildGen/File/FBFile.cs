@@ -11,7 +11,6 @@ using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
 using FastBuildGen.Xml;
 using FastBuildGen.Xml.Entity;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.File
 {
