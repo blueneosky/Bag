@@ -40,11 +40,11 @@
             this._saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            this._importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this._mergeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this._quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this._mainTabControl.SuspendLayout();
             this._modulesTabPage.SuspendLayout();
             this._targetsTabPage.SuspendLayout();
@@ -62,7 +62,7 @@
             this._mainTabControl.Location = new System.Drawing.Point(3, 3);
             this._mainTabControl.Name = "_mainTabControl";
             this._mainTabControl.SelectedIndex = 0;
-            this._mainTabControl.Size = new System.Drawing.Size(848, 482);
+            this._mainTabControl.Size = new System.Drawing.Size(764, 466);
             this._mainTabControl.TabIndex = 0;
             // 
             // _modulesTabPage
@@ -71,7 +71,7 @@
             this._modulesTabPage.Location = new System.Drawing.Point(4, 22);
             this._modulesTabPage.Name = "_modulesTabPage";
             this._modulesTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this._modulesTabPage.Size = new System.Drawing.Size(840, 456);
+            this._modulesTabPage.Size = new System.Drawing.Size(756, 440);
             this._modulesTabPage.TabIndex = 0;
             this._modulesTabPage.Text = "Modules";
             this._modulesTabPage.UseVisualStyleBackColor = true;
@@ -82,7 +82,7 @@
             this._modulesEditorUserControl.DoubleBufferedEx = false;
             this._modulesEditorUserControl.Location = new System.Drawing.Point(3, 3);
             this._modulesEditorUserControl.Name = "_modulesEditorUserControl";
-            this._modulesEditorUserControl.Size = new System.Drawing.Size(834, 450);
+            this._modulesEditorUserControl.Size = new System.Drawing.Size(750, 434);
             this._modulesEditorUserControl.TabIndex = 0;
             // 
             // _targetsTabPage
@@ -102,7 +102,7 @@
             this._targetsEditorUserControl.DoubleBufferedEx = false;
             this._targetsEditorUserControl.Location = new System.Drawing.Point(3, 3);
             this._targetsEditorUserControl.Name = "_targetsEditorUserControl";
-            this._targetsEditorUserControl.Size = new System.Drawing.Size(186, 68);
+            this._targetsEditorUserControl.Size = new System.Drawing.Size(834, 450);
             this._targetsEditorUserControl.TabIndex = 0;
             // 
             // toolStripContainer1
@@ -112,11 +112,11 @@
             // 
             this.toolStripContainer1.ContentPanel.Controls.Add(this._mainTabControl);
             this.toolStripContainer1.ContentPanel.Padding = new System.Windows.Forms.Padding(3);
-            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(854, 488);
+            this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(770, 472);
             this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
             this.toolStripContainer1.Name = "toolStripContainer1";
-            this.toolStripContainer1.Size = new System.Drawing.Size(854, 512);
+            this.toolStripContainer1.Size = new System.Drawing.Size(770, 496);
             this.toolStripContainer1.TabIndex = 3;
             this.toolStripContainer1.Text = "toolStripContainer1";
             // 
@@ -131,7 +131,7 @@
             this._fileToolStripMenuItem});
             this._menuStrip.Location = new System.Drawing.Point(0, 0);
             this._menuStrip.Name = "_menuStrip";
-            this._menuStrip.Size = new System.Drawing.Size(854, 24);
+            this._menuStrip.Size = new System.Drawing.Size(770, 24);
             this._menuStrip.TabIndex = 2;
             this._menuStrip.Text = "menuStrip1";
             // 
@@ -139,11 +139,11 @@
             // 
             this._fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._newToolStripMenuItem,
+            this.openToolStripMenuItem,
+            this.toolStripMenuItem2,
             this._saveToolStripMenuItem,
             this._saveAsToolStripMenuItem,
             this.toolStripMenuItem4,
-            this._importToolStripMenuItem,
-            this.toolStripMenuItem3,
             this._mergeToolStripMenuItem,
             this.toolStripMenuItem1,
             this._quitToolStripMenuItem});
@@ -155,7 +155,8 @@
             // 
             this._newToolStripMenuItem.Name = "_newToolStripMenuItem";
             this._newToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this._newToolStripMenuItem.Text = "&New";
+            this._newToolStripMenuItem.Text = "&New (from sln)";
+            this._newToolStripMenuItem.Click += new System.EventHandler(this._newToolStripMenuItem_Click);
             // 
             // _saveToolStripMenuItem
             // 
@@ -176,18 +177,6 @@
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 6);
             // 
-            // _importToolStripMenuItem
-            // 
-            this._importToolStripMenuItem.Name = "_importToolStripMenuItem";
-            this._importToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this._importToolStripMenuItem.Text = "&Import";
-            this._importToolStripMenuItem.Click += new System.EventHandler(this._importToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 6);
-            // 
             // _mergeToolStripMenuItem
             // 
             this._mergeToolStripMenuItem.Name = "_mergeToolStripMenuItem";
@@ -207,11 +196,23 @@
             this._quitToolStripMenuItem.Text = "&Quit";
             this._quitToolStripMenuItem.Click += new System.EventHandler(this._quitToolStripMenuItem_Click);
             // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.openToolStripMenuItem.Text = "&Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(152, 6);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(854, 512);
+            this.ClientSize = new System.Drawing.Size(770, 496);
             this.Controls.Add(this.toolStripContainer1);
             this.MainMenuStrip = this._menuStrip;
             this.Name = "MainForm";
@@ -239,15 +240,15 @@
         private Control.MacroSolutionTargetsEditor.MacroSolutionTargetsEditorUserControl _targetsEditorUserControl;
         private System.Windows.Forms.MenuStrip _menuStrip;
         private System.Windows.Forms.ToolStripMenuItem _fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem _importToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem _quitToolStripMenuItem;
         private System.Windows.Forms.ToolStripContainer toolStripContainer1;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem _mergeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem _newToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
     }
 }

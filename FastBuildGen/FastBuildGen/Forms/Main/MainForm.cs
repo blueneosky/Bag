@@ -2,8 +2,8 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using FastBuildGen.Common.Forms;
-using FastBuildGen.Control.SolutionTargetsEditor;
 using FastBuildGen.Control.MacroSolutionTargetsEditor;
+using FastBuildGen.Control.SolutionTargetsEditor;
 using ImputationH31per.Util;
 
 namespace FastBuildGen.Forms.Main
@@ -86,7 +86,7 @@ namespace FastBuildGen.Forms.Main
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            bool success = _controller.SaveFastBuildDataBeforeClosing();
+            bool success = _controller.SaveFBModelBeforeClosing();
             e.Cancel = (false == success);
 
             base.OnFormClosing(e);
@@ -120,14 +120,9 @@ namespace FastBuildGen.Forms.Main
 
         #region User inputs
 
-        private void _importToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _controller.ImportConfigFile();
-        }
-
         private void _mergeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.MergeConfigFile();
+            _controller.MergeWithSln();
         }
 
         private void _quitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -137,20 +132,31 @@ namespace FastBuildGen.Forms.Main
 
         private void _saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.SaveAsConfigFile();
+            _controller.SaveAs();
         }
 
         private void _saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.SaveFastBuildData();
+            _controller.Save();
         }
 
         private void SaveActionShortcut()
         {
-            if (this.Validate())
+            bool state = _model.FastBuildDataChanged;
+            if (this.Validate() && state)
             {
-                _controller.SaveFastBuildData();
+                _controller.Save();
             }
+        }
+
+        private void _newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _controller.NewWithSln();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _controller.Open();
         }
 
         #endregion User inputs

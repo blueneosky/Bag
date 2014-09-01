@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
@@ -12,8 +11,6 @@ namespace FastBuildGen.Forms.Main
     internal class MainFormModel : INotifyPropertyChanged
     {
         private readonly ApplicationModel _applicationModel;
-
-        private string _activePanel;
 
         public MainFormModel(ApplicationModel applicationModel)
             : base()
@@ -32,6 +29,8 @@ namespace FastBuildGen.Forms.Main
         {
             get { return _applicationModel; }
         }
+
+        public string FilePath { get; set; }
 
         private void _applicationModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
