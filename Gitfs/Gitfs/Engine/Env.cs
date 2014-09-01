@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.VersionControl.Client;
+using Gitfs.Util;
 
 namespace Gitfs.Engine
 {
@@ -14,7 +15,6 @@ namespace Gitfs.Engine
         private static bool? _withTag = null;
         private static string _projectcollection = null;
         private static string _serverpath = null;
-        private static string _directory = null;
 
         private static TfsTeamProjectCollection _tfsProjectCollection;
         private static VersionControlServer _versionControlServer;
@@ -49,11 +49,7 @@ namespace Gitfs.Engine
             set { _serverpath = value; }
         }
 
-        public static string Directory
-        {
-            get { return _directory; }
-            set { _directory = value; }
-        }
+        public static int LastChangeset { get; set; }
 
         public static string VirtualServerPath
         {
@@ -83,6 +79,15 @@ namespace Gitfs.Engine
                 }
                 return _versionControlServer;
             }
+        }
+
+        public static void LoadFromGitConfig()
+        {
+            Projectcollection = GitHelper.ConfigGetProjectCollection();
+            Serverpath = GitHelper.ConfigGetServerPath();
+            WithTag = GitHelper.ConfigGetTagChangeset();
+            DeepMode = GitHelper.ConfigGetDeepMode();
+            LastChangeset = GitHelper.ConfigGetLastChangeset();
         }
     }
 }

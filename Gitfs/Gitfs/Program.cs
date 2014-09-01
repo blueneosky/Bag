@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Gitfs.Engine;
+using Gitfs.Util;
 
 namespace Gitfs
 {
@@ -11,7 +12,12 @@ namespace Gitfs
         static int Main(string[] args)
         {
 #if DEBUG
-            args = "clone http://obestfsp01:8080/ $/HEO F:/HEO"
+            Console.ReadLine();
+            Env.Projectcollection = "http://obestfsp01:8080/";
+            Env.Serverpath = "$/HEO";
+            Env.VerboseMode = true;
+
+            args = "pull http://obestfsp01:8080/ $/HEO F:/HEO"
             //args = "clone -v http://obestfsp01:8080/ $/HEO F:/HEO"
                 .Split(' ');
 #endif
