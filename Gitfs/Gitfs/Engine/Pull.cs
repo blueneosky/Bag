@@ -59,6 +59,7 @@ namespace Gitfs.Engine
             for (int i = 0; i < _changesetIds.Count; i++)
             {
                 int changesetId = _changesetIds[i];
+                if (changesetId < 4420) continue;
                 Changeset changeset = server.GetChangeset(changesetId, true, true);
                 string commiter = changeset.Committer;
                 DateTime date = changeset.CreationDate;
@@ -83,6 +84,8 @@ namespace Gitfs.Engine
                 {
                     //change.ChangeType== ChangeType.
                     changeTypes.Add(change.ChangeType);
+                    if (change.ChangeType==ChangeType.Merge)
+                        Output.WriteLine("cool");
                 }
             }
 
@@ -92,26 +95,26 @@ namespace Gitfs.Engine
                 Output.WriteLine("");
             }
 
-            //Add, Encoding
-            //Add, Edit, Encoding
-            //Edit
-            //Delete
-            //Rename
-            //Edit, Rename
-            //Rename, Delete
-            //Edit, Merge
-            //Merge
-            //Encoding, Branch
-            //Edit, Rename, Merge
-            //Encoding, Branch, Merge
-            //Delete, Merge
-            //Rename, Merge
-            //Edit, Encoding, Branch, Merge
-            //Undelete
-            //Undelete, Merge
-            //Edit, Undelete, Merge
-            //Edit, Undelete
-            //Rename, Delete, Merge
+            //Add                                   => Add
+            //Add, Edit                             => Add, Content
+            //Edit                                  => Content
+            //Delete                                => Rm
+            //Rename                                => Rm oldX, Add newX
+            //Edit, Rename                          => Rm oldX, Add newX, Content
+            //Rename, Delete                        => Rm
+            //Edit, Merge                           => Content
+            //Merge                                 => Add
+            //Encoding, Branch                      => Add
+            //Edit, Rename, Merge                   => Rm oldX, Add newX, Content
+            //Encoding, Branch, Merge               => Add, Content
+            //Delete, Merge                         => Rm
+            //Rename, Merge                         => Rm oldX, Add newX, Content
+            //Edit, Encoding, Branch, Merge         => Add, Content
+            //Undelete                              => Add, Content
+            //Undelete, Merge                       => Add, Content
+            //Edit, Undelete, Merge                 => Add, Content
+            //Edit, Undelete                        => Add, Content
+            //Rename, Delete, Merge                 => Rm
 
             foreach (ChangeType changeType in changeTypes)
             {

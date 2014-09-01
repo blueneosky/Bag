@@ -69,7 +69,7 @@ namespace Gitfs.Engine
             GitHelper.ConfigSetTagChangeset(Env.WithTag);
             GitHelper.ConfigSetDeepMode(Env.DeepMode);
 
-            Pull pullCommand = Commands.ObtenirCommand(Commands.ConstPull) as Pull;
+            Pull pullCommand = Commands.Pull;
             Debug.Assert(pullCommand != null);
 
             return pullCommand.Proceed();

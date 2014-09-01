@@ -12,14 +12,14 @@ namespace Gitfs
         static int Main(string[] args)
         {
 #if DEBUG
-            Console.ReadLine();
+            //Console.ReadLine();
             Env.Projectcollection = "http://obestfsp01:8080/";
             Env.Serverpath = "$/HEO";
             Env.VerboseMode = true;
 
-            args = "pull http://obestfsp01:8080/ $/HEO F:/HEO"
             //args = "clone -v http://obestfsp01:8080/ $/HEO F:/HEO"
-                .Split(' ');
+            //.Split(' ');
+            return Commands.Pull.Proceed() ? 0 : -1;
 #endif
             return Proceed(args) ? 0 : -1;
         }
@@ -34,6 +34,6 @@ namespace Gitfs
             return Commands.Help.Proceed(args);
         }
 
-        
+
     }
 }
