@@ -53,8 +53,9 @@ namespace FastBuildGen.Forms.Main
         {
             switch (e.PropertyName)
             {
-                case ConstMainFormModelEvent.ConstApplicationModelDataChanged:
-                    RefreshFastBuildDataChanged();
+                case ConstMainFormModelEvent.ConstFastBuildDataChanged:
+                case ConstMainFormModelEvent.ConstApplicationModelFilePath:
+                    RefreshTitle();
                     break;
 
                 default:
@@ -103,17 +104,20 @@ namespace FastBuildGen.Forms.Main
 
         #region Refresh
 
-        private void RefreshFastBuildDataChanged()
+        private void RefreshTitle()
         {
             bool state = _model.FastBuildDataChanged;
+            string filePath = _model.FilePath;
+            if (String.IsNullOrEmpty(filePath))
+                filePath = "<new FastBuild file>";
 
-            this.Text = _initialText + (state ? "(*)" : String.Empty);
+            this.Text = _initialText + "-" + filePath + (state ? "(*)" : String.Empty);
             _saveToolStripMenuItem.Enabled = state;
         }
 
         private void RefreshModel()
         {
-            RefreshFastBuildDataChanged();
+            RefreshTitle();
         }
 
         #endregion Refresh

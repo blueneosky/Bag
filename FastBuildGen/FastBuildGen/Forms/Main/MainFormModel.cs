@@ -11,6 +11,7 @@ namespace FastBuildGen.Forms.Main
     internal class MainFormModel : INotifyPropertyChanged
     {
         private readonly ApplicationModel _applicationModel;
+        private string _filePath;
 
         public MainFormModel(ApplicationModel applicationModel)
             : base()
@@ -30,14 +31,23 @@ namespace FastBuildGen.Forms.Main
             get { return _applicationModel; }
         }
 
-        public string FilePath { get; set; }
+        public string FilePath
+        {
+            get { return _filePath; }
+            set
+            {
+                if (_filePath == value) return;
+                _filePath = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstApplicationModelFilePath));
+            }
+        }
 
         private void _applicationModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
                 case ConstFBEvent.ConstApplicationModelDataChanged:
-                    UpdateApplicationModelDataChanged();
+                    UpdateFastBuildDataChanged();
                     break;
 
                 default:
@@ -46,10 +56,10 @@ namespace FastBuildGen.Forms.Main
             }
         }
 
-        private void UpdateApplicationModelDataChanged()
+        private void UpdateFastBuildDataChanged()
         {
             // notify
-            OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstApplicationModelDataChanged));
+            OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstFastBuildDataChanged));
         }
 
         #region INotifyPropertyChanged

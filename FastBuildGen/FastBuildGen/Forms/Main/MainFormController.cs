@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using FastBuildGen.BusinessModel;
 using FastBuildGen.File;
 
 namespace FastBuildGen.Forms.Main
 {
     internal class MainFormController
     {
-        private const string ConstDialogFilter = "FastBuild file (*.bat)|*.bat";
+        private const string ConstDialogFilterFBFileExt = "FastBuild file (*.bat)|*.bat";
+        private const string ConstDialogFilterVSSolutionFileExt = "Visual Studio Solution file (*.sln)|*.sln";
 
         private readonly MainFormModel _model;
 
@@ -89,8 +91,8 @@ namespace FastBuildGen.Forms.Main
             bool success = false;
 
             DialogResult dialogResult = MessageBox.Show(
-                "Export your current configuration before " + (withMerge ? "merge" : "import") + " ?"
-                , (withMerge ? "Merge" : "Import") + " process"
+                "Did you want save before " + (withMerge ? "merge" : "create new file") + " ?"
+                , (withMerge ? "Merge" : "New")
                 , MessageBoxButtons.YesNoCancel
                 , MessageBoxIcon.Question
                 , MessageBoxDefaultButton.Button1);
@@ -107,18 +109,18 @@ namespace FastBuildGen.Forms.Main
 
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
-                dialog.Filter = ConstDialogFilter;
+                dialog.Filter = ConstDialogFilterVSSolutionFileExt;
                 dialogResult = dialog.ShowDialog();
                 if (dialogResult != DialogResult.Cancel)
                 {
-                    string filePath = dialog.FileName;
+                    string solutionFilePath = dialog.FileName;
                     if (withMerge)
                     {
-                        success = MergeConfigFileCore(filePath);
+                        success = MergeWithSlnFileCore(solutionFilePath);
                     }
                     else
                     {
-                        success = ImportConfigFileCore(filePath);
+                        success = NewWithSlnFileCore(solutionFilePath);
                     }
                 }
             }
@@ -126,9 +128,19 @@ namespace FastBuildGen.Forms.Main
             return success;
         }
 
-        private bool MergeConfigFileCore(string configFilePath)
+        private bool NewWithSlnFileCore(string solutionFilePath)
         {
-#warning TODO - check if modele get new file name or not ...
+            FBModel fbModel = new FBModel();
+            _model.ApplicationModel.FBModel = fbModel;
+            _model.FilePath = null;
+            _model.ApplicationModel.DataChanged = false;    // any at this time
+
+            return MergeWithSlnFileCore(solutionFilePath);
+        }
+
+        private bool MergeWithSlnFileCore(string solutionFilePath)
+        {
+#warning TODO ALPHA point - bonus - check if modele get new file name or not ...
             //bool success = new FastBuildImportMergeController(_fastBuildModel).ImportWithMerge(configFilePath);
 
             //return success;
@@ -144,7 +156,7 @@ namespace FastBuildGen.Forms.Main
                 {
                     using (SaveFileDialog dialog = new SaveFileDialog())
                     {
-                        dialog.Filter = ConstDialogFilter;
+                        dialog.Filter = ConstDialogFilterFBFileExt;
                         DialogResult dresult = dialog.ShowDialog();
                         if (dresult != DialogResult.OK)
                             return;
@@ -166,13 +178,15 @@ namespace FastBuildGen.Forms.Main
             {
                 using (SaveFileDialog dialog = new SaveFileDialog())
                 {
-                    dialog.Filter = ConstDialogFilter;
+                    dialog.Filter = ConstDialogFilterFBFileExt;
                     DialogResult dresult = dialog.ShowDialog();
                     if (dresult != DialogResult.OK)
                         return false;
 
                     string filePath = dialog.FileName;
                     FBFile.Write(filePath, _model.ApplicationModel.FBModel);
+                    _model.FilePath = filePath;
+                    _model.ApplicationModel.DataChanged = false;
                 }
             }
             catch (Exception e)
@@ -185,8 +199,31 @@ namespace FastBuildGen.Forms.Main
 
         private void OpenCore()
         {
-#warning TODO ALPHA point
-            throw new NotImplementedException();
+            try
+            {
+                using (OpenFileDialog dialog = new OpenFileDialog())
+                {
+                    dialog.Filter = ConstDialogFilterFBFileExt;
+                    DialogResult dresult = dialog.ShowDialog();
+                    if (dresult != DialogResult.OK)
+                        return;
+
+                    string filePath = dialog.FileName;
+                    FBFile fbFile = FBFile.Read(filePath);
+                    FBModel fbModel = fbFile.XmlConfig.Deserializase();
+                    _model.ApplicationModel.FBModel = fbModel;
+                    _model.FilePath = filePath;
+                    _model.ApplicationModel.DataChanged = false;
+                }
+            }
+            catch (FBFileException e)
+            {
+                MessageBox.Show("Corrupted file or not a FastBuild file");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         #endregion Private
