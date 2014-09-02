@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using Gitfs.Util;
 using Microsoft.TeamFoundation.VersionControl.Client;
-using System.IO;
 
 namespace Gitfs.Engine
 {
@@ -84,7 +84,7 @@ namespace Gitfs.Engine
                 {
                     //change.ChangeType== ChangeType.
                     changeTypes.Add(change.ChangeType);
-                    if (change.ChangeType==ChangeType.Merge)
+                    if (change.ChangeType == ChangeType.Merge)
                         Output.WriteLine("cool");
                 }
             }
@@ -193,12 +193,26 @@ namespace Gitfs.Engine
                 args = args.Skip(1).ToArray();
             }
 
-            string currentDirectory = Directory.GetCurrentDirectory();
-            if (false == Directory.Exists(Path.Combine(currentDirectory, ".git")))
+            string rootPath;
+            bool success = GitHelper.GetRootPath(out rootPath);
+            if ((false == success) || String.IsNullOrEmpty(rootPath))
             {
-                Output.WriteLine("You are not under a git repo or not at its root");
+                Output.WriteLine("You are not under a git repo");
                 return false;
             }
+            Directory.SetCurrentDirectory(rootPath);
+
+            Env.LoadFromGitConfig();
+            Env.VerboseMode = _verboseMode ?? false;   // default value
+            if (_deepMode.HasValue)
+                Env.DeepMode = _deepMode.Value;
+
+            if (String.IsNullOrEmpty(Env.Projectcollection) || String.IsNullOrEmpty(Env.Serverpath))
+            {
+                Output.WriteLine("The repo are not initialised for git-tfs");
+                return false;
+            }
+
             bool isClean = GitHelper.IsCleanHead();
             if (false == isClean)
             {
@@ -213,11 +227,6 @@ namespace Gitfs.Engine
                 Output.WriteLine("The repo must be at the same state than the Tfs server");
                 return false;
             }
-
-            Env.LoadFromGitConfig();
-            Env.VerboseMode = _verboseMode ?? false;   // default value
-            if (_deepMode.HasValue)
-                Env.DeepMode = _deepMode.Value;
 
             return true;
         }

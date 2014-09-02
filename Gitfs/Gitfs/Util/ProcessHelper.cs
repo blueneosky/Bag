@@ -25,7 +25,7 @@ namespace Gitfs.Util
             _processStartInfo.RedirectStandardOutput = true;
         }
 
-        public int Lunch(out string standarOutput)
+        public int Launch(out string standarOutput)
         {
             Process process = new Process();
             process.StartInfo = _processStartInfo;
@@ -45,9 +45,9 @@ namespace Gitfs.Util
             return exitCode;
         }
 
-        public static int Lunch(out string standarOutput, string command, params string[] args)
+        public static int Launch(out string standarOutput, string command, params string[] args)
         {
-            return new ProcessHelper(command, args).Lunch(out standarOutput);
+            return new ProcessHelper(command, args).Launch(out standarOutput);
         }
 
         public static string LastOutput { get; private set; }

@@ -13,6 +13,7 @@ namespace Gitfs.Util
         private const string ConstConfig = "config";
         private const string ConstInit = "init";
         private const string ConstLog = "log";
+        private const string ConstRevParse = "rev-parse";
 
         private const string ConstBaseConfigName = "tfs.";
         private const string ConstConfigLastChangeset = "lastchangeset";
@@ -24,9 +25,9 @@ namespace Gitfs.Util
 
         public static string LastOutput { get; private set; }
 
-        public static int Lunch(out string standarOutput, string command, params string[] args)
+        public static int Launch(out string standarOutput, string command, params string[] args)
         {
-            int success = ProcessHelper.Lunch(out standarOutput, command, args);
+            int success = ProcessHelper.Launch(out standarOutput, command, args);
 
             LastOutput = standarOutput;
             return success;
@@ -43,7 +44,7 @@ namespace Gitfs.Util
         public static bool IsCleanHead()
         {
             string output;
-            int success = Lunch(out output, ConstGit, ConstStatus, "-s");
+            int success = Launch(out output, ConstGit, ConstStatus, "-s");
 
             if (success != 0)
                 return false;
@@ -56,7 +57,7 @@ namespace Gitfs.Util
         public static bool GitInit(string directory)
         {
             string output;
-            int success = Lunch(out output, ConstGit, ConstInit, "-q", directory);
+            int success = Launch(out output, ConstGit, ConstInit, "-q", directory);
 
             if (success != 0)
                 return false;
@@ -69,7 +70,7 @@ namespace Gitfs.Util
         private static void ConfigSetLocal(string key, string value)
         {
             string output;
-            Lunch(out output, ConstGit, ConstConfig, "--local", "--replace-all", ConstBaseConfigName + key, value);
+            Launch(out output, ConstGit, ConstConfig, "--local", "--replace-all", ConstBaseConfigName + key, value);
         }
 
         private static void ConfigSetLocal(string key, int value)
@@ -85,7 +86,7 @@ namespace Gitfs.Util
         private static string ConfigGetLocal(string key)
         {
             string output;
-            int success = Lunch(out output, ConstGit, ConstConfig, "--local", "--get", ConstBaseConfigName + key);
+            int success = Launch(out output, ConstGit, ConstConfig, "--local", "--get", ConstBaseConfigName + key);
             if (success != 0)
                 return null;
 
@@ -165,7 +166,7 @@ namespace Gitfs.Util
         public static string GetLastCommit()
         {
             string value;
-            int success = Lunch(out value, ConstGit, ConstLog, "--format=\"%H\"", "-n", "1");
+            int success = Launch(out value, ConstGit, ConstLog, "--format=\"%H\"", "-n", "1");
             if (success != 0)
                 return null;
 
@@ -180,6 +181,13 @@ namespace Gitfs.Util
         public static string ConfigGetLastCommit()
         {
             return ConfigGetLocal(ConstLastCommit);
+        }
+
+        public static bool GetRootPath(out string rootPath)
+        {
+            int succes = Launch(out rootPath, ConstGit, ConstRevParse, "--show-toplevel");
+
+            return succes == 0;
         }
     }
 }
