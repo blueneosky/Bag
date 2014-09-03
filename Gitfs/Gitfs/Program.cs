@@ -14,7 +14,7 @@ namespace Gitfs
 #if DEBUG
             //Console.ReadLine();
             Env.Projectcollection = "http://obestfsp01:8080/";
-            Env.Serverpath = "$/HEO";
+            Env.Serverpath = "$/HEO/V1/Developpement/Systeme/Heo.Systeme.Service";
             Env.VerboseMode = true;
 
             //args = "clone -v http://obestfsp01:8080/ $/HEO F:/HEO"

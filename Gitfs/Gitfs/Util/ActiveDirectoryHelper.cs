@@ -12,9 +12,18 @@ namespace Gitfs.Util
         private const string ConstPropertyLastName = "sn";
         private const string ConstPropertyEmail = "mail";
 
-        private UserDomainInfo GetUserDomainInfo(string account)
+        private static Dictionary<string, UserDomainInfo> _userDomainInfoByUserAccount = new Dictionary<string, UserDomainInfo> { };
+
+        public static UserDomainInfo GetUserDomainInfo(string userAccount)
         {
+            string account = userAccount.Split('/', '\\').LastOrDefault();
+
             UserDomainInfo info = null;
+
+            // search in cache
+            if (_userDomainInfoByUserAccount.TryGetValue(userAccount, out info))
+                return info;
+
             try
             {
                 using (DirectoryEntry entry = new DirectoryEntry())
@@ -41,18 +50,19 @@ namespace Gitfs.Util
                     };
                 }
             }
-            finally
+            catch (Exception) { }
+
+            if (info == null)
             {
-                if (info == null)
+                // fallback
+                info = new UserDomainInfo
                 {
-                    // fallback
-                    info = new UserDomainInfo
-                    {
-                        FirstName = account.Split('/', '\\').LastOrDefault(),
-                        Email = String.Empty,
-                    };
-                }
+                    FirstName = account,
+                    Email = String.Empty,
+                };
             }
+
+            _userDomainInfoByUserAccount[userAccount] = info;   // update cache
 
             return info;
         }

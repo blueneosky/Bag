@@ -11,8 +11,6 @@ namespace Gitfs.Engine
 {
     internal class Pull : Command
     {
-        private List<int> _changesetIds;
-
         private bool VerboseMode { get { return Env.VerboseMode; } }
 
         public override bool Proceed(string[] args)
@@ -43,7 +41,13 @@ namespace Gitfs.Engine
 
         public bool Proceed()
         {
-            GetAllChangesets();
+#warning TODO BETA - make shallow proceed
+            return DeepProceed();
+        }
+
+        private bool DeepProceed()
+        {
+            IEnumerable<int> changesetIds = GetAllChangesets();
 
             if (false == VerboseMode)
             {
@@ -56,22 +60,27 @@ namespace Gitfs.Engine
             HashSet<ChangeType> changeTypes = new HashSet<ChangeType> { };
 
             int percent = 0;
-            for (int i = 0; i < _changesetIds.Count; i++)
+            int totalChangesetIds = changesetIds.Count();
+            int i = -1;
+            foreach (int changesetId in changesetIds)
             {
-                int changesetId = _changesetIds[i];
+                i++;
+
                 if (changesetId < 4420) continue;
                 Changeset changeset = server.GetChangeset(changesetId, true, true);
                 string commiter = changeset.Committer;
                 DateTime date = changeset.CreationDate;
                 string comment = changeset.Comment;
+                ActiveDirectoryHelper.UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
 
                 if (VerboseMode)
                 {
-                    Output.WriteLine(changesetId + " (" + commiter + ") " + date + " " + comment);
+                    //Output.WriteLine(changesetId + " (" + commiter + ") " + date + " " + comment);
+
                 }
                 else
                 {
-                    int newPercent = i * 100 / _changesetIds.Count;
+                    int newPercent = i * 100 / totalChangesetIds;
                     if (newPercent > percent)
                     {
                         percent = newPercent;
@@ -84,8 +93,9 @@ namespace Gitfs.Engine
                 {
                     //change.ChangeType== ChangeType.
                     changeTypes.Add(change.ChangeType);
-                    if (change.ChangeType == ChangeType.Merge)
-                        Output.WriteLine("cool");
+                    //if (change.ChangeType == ChangeType.Merge)
+                    //    Output.WriteLine("cool");
+                    Output.WriteLine(change.Item.ServerItem);
                 }
             }
 
@@ -116,6 +126,14 @@ namespace Gitfs.Engine
             //Edit, Undelete                        => Add, Content
             //Rename, Delete, Merge                 => Rm
 
+            // => 
+
+            // Delete   =>	RM
+            // Undelete =>	Add; Content
+            // Rename   =>	RM old; Add new; Content si autre flag
+            // <autre>  =>	Add si existe pas; Content
+
+
             foreach (ChangeType changeType in changeTypes)
             {
                 Output.WriteLine(changeType.ToString());
@@ -125,14 +143,48 @@ namespace Gitfs.Engine
             return true;
         }
 
-        private void GetAllChangesets()
+        #region CheckoutFromTfsAndCommit
+        private bool CheckoutFromTfsAndCommit(IEnumerable<Changeset> changesets)
+        {
+            if (false == changesets.Any())
+                return false;
+
+            foreach (Changeset changeset in changesets)
+            {
+                bool success = CheckoutFromTfs(changeset);
+                if (false == success)
+                    return false;
+            }
+
+            Changeset lastChangeset = changesets.Last();
+            int changesetId = lastChangeset.ChangesetId;
+            string commiter = lastChangeset.Committer;
+            DateTime date = lastChangeset.CreationDate;
+            string comment = lastChangeset.Comment;
+            ActiveDirectoryHelper.UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
+            
+            GitHelper.Commit()
+
+            return false;
+#warning TODO ALPHA ALPHA point
+        }
+
+        private bool CheckoutFromTfs(Changeset changeset)
+        {
+
+            return false;
+#warning TODO ALPHA ALPHA point
+        }
+        #endregion
+
+        private IEnumerable<int> GetAllChangesets()
         {
             Output.InitiateCursorPosition("Get changesets from " + Env.VirtualServerPath + ": ");
             Output.WriteAtCursor("0%");
 
             VersionControlServer server = Env.VersionControlServer;
 
-            _changesetIds = new List<int> { };
+            List<int> changesetIds = new List<int> { };
             IEnumerable<Changeset> query = server.QueryHistory(Env.Serverpath, VersionSpec.Latest, 0, RecursionType.Full, null, null, null, Int32.MaxValue, false, true)
                 .OfType<Changeset>();
             int? lastChangesetId = null;
@@ -149,11 +201,13 @@ namespace Gitfs.Engine
                     Output.WriteAtCursor(percent + "%");
                 }
 
-                _changesetIds.Add(changesetId);
+                changesetIds.Add(changesetId);
             }
-            _changesetIds.Reverse();
+            changesetIds.Reverse();
             Output.LastWriteAtCursor("Done");
             Output.WriteLine("");
+
+            return changesetIds;
         }
 
         private bool ExtractArgs(ref string[] args)

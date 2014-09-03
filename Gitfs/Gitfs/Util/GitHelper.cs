@@ -189,5 +189,10 @@ namespace Gitfs.Util
 
             return succes == 0;
         }
+
+        internal static bool Commit()
+        {
+#warning TODO ALPHA ALPHA ALPHA point
+        }
     }
 }
