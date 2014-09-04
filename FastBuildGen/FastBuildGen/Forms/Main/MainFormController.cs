@@ -157,11 +157,12 @@ namespace FastBuildGen.Forms.Main
                         throw new FastBuildGenException("VSProject Guid used by something else - try create a new project.");
 
                     // create new target
+                    string projectName = project.UniqueProjectName.Split('\\', '/').LastOrDefault();
                     solutionTarget = new FBSolutionTarget(id)
                     {
-                        Keyword = project.UniqueProjectName,
-                        MSBuildTarget = project.UniqueProjectName,
-                        HelpText = project.UniqueProjectName,
+                        Keyword = projectName,
+                        MSBuildTarget = projectName,
+                        HelpText = projectName,
                         Enabled = false,
                     };
                     fbModel.SolutionTargets.Add(solutionTarget);
@@ -189,6 +190,7 @@ namespace FastBuildGen.Forms.Main
                     }
                 }
                 FBFile.Write(filePath, _model.ApplicationModel.FBModel);
+                _model.ApplicationModel.DataChanged = false;    // it's ok, it's save ^^
             }
             catch (Exception e)
             {
