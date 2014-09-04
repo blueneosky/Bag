@@ -66,8 +66,11 @@ namespace Gitfs.Engine
             {
                 i++;
 
-                if (changesetId < 4420) continue;
                 Changeset changeset = server.GetChangeset(changesetId, true, true);
+
+                CheckoutFromTfsAndCommit(new[] { changeset });
+                continue;
+
                 string commiter = changeset.Committer;
                 DateTime date = changeset.CreationDate;
                 string comment = changeset.Comment;
@@ -104,34 +107,6 @@ namespace Gitfs.Engine
                 Output.WriteLine("");
             }
 
-            //Add                                   => Add
-            //Add, Edit                             => Add, Content
-            //Edit                                  => Content
-            //Delete                                => Rm
-            //Rename                                => Rm oldX, Add newX
-            //Edit, Rename                          => Rm oldX, Add newX, Content
-            //Rename, Delete                        => Rm
-            //Edit, Merge                           => Content
-            //Merge                                 => Add
-            //Encoding, Branch                      => Add
-            //Edit, Rename, Merge                   => Rm oldX, Add newX, Content
-            //Encoding, Branch, Merge               => Add, Content
-            //Delete, Merge                         => Rm
-            //Rename, Merge                         => Rm oldX, Add newX, Content
-            //Edit, Encoding, Branch, Merge         => Add, Content
-            //Undelete                              => Add, Content
-            //Undelete, Merge                       => Add, Content
-            //Edit, Undelete, Merge                 => Add, Content
-            //Edit, Undelete                        => Add, Content
-            //Rename, Delete, Merge                 => Rm
-
-            // =>
-
-            // Delete   =>	RM
-            // Undelete =>	Add; Content
-            // Rename   =>	RM old; Add new; Content si autre flag
-            // <autre>  =>	Add si existe pas; Content
-
             foreach (ChangeType changeType in changeTypes)
             {
                 Output.WriteLine(changeType.ToString());
@@ -150,6 +125,7 @@ namespace Gitfs.Engine
             if (false == changesets.Any())
                 return false;
 
+            // checkout from tfs
             foreach (Changeset changeset in changesets)
             {
                 success = CheckoutFromTfs(changeset);
@@ -163,6 +139,9 @@ namespace Gitfs.Engine
             string comment = lastChangeset.Comment;
             UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
 
+#if DEBUG
+            return true;
+#endif
             // commit
             success = GitHelper.Commit(comment, date, commiterInfo.GitAuthor);
             if (false == success)
@@ -183,8 +162,80 @@ namespace Gitfs.Engine
 
         private bool CheckoutFromTfs(Changeset changeset)
         {
-            return false;
+            Change[] changes = changeset.Changes;
+
+            List<Change> addList = new List<Change>(changes.Length);
+            List<Change> removeList = new List<Change>(changes.Length);
+
+            foreach (Change change in changes)
+            {
+                // Delete   =>	RM
+                // Undelete =>	Add
+                // Rename   =>	RM old; Add new
+                // <autre>  =>	Add
+
+                ChangeType changeType = change.ChangeType;
+                if (changeType.HasFlag(ChangeType.Delete))
+                {
+                    // delete
+                    removeList.Add(change);
+                }
+                else if (changeType.HasFlag(ChangeType.Undelete))
+                {
+                    // undelete
+                    addList.Add(change);
+                }
+                else if (changeType.HasFlag(ChangeType.Rename))
+                {
+                    // rename
+                    Item item = change.Item;
+                    VersionSpec versionSpec = VersionSpec.ParseSingleSpec(""+changeset.ChangesetId, changeset.Committer);
+                    //Env.VersionControlServer.
+
+                    Changeset previousChangeset = Env.VersionControlServer.QueryHistory(
+                        item.ServerItem
+                        , versionSpec
+                        , item.DeletionId
+                        , RecursionType.None
+                        , null  // any user
+                        , null  // from the begining
+                        , versionSpec //versionSpec
+                        , Int32.MaxValue
+                        , true
+                        , false)
+                        .Cast<Changeset>()
+                        .Skip(1)    // first point to versionSpec
+                        .FirstOrDefault();
+                    if (previousChangeset == null)
+                        return false;
+                    Change previousChange = previousChangeset.Changes
+                        .Where(c => c.Item.ItemId == item.ItemId)
+                        .FirstOrDefault();
+                    if (previousChange == null)
+                        return false;
+
+                    removeList.Add(previousChange);
+                    addList.Add(change);
+                }
+                else
+                {
+                    // other
+                    addList.Add(change);
+                }
+            }
+
 #warning TODO ALPHA ALPHA point
+            foreach (Change change in removeList)
+            {
+                var dummy = 1;
+            }
+
+            foreach (Change change in addList)
+            {
+
+            }
+
+            return true;
         }
 
         #endregion CheckoutFromTfsAndCommit
