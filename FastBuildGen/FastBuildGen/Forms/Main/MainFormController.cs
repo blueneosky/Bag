@@ -87,27 +87,30 @@ namespace FastBuildGen.Forms.Main
         {
             bool success = false;
 
-            DialogResult dialogResult = MessageBox.Show(
-                "Did you want save before " + (withMerge ? "merge" : "create new file") + " ?"
-                , (withMerge ? "Merge" : "New")
-                , MessageBoxButtons.YesNoCancel
-                , MessageBoxIcon.Question
-                , MessageBoxDefaultButton.Button1);
-
-            if (dialogResult == DialogResult.Cancel)
-                return false;
-
-            if (dialogResult == DialogResult.Yes)
+            if ((_model.ApplicationModel.FBModel != null) && _model.FastBuildDataChanged)
             {
-                success = SaveAs();
-                if (false == success)
+                DialogResult dialogResult = MessageBox.Show(
+                    "Did you want save before " + (withMerge ? "merge" : "create new file") + " ?"
+                    , (withMerge ? "Merge" : "New")
+                    , MessageBoxButtons.YesNoCancel
+                    , MessageBoxIcon.Question
+                    , MessageBoxDefaultButton.Button1);
+
+                if (dialogResult == DialogResult.Cancel)
                     return false;
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    success = SaveAs();
+                    if (false == success)
+                        return false;
+                }
             }
 
             using (OpenFileDialog dialog = new OpenFileDialog())
             {
                 dialog.Filter = ConstDialogFilterVSSolutionFileExt;
-                dialogResult = dialog.ShowDialog();
+                DialogResult dialogResult = dialog.ShowDialog();
                 if (dialogResult != DialogResult.Cancel)
                 {
                     string solutionFilePath = dialog.FileName;

@@ -5,6 +5,7 @@
 #local junk
 FastBuildGen/Lib/BatchGen.dll
 FastBuildGen/Lib/configuration.txt
+*.bat
 
 #Visual Studio files
 *.[Oo]bj

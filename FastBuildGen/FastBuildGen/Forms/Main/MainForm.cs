@@ -106,12 +106,22 @@ namespace FastBuildGen.Forms.Main
 
         private void RefreshTitle()
         {
-            bool state = _model.FastBuildDataChanged;
-            string filePath = _model.FilePath;
-            if (String.IsNullOrEmpty(filePath))
-                filePath = "<new FastBuild file>";
+            bool state;
+            string filePath;
+            if (_model.ApplicationModel.FBModel == null)
+            {
+                state = false;
+                filePath = "<none>";
+            }
+            else
+            {
+                state = _model.FastBuildDataChanged;
+                filePath = _model.FilePath;
+                if (String.IsNullOrEmpty(filePath))
+                    filePath = "<new>";
+            }
 
-            this.Text = _initialText + "-" + filePath + (state ? "(*)" : String.Empty);
+            this.Text = _initialText + " - " + filePath + (state ? "(*)" : String.Empty);
             _saveToolStripMenuItem.Enabled = state;
         }
 
