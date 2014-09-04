@@ -76,7 +76,6 @@ namespace Gitfs.Engine
                 if (VerboseMode)
                 {
                     //Output.WriteLine(changesetId + " (" + commiter + ") " + date + " " + comment);
-
                 }
                 else
                 {
@@ -126,13 +125,12 @@ namespace Gitfs.Engine
             //Edit, Undelete                        => Add, Content
             //Rename, Delete, Merge                 => Rm
 
-            // => 
+            // =>
 
             // Delete   =>	RM
             // Undelete =>	Add; Content
             // Rename   =>	RM old; Add new; Content si autre flag
             // <autre>  =>	Add si existe pas; Content
-
 
             foreach (ChangeType changeType in changeTypes)
             {
@@ -144,14 +142,17 @@ namespace Gitfs.Engine
         }
 
         #region CheckoutFromTfsAndCommit
+
         private bool CheckoutFromTfsAndCommit(IEnumerable<Changeset> changesets)
         {
+            bool success;
+
             if (false == changesets.Any())
                 return false;
 
             foreach (Changeset changeset in changesets)
             {
-                bool success = CheckoutFromTfs(changeset);
+                success = CheckoutFromTfs(changeset);
                 if (false == success)
                     return false;
             }
@@ -163,19 +164,18 @@ namespace Gitfs.Engine
             string comment = lastChangeset.Comment;
             UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
 
-            //GitHelper.Commit();
+            success = GitHelper.Commit(comment, date, commiterInfo.GitAuthor);
 
-            return false;
-#warning TODO ALPHA ALPHA point
+            return success;
         }
 
         private bool CheckoutFromTfs(Changeset changeset)
         {
-
             return false;
 #warning TODO ALPHA ALPHA point
         }
-        #endregion
+
+        #endregion CheckoutFromTfsAndCommit
 
         private IEnumerable<int> GetAllChangesets()
         {
