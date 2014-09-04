@@ -164,7 +164,11 @@ namespace FastBuildGen.BatchNode
 
         private IEnumerable<FBSolutionTarget> SolutionTargets
         {
-            get { return _fbModel.SolutionTargets; }
+            get
+            {
+                return _fbModel.SolutionTargets
+                    .Where(st => st.Enabled);   // include only activated targets
+            }
         }
 
         private IEnumerable<FBMacroSolutionTarget> MacroSolutionTargets

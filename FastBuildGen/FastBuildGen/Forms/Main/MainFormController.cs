@@ -237,8 +237,11 @@ namespace FastBuildGen.Forms.Main
                         return;
 
                     string filePath = dialog.FileName;
-                    FBFile fbFile = FBFile.Read(filePath);
-                    FBModel fbModel = fbFile.XmlConfig.Deserializase();
+                    FBModel fbModel;
+                    using (FBFile fbFile = FBFile.Read(filePath))
+                    {
+                        fbModel = fbFile.XmlConfig.Deserializase();
+                    }
                     _model.ApplicationModel.FBModel = fbModel;
                     _model.FilePath = filePath;
                     _model.ApplicationModel.DataChanged = false;
