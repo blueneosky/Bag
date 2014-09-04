@@ -14,7 +14,8 @@ namespace FastBuildGen.VisualStudio
         private static readonly PropertyInfo s_ProjectInSolution_ProjectName;
 
         //static readonly PropertyInfo s_ProjectInSolution_RelativePath;
-        static readonly PropertyInfo s_ProjectInSolution_ProjectGuid;
+        private static readonly PropertyInfo s_ProjectInSolution_ProjectGuid;
+
         //static readonly PropertyInfo s_ProjectInSolution_Dependencies;
         //static readonly PropertyInfo s_ProjectInSolution_AbsolutePath;
         //static readonly PropertyInfo s_ProjectInSolution_ParentProjectGuid;
@@ -44,6 +45,7 @@ namespace FastBuildGen.VisualStudio
 
         //public string RelativePath { get; private set; }
         public Guid ProjectGuid { get; private set; }
+
         //public IEnumerable<string> Dependencies { get; private set; }
         //public string AbsolutePath { get; private set; }
         //public string ParentProjectGuid { get; private set; }

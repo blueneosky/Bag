@@ -57,6 +57,7 @@ namespace FastBuildGen.BusinessModel
             _fbModel.MacroSolutionTargets.CollectionChanged += _fbModel_Targets_CollectionChanged;
             _fbModel.SolutionTargets.ForEach(t => t.PropertyChanged += _fbModel_PropertyChanged);
             _fbModel.MacroSolutionTargets.ForEach(t => t.PropertyChanged += _fbModel_PropertyChanged);
+            _fbModel.MacroSolutionTargets.ForEach(t => t.SolutionTargetIds.CollectionChanged += _fbModel_Targets_CollectionChanged);
         }
 
         private void Unsubscribe(FBModel fbModel)
@@ -66,6 +67,7 @@ namespace FastBuildGen.BusinessModel
             _fbModel.MacroSolutionTargets.CollectionChanged -= _fbModel_Targets_CollectionChanged;
             _fbModel.SolutionTargets.ForEach(t => t.PropertyChanged -= _fbModel_PropertyChanged);
             _fbModel.MacroSolutionTargets.ForEach(t => t.PropertyChanged -= _fbModel_PropertyChanged);
+            _fbModel.MacroSolutionTargets.ForEach(t => t.SolutionTargetIds.CollectionChanged -= _fbModel_Targets_CollectionChanged);
         }
 
         private void _fbModel_Targets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

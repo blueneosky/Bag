@@ -187,8 +187,6 @@ namespace FastBuildGen.BatchNode
 
         #endregion FastBuild Property wraper
 
-
-
         #region Literal
 
         private LiteralBatch _literalConfigurationPathCache;
@@ -1166,6 +1164,8 @@ namespace FastBuildGen.BatchNode
                 blocMacro.Add(new SetExpressionCmd(LiteralHeoForcedOutputDirPath, LiteralHeoLanceurBinPath.LiteralValue));
                 blocMacro.Add(Nop);
 
+#warning TODO DELTA point - force a target (macro all with automatically all project ? in FMBodel...)
+#warning TODO ALPHA point : bug : no macro generated !!!
 #warning TODO BETA point - remove this content
                 //// MSBuild Cli Win32
                 //blocMacro.Add(new RemBatch("MSBuild configuration (win32)"));

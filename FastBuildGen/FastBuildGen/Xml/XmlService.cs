@@ -4,9 +4,9 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 using BatchGen.Common;
+using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
 using FastBuildGen.Xml.Entity;
-using FastBuildGen.BusinessModel;
 
 namespace FastBuildGen.Xml
 {

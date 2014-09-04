@@ -254,6 +254,6 @@ namespace FastBuildGen.BusinessModel
             }
         }
 
-        #endregion
+        #endregion InternalVar
     }
 }

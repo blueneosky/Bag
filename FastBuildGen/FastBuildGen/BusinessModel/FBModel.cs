@@ -13,6 +13,7 @@ namespace FastBuildGen.BusinessModel
 
         #region Param Guid
 
+#warning TODO ALPHA point - add real const id
         public static readonly Guid ConstGuidDsac = Guid.NewGuid();
         public static readonly Guid ConstGuidForceOutputDirPath = Guid.NewGuid();
         public static readonly Guid ConstGuidFxcop = Guid.NewGuid();
@@ -104,67 +105,6 @@ namespace FastBuildGen.BusinessModel
                 new FBTarget(ConstGuidKillheo           ){ Keyword = ConstKeywordParamSwitchKillheo              , HelpText = ConstDescriptionParamSwitchKillheo             },
                 new FBTarget(ConstGuidForceOutputDirPath){ Keyword = ConstKeywordParamSwitchForceOutputDirPath   , HelpText = ConstDescriptionParamSwitchForceOutputDirPath  },
             };
-
-#warning TODO DELTA point - retirer ce code d'initialisation
-#if DEBUG
-            //FBSolutionTarget chiModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "chi", HelpText = "compilation module Chiffrage", MSBuildTarget = @"Modules\Chiffrage\Heo_Chiffrage_Vue", Enabled = true };
-            //FBSolutionTarget edpModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "edp", HelpText = "compilation module EditeurProjet", MSBuildTarget = @"Modules\EditeurProjet\Heo_EditeurProjet_Vue", Enabled = true };
-            //FBSolutionTarget edsModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "eds", HelpText = "compilation module EditeurSymbole", MSBuildTarget = @"Modules\EditeurSymbole\Heo_EditeurSymbole_Vue", Enabled = true };
-            //FBSolutionTarget etqModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "etq", HelpText = "compilation module Etiquette", MSBuildTarget = @"Modules\Etiquette\Heo_Etiquette_Vue", Enabled = true };
-            //FBSolutionTarget expModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "exp", HelpText = "compilation module ExplorateurProjet", MSBuildTarget = @"Modules\ExplorateurProjet\Heo_ExplorateurProjet_Vue", Enabled = true };
-            //FBSolutionTarget gduModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "gdu", HelpText = "compilation module GDU", MSBuildTarget = @"Modules\GDU\Heo_GestionnaireDonneeUtilisateur_Vue", Enabled = true };
-            //FBSolutionTarget gcpModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "gcp", HelpText = "compilation module GuideChoixProduit", MSBuildTarget = @"Modules\GuideChoixProduit\Heo_GuideChoixProduit_Vue", Enabled = true };
-            //FBSolutionTarget impModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "imp", HelpText = "compilation module Implantation", MSBuildTarget = @"Modules\Implantation\Heo_Implantation_Vue", Enabled = true };
-            //FBSolutionTarget ldmModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "ldm", HelpText = "compilation module ListeMateriel", MSBuildTarget = @"Modules\ListeMateriel\Heo_ListeMateriel_Vue", Enabled = true };
-            //FBSolutionTarget masModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "mas", HelpText = "compilation module MultifilaireAssiste", MSBuildTarget = @"Modules\MultifilaireAssiste\Heo_MultifilaireAssiste_Vue", Enabled = true };
-            //FBSolutionTarget uasModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "uas", HelpText = "compilation module UnifilaireAssiste", MSBuildTarget = @"Modules\UnifilaireAssiste\Heo_UnifilaireAssiste_Vue", Enabled = true };
-            //FBSolutionTarget echModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "ech", HelpText = "compilation module Calcul Echauffement", MSBuildTarget = @"Modules\CalculEchauffement\Heo_CalculEchauffement_Vue", Enabled = true };
-            //FBSolutionTarget lanceurModule = new FBSolutionTarget(Guid.NewGuid()) { Keyword = "lanceur", HelpText = "compilation module Lanceur", MSBuildTarget = @"Heo_Lanceur", Enabled = true };
-
-            //SolutionTargets.Add(chiModule);
-            //SolutionTargets.Add(edpModule);
-            //SolutionTargets.Add(edsModule);
-            //SolutionTargets.Add(etqModule);
-            //SolutionTargets.Add(expModule);
-            //SolutionTargets.Add(gduModule);
-            //SolutionTargets.Add(gcpModule);
-            //SolutionTargets.Add(impModule);
-            //SolutionTargets.Add(ldmModule);
-            //SolutionTargets.Add(masModule);
-            //SolutionTargets.Add(uasModule);
-            //SolutionTargets.Add(echModule);
-            //SolutionTargets.Add(lanceurModule);
-
-            //Guid[] minimalTargetDependencies = new[] { lanceurModule.Id, expModule.Id, edpModule.Id };
-            //FBMacroSolutionTarget minimalTarget = new FBMacroSolutionTarget(Guid.NewGuid()) { Keyword = "minimal", HelpText = "compilation de Lanceur, ExplorateurProjet et EditeurProjet" };
-            //minimalTarget.SolutionTargetIds.AddRange(minimalTargetDependencies);
-
-            //Guid[] heoTargetDependencies = new[] {
-            //    chiModule  .Id
-            //    , edpModule.Id
-            //    , edsModule.Id
-            //    , etqModule.Id
-            //    , expModule.Id
-            //    , gduModule.Id
-            //    , gcpModule.Id
-            //    , impModule.Id
-            //    , ldmModule.Id
-            //    , masModule.Id
-            //    , uasModule.Id
-            //    , echModule.Id
-            //    , lanceurModule.Id
-            //};
-            //FBMacroSolutionTarget heoTarget = new FBMacroSolutionTarget(Guid.NewGuid()) { Keyword = "heo", HelpText = "compilation Minimal + tous les modules" };
-            //heoTarget.SolutionTargetIds.AddRange(heoTargetDependencies);
-
-            //Guid[] schematiqueAssisteDependencies = new[] { uasModule.Id, masModule.Id };
-            //FBMacroSolutionTarget schematiqueAssiste = new FBMacroSolutionTarget(Guid.NewGuid()) { Keyword = "sas", HelpText = "compilation de UAS et MAS" };
-            //schematiqueAssiste.SolutionTargetIds.AddRange(schematiqueAssisteDependencies);
-
-            //MacroSolutionTargets.Add(minimalTarget);
-            //MacroSolutionTargets.Add(heoTarget);
-            //MacroSolutionTargets.Add(schematiqueAssiste);
-#endif
         }
 
         public ObservableCollection<FBSolutionTarget> SolutionTargets { get; private set; }

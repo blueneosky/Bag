@@ -10,10 +10,6 @@ using FastBuildGen.Forms.Main;
 
 namespace FastBuildGen
 {
-#warning TODO - do not use a default config => load/save/import into ...
-#warning TODO - import from .sln
-#warning TODO - ALPHA BETA - Undo/Redo
-
     internal static class Program
     {
         /// <summary>
@@ -22,15 +18,6 @@ namespace FastBuildGen
         [STAThread]
         private static void Main()
         {
-            //string solutionPath = @"D:\_Workspaces\HEO\V1\Developpement\ProduitCommercial\ProduitCommercial.sln";
-            //Solution solution = new Solution(solutionPath);
-            //solution.MSBuildCompatibleProjects
-            //    .Select(p => p.ProjectName)
-            //    .ToList()
-            //    .ForEach(t => Debug.WriteLine(t));
-
-            //return;
-
             AppDomain.CurrentDomain.AssemblyResolve += (sender, arg) =>
             {
                 if (arg.Name.StartsWith("BatchGen"))

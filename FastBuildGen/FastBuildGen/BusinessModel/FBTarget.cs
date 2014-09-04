@@ -15,7 +15,6 @@ namespace FastBuildGen.BusinessModel
             _id = id;
         }
 
-
         public string HelpText
         {
             get { return _helpText; }

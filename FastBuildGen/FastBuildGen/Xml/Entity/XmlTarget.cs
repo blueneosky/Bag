@@ -17,7 +17,6 @@ namespace FastBuildGen.Xml.Entity
         [XmlAttribute("Keyword")]
         public string Xml02Keyword { get; set; }
 
-
         [XmlAttribute("HelpText")]
         public string Xml03HelpText { get; set; }
 

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using FastBuildGen.BusinessModel;
-using System.Collections.Generic;
 using FastBuildGen.Common;
 
 namespace FastBuildGen.Xml.Entity
@@ -39,7 +39,7 @@ namespace FastBuildGen.Xml.Entity
 
         internal FBModel Deserializase()
         {
-            FBModel result= new FBModel();
+            FBModel result = new FBModel();
 
             IEnumerable<FBSolutionTarget> solutionTargets = Xml01SolutionTargets
                 .Select(xst => xst.Deserialize());

@@ -168,7 +168,8 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             _projectsListBox.BeginUpdate();
 
             IEnumerable<FBSolutionTarget> solutionTargets = new FBSolutionTarget[0];
-            if ((MacroSolutionTarget != null)){
+            if ((MacroSolutionTarget != null))
+            {
                 solutionTargets = MacroSolutionTarget.SolutionTargetIds
                     .Join(_model.ApplicationModel.FBModel.SolutionTargets, id => id, st => st.Id, (id, st) => st);
             }

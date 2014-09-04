@@ -15,7 +15,6 @@ namespace FastBuildGen.BusinessModel
             _model = model;
         }
 
-
         internal bool DeleteMacroSolutionTarget(Guid id)
         {
             FBModel fbModel = _model.FBModel;

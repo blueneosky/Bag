@@ -34,11 +34,12 @@
             // 
             // _listEditorUserControl
             // 
-            this._listEditorUserControl.AddButtonText = "Add target";
+            this._listEditorUserControl.AddButtonText = "Add macro";
             this._listEditorUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._listEditorUserControl.EditorGroupBoxText = "Target edition";
+            this._listEditorUserControl.DoubleBufferedEx = false;
+            this._listEditorUserControl.EditorGroupBoxText = "Macro edition";
             this._listEditorUserControl.ListColumnName = "Name";
-            this._listEditorUserControl.ListGroupBoxText = "Targets list";
+            this._listEditorUserControl.ListGroupBoxText = "Macros list";
             this._listEditorUserControl.Location = new System.Drawing.Point(0, 0);
             this._listEditorUserControl.Name = "_listEditorUserControl";
             this._listEditorUserControl.Size = new System.Drawing.Size(847, 683);
@@ -46,18 +47,19 @@
             // 
             // _targetEditorUserControl
             // 
+            this._targetEditorUserControl.DoubleBufferedEx = false;
             this._targetEditorUserControl.Location = new System.Drawing.Point(352, 50);
             this._targetEditorUserControl.Name = "_targetEditorUserControl";
             this._targetEditorUserControl.Size = new System.Drawing.Size(363, 417);
             this._targetEditorUserControl.TabIndex = 1;
             // 
-            // TargetsEditorUserControl
+            // MacroSolutionTargetsEditorUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._targetEditorUserControl);
             this.Controls.Add(this._listEditorUserControl);
-            this.Name = "TargetsEditorUserControl";
+            this.Name = "MacroSolutionTargetsEditorUserControl";
             this.Size = new System.Drawing.Size(847, 683);
             this.ResumeLayout(false);
 

@@ -24,7 +24,6 @@ namespace FastBuildGen.BusinessModel
             }
         }
 
-#warning TODO BETA point - think to add this prop in the batch gen !!!
         public bool Enabled
         {
             get { return _enabled; }

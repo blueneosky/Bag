@@ -11,6 +11,10 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
     internal partial class MacroSolutionTargetsEditorUserControl : BaseUserControl
     {
+#warning TODO - ALPHA point - do a better refresh for availlable modules : don't reset position of the list after an add
+        // 2 way : a good refresh by add/remove only the right items
+        // or scroll list after removing the element (bad but fast)
+
         #region Members
 
         private MacroSolutionTargetsEditorController _controller;

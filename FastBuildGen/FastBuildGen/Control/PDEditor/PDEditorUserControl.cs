@@ -156,7 +156,6 @@ namespace FastBuildGen.Control.PDEditor
             EndUpdate();
         }
 
-
         private void RefreshParamDescription()
         {
             BeginUpdate();
@@ -218,7 +217,6 @@ namespace FastBuildGen.Control.PDEditor
             Action action = delegate { _controller.SetKeyword(_keywordTextBox.Text, true); };
             ValidationWithErrorProvider(action, _keywordTextBox, _errorProvider, e, ErrorIconAlignment.MiddleLeft);
         }
-
 
         #endregion User Inputs
     }

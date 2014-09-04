@@ -246,8 +246,6 @@ namespace FastBuildGen.BusinessModel.Old
 
         #endregion Events
 
-
-
         #region Functions
 
         public IParamDescriptionHeoModule AddHeoModuleParam(string name, string keyword)

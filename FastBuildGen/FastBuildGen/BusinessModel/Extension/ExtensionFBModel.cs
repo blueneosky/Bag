@@ -5,7 +5,7 @@ using System.Text;
 
 namespace FastBuildGen.BusinessModel.Extension
 {
-  static  class ExtensionFBModel
+    internal static class ExtensionFBModel
     {
         public static string BaseLabelMacroMSBuildWin32NeedRun(this FBModel model)
         {

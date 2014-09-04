@@ -14,7 +14,7 @@ using FastBuildGen.Xml.Entity;
 
 namespace FastBuildGen.File
 {
-#warning TODO - add error management
+#warning TODO DELTA point - add error management
 
     internal class FBFile : IDisposable
     {
