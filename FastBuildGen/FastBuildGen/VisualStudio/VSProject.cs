@@ -8,7 +8,7 @@ using System.Text;
 namespace FastBuildGen.VisualStudio
 {
     [DebuggerDisplay("{ProjectName}, {RelativePath}, {ProjectGuid}")]
-    public class SolutionProject
+    public class VSProject
     {
         private static readonly Type s_ProjectInSolution;
         private static readonly PropertyInfo s_ProjectInSolution_ProjectName;
@@ -23,7 +23,7 @@ namespace FastBuildGen.VisualStudio
 
         private static readonly MethodInfo s_ProjectInSolution_GetUniqueProjectName;
 
-        static SolutionProject()
+        static VSProject()
         {
             s_ProjectInSolution = Type.GetType("Microsoft.Build.Construction.ProjectInSolution, Microsoft.Build, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", false, false);
             if (s_ProjectInSolution != null)
@@ -52,7 +52,7 @@ namespace FastBuildGen.VisualStudio
 
         public string UniqueProjectName { get; private set; }
 
-        public SolutionProject(object solutionProject)
+        public VSProject(object solutionProject)
         {
             this.ProjectName = s_ProjectInSolution_ProjectName.GetValue(solutionProject, null) as string;
             //this.RelativePath = s_ProjectInSolution_RelativePath.GetValue(solutionProject, null) as string;

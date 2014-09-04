@@ -7,7 +7,7 @@ using System.Text;
 
 namespace FastBuildGen.VisualStudio
 {
-    public class Solution
+    public class VSSolution
     {
         //internal class SolutionParser
         //Name: Microsoft.Build.Construction.SolutionParser
@@ -18,7 +18,7 @@ namespace FastBuildGen.VisualStudio
         private static readonly MethodInfo s_SolutionParser_parseSolution;
         private static readonly PropertyInfo s_SolutionParser_projects;
 
-        static Solution()
+        static VSSolution()
         {
             s_SolutionParser = Type.GetType("Microsoft.Build.Construction.SolutionParser, Microsoft.Build, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", false, false);
             if (s_SolutionParser != null)
@@ -29,9 +29,9 @@ namespace FastBuildGen.VisualStudio
             }
         }
 
-        public List<SolutionProject> Projects { get; private set; }
+        public List<VSProject> Projects { get; private set; }
 
-        public Solution(string solutionFileName)
+        public VSSolution(string solutionFileName)
         {
             if (s_SolutionParser == null)
             {
@@ -43,16 +43,16 @@ namespace FastBuildGen.VisualStudio
                 s_SolutionParser_solutionReader.SetValue(solutionParser, streamReader, null);
                 s_SolutionParser_parseSolution.Invoke(solutionParser, null);
             }
-            var projects = new List<SolutionProject>();
+            var projects = new List<VSProject>();
             var array = (Array)s_SolutionParser_projects.GetValue(solutionParser, null);
             for (int i = 0; i < array.Length; i++)
             {
-                projects.Add(new SolutionProject(array.GetValue(i)));
+                projects.Add(new VSProject(array.GetValue(i)));
             }
             this.Projects = projects;
         }
 
-        public IEnumerable<SolutionProject> MSBuildCompatibleProjects
+        public IEnumerable<VSProject> MSBuildCompatibleProjects
         {
             get { return Projects.Where(p => p.ProjectType == 1); }
         }

@@ -215,8 +215,8 @@
     <Compile Include="Forms\Main\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="VisualStudio\SolutionProject.cs" />
-    <Compile Include="VisualStudio\Solution.cs" />
+    <Compile Include="VisualStudio\VSProject.cs" />
+    <Compile Include="VisualStudio\VSSolution.cs" />
     <Compile Include="Xml\Entity\XmlFastBuild.cs" />
     <Compile Include="Xml\Entity\XmlSolutionTarget.cs" />
     <Compile Include="Xml\Entity\XmlMacroSolutionTarget.cs" />
