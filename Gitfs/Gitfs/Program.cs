@@ -16,6 +16,7 @@ namespace Gitfs
             Env.Projectcollection = "http://obestfsp01:8080/";
             Env.Serverpath = "$/HEO/V1/Developpement/Systeme/Heo.Systeme.Service";
             Env.VerboseMode = true;
+            Env.DryRunMode = true;
 
             //args = "clone -v http://obestfsp01:8080/ $/HEO F:/HEO"
             //.Split(' ');

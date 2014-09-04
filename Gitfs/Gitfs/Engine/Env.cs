@@ -15,9 +15,16 @@ namespace Gitfs.Engine
         private static bool? _withTag = null;
         private static string _projectcollection = null;
         private static string _serverpath = null;
+        private static bool? _dryRune = null;
 
         private static TfsTeamProjectCollection _tfsProjectCollection;
         private static VersionControlServer _versionControlServer;
+
+        public static bool DryRunMode
+        {
+            get { return _dryRune.Value; }
+            set{ _dryRune = value;}
+        }
 
         public static bool VerboseMode
         {

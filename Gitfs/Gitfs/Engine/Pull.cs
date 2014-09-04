@@ -11,6 +11,8 @@ namespace Gitfs.Engine
 {
     internal class Pull : Command
     {
+        private const string ConstGitkeepFileName = ".gitkeep";
+
         private bool VerboseMode { get { return Env.VerboseMode; } }
 
         public override bool Proceed(string[] args)
@@ -164,8 +166,10 @@ namespace Gitfs.Engine
         {
             Change[] changes = changeset.Changes;
 
-            List<Change> addList = new List<Change>(changes.Length);
-            List<Change> removeList = new List<Change>(changes.Length);
+            List<Change> addFilesList = new List<Change>(changes.Length);
+            List<Change> addFoldersList = new List<Change>(changes.Length);
+            List<Change> removeFilesList = new List<Change>(changes.Length);
+            List<Change> removeFoldersList = new List<Change>(changes.Length);
 
             foreach (Change change in changes)
             {
@@ -175,70 +179,159 @@ namespace Gitfs.Engine
                 // <autre>  =>	Add
 
                 ChangeType changeType = change.ChangeType;
+                ItemType itemType = change.Item.ItemType;
+                if (itemType == ItemType.Any)
+                    return false;
+
                 if (changeType.HasFlag(ChangeType.Delete))
                 {
                     // delete
-                    removeList.Add(change);
+                    if (itemType == ItemType.File)
+                    {
+                        removeFilesList.Add(change);
+                    }
+                    else
+                    {
+                        removeFoldersList.Add(change);
+                    }
                 }
                 else if (changeType.HasFlag(ChangeType.Undelete))
                 {
                     // undelete
-                    addList.Add(change);
+                    if (itemType == ItemType.File)
+                    {
+                        addFilesList.Add(change);
+                    }
+                    else
+                    {
+                        addFoldersList.Add(change);
+                    }
                 }
                 else if (changeType.HasFlag(ChangeType.Rename))
                 {
                     // rename
-                    Item item = change.Item;
-                    VersionSpec versionSpec = VersionSpec.ParseSingleSpec(""+changeset.ChangesetId, changeset.Committer);
-                    //Env.VersionControlServer.
-
-                    Changeset previousChangeset = Env.VersionControlServer.QueryHistory(
-                        item.ServerItem
-                        , versionSpec
-                        , item.DeletionId
-                        , RecursionType.None
-                        , null  // any user
-                        , null  // from the begining
-                        , versionSpec //versionSpec
-                        , Int32.MaxValue
-                        , true
-                        , false)
-                        .Cast<Changeset>()
-                        .Skip(1)    // first point to versionSpec
-                        .FirstOrDefault();
-                    if (previousChangeset == null)
-                        return false;
-                    Change previousChange = previousChangeset.Changes
-                        .Where(c => c.Item.ItemId == item.ItemId)
-                        .FirstOrDefault();
+                    Change previousChange = GetPreviousChange(change);
                     if (previousChange == null)
                         return false;
 
-                    removeList.Add(previousChange);
-                    addList.Add(change);
+                    if (itemType == ItemType.File)
+                    {
+                        removeFilesList.Add(previousChange);
+                        addFilesList.Add(change);
+                    }
+                    else
+                    {
+                        removeFoldersList.Add(previousChange);
+                        addFoldersList.Add(change);
+                    }
                 }
                 else
                 {
                     // other
-                    addList.Add(change);
+                    if (itemType == ItemType.File)
+                    {
+                        addFilesList.Add(change);
+                    }
+                    else
+                    {
+                        addFoldersList.Add(change);
+                    }
                 }
             }
 
-#warning TODO ALPHA ALPHA point
-            foreach (Change change in removeList)
+            bool dryRunMode = Env.DryRunMode;
+            // delete files
+            foreach (Change change in removeFilesList)
             {
-                var dummy = 1;
+                if (dryRunMode)
+                {
+                    Output.WriteLine("Remove File : " + change.Item.ServerItem);
+                }
+                else
+                {
+#warning TODO ALPHA ALPHA point
+
+                }
             }
 
-            foreach (Change change in addList)
+            // delete folders
+            foreach (Change change in removeFoldersList.OrderByDescending(c => c.Item.ServerItem.Length))
             {
+                if (dryRunMode)
+                {
+                    Output.WriteLine("Remove File : " + change.Item.ServerItem + ConstGitkeepFileName);
+                    Output.WriteLine("Remove Folder : " + change.Item.ServerItem);
+                }
+                else
+                {
+#warning TODO ALPHA ALPHA point
 
+                }
+            }
+
+            // add folders
+            foreach (Change change in addFoldersList.OrderBy(c => c.Item.ServerItem.Length))
+            {
+                if (dryRunMode)
+                {
+                    Output.WriteLine("Add Folder : " + change.Item.ServerItem);
+                    Output.WriteLine("Add File : " + change.Item.ServerItem + ConstGitkeepFileName);
+                }
+                else
+                {
+#warning TODO ALPHA ALPHA point
+
+                }
+            }
+
+            // add files
+            foreach (Change change in addFilesList)
+            {
+                if (dryRunMode)
+                {
+                    Output.WriteLine("Add File : " + change.Item.ServerItem);
+                }
+                else
+                {
+#warning TODO ALPHA ALPHA point
+
+                }
             }
 
             return true;
         }
 
         #endregion CheckoutFromTfsAndCommit
+
+        private Change GetPreviousChange(Change change)
+        {
+            Item item = change.Item;
+            VersionSpec versionSpec = VersionSpec.ParseSingleSpec(Convert.ToString(item.ChangesetId), null);
+
+            Changeset previousChangeset = Env.VersionControlServer.QueryHistory(
+                item.ServerItem
+                , versionSpec
+                , item.DeletionId
+                , RecursionType.None
+                , null  // any user
+                , null  // from the begining
+                , versionSpec //versionSpec
+                , Int32.MaxValue
+                , true
+                , false)
+                .Cast<Changeset>()
+                .Skip(1)    // first point to versionSpec
+                .FirstOrDefault();
+            if (previousChangeset == null)
+                return null;
+            Change previousChange = previousChangeset.Changes
+                .Where(c => c.Item.ItemId == item.ItemId)
+                .FirstOrDefault();
+            if (previousChange == null)
+                return null;
+
+            return previousChange;
+        }
 
         private IEnumerable<int> GetAllChangesets()
         {
@@ -275,6 +368,7 @@ namespace Gitfs.Engine
 
         private bool ExtractArgs(ref string[] args)
         {
+            bool? _dryRunMode = null;
             bool? _verboseMode = null;
             bool? _deepMode = null;
 
@@ -286,6 +380,10 @@ namespace Gitfs.Engine
                 {
                     switch (arg)
                     {
+                        case "--dry-run":
+                            _dryRunMode = _dryRunMode ?? true;
+                            break;
+
                         case "-v":
                         case "--verbose":
                             _verboseMode = _verboseMode ?? true;
@@ -320,7 +418,8 @@ namespace Gitfs.Engine
             Directory.SetCurrentDirectory(rootPath);
 
             Env.LoadFromGitConfig();
-            Env.VerboseMode = _verboseMode ?? false;   // default value
+            Env.DryRunMode = _dryRunMode ?? false;      // default value
+            Env.VerboseMode = _verboseMode ?? false;    // default value
             if (_deepMode.HasValue)
                 Env.DeepMode = _deepMode.Value;
 
@@ -354,6 +453,7 @@ namespace Gitfs.Engine
                 .AppendLine("usage: git-tfs pull [--verbose|-v] [--deep|--shallow]")
                 .AppendLine("")
                 .AppendLine("Arguments:")
+                .AppendLine("    --dry-run             show all operations without write anythings (default: none)")
                 .AppendLine("    --verbose, -v         Verbose mode (default: none)")
                 .AppendLine("    --deep, --shallow     Performs a shallow fetch of the specified depth, or a deep fetch of all TFS changesets since the last fetch. If omitted, the depth value provided during clone or configure is used.")
                 .AppendLine("")
