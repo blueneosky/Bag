@@ -19,6 +19,7 @@ namespace Gitfs.Util
         private const string ConstLog = "log";
         private const string ConstRevParse = "rev-parse";
         private const string ConstCommit = "commit";
+        private const string ConstTag = "tag";
 
         private const string ConstBaseConfigName = "tfs.";
         private const string ConstConfigLastChangeset = "lastchangeset";
@@ -206,6 +207,16 @@ namespace Gitfs.Util
 
             string output;
             int success = LaunchGit(out output, ConstCommit, dateParam, userParam, messageParam);
+
+            return success == 0;
+        }
+
+        internal static bool Tag(string tagName)
+        {
+            string tagParam = tagName.Replace(" ", "_");
+
+            string outpu;
+            int success = LaunchGit(out outpu, ConstTag, tagParam);
 
             return success == 0;
         }

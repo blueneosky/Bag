@@ -158,13 +158,25 @@ namespace Gitfs.Engine
             }
 
             Changeset lastChangeset = changesets.Last();
-            int changesetId = lastChangeset.ChangesetId;
             string commiter = lastChangeset.Committer;
             DateTime date = lastChangeset.CreationDate;
             string comment = lastChangeset.Comment;
             UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
 
+            // commit
             success = GitHelper.Commit(comment, date, commiterInfo.GitAuthor);
+            if (false == success)
+                return false;
+
+            if (Env.WithTag)
+            {
+                // tag
+                int changesetId = lastChangeset.ChangesetId;
+                string tagName = String.Format("tfs_C{1}", changesetId);
+                success = GitHelper.Tag(tagName);
+                if (false == success)
+                    return false;
+            }
 
             return success;
         }
