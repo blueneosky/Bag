@@ -71,7 +71,7 @@ namespace Gitfs.Engine
                 string commiter = changeset.Committer;
                 DateTime date = changeset.CreationDate;
                 string comment = changeset.Comment;
-                ActiveDirectoryHelper.UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
+                UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
 
                 if (VerboseMode)
                 {
@@ -161,9 +161,9 @@ namespace Gitfs.Engine
             string commiter = lastChangeset.Committer;
             DateTime date = lastChangeset.CreationDate;
             string comment = lastChangeset.Comment;
-            ActiveDirectoryHelper.UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
-            
-            GitHelper.Commit()
+            UserDomainInfo commiterInfo = ActiveDirectoryHelper.GetUserDomainInfo(commiter);
+
+            //GitHelper.Commit();
 
             return false;
 #warning TODO ALPHA ALPHA point

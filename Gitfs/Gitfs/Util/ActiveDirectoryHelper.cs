@@ -16,7 +16,31 @@ namespace Gitfs.Util
 
         public static UserDomainInfo GetUserDomainInfo(string userAccount)
         {
-            string account = userAccount.Split('/', '\\').LastOrDefault();
+            UserDomainInfo info = GetUserDomainInfoCore(userAccount);
+
+            if (info == null)
+            {
+                // fallback
+                info = GetUserDomainInfoCore(Environment.UserName);
+
+                string emailServer = info.Email.Split('@').LastOrDefault();
+                if (String.IsNullOrEmpty(emailServer))
+                    emailServer = "nop.com";
+
+                string account = GetAccountFromUserAccount(userAccount);
+                info.FirstName = account;
+                info.LastName = null;
+                info.Email = String.Concat(account, "@", emailServer);
+            }
+
+            _userDomainInfoByUserAccount[userAccount] = info;   // update cache
+
+            return info;
+        }
+
+        private static UserDomainInfo GetUserDomainInfoCore(string userAccount)
+        {
+            string account = GetAccountFromUserAccount(userAccount);
 
             UserDomainInfo info = null;
 
@@ -52,47 +76,13 @@ namespace Gitfs.Util
             }
             catch (Exception) { }
 
-            if (info == null)
-            {
-                // fallback
-                info = new UserDomainInfo
-                {
-                    FirstName = account,
-                    Email = String.Empty,
-                };
-            }
-
-            _userDomainInfoByUserAccount[userAccount] = info;   // update cache
-
             return info;
         }
 
-        public class UserDomainInfo
+        private static string GetAccountFromUserAccount(string userAccount)
         {
-            public string FirstName { get; set; }
-
-            public string LastName { get; set; }
-
-            public string Email { get; set; }
-
-            public string ComposedName
-            {
-                get
-                {
-                    bool noFirstName = String.IsNullOrEmpty(FirstName);
-                    bool noLastName = String.IsNullOrEmpty(LastName);
-
-                    StringBuilder sb = new StringBuilder();
-                    if (noFirstName && noLastName)
-                        return "anonymous";
-                    if (noLastName)
-                        return FirstName;
-                    if (noFirstName)
-                        return LastName;
-
-                    return String.Concat(FirstName, " ", LastName);
-                }
-            }
+            string account = userAccount.Split('/', '\\').LastOrDefault();
+            return account;
         }
     }
 }

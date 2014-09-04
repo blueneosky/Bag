@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+
+using System.IO;
+
 using System.Linq;
 using System.Text;
-using System.IO;
 
 namespace Gitfs.Util
 {
@@ -14,6 +18,7 @@ namespace Gitfs.Util
         private const string ConstInit = "init";
         private const string ConstLog = "log";
         private const string ConstRevParse = "rev-parse";
+        private const string ConstCommit = "commit";
 
         private const string ConstBaseConfigName = "tfs.";
         private const string ConstConfigLastChangeset = "lastchangeset";
@@ -25,9 +30,12 @@ namespace Gitfs.Util
 
         public static string LastOutput { get; private set; }
 
-        public static int Launch(out string standarOutput, string command, params string[] args)
+        public static int LaunchGit(out string standarOutput, string gitCommand, params string[] args)
         {
-            int success = ProcessHelper.Launch(out standarOutput, command, args);
+            string[] processArgs = new[] { gitCommand }
+                .Concat(args)
+                .ToArray();
+            int success = ProcessHelper.Launch(out standarOutput, ConstGit, processArgs);
 
             LastOutput = standarOutput;
             return success;
@@ -44,7 +52,7 @@ namespace Gitfs.Util
         public static bool IsCleanHead()
         {
             string output;
-            int success = Launch(out output, ConstGit, ConstStatus, "-s");
+            int success = LaunchGit(out output, ConstStatus, "-s");
 
             if (success != 0)
                 return false;
@@ -57,7 +65,7 @@ namespace Gitfs.Util
         public static bool GitInit(string directory)
         {
             string output;
-            int success = Launch(out output, ConstGit, ConstInit, "-q", directory);
+            int success = LaunchGit(out output, ConstInit, "-q", directory);
 
             if (success != 0)
                 return false;
@@ -70,7 +78,7 @@ namespace Gitfs.Util
         private static void ConfigSetLocal(string key, string value)
         {
             string output;
-            Launch(out output, ConstGit, ConstConfig, "--local", "--replace-all", ConstBaseConfigName + key, value);
+            LaunchGit(out output, ConstConfig, "--local", "--replace-all", ConstBaseConfigName + key, value);
         }
 
         private static void ConfigSetLocal(string key, int value)
@@ -86,7 +94,7 @@ namespace Gitfs.Util
         private static string ConfigGetLocal(string key)
         {
             string output;
-            int success = Launch(out output, ConstGit, ConstConfig, "--local", "--get", ConstBaseConfigName + key);
+            int success = LaunchGit(out output, ConstConfig, "--local", "--get", ConstBaseConfigName + key);
             if (success != 0)
                 return null;
 
@@ -166,7 +174,7 @@ namespace Gitfs.Util
         public static string GetLastCommit()
         {
             string value;
-            int success = Launch(out value, ConstGit, ConstLog, "--format=\"%H\"", "-n", "1");
+            int success = LaunchGit(out value, ConstLog, "--format=\"%H\"", "-n", "1");
             if (success != 0)
                 return null;
 
@@ -185,14 +193,28 @@ namespace Gitfs.Util
 
         public static bool GetRootPath(out string rootPath)
         {
-            int succes = Launch(out rootPath, ConstGit, ConstRevParse, "--show-toplevel");
+            int succes = LaunchGit(out rootPath, ConstRevParse, "--show-toplevel");
 
             return succes == 0;
         }
 
-        internal static bool Commit()
+        internal static bool Commit(string message, DateTime dateTime, string author)
         {
-#warning TODO ALPHA ALPHA ALPHA point
+            string dateParam = String.Format("--date=\"{0}\"", GetDateGit(dateTime));
+            string userParam = String.Format("--author=\"{0}\"", author);
+            string messageParam = String.Format("--message=\"{0}\"", message.Replace("\"", "\\\""));
+
+            string output;
+            int success = LaunchGit(out output, ConstCommit, dateParam, userParam, messageParam);
+
+            return success == 0;
+        }
+
+        private static string GetDateGit(DateTime dateTime)
+        {
+            string result = dateTime.ToString("ddd, dd MMM yyyy HH:mm:ss K", CultureInfo.InvariantCulture);
+
+            return result;
         }
     }
 }
