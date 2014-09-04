@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.Common;
 using FastBuildGen.File;
+using FastBuildGen.VisualStudio;
 
 namespace FastBuildGen.Forms.Main
 {
@@ -57,9 +59,6 @@ namespace FastBuildGen.Forms.Main
         internal bool SaveFBModelBeforeClosing()
         {
             // no change
-            if ((_model.ApplicationModel.FBModel == null) || (false == _model.FastBuildDataChanged))
-                return false;
-
             if (_model.ApplicationModel.FBModel == null)
                 return true;
 
@@ -76,12 +75,10 @@ namespace FastBuildGen.Forms.Main
             if (dialogResult == DialogResult.Cancel)
                 return false;
 
-            if (dialogResult == DialogResult.Yes)
-            {
-                SaveFBModelCore();
-            }
+            if (dialogResult == DialogResult.No)
+                return true;
 
-            return true;
+            return SaveFBModelCore();
         }
 
         #region Private
@@ -140,14 +137,38 @@ namespace FastBuildGen.Forms.Main
 
         private bool MergeWithSlnFileCore(string solutionFilePath)
         {
-#warning TODO ALPHA point - bonus - check if modele get new file name or not ...
-            //bool success = new FastBuildImportMergeController(_fastBuildModel).ImportWithMerge(configFilePath);
+            VSSolution solution = new VSSolution(solutionFilePath);
+            FBModel fbModel = _model.ApplicationModel.FBModel;
+            foreach (VSProject project in solution.MSBuildCompatibleProjects)
+            {
+                Guid id = project.ProjectGuid;
+                FBSolutionTarget solutionTarget = fbModel.SolutionTargets.FirstOrDefault(st => st.Id == id);
+                if (solutionTarget != null)
+                {
+                    // update target
+                    solutionTarget.MSBuildTarget = project.UniqueProjectName;
+                }
+                else
+                {
+                    if (null != fbModel.AllTargets.FirstOrDefault(st => st.Id == id))
+                        throw new FastBuildGenException("VSProject Guid used by something else - try create a new project.");
 
-            //return success;
-            return false;
+                    // create new target
+                    solutionTarget = new FBSolutionTarget(id)
+                    {
+                        Keyword = project.UniqueProjectName,
+                        MSBuildTarget = project.UniqueProjectName,
+                        HelpText = project.UniqueProjectName,
+                        Enabled = false,
+                    };
+                    fbModel.SolutionTargets.Add(solutionTarget);
+                }
+            }
+
+            return true;
         }
 
-        private void SaveFBModelCore()
+        private bool SaveFBModelCore()
         {
             try
             {
@@ -159,7 +180,7 @@ namespace FastBuildGen.Forms.Main
                         dialog.Filter = ConstDialogFilterFBFileExt;
                         DialogResult dresult = dialog.ShowDialog();
                         if (dresult != DialogResult.OK)
-                            return;
+                            return false;
                         filePath = dialog.FileName;
                         _model.FilePath = filePath;
                     }
@@ -170,6 +191,8 @@ namespace FastBuildGen.Forms.Main
             {
                 MessageBox.Show(e.Message);
             }
+
+            return true;
         }
 
         private bool SaveAsFBModelCore()

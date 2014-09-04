@@ -95,6 +95,7 @@ namespace FastBuildGen.BusinessModel
                 default:
                     break;
             }
+            DataChanged = true;
         }
 
         private void _fbModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

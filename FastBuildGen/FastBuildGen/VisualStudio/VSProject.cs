@@ -14,7 +14,7 @@ namespace FastBuildGen.VisualStudio
         private static readonly PropertyInfo s_ProjectInSolution_ProjectName;
 
         //static readonly PropertyInfo s_ProjectInSolution_RelativePath;
-        //static readonly PropertyInfo s_ProjectInSolution_ProjectGuid;
+        static readonly PropertyInfo s_ProjectInSolution_ProjectGuid;
         //static readonly PropertyInfo s_ProjectInSolution_Dependencies;
         //static readonly PropertyInfo s_ProjectInSolution_AbsolutePath;
         //static readonly PropertyInfo s_ProjectInSolution_ParentProjectGuid;
@@ -30,7 +30,7 @@ namespace FastBuildGen.VisualStudio
             {
                 s_ProjectInSolution_ProjectName = s_ProjectInSolution.GetProperty("ProjectName", BindingFlags.NonPublic | BindingFlags.Instance);
                 //s_ProjectInSolution_RelativePath = s_ProjectInSolution.GetProperty("RelativePath", BindingFlags.NonPublic | BindingFlags.Instance);
-                //s_ProjectInSolution_ProjectGuid = s_ProjectInSolution.GetProperty("ProjectGuid", BindingFlags.NonPublic | BindingFlags.Instance);
+                s_ProjectInSolution_ProjectGuid = s_ProjectInSolution.GetProperty("ProjectGuid", BindingFlags.NonPublic | BindingFlags.Instance);
                 //s_ProjectInSolution_Dependencies = s_ProjectInSolution.GetProperty("Dependencies", BindingFlags.NonPublic | BindingFlags.Instance);
                 //s_ProjectInSolution_AbsolutePath = s_ProjectInSolution.GetProperty("AbsolutePath", BindingFlags.NonPublic | BindingFlags.Instance);
                 //s_ProjectInSolution_ParentProjectGuid = s_ProjectInSolution.GetProperty("ParentProjectGuid", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -43,7 +43,7 @@ namespace FastBuildGen.VisualStudio
         public string ProjectName { get; private set; }
 
         //public string RelativePath { get; private set; }
-        //public string ProjectGuid { get; private set; }
+        public Guid ProjectGuid { get; private set; }
         //public IEnumerable<string> Dependencies { get; private set; }
         //public string AbsolutePath { get; private set; }
         //public string ParentProjectGuid { get; private set; }
@@ -56,7 +56,7 @@ namespace FastBuildGen.VisualStudio
         {
             this.ProjectName = s_ProjectInSolution_ProjectName.GetValue(solutionProject, null) as string;
             //this.RelativePath = s_ProjectInSolution_RelativePath.GetValue(solutionProject, null) as string;
-            //this.ProjectGuid = s_ProjectInSolution_ProjectGuid.GetValue(solutionProject, null) as string;
+            this.ProjectGuid = new Guid(s_ProjectInSolution_ProjectGuid.GetValue(solutionProject, null) as string);
             //this.Dependencies = (s_ProjectInSolution_Dependencies.GetValue(solutionProject, null) as ArrayList).OfType<string>().ToArray();
             //this.AbsolutePath = s_ProjectInSolution_AbsolutePath.GetValue(solutionProject, null) as string;
             //this.ParentProjectGuid = s_ProjectInSolution_ParentProjectGuid.GetValue(solutionProject, null) as string;
