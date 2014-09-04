@@ -48,8 +48,8 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             _model.PropertyChanged += _model_PropertyChanged;
             _pdEditorUserControl.Initialize(pdEditorModel, pdEditorController);
 
-            UpdateTarget();
-            RefreshAvailableModules();
+            UpdateSolutionTargets();
+            RefreshAvailableSolutionTargets();
         }
 
         #endregion ctor
@@ -100,11 +100,11 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             switch (e.PropertyName)
             {
                 case ConstMacroSolutionTargetEditorModelEvent.ConstMacroSolutionTarget:
-                    UpdateTarget();
+                    UpdateSolutionTargets();
                     break;
 
                 case ConstMacroSolutionTargetEditorModelEvent.ConstAvailableSolutionTargets:
-                    RefreshAvailableModules();
+                    RefreshAvailableSolutionTargets();
                     break;
 
                 default:
@@ -133,7 +133,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         #region Modele Update
 
-        private void UpdateTarget()
+        private void UpdateSolutionTargets()
         {
             MacroSolutionTarget = _model.MacroSolutionTarget;
 
@@ -144,7 +144,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         #region UI Update
 
-        private void RefreshAvailableModules()
+        private void RefreshAvailableSolutionTargets()
         {
             BeginUpdate();
             _availableListBox.BeginUpdate();
@@ -165,7 +165,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         private void RefreshDependecies()
         {
             BeginUpdate();
-            _modulesListBox.BeginUpdate();
+            _projectsListBox.BeginUpdate();
 
             IEnumerable<FBSolutionTarget> solutionTargets = new FBSolutionTarget[0];
             if ((MacroSolutionTarget != null)){
@@ -173,14 +173,14 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
                     .Join(_model.ApplicationModel.FBModel.SolutionTargets, id => id, st => st.Id, (id, st) => st);
             }
 
-            _modulesListBox.Items.Clear();
+            _projectsListBox.Items.Clear();
             object[] items = solutionTargets
                 .Select(m => new SolutionTargetItem(m))
                 .OrderBy(m => m.ToString())
                 .ToArray();
-            _modulesListBox.Items.AddRange(items);
+            _projectsListBox.Items.AddRange(items);
 
-            _modulesListBox.EndUpdate();
+            _projectsListBox.EndUpdate();
             EndUpdate();
         }
 
@@ -219,7 +219,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             if (IsUpdating)
                 return;
 
-            SolutionTargetItem item = _modulesListBox.SelectedItem as SolutionTargetItem;
+            SolutionTargetItem item = _projectsListBox.SelectedItem as SolutionTargetItem;
             if (item == null)
                 return;
             FBSolutionTarget solutionTarget = item.Value;

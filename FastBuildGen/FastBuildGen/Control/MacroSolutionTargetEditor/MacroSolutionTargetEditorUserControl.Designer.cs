@@ -34,7 +34,7 @@
             this._availableListBox = new System.Windows.Forms.ListBox();
             this._modulesGroupBox = new System.Windows.Forms.GroupBox();
             this._modulesPanel = new System.Windows.Forms.Panel();
-            this._modulesListBox = new System.Windows.Forms.ListBox();
+            this._projectsListBox = new System.Windows.Forms.ListBox();
             this._pdEditorUserControl = new FastBuildGen.Control.PDEditor.PDEditorUserControl();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -72,7 +72,7 @@
             this._availableGroupBox.Size = new System.Drawing.Size(344, 434);
             this._availableGroupBox.TabIndex = 0;
             this._availableGroupBox.TabStop = false;
-            this._availableGroupBox.Text = "Available modules";
+            this._availableGroupBox.Text = "Available projects";
             // 
             // _availablePanel
             // 
@@ -104,44 +104,45 @@
             this._modulesGroupBox.Size = new System.Drawing.Size(350, 434);
             this._modulesGroupBox.TabIndex = 0;
             this._modulesGroupBox.TabStop = false;
-            this._modulesGroupBox.Text = "Target\'s modules";
+            this._modulesGroupBox.Text = "Projects build for this macro";
             // 
             // _modulesPanel
             // 
             this._modulesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this._modulesPanel.Controls.Add(this._modulesListBox);
+            this._modulesPanel.Controls.Add(this._projectsListBox);
             this._modulesPanel.Location = new System.Drawing.Point(6, 19);
             this._modulesPanel.Name = "_modulesPanel";
             this._modulesPanel.Size = new System.Drawing.Size(338, 409);
             this._modulesPanel.TabIndex = 1;
             // 
-            // _modulesListBox
+            // _projectsListBox
             // 
-            this._modulesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._modulesListBox.FormattingEnabled = true;
-            this._modulesListBox.Location = new System.Drawing.Point(0, 0);
-            this._modulesListBox.Name = "_modulesListBox";
-            this._modulesListBox.Size = new System.Drawing.Size(338, 409);
-            this._modulesListBox.TabIndex = 0;
-            this._modulesListBox.DoubleClick += new System.EventHandler(this._modulesListBox_DoubleClick);
+            this._projectsListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._projectsListBox.FormattingEnabled = true;
+            this._projectsListBox.Location = new System.Drawing.Point(0, 0);
+            this._projectsListBox.Name = "_projectsListBox";
+            this._projectsListBox.Size = new System.Drawing.Size(338, 409);
+            this._projectsListBox.TabIndex = 0;
+            this._projectsListBox.DoubleClick += new System.EventHandler(this._modulesListBox_DoubleClick);
             // 
             // _pdEditorUserControl
             // 
             this._pdEditorUserControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this._pdEditorUserControl.DoubleBufferedEx = false;
             this._pdEditorUserControl.Location = new System.Drawing.Point(0, 0);
             this._pdEditorUserControl.Name = "_pdEditorUserControl";
             this._pdEditorUserControl.Size = new System.Drawing.Size(698, 186);
             this._pdEditorUserControl.TabIndex = 0;
             // 
-            // TargetEditorUserControl
+            // MacroSolutionTargetEditorUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._splitContainer);
             this.Controls.Add(this._pdEditorUserControl);
-            this.Name = "TargetEditorUserControl";
+            this.Name = "MacroSolutionTargetEditorUserControl";
             this.Size = new System.Drawing.Size(698, 620);
             this._splitContainer.Panel1.ResumeLayout(false);
             this._splitContainer.Panel2.ResumeLayout(false);
@@ -162,7 +163,7 @@
         private System.Windows.Forms.GroupBox _availableGroupBox;
         private System.Windows.Forms.GroupBox _modulesGroupBox;
         private System.Windows.Forms.ListBox _availableListBox;
-        private System.Windows.Forms.ListBox _modulesListBox;
+        private System.Windows.Forms.ListBox _projectsListBox;
         private System.Windows.Forms.Panel _availablePanel;
         private System.Windows.Forms.Panel _modulesPanel;
     }

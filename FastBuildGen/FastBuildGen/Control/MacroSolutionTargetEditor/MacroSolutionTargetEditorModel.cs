@@ -20,8 +20,8 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         public MacroSolutionTargetEditorModel(ApplicationModel applicationModel)
         {
             _applicationModel = applicationModel;
-#warning TODO BETA point - event mangmt
-            //_applicationModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;
+
+            _applicationModel.PropertyChanged += _applicationModel_PropertyChanged;
 
             UpdateAvailableSolutionTargets();
         }
@@ -50,6 +50,25 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             get { return _applicationModel; }
         }
 
+        private FBModel _fbModel;
+
+        public FBModel FBModel
+        {
+            get { return _fbModel; }
+            set
+            {
+                if (_fbModel != null)
+                {
+                    _fbModel.SolutionTargets.CollectionChanged -= _fbModel_SolutionTargets_CollectionChanged;
+                }
+                _fbModel = value;
+                if (_fbModel != null)
+                {
+                    _fbModel.SolutionTargets.CollectionChanged += _fbModel_SolutionTargets_CollectionChanged;
+                }
+            }
+        }
+
         public FBMacroSolutionTarget MacroSolutionTarget
         {
             get { return _macroSolutionTarget; }
@@ -59,14 +78,12 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
                     return;
                 if (_macroSolutionTarget != null)
                 {
-#warning TODO BETA point - event mangmt
-                    //_macroSolutionTarget.DependenciesChanged -= _target_DependenciesChanged;
+                    _macroSolutionTarget.SolutionTargetIds.CollectionChanged -= _macroSolutionTarget_SolutionTargetIds_CollectionChanged;
                 }
                 _macroSolutionTarget = value;
                 if (_macroSolutionTarget != null)
                 {
-#warning TODO BETA point - event mangmt
-                    //_macroSolutionTarget.DependenciesChanged += _target_DependenciesChanged;
+                    _macroSolutionTarget.SolutionTargetIds.CollectionChanged += _macroSolutionTarget_SolutionTargetIds_CollectionChanged;
                 }
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMacroSolutionTargetEditorModelEvent.ConstMacroSolutionTarget));
                 UpdateAvailableSolutionTargets();
@@ -77,14 +94,28 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         #region Model events
 
-        private void _fastBuildParamModel_HeoModuleParamsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void _fbModel_SolutionTargets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdateAvailableSolutionTargets();
         }
 
-        private void _target_DependenciesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void _macroSolutionTarget_SolutionTargetIds_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdateAvailableSolutionTargets();
+        }
+
+        private void _applicationModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case ConstFBEvent.ConstApplicationModelFBModel:
+                    UpdateFBModel();
+                    break;
+
+                default:
+                    // ignored
+                    break;
+            }
         }
 
         #endregion Model events
@@ -103,6 +134,12 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             }
 
             AvailableSolutionTargets = availableSolutionTargets;
+        }
+
+        private void UpdateFBModel()
+        {
+            FBModel = _applicationModel.FBModel;
+            UpdateAvailableSolutionTargets();
         }
 
         #endregion Updates

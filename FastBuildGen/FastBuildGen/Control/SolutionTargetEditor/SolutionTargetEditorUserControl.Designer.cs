@@ -86,9 +86,9 @@
             this._enabledLabel.AutoSize = true;
             this._enabledLabel.Location = new System.Drawing.Point(3, 35);
             this._enabledLabel.Name = "_enabledLabel";
-            this._enabledLabel.Size = new System.Drawing.Size(45, 13);
+            this._enabledLabel.Size = new System.Drawing.Size(48, 13);
             this._enabledLabel.TabIndex = 2;
-            this._enabledLabel.Text = "Platform";
+            this._enabledLabel.Text = "Exposed";
             // 
             // _enabledCheckBox
             // 
