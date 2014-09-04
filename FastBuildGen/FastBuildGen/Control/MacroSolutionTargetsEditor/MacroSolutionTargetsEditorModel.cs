@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
@@ -16,15 +17,33 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
         {
             _applicationModel = applicationModel;
 
-#warning TODO Beta point - review event mngmt
-            //_applicationModel.HeoTargetParamsChanged += _fastBuildParamModel_HeoTargetParamsChanged;
+            _applicationModel.PropertyChanged += _applicationModel_PropertyChanged;
 
-            UpdateTargets();
+            UpdateMacroSolutionTargets();
         }
 
         public ApplicationModel ApplicationModel
         {
             get { return _applicationModel; }
+        }
+
+        private FBModel _fbModel;
+
+        public FBModel FBModel
+        {
+            get { return _fbModel; }
+            set
+            {
+                if (_fbModel != null)
+                {
+                    _fbModel.MacroSolutionTargets.CollectionChanged -= _fbModel_MacroSolutionTargets_CollectionChanged;
+                }
+                _fbModel = value;
+                if (_fbModel != null)
+                {
+                    _fbModel.MacroSolutionTargets.CollectionChanged += _fbModel_MacroSolutionTargets_CollectionChanged;
+                }
+            }
         }
 
         public FBMacroSolutionTarget MacroSolutionTargetSelected
@@ -38,26 +57,45 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
             }
         }
 
-        private void _fastBuildParamModel_HeoTargetParamsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void _applicationModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UpdateTargets();
+            switch (e.PropertyName)
+            {
+                case ConstFBEvent.ConstApplicationModelFBModel:
+                    UpdateFBModel();
+                    break;
+
+                default:
+                    // ignored
+                    break;
+            }
         }
 
-        private void UpdateTargets()
+        private void _fbModel_MacroSolutionTargets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            FBModel fbModel = _applicationModel.FBModel;
-            IEnumerable<FBMacroSolutionTarget> macroSolutionTargets;
+            UpdateMacroSolutionTargets();
+        }
+
+        private void UpdateFBModel()
+        {
+            FBModel = _applicationModel.FBModel;
+            UpdateMacroSolutionTargets();
+        }
+
+        private void UpdateMacroSolutionTargets()
+        {
+            FBModel fbModel = FBModel;
+            IEnumerable<MacroSolutionTargetElement> elements;
             if (fbModel != null)
             {
-                macroSolutionTargets = fbModel.MacroSolutionTargets;
+                elements = fbModel.MacroSolutionTargets
+                    .Select(t => new MacroSolutionTargetElement(t));
             }
             else
             {
-                macroSolutionTargets = new FBMacroSolutionTarget[0];
+                elements = null;
             }
 
-            IEnumerable<MacroSolutionTargetElement> elements = macroSolutionTargets
-                .Select(t => new MacroSolutionTargetElement(t));
             Elements = elements;
         }
     }

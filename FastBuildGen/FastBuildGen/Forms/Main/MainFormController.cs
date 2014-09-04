@@ -247,7 +247,7 @@ namespace FastBuildGen.Forms.Main
                     _model.ApplicationModel.DataChanged = false;
                 }
             }
-            catch (FBFileException e)
+            catch (FBFileException)
             {
                 MessageBox.Show("Corrupted file or not a FastBuild file");
             }

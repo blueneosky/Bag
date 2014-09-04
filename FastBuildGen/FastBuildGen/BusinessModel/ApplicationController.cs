@@ -15,17 +15,6 @@ namespace FastBuildGen.BusinessModel
             _model = model;
         }
 
-        internal void SaveFastBuildConfig(string configFilePath)
-        {
-#warning TODO DELTA point - not necessary to keep it
-            throw new System.NotImplementedException();
-        }
-
-        internal bool LoadFastBuildConfig(string configFilePath)
-        {
-#warning TODO DELTA point - not necessary to keep it
-            throw new System.NotImplementedException();
-        }
 
         internal bool DeleteMacroSolutionTarget(Guid id)
         {
@@ -52,6 +41,8 @@ namespace FastBuildGen.BusinessModel
 
             FBMacroSolutionTarget macroSolutionTarget = new FBMacroSolutionTarget(Guid.NewGuid());
             macroSolutionTarget.Keyword = preferedKeyword;
+
+            fbModel.MacroSolutionTargets.Add(macroSolutionTarget);
 
             return macroSolutionTarget;
         }

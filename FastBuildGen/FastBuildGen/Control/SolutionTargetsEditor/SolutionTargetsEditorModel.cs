@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
@@ -16,10 +17,9 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         {
             _applicationModel = applicationModel;
 
-#warning TODO DELTA point - review code for event mngmt
-            //_applicationModel.HeoModuleParamsChanged += _fastBuildParamModel_HeoModuleParamsChanged;
+            _applicationModel.PropertyChanged += _applicationModel_PropertyChanged;
 
-            UpdateModules();
+            UpdateSolutionTargets();
 
             AddEnabled = false;
             RemoveEnabled = false;
@@ -28,6 +28,25 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         public ApplicationModel ApplicationModel
         {
             get { return _applicationModel; }
+        }
+
+        private FBModel _fbModel;
+
+        public FBModel FBModel
+        {
+            get { return _fbModel; }
+            set
+            {
+                if (_fbModel != null)
+                {
+                    _fbModel.SolutionTargets.CollectionChanged -= _fbModel_SolutionTargets_CollectionChanged;
+                }
+                _fbModel = value;
+                if (_fbModel != null)
+                {
+                    _fbModel.SolutionTargets.CollectionChanged += _fbModel_SolutionTargets_CollectionChanged;
+                }
+            }
         }
 
         public FBSolutionTarget SolutionTargetSelected
@@ -41,26 +60,45 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
             }
         }
 
-        private void _fastBuildParamModel_HeoModuleParamsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void _applicationModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UpdateModules();
+            switch (e.PropertyName)
+            {
+                case ConstFBEvent.ConstApplicationModelFBModel:
+                    UpdateFBModel();
+                    break;
+
+                default:
+                    // ignored
+                    break;
+            }
         }
 
-        private void UpdateModules()
+        private void _fbModel_SolutionTargets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            FBModel fbModel = _applicationModel.FBModel;
-            IEnumerable<FBSolutionTarget> solutionTargets;
+            UpdateSolutionTargets();
+        }
+
+        private void UpdateFBModel()
+        {
+            FBModel = _applicationModel.FBModel;
+            UpdateSolutionTargets();
+        }
+
+        private void UpdateSolutionTargets()
+        {
+            FBModel fbModel = FBModel;
+            IEnumerable<SolutionTargetElement> elements;
             if (fbModel != null)
             {
-                solutionTargets = fbModel.SolutionTargets;
+                elements = fbModel.SolutionTargets
+                    .Select(t => new SolutionTargetElement(t));
             }
             else
             {
-                solutionTargets = new FBSolutionTarget[0];
+                elements = null;
             }
 
-            IEnumerable<SolutionTargetElement> elements = solutionTargets
-                .Select(t => new SolutionTargetElement(t));
             Elements = elements;
         }
     }

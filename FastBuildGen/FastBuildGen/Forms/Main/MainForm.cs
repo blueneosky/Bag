@@ -73,8 +73,8 @@ namespace FastBuildGen.Forms.Main
 
             _initialText = this.Text;   // need to be placed after InitializeComponent();
 
-            _modulesEditorUserControl.Initialize(modulesEditorModel, modulesEditorController);
-            _targetsEditorUserControl.Initialize(targetsEditorModel, targetsEditorController);
+            _solutionTargetsEditorUserControl.Initialize(modulesEditorModel, modulesEditorController);
+            _macroSolutionTargetsEditorUserControl.Initialize(targetsEditorModel, targetsEditorController);
 
             _model.PropertyChanged += _model_PropertyChanged;
 
@@ -168,7 +168,7 @@ namespace FastBuildGen.Forms.Main
             _controller.NewWithSln();
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        private void _openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _controller.Open();
         }
