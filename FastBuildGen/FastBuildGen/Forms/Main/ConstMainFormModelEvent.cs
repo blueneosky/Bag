@@ -9,6 +9,7 @@ namespace FastBuildGen.Forms.Main
     {
         public const string ConstFastBuildDataChanged = ConstPrefix + "FastBuildDataChanged";
         public const string ConstApplicationModelFilePath = ConstPrefix + "FilePath";
+        public const string ConstFBModelChanged = ConstPrefix + "FBModel";
         private const string ConstPrefix = "MainFormModel_";
     }
 }

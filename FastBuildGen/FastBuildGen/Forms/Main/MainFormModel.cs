@@ -31,6 +31,11 @@ namespace FastBuildGen.Forms.Main
             get { return _applicationModel; }
         }
 
+        public FBModel FBModel
+        {
+            get { return _applicationModel.FBModel; }
+        }
+
         public string FilePath
         {
             get { return _filePath; }
@@ -50,6 +55,10 @@ namespace FastBuildGen.Forms.Main
                     UpdateFastBuildDataChanged();
                     break;
 
+                case ConstFBEvent.ConstApplicationModelFBModel:
+                    UpdateFBModelChanged();
+                    break;
+
                 default:
                     // ignored
                     break;
@@ -60,6 +69,12 @@ namespace FastBuildGen.Forms.Main
         {
             // notify
             OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstFastBuildDataChanged));
+        }
+
+        private void UpdateFBModelChanged()
+        {
+            // notify
+            OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstFBModelChanged));
         }
 
         #region INotifyPropertyChanged
