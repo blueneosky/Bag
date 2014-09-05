@@ -55,37 +55,9 @@
     <Compile Include="BusinessModel\Extension\ExtensionFBModel.cs" />
     <Compile Include="BusinessModel\FBTarget.cs" />
     <Compile Include="BusinessModel\FBModel.cs" />
-    <Compile Include="BusinessModel\Old\ConstFastBuildInternalVarModel.cs" />
-    <Compile Include="BusinessModel\Old\ConstIFastBuildModelEvent.cs" />
-    <Compile Include="BusinessModel\Old\ConstIFastBuildParamModelEvent.cs" />
-    <Compile Include="BusinessModel\Old\ConstIParamDescriptionEvent.cs" />
-    <Compile Include="BusinessModel\Old\ConstIParamDescriptionHeoModuleEvent.cs" />
-    <Compile Include="BusinessModel\Old\ConstIParamDescriptionHeoTargetEvent.cs" />
     <Compile Include="BusinessModel\ConstFBModel.cs" />
-    <Compile Include="BusinessModel\Old\EnumPlatform.cs" />
-    <Compile Include="BusinessModel\Old\ExtensionIFastBuildInternalVarModel.cs" />
-    <Compile Include="BusinessModel\Old\ExtensionIFastBuildModel.cs" />
-    <Compile Include="BusinessModel\Old\FastBuildController.cs" />
-    <Compile Include="BusinessModel\Old\FastBuildImportMergeController.cs" />
-    <Compile Include="BusinessModel\Old\FastBuildInternalVarController.cs" />
-    <Compile Include="BusinessModel\Old\FastBuildInternalVarModel.cs" />
-    <Compile Include="BusinessModel\Old\FastBuildModel.cs" />
-    <Compile Include="BusinessModel\Old\FastBuildParamController.cs" />
-    <Compile Include="BusinessModel\Old\FastBuildParamModel.cs" />
-    <Compile Include="BusinessModel\Old\IFastBuildController.cs" />
-    <Compile Include="BusinessModel\Old\IFastBuildInternalVarController.cs" />
-    <Compile Include="BusinessModel\Old\IFastBuildInternalVarModel.cs" />
-    <Compile Include="BusinessModel\Old\IFastBuildModel.cs" />
-    <Compile Include="BusinessModel\Old\IFastBuildParamController.cs" />
-    <Compile Include="BusinessModel\Old\IFastBuildParamModel.cs" />
-    <Compile Include="BusinessModel\Old\IParamDescription.cs" />
-    <Compile Include="BusinessModel\Old\IParamDescriptionHeoModule.cs" />
-    <Compile Include="BusinessModel\Old\IParamDescriptionHeoTarget.cs" />
     <Compile Include="BusinessModel\FBMacroSolutionTarget.cs" />
     <Compile Include="BusinessModel\FBSolutionTarget.cs" />
-    <Compile Include="BusinessModel\Old\ParamDescription.cs" />
-    <Compile Include="BusinessModel\Old\ParamDescriptionHeoModule.cs" />
-    <Compile Include="BusinessModel\Old\ParamDescriptionHeoTarget.cs" />
     <Compile Include="Common\Control\BaseUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
