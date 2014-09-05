@@ -138,22 +138,29 @@ namespace FastBuildGen.Forms.Main
 
         private void _mergeToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (false == Validate()) return;
             _controller.MergeWithSln();
         }
 
         private void _quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (false == Validate()) return;
             this.Close();
         }
 
         private void _saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (false == Validate()) return;
             _controller.SaveAs();
         }
 
         private void _saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.Save();
+            bool state = _model.FastBuildDataChanged;
+            if (this.Validate() && state)
+            {
+                _controller.Save();
+            }
         }
 
         private void SaveActionShortcut()
@@ -167,11 +174,13 @@ namespace FastBuildGen.Forms.Main
 
         private void _newToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (false == Validate()) return;
             _controller.NewWithSln();
         }
 
         private void _openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (false == Validate()) return;
             _controller.Open();
         }
 

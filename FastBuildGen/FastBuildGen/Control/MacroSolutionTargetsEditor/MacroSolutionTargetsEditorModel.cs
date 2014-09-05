@@ -96,6 +96,14 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
                 elements = null;
             }
 
+            if (Elements != null)
+            {
+                foreach (MacroSolutionTargetElement mste in Elements.Cast<MacroSolutionTargetElement>())
+                {
+                    mste.Dispose();
+                }
+            }
+
             Elements = elements;
         }
     }

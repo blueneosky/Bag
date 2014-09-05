@@ -8,7 +8,7 @@ using FastBuildGen.Control.ListEditor;
 
 namespace FastBuildGen.Control.MacroSolutionTargetsEditor
 {
-    internal class MacroSolutionTargetElement : ListEditorElement
+    internal class MacroSolutionTargetElement : ListEditorElement, IDisposable
     {
         private readonly FBMacroSolutionTarget _macroSolutionTarget;
 
@@ -44,5 +44,35 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
         {
             Text = _macroSolutionTarget.Keyword;
         }
+
+        #region IDisposable Membres
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+            _isDisposed = true;
+
+            if (disposing)
+            {
+                // managed resources
+                if (_macroSolutionTarget != null)
+                    _macroSolutionTarget.PropertyChanged -= _target_PropertyChanged;
+            }
+        }
+
+        ~MacroSolutionTargetElement()
+        {
+            Dispose(false);
+        }
+
+        #endregion IDisposable Membres
     }
 }

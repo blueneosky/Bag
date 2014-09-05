@@ -8,7 +8,7 @@ using FastBuildGen.Control.ListEditor;
 
 namespace FastBuildGen.Control.SolutionTargetsEditor
 {
-    internal class SolutionTargetElement : ListEditorElement
+    internal class SolutionTargetElement : ListEditorElement, IDisposable
     {
         private readonly FBSolutionTarget _solutionTarget;
 
@@ -44,5 +44,35 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
         {
             Text = _solutionTarget.Keyword;
         }
+
+        #region IDisposable Membres
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private bool _isDisposed;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_isDisposed) return;
+            _isDisposed = true;
+
+            if (disposing)
+            {
+                // managed resources
+                if (_solutionTarget != null)
+                    _solutionTarget.PropertyChanged -= _solutionTarget_PropertyChanged;
+            }
+        }
+
+        ~SolutionTargetElement()
+        {
+            Dispose(false);
+        }
+
+        #endregion IDisposable Membres
     }
 }

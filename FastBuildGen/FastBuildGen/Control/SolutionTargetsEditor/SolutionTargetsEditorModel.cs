@@ -99,6 +99,14 @@ namespace FastBuildGen.Control.SolutionTargetsEditor
                 elements = null;
             }
 
+            if (Elements != null)
+            {
+                foreach (SolutionTargetElement ste in Elements.Cast<SolutionTargetElement>())
+                {
+                    ste.Dispose();
+                }
+            }
+
             Elements = elements;
         }
     }
