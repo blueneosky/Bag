@@ -13,6 +13,7 @@ using BatchGen.BatchNode.Macro;
 using BatchGen.BatchNode.Sub;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.BusinessModel.Extension;
+using System.Diagnostics;
 
 namespace FastBuildGen.BatchNode
 {
@@ -34,7 +35,6 @@ namespace FastBuildGen.BatchNode
 
 #if DEBUG
             result = new RemBatch("FastBuildBatchFile." + comment);
-            //result = new BlocMacro();
 #else
                 result = new BlocMacro();
 #endif
@@ -164,11 +164,7 @@ namespace FastBuildGen.BatchNode
 
         private IEnumerable<FBSolutionTarget> SolutionTargets
         {
-            get
-            {
-                return _fbModel.SolutionTargets
-                    .Where(st => st.Enabled);   // include only activated targets
-            }
+            get { return _fbModel.SolutionTargets; }
         }
 
         private IEnumerable<FBMacroSolutionTarget> MacroSolutionTargets
@@ -609,7 +605,7 @@ namespace FastBuildGen.BatchNode
                 {
                     IEnumerable<FBTarget> baseTargets = BaseTargets.ToArray();
                     IEnumerable<FBTarget> heoTarget = Enumerable.Concat<FBTarget>(
-                            SolutionTargets
+                            SolutionTargets.Where(st => st.Enabled)
                             , MacroSolutionTargets
                         )
                         .ToArray();
@@ -849,11 +845,8 @@ namespace FastBuildGen.BatchNode
                         {
                             bool isInnerFirst = true;
                             FBMacroSolutionTarget macroSolutionTarget = target as FBMacroSolutionTarget;
-                            if (macroSolutionTarget == null)
-                            {
-                                blocMacro.Add(GetParametersAnalyseParsingCmd(target.SwitchKeyword, target, leftIfTest));
-                            }
-                            else
+                            FBSolutionTarget solutionTarget = target as FBSolutionTarget;
+                            if (macroSolutionTarget != null)
                             {
                                 if (isInnerFirst)
                                 {
@@ -867,6 +860,15 @@ namespace FastBuildGen.BatchNode
                                 blocMacro.AddRange(macroSolutionTarget.SolutionTargetIds
                                     .Join(SolutionTargets, id => id, st => st.Id, (id, st) => st)
                                     .Select(pd => GetParametersAnalyseParsingCmd(switchKeyword, pd, leftIfTest)));
+                            }
+                            else if (solutionTarget != null)
+                            {
+                                if (solutionTarget.Enabled)
+                                    blocMacro.Add(GetParametersAnalyseParsingCmd(target.SwitchKeyword, target, leftIfTest));
+                            }
+                            else
+                            {
+                                blocMacro.Add(GetParametersAnalyseParsingCmd(target.SwitchKeyword, target, leftIfTest));
                             }
                         }
                     }
