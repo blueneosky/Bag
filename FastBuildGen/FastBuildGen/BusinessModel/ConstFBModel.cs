@@ -27,10 +27,6 @@ namespace FastBuildGen.BusinessModel
 
         #region ConstBaseLabelMacro
 
-        public const string ConstBaseLabelMacroMSBuildWin32NeedRunDefaultValue = "MSBuildWin32NeedRun";
-        public const string ConstBaseLabelMacroMSBuildWin32TryLoopDefaultValue = "BaseLabelMacroMSBuildWin32TryLoop";
-        public const string ConstBaseLAbelMacroMSBuildX86NeedRunDefaultValue = "MSBuildX86NeedRun";
-        public const string ConstBaseLabelMacroMSBuildX86TryLoopDefaultValue = "BaseLabelMacroMSBuildX86TryLoop";
         public const string ConstBaseLabelMacroParametersParsingDefaultValue = "ParametersParsing";
         public const string ConstBaseLabelMacroSGenPlusNeedRunDefaultValue = "MacroSGenPlusNeedRun";
         public const string ConstBaseLabelMacroSGenPlusStatusDefaultValue = "MacroSGenPlusStatus";
@@ -43,20 +39,15 @@ namespace FastBuildGen.BusinessModel
 
         public const string ConstLiteralConfigurationPathDefaultValue = ConstVarNamePrefix + "ConfigurationPath";
         public const string ConstLiteralEnvSystemVcvarsallCheckStatusDefaultValue = "DevEnvDir";
-        public const string ConstLiteralHeoForcedOutputDirPathDefaultValue = ConstVarNamePrefix + "HeoForcedOutputDirPath";
         public const string ConstLiteralHeoLanceurBinPathDefaultValue = ConstVarNamePrefix + "HeoLanceurBinPath";
         public const string ConstLiteralHeoLanceurPathDefaultValue = ConstVarNamePrefix + "HeoLanceurPath";
-        public const string ConstLiteralMSBuildCliWin32DefaultValue = ConstVarNamePrefix + "MSBuild_Cli_Win32";
-        public const string ConstLiteralMSBuildCliX86DefaultValue = ConstVarNamePrefix + "MSBuild_Cli_X86";
+        public const string ConstLiteralMSBuildCliDefaultValue = ConstVarNamePrefix + "MSBuild_Cli";
         public const string ConstLiteralMSBuildConfigurationDefaultValue = ConstVarNamePrefix + "MSBuildConfiguration";
         public const string ConstLiteralMSBuildLogFileDefaultValue = ConstVarNamePrefix + "MSBuildLogFile";
         public const string ConstLiteralMSBuildPlatformDefaultValue = ConstVarNamePrefix + "MSBuildPlatform";
         public const string ConstLiteralMSBuildsWithTargetsDefaultValue = ConstVarNamePrefix + "MSBuildsWithTargets";
         public const string ConstLiteralMSBuildTryLoopCondDefaultValue = ConstVarNamePrefix + "LiteralMSBuildTryLoopCond";
-        public const string ConstLiteralMSBuildWin32NeedRunDefaultValue = ConstVarNamePrefix + "MSBuildWin32NeedRun";
-        public const string ConstLiteralMSBuildWithWin32TargetsDefaultValue = ConstVarNamePrefix + "MSBuildWithWin32Targets";
         public const string ConstLiteralMSBuildWithX86TargetsDefaultValue = ConstVarNamePrefix + "MSBuildWithX86Targets";
-        public const string ConstLiteralMSBuildX86NeedRunDefaultValue = ConstVarNamePrefix + "MSBuildX86NeedRun";
         public const string ConstLiteralSGenPlusCliDefaultValue = ConstVarNamePrefix + "SGenPlusCli";
         public const string ConstLiteralSGenPlusConfigFilePathDefaultValue = ConstVarNamePrefix + "SGenPlusConfigFilePath";
         public const string ConstLiteralSGenPlusNeedRunDefaultValue = ConstVarNamePrefix + "SGenPlusNeedRun";
@@ -115,10 +106,6 @@ namespace FastBuildGen.BusinessModel
 
         #region ConstBaseLabelMacro
 
-        public const string ConstBaseLabelMacroMSBuildWin32NeedRun = "BaseLabelMacroMSBuildWin32NeedRun";
-        public const string ConstBaseLabelMacroMSBuildWin32TryLoop = "BaseLabelMacroMSBuildWin32TryLoop";
-        public const string ConstBaseLAbelMacroMSBuildX86NeedRun = "BaseLAbelMacroMSBuildX86NeedRun";
-        public const string ConstBaseLabelMacroMSBuildX86TryLoop = "BaseLabelMacroMSBuildX86TryLoop";
         public const string ConstBaseLabelMacroParametersParsing = "BaseLabelMacroParametersParsing";
         public const string ConstBaseLabelMacroSGenPlusNeedRun = "BaseLabelMacroSGenPlusNeedRun";
         public const string ConstBaseLabelMacroSGenPlusStatus = "BaseLabelMacroSGenPlusStatus";
@@ -131,20 +118,15 @@ namespace FastBuildGen.BusinessModel
 
         public const string ConstLiteralConfigurationPath = "LiteralConfigurationPath";
         public const string ConstLiteralEnvSystemVcvarsallCheckStatus = "LiteralEnvSystemVcvarsallCheckStatus";
-        public const string ConstLiteralHeoForcedOutputDirPath = "LiteralHeoForcedOutputDirPath";
         public const string ConstLiteralHeoLanceurBinPath = "LiteralHeoLanceurBinPath";
         public const string ConstLiteralHeoLanceurPath = "LiteralHeoLanceurPath";
-        public const string ConstLiteralMSBuildCliWin32 = "LiteralMSBuildCliWin32";
-        public const string ConstLiteralMSBuildCliX86 = "LiteralMSBuildCliX86";
+        public const string ConstLiteralMSBuildCli = "LiteralMSBuildCliX86";
         public const string ConstLiteralMSBuildConfiguration = "LiteralMSBuildConfiguration";
         public const string ConstLiteralMSBuildLogFile = "LiteralMSBuildLogFile";
         public const string ConstLiteralMSBuildPlatform = "LiteralMSBuildPlatform";
         public const string ConstLiteralMSBuildsWithTargets = "LiteralMSBuildsWithTargets";
         public const string ConstLiteralMSBuildTryLoopCond = "LiteralMSBuildTryLoopCond";
-        public const string ConstLiteralMSBuildWin32NeedRun = "LiteralMSBuildWin32NeedRun";
-        public const string ConstLiteralMSBuildWithWin32Targets = "LiteralMSBuildWithWin32Targets";
         public const string ConstLiteralMSBuildWithX86Targets = "LiteralMSBuildWithX86Targets";
-        public const string ConstLiteralMSBuildX86NeedRun = "LiteralMSBuildX86NeedRun";
         public const string ConstLiteralSGenPlusCli = "LiteralSGenPlusCli";
         public const string ConstLiteralSGenPlusConfigFilePath = "LiteralSGenPlusConfigFilePath";
         public const string ConstLiteralSGenPlusNeedRun = "LiteralSGenPlusNeedRun";
@@ -223,22 +205,13 @@ namespace FastBuildGen.BusinessModel
                 result[ConstValueMSBuildLogFile] = ConstValueMSBuildLogFileDefaultValue;
                 result[ConstLiteralSGenPlusConfigFilePath] = ConstLiteralSGenPlusConfigFilePathDefaultValue;
                 result[ConstValueSGenPlusConfigFilePath] = ConstValueSGenPlusConfigFilePathDefaultValue;
-                result[ConstLiteralHeoForcedOutputDirPath] = ConstLiteralHeoForcedOutputDirPathDefaultValue;
                 result[ConstLiteralMSBuildPlatform] = ConstLiteralMSBuildPlatformDefaultValue;
                 result[ConstLiteralMSBuildConfiguration] = ConstLiteralMSBuildConfigurationDefaultValue;
                 result[ConstValueMSBuildConfigurationDsac] = ConstValueMSBuildConfigurationDsacDefaultValue;
-                result[ConstLiteralMSBuildCliWin32] = ConstLiteralMSBuildCliWin32DefaultValue;
-                result[ConstLiteralMSBuildCliX86] = ConstLiteralMSBuildCliX86DefaultValue;
-                result[ConstLiteralMSBuildWithWin32Targets] = ConstLiteralMSBuildWithWin32TargetsDefaultValue;
+                result[ConstLiteralMSBuildCli] = ConstLiteralMSBuildCliDefaultValue;
                 result[ConstLiteralMSBuildWithX86Targets] = ConstLiteralMSBuildWithX86TargetsDefaultValue;
                 result[ConstLiteralMSBuildsWithTargets] = ConstLiteralMSBuildsWithTargetsDefaultValue;
-                result[ConstLiteralMSBuildWin32NeedRun] = ConstLiteralMSBuildWin32NeedRunDefaultValue;
-                result[ConstLiteralMSBuildX86NeedRun] = ConstLiteralMSBuildX86NeedRunDefaultValue;
-                result[ConstBaseLabelMacroMSBuildWin32NeedRun] = ConstBaseLabelMacroMSBuildWin32NeedRunDefaultValue;
-                result[ConstBaseLAbelMacroMSBuildX86NeedRun] = ConstBaseLAbelMacroMSBuildX86NeedRunDefaultValue;
                 result[ConstLiteralMSBuildTryLoopCond] = ConstLiteralMSBuildTryLoopCondDefaultValue;
-                result[ConstBaseLabelMacroMSBuildWin32TryLoop] = ConstBaseLabelMacroMSBuildWin32TryLoopDefaultValue;
-                result[ConstBaseLabelMacroMSBuildX86TryLoop] = ConstBaseLabelMacroMSBuildX86TryLoopDefaultValue;
                 result[ConstBaseLabelMacroSGenPlusNeedRun] = ConstBaseLabelMacroSGenPlusNeedRunDefaultValue;
                 result[ConstBaseLabelMacroSGenPlusStatus] = ConstBaseLabelMacroSGenPlusStatusDefaultValue;
                 result[ConstLiteralSGenPlusNeedRun] = ConstLiteralSGenPlusNeedRunDefaultValue;

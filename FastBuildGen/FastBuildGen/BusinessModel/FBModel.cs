@@ -15,7 +15,6 @@ namespace FastBuildGen.BusinessModel
 
 #warning TODO ALPHA point - add real const id
         public static readonly Guid ConstGuidDsac = Guid.NewGuid();
-        public static readonly Guid ConstGuidForceOutputDirPath = Guid.NewGuid();
         public static readonly Guid ConstGuidFxcop = Guid.NewGuid();
         public static readonly Guid ConstGuidHelp = Guid.NewGuid();
         public static readonly Guid ConstGuidKillheo = Guid.NewGuid();
@@ -34,7 +33,6 @@ namespace FastBuildGen.BusinessModel
         #region Param switch
 
         public const string ConstKeywordParamSwitchDsac = "dsac";
-        public const string ConstKeywordParamSwitchForceOutputDirPath = "fo";
         public const string ConstKeywordParamSwitchFxcop = "fxcop";
         public const string ConstKeywordParamSwitchHelp = "?";
         public const string ConstKeywordParamSwitchKillheo = "killheo";
@@ -53,7 +51,6 @@ namespace FastBuildGen.BusinessModel
         #region Parm switch help
 
         public const string ConstDescriptionParamSwitchDsac = "générer Debug sans analyse de code au lieu de Debug";
-        public const string ConstDescriptionParamSwitchForceOutputDirPath = "Force la sortie de génération du code dans le répertoire de Lanceur";
         public const string ConstDescriptionParamSwitchFxcop = "générer avec FxCop";
         public const string ConstDescriptionParamSwitchHelp = "cette aide";
         public const string ConstDescriptionParamSwitchKillheo = "tue le processus Heo.exe";
@@ -103,7 +100,6 @@ namespace FastBuildGen.BusinessModel
             _heoParamTargets = new[]{
                 new FBTarget(ConstGuidVshost            ){ Keyword = ConstKeywordParamSwitchVshost               , HelpText = ConstDescriptionParamSwitchVshost              },
                 new FBTarget(ConstGuidKillheo           ){ Keyword = ConstKeywordParamSwitchKillheo              , HelpText = ConstDescriptionParamSwitchKillheo             },
-                new FBTarget(ConstGuidForceOutputDirPath){ Keyword = ConstKeywordParamSwitchForceOutputDirPath   , HelpText = ConstDescriptionParamSwitchForceOutputDirPath  },
             };
         }
 

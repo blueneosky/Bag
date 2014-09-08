@@ -46,19 +46,14 @@ namespace FastBuildGen.File
         private const string ConstSplitterConfigText = "<<FastBuild Configuration>>";
 
         private Stream _batchCodeStream;
-        private Stream _stream;
         private Stream _xmlConfigStream;
+        private string _fileName;
+        private FileMode _fileMode;
 
         public FBFile(string fileName, FileMode fileMode)
         {
-            _stream = new FileStream(fileName, fileMode);
-        }
-
-        public FBFile(Stream stream)
-        {
-            Debug.Assert(stream != null);
-
-            _stream = new BufferedStream(stream);
+            _fileName = fileName;
+            _fileMode = fileMode;
         }
 
         public Stream BatchCodeStream
@@ -140,7 +135,8 @@ namespace FastBuildGen.File
             _batchCodeStream = new MemoryStream();
             _xmlConfigStream = new MemoryStream();
 
-            using (StreamReader reader = new ProxyStreamReader(_stream))
+            using (FileStream fileStream = new FileStream(_fileName, _fileMode))
+            using (StreamReader reader = new ProxyStreamReader(fileStream))
             {
                 // read header (and check)
                 string header = reader.ReadLine();
@@ -200,28 +196,38 @@ namespace FastBuildGen.File
             _xmlConfigStream.Seek(0, SeekOrigin.Begin);
 
             // Note : ProxyStream don't forward Flush() to its inner stream
-            using (StreamWriter writer = new ProxyStreamWriter(_stream))
+            using (Stream stream = new MemoryStream())
             {
-                writer.AutoFlush = true;    // easier
+                using (StreamWriter writer = new ProxyStreamWriter(stream))
+                {
+                    writer.AutoFlush = true;    // easier
 
-                // header
-                writer.WriteLine(ConstBatchRemHeaderText);
+                    // header
+                    writer.WriteLine(ConstBatchRemHeaderText);
 
-                // batch code
-                _batchCodeStream.WriteTo(_stream);
+                    // batch code
+                    _batchCodeStream.WriteTo(stream);
 
-                // splitter between code and data
-                writer.WriteLine();
-                writer.WriteLine(ConstBatchRemSplitterConfigText);
+                    // splitter between code and data
+                    writer.WriteLine();
+                    writer.WriteLine(ConstBatchRemSplitterConfigText);
 
-                // config data
-                _xmlConfigStream.WriteTo(_stream);
+                    // config data
+                    _xmlConfigStream.WriteTo(stream);
+                }
+                using (FileStream fileStream = new FileStream(_fileName, _fileMode))
+                {
+                    stream.Seek(0, SeekOrigin.Begin);
+                    stream.CopyTo(fileStream);
+                }
             }
         }
 
         #endregion Core
 
         #region IDisposable
+
+        private bool _isDisposed;
 
         ~FBFile()
         {
@@ -236,24 +242,22 @@ namespace FastBuildGen.File
 
         protected virtual void Dispose(bool disposing)
         {
+            if (_isDisposed) return;
+
             try
             {
-                if (disposing && (this._stream != null))
+                if (disposing)
                 {
                     try
                     {
                         ResetDataStream();
-                        _stream.Flush();
                     }
-                    finally
-                    {
-                        this._stream.Close();
-                    }
+                    finally { }
                 }
             }
             finally
             {
-                this._stream = null;
+                _isDisposed = true;
             }
         }
 
