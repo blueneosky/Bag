@@ -66,7 +66,7 @@ namespace FastBuildGen.Forms.Main
                 return true;
 
             DialogResult dialogResult = MessageBox.Show(
-                "Did you wan't save your work ?"
+                "Do you want save your work ?"
                 , "FastBuild Generator"
                 , MessageBoxButtons.YesNoCancel
                 , MessageBoxIcon.Question
@@ -90,7 +90,7 @@ namespace FastBuildGen.Forms.Main
             if ((_model.FBModel != null) && _model.FastBuildDataChanged)
             {
                 DialogResult dialogResult = MessageBox.Show(
-                    "Did you want save before " + (withMerge ? "merge" : "create new file") + " ?"
+                    "Do you want save before " + (withMerge ? "merge" : "create new file") + " ?"
                     , (withMerge ? "Merge" : "New")
                     , MessageBoxButtons.YesNoCancel
                     , MessageBoxIcon.Question
