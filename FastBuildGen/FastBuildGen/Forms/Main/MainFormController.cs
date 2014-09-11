@@ -145,12 +145,13 @@ namespace FastBuildGen.Forms.Main
             foreach (VSProject project in solution.MSBuildCompatibleProjects)
             {
                 Guid id = project.ProjectGuid;
-                string projectName = project.UniqueProjectName.Split('\\', '/').LastOrDefault();
+                string uniqueProjectName = project.UniqueProjectName;
+                string projectName = uniqueProjectName.Split('\\', '/').LastOrDefault();
                 FBSolutionTarget solutionTarget = fbModel.SolutionTargets.FirstOrDefault(st => st.Id == id);
                 if (solutionTarget != null)
                 {
                     // update target
-                    solutionTarget.MSBuildTarget = projectName;
+                    solutionTarget.MSBuildTarget = uniqueProjectName;
                 }
                 else
                 {
@@ -158,10 +159,10 @@ namespace FastBuildGen.Forms.Main
                         throw new FastBuildGenException("VSProject Guid used by something else - try create a new project.");
 
                     // create new target
-                    solutionTarget = new FBSolutionTarget(id)
+                    solutionTarget = new FBSolutionTarget(id, false)
                     {
                         Keyword = projectName,
-                        MSBuildTarget = projectName,
+                        MSBuildTarget = uniqueProjectName,
                         HelpText = projectName,
                         Enabled = false,
                     };

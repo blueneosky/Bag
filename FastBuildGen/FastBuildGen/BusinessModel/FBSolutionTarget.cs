@@ -8,8 +8,8 @@ namespace FastBuildGen.BusinessModel
         private string _msBuildTarget;
         private bool _enabled;
 
-        public FBSolutionTarget(Guid id)
-            : base(id)
+        public FBSolutionTarget(Guid id, bool readOnly)
+            : base(id, readOnly)
         {
         }
 

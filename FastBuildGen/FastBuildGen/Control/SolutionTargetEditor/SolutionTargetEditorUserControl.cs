@@ -132,19 +132,19 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         {
             SolutionTarget = _model.SolutionTarget;
 
-            RefreshModule();
+            RefreshSolutionTarget();
         }
 
         #endregion Modele Update
 
         #region UI Update
 
-        private void RefreshModule()
+        private void RefreshSolutionTarget()
         {
             BeginUpdate();
 
             bool withModule = (SolutionTarget != null);
-            this.Enabled = withModule;
+            this.Enabled = withModule && (false == SolutionTarget.ReadOnly);
 
             RefreshMSBuildTarget();
             RefreshEnable();

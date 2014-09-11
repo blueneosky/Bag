@@ -137,7 +137,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         {
             MacroSolutionTarget = _model.MacroSolutionTarget;
 
-            RefreshModule();
+            RefreshMacroSolutionTarget();
         }
 
         #endregion Modele Update
@@ -185,12 +185,12 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             EndUpdate();
         }
 
-        private void RefreshModule()
+        private void RefreshMacroSolutionTarget()
         {
             BeginUpdate();
 
             bool withTarget = (MacroSolutionTarget != null);
-            this.Enabled = withTarget;
+            this.Enabled = withTarget && (false == MacroSolutionTarget.ReadOnly);
 
             RefreshDependecies();
 

@@ -53,6 +53,9 @@ namespace FastBuildGen.Control.MacroSolutionTargetsEditor
                 return false;
 
             FBMacroSolutionTarget macroSolutionTarget = targetElement.MacroSolutionTarget;
+            if (macroSolutionTarget.ReadOnly)
+                return false;
+
             bool success = _applicationController.DeleteMacroSolutionTarget(macroSolutionTarget.Id);
 
             return success;

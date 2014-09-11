@@ -1109,7 +1109,7 @@ namespace FastBuildGen.BatchNode
                     )));
                 blocMacro.Add(Nop);
 
-#warning TODO DELTA point - force a target (macro all with automatically all project ? in FMBodel...)
+#warning TODO DELTA point - force a target (macro all)
 
                 // MSBuild Cli X86
                 blocMacro.Add(new RemBatch("MSBuild configuration (x86)"));

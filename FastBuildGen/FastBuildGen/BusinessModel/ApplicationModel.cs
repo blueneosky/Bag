@@ -78,23 +78,18 @@ namespace FastBuildGen.BusinessModel
                     e.NewItems.OfType<FBTarget>().ForEach(t => t.PropertyChanged += _fbModel_PropertyChanged);
                     break;
 
-                case NotifyCollectionChangedAction.Move:
-                    Debug.Fail("Not managed");
-                    break;
-
                 case NotifyCollectionChangedAction.Remove:
                     e.OldItems.OfType<FBTarget>().ForEach(t => t.PropertyChanged -= _fbModel_PropertyChanged);
-                    break;
-
-                case NotifyCollectionChangedAction.Replace:
-                    Debug.Fail("Not managed");
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
                     e.OldItems.OfType<FBTarget>().ForEach(t => t.PropertyChanged -= _fbModel_PropertyChanged);
                     break;
 
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Replace:
                 default:
+                    Debug.Fail("Unspecified case");
                     break;
             }
             DataChanged = true;

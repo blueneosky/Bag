@@ -38,7 +38,7 @@ namespace FastBuildGen.BusinessModel
                 .Select(t => t.Keyword)
                 .UniqName(preferedKeyword);
 
-            FBMacroSolutionTarget macroSolutionTarget = new FBMacroSolutionTarget(Guid.NewGuid());
+            FBMacroSolutionTarget macroSolutionTarget = new FBMacroSolutionTarget(Guid.NewGuid(), false);
             macroSolutionTarget.Keyword = preferedKeyword;
 
             fbModel.MacroSolutionTargets.Add(macroSolutionTarget);

@@ -53,6 +53,7 @@
     <Compile Include="BusinessModel\ApplicationModel.cs" />
     <Compile Include="BusinessModel\ConstFBEvent.cs" />
     <Compile Include="BusinessModel\Extension\ExtensionFBModel.cs" />
+    <Compile Include="BusinessModel\FBMacroAllSolutionTarget.cs" />
     <Compile Include="BusinessModel\FBTarget.cs" />
     <Compile Include="BusinessModel\FBModel.cs" />
     <Compile Include="BusinessModel\ConstFBModel.cs" />

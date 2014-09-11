@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Serialization;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
+using System.Diagnostics;
 
 namespace FastBuildGen.Xml.Entity
 {
@@ -24,15 +25,23 @@ namespace FastBuildGen.Xml.Entity
         [XmlElement("WithEchoOff")]
         public bool Xml03WithEchoOff { get; set; }
 
+        [XmlElement("MacroAllSolutionTargetId")]
+        public Guid[] Xml04MacroAllSolutionTargetIds { get; set; }
+
         internal XmlFastBuild Serialize(FBModel fbModel)
         {
             Xml01SolutionTargets = fbModel.SolutionTargets
                .Select(t => new XmlSolutionTarget().Serialize(t))
                .ToArray();
             Xml02MacroSolutionTargets = fbModel.MacroSolutionTargets
-                .Select(mt => new XmlMacroSolutionTarget().Serialize(mt))
+                .Where(mst => mst.Id != FBModel.ConstGuidAll)   // exclude 'all' target
+                .Select(mst => new XmlMacroSolutionTarget().Serialize(mst))
                 .ToArray();
             Xml03WithEchoOff = fbModel.WithEchoOff;
+            Xml04MacroAllSolutionTargetIds = fbModel.MacroSolutionTargets
+                .Where(mst => mst.Id == FBModel.ConstGuidAll)   // get 'all' target
+                .SelectMany(mst => mst.SolutionTargetIds)
+                .ToArray();
 
             return this;
         }
@@ -49,6 +58,12 @@ namespace FastBuildGen.Xml.Entity
             result.SolutionTargets.AddRange(solutionTargets);
             result.MacroSolutionTargets.AddRange(macroSolutionTargets);
             result.WithEchoOff = Xml03WithEchoOff;
+            FBMacroSolutionTarget macroAllSolutionTarget = result.MacroSolutionTargets
+                .FirstOrDefault(mst => mst.Id == FBModel.ConstGuidAll);
+            Debug.Assert(macroAllSolutionTarget != null && macroAllSolutionTarget is FBMacroAllSolutionTarget);
+            // restore 'all' target
+            macroAllSolutionTarget.SolutionTargetIds.Clear();
+            macroAllSolutionTarget.SolutionTargetIds.AddRange(Xml04MacroAllSolutionTargetIds);
 
             return result;
         }
