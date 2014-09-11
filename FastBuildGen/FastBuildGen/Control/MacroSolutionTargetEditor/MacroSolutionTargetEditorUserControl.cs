@@ -10,6 +10,8 @@ using FastBuildGen.Control.PDEditor;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
+#warning TODO - ALPHA ALPHA ALPHA BETA point - do a better refresh for availlable modules : don't reset position of the list after an add
+
     internal partial class MacroSolutionTargetEditorUserControl : BaseUserControl
     {
         #region Members
