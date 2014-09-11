@@ -9,6 +9,7 @@ using FastBuildGen.Common.Control;
 
 namespace FastBuildGen.Control.PDEditor
 {
+#warning TODO GAMMA point - renamme PDEditorXXX to FBTEditorXXX
     internal partial class PDEditorUserControl : BaseUserControl
     {
         #region Members
@@ -133,7 +134,7 @@ namespace FastBuildGen.Control.PDEditor
         {
             Target = _model.Target;
 
-            RefreshParamDescription();
+            RefreshTarget();
         }
 
         #endregion Model Update
@@ -143,25 +144,31 @@ namespace FastBuildGen.Control.PDEditor
         private void RefreshHelpText()
         {
             BeginUpdate();
+            bool withTarget = (Target != null);
+            bool isReadOnly = withTarget ? Target.ReadOnly.HasFlag(EnumFBTargetReadonly.HelpText) : true;
             string text = (Target != null) ? Target.HelpText : String.Empty;
             _helpTextTextBox.Text = text;
+            _helpTextTextBox.ReadOnly = isReadOnly;
             EndUpdate();
         }
 
         private void RefreshKeyword()
         {
             BeginUpdate();
+            bool withTarget = (Target != null);
+            bool isReadOnly = withTarget ? Target.ReadOnly.HasFlag(EnumFBTargetReadonly.Keyword) : true;
             string text = (Target != null) ? Target.Keyword : String.Empty;
             _keywordTextBox.Text = text;
+            _keywordTextBox.ReadOnly = isReadOnly;
             EndUpdate();
         }
 
-        private void RefreshParamDescription()
+        private void RefreshTarget()
         {
             BeginUpdate();
 
-            bool withParamDescription = (Target != null);
-            this.Enabled = withParamDescription;
+            bool withTarget = (Target != null);
+            this.Enabled = withTarget;
 
             RefreshKeyword();
             RefreshHelpText();

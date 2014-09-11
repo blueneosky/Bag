@@ -27,7 +27,7 @@ namespace FastBuildGen.Xml.Entity
 
         internal FBMacroSolutionTarget Deserialize()
         {
-            FBMacroSolutionTarget result = new FBMacroSolutionTarget(this.Xml01Id, false);
+            FBMacroSolutionTarget result = new FBMacroSolutionTarget(this.Xml01Id, EnumFBTargetReadonly.None);
             base.Deserialize(result);
             result.SolutionTargetIds.AddRange(this.Xml05SolutionTargetIds);
 

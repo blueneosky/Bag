@@ -25,8 +25,8 @@ namespace FastBuildGen.Xml.Entity
         [XmlElement("WithEchoOff")]
         public bool Xml03WithEchoOff { get; set; }
 
-        [XmlElement("MacroAllSolutionTargetId")]
-        public Guid[] Xml04MacroAllSolutionTargetIds { get; set; }
+        [XmlArray("MacroSolutionTargetAllIds")]
+        public Guid[] Xml04MacroSolutionTargetAllIds { get; set; }
 
         internal XmlFastBuild Serialize(FBModel fbModel)
         {
@@ -38,7 +38,7 @@ namespace FastBuildGen.Xml.Entity
                 .Select(mst => new XmlMacroSolutionTarget().Serialize(mst))
                 .ToArray();
             Xml03WithEchoOff = fbModel.WithEchoOff;
-            Xml04MacroAllSolutionTargetIds = fbModel.MacroSolutionTargets
+            Xml04MacroSolutionTargetAllIds = fbModel.MacroSolutionTargets
                 .Where(mst => mst.Id == FBModel.ConstGuidAll)   // get 'all' target
                 .SelectMany(mst => mst.SolutionTargetIds)
                 .ToArray();
@@ -58,12 +58,12 @@ namespace FastBuildGen.Xml.Entity
             result.SolutionTargets.AddRange(solutionTargets);
             result.MacroSolutionTargets.AddRange(macroSolutionTargets);
             result.WithEchoOff = Xml03WithEchoOff;
-            FBMacroSolutionTarget macroAllSolutionTarget = result.MacroSolutionTargets
+            FBMacroSolutionTarget macroSolutionTargetAll = result.MacroSolutionTargets
                 .FirstOrDefault(mst => mst.Id == FBModel.ConstGuidAll);
-            Debug.Assert(macroAllSolutionTarget != null && macroAllSolutionTarget is FBMacroAllSolutionTarget);
+            Debug.Assert(macroSolutionTargetAll != null && macroSolutionTargetAll is FBMacroSolutionTargetAll);
             // restore 'all' target
-            macroAllSolutionTarget.SolutionTargetIds.Clear();
-            macroAllSolutionTarget.SolutionTargetIds.AddRange(Xml04MacroAllSolutionTargetIds);
+            macroSolutionTargetAll.SolutionTargetIds.Clear();
+            macroSolutionTargetAll.SolutionTargetIds.AddRange(Xml04MacroSolutionTargetAllIds);
 
             return result;
         }

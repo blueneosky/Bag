@@ -116,7 +116,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         private void SolutionTargetIds_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             // for any new state
-            RefreshDependecies();
+            RefreshSolutionTargets();
         }
 
         private void _target_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -162,9 +162,13 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             EndUpdate();
         }
 
-        private void RefreshDependecies()
+        private void RefreshSolutionTargets()
         {
             BeginUpdate();
+
+            bool withMacroSolutionTarget = (MacroSolutionTarget != null);
+            bool isReadOnly = withMacroSolutionTarget ? MacroSolutionTarget.ReadOnly.HasFlag(EnumFBTargetReadonly.SolutionTargetIds) : true;
+
             _projectsListBox.BeginUpdate();
 
             IEnumerable<FBSolutionTarget> solutionTargets = new FBSolutionTarget[0];
@@ -182,6 +186,9 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             _projectsListBox.Items.AddRange(items);
 
             _projectsListBox.EndUpdate();
+
+            _splitContainer.Enabled = (false == isReadOnly);
+
             EndUpdate();
         }
 
@@ -189,10 +196,11 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         {
             BeginUpdate();
 
-            bool withTarget = (MacroSolutionTarget != null);
-            this.Enabled = withTarget && (false == MacroSolutionTarget.ReadOnly);
+            bool withMacroSolutionTarget = (MacroSolutionTarget != null);
+            bool isAllReadOnly = withMacroSolutionTarget ? MacroSolutionTarget.ReadOnly.HasFlag(EnumFBTargetReadonly.MaskFBMacroSolutionTarget) : true;
+            this.Enabled = withMacroSolutionTarget && (false == isAllReadOnly);
 
-            RefreshDependecies();
+            RefreshSolutionTargets();
 
             EndUpdate();
         }

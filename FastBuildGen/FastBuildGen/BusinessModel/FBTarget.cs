@@ -6,19 +6,18 @@ namespace FastBuildGen.BusinessModel
 {
     internal class FBTarget : INotifyPropertyChanged
     {
-#warning TODO ALPHA ALPHA point - use unm instead of bool for readonly
         private readonly Guid _id;
-        private readonly bool _readOnly;
+        private readonly EnumFBTargetReadonly _readOnly;
         private string _helpText;
         private string _keyword;
 
-        public FBTarget(Guid id, bool readOnly)
+        public FBTarget(Guid id, EnumFBTargetReadonly readOnly)
         {
             _id = id;
             _readOnly = readOnly;
         }
 
-        public bool ReadOnly
+        public EnumFBTargetReadonly ReadOnly
         {
             get { return _readOnly; }
         }

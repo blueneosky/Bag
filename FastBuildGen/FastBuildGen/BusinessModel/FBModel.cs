@@ -75,7 +75,7 @@ namespace FastBuildGen.BusinessModel
         private FBTarget[] _heoParamTargets;
         private FBTarget[] _paramTargets;
 
-        private FBMacroSolutionTarget _macroAllSolutionTarget;
+        private FBMacroSolutionTarget _macroSolutionTargetAll;
 
         public FBModel()
         {
@@ -91,29 +91,29 @@ namespace FastBuildGen.BusinessModel
             // Default configuration
 
             _paramTargets = new[] {
-                new FBTarget(ConstGuidHelp   , true){ Keyword = ConstKeywordParamSwitchHelp      , HelpText = ConstDescriptionParamSwitchHelp       },
-                new FBTarget(ConstGuidPara   , true){ Keyword = ConstKeywordParamSwitchPara      , HelpText = ConstDescriptionParamSwitchPara       },
-                new FBTarget(ConstGuidQuiet  , true){ Keyword = ConstKeywordParamSwitchQuiet     , HelpText = ConstDescriptionParamSwitchQuiet      },
-                new FBTarget(ConstGuidRelease, true){ Keyword = ConstKeywordParamSwitchRelease   , HelpText = ConstDescriptionParamSwitchRelease    },
-                new FBTarget(ConstGuidDsac   , true){ Keyword = ConstKeywordParamSwitchDsac      , HelpText = ConstDescriptionParamSwitchDsac       },
-                new FBTarget(ConstGuidFxcop  , true){ Keyword = ConstKeywordParamSwitchFxcop     , HelpText = ConstDescriptionParamSwitchFxcop      },
-                new FBTarget(ConstGuidNowarn , true){ Keyword = ConstKeywordParamSwitchNowarn    , HelpText = ConstDescriptionParamSwitchNowarn     },
-                new FBTarget(ConstGuidRebuild, true){ Keyword = ConstKeywordParamSwitchRebuild   , HelpText = ConstDescriptionParamSwitchRebuild    },
-                new FBTarget(ConstGuidWait   , true){ Keyword = ConstKeywordParamSwitchWait      , HelpText = ConstDescriptionParamSwitchWait       },
-                new FBTarget(ConstGuidNosgp  , true){ Keyword = ConstKeywordParamSwitchNosgp     , HelpText = ConstDescriptionParamSwitchNosgp      },
-                new FBTarget(ConstGuidVer    , true){ Keyword = ConstKeywordParamSwitchVer       , HelpText = ConstDescriptionParamSwitchVer        },
+                new FBTarget(ConstGuidHelp   , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchHelp      , HelpText = ConstDescriptionParamSwitchHelp       },
+                new FBTarget(ConstGuidPara   , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchPara      , HelpText = ConstDescriptionParamSwitchPara       },
+                new FBTarget(ConstGuidQuiet  , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchQuiet     , HelpText = ConstDescriptionParamSwitchQuiet      },
+                new FBTarget(ConstGuidRelease, EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchRelease   , HelpText = ConstDescriptionParamSwitchRelease    },
+                new FBTarget(ConstGuidDsac   , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchDsac      , HelpText = ConstDescriptionParamSwitchDsac       },
+                new FBTarget(ConstGuidFxcop  , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchFxcop     , HelpText = ConstDescriptionParamSwitchFxcop      },
+                new FBTarget(ConstGuidNowarn , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchNowarn    , HelpText = ConstDescriptionParamSwitchNowarn     },
+                new FBTarget(ConstGuidRebuild, EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchRebuild   , HelpText = ConstDescriptionParamSwitchRebuild    },
+                new FBTarget(ConstGuidWait   , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchWait      , HelpText = ConstDescriptionParamSwitchWait       },
+                new FBTarget(ConstGuidNosgp  , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchNosgp     , HelpText = ConstDescriptionParamSwitchNosgp      },
+                new FBTarget(ConstGuidVer    , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchVer       , HelpText = ConstDescriptionParamSwitchVer        },
             };
             _heoParamTargets = new[]{
-                new FBTarget(ConstGuidVshost , true){ Keyword = ConstKeywordParamSwitchVshost    , HelpText = ConstDescriptionParamSwitchVshost     },
-                new FBTarget(ConstGuidKillheo, true){ Keyword = ConstKeywordParamSwitchKillheo   , HelpText = ConstDescriptionParamSwitchKillheo    },
+                new FBTarget(ConstGuidVshost , EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchVshost    , HelpText = ConstDescriptionParamSwitchVshost     },
+                new FBTarget(ConstGuidKillheo, EnumFBTargetReadonly.MaskAll){ Keyword = ConstKeywordParamSwitchKillheo   , HelpText = ConstDescriptionParamSwitchKillheo    },
             };
 
-            _macroAllSolutionTarget = new FBMacroAllSolutionTarget(ConstGuidAll)
+            _macroSolutionTargetAll = new FBMacroSolutionTargetAll(ConstGuidAll)
             {
                 Keyword = ConstKeywordParamSwitchAll,
                 HelpText = ConstDescriptionParamSwitchAll,
             };
-            MacroSolutionTargets.Add(_macroAllSolutionTarget);
+            MacroSolutionTargets.Add(_macroSolutionTargetAll);
             SolutionTargets.CollectionChanged += SolutionTargets_CollectionChanged;
         }
 
@@ -122,15 +122,15 @@ namespace FastBuildGen.BusinessModel
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    _macroAllSolutionTarget.SolutionTargetIds.AddRange(e.NewItems.OfType<FBTarget>().Select(t => t.Id));
+                    _macroSolutionTargetAll.SolutionTargetIds.AddRange(e.NewItems.OfType<FBTarget>().Select(t => t.Id));
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    _macroAllSolutionTarget.SolutionTargetIds.RemoveRange(e.OldItems.OfType<FBTarget>().Select(t => t.Id));
+                    _macroSolutionTargetAll.SolutionTargetIds.RemoveRange(e.OldItems.OfType<FBTarget>().Select(t => t.Id));
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
-                    _macroAllSolutionTarget.SolutionTargetIds.Clear();
+                    _macroSolutionTargetAll.SolutionTargetIds.Clear();
                     break;
 
                 case NotifyCollectionChangedAction.Move:

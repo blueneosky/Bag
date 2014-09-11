@@ -159,7 +159,7 @@ namespace FastBuildGen.Forms.Main
                         throw new FastBuildGenException("VSProject Guid used by something else - try create a new project.");
 
                     // create new target
-                    solutionTarget = new FBSolutionTarget(id, false)
+                    solutionTarget = new FBSolutionTarget(id, EnumFBTargetReadonly.None)
                     {
                         Keyword = projectName,
                         MSBuildTarget = uniqueProjectName,

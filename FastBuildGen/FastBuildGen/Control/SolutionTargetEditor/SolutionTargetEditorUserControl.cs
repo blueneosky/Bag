@@ -143,8 +143,9 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         {
             BeginUpdate();
 
-            bool withModule = (SolutionTarget != null);
-            this.Enabled = withModule && (false == SolutionTarget.ReadOnly);
+            bool withSolutionTarget = (SolutionTarget != null);
+            bool isAllReadOnly = withSolutionTarget ? SolutionTarget.ReadOnly.HasFlag(EnumFBTargetReadonly.MaskFBSolutionTarget) : true;
+            this.Enabled = withSolutionTarget && (false == isAllReadOnly);
 
             RefreshMSBuildTarget();
             RefreshEnable();
@@ -155,8 +156,11 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         private void RefreshMSBuildTarget()
         {
             BeginUpdate();
-            string text = (SolutionTarget != null) ? SolutionTarget.MSBuildTarget : String.Empty;
+            bool withSolutionTarget = (SolutionTarget != null);
+            bool isReadOnly = withSolutionTarget ? SolutionTarget.ReadOnly.HasFlag(EnumFBTargetReadonly.MSBuildTarget) : true;
+            string text = withSolutionTarget ? SolutionTarget.MSBuildTarget : String.Empty;
             _msBuildTargetTextBox.Text = text;
+            _msBuildTargetTextBox.ReadOnly = isReadOnly;
             EndUpdate();
         }
 
@@ -164,7 +168,9 @@ namespace FastBuildGen.Control.SolutionTargetEditor
         {
             BeginUpdate();
 
-            if (SolutionTarget != null)
+            bool withSolutionTarget = (SolutionTarget != null);
+            bool isReadOnly = withSolutionTarget ? SolutionTarget.ReadOnly.HasFlag(EnumFBTargetReadonly.MSBuildTarget) : true;
+            if (withSolutionTarget)
             {
                 _enabledCheckBox.Checked = SolutionTarget.Enabled;
             }
@@ -172,6 +178,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             {
                 _enabledCheckBox.CheckState = CheckState.Indeterminate;
             }
+            _enabledCheckBox.Enabled = (false == isReadOnly);
 
             EndUpdate();
         }
