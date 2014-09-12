@@ -1113,7 +1113,7 @@ namespace FastBuildGen.BatchNode
 
                 // MSBuild Cli X86
                 blocMacro.Add(new RemBatch("MSBuild configuration (x86)"));
-                IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> x86Modules = SolutionTargets
+                IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> solutionTargets = SolutionTargets
 #warning TODO BETA point - manage this content
                     //.Where(pdm => pdm.Platform == FastBuildGen.BusinessModel.Old.EnumPlatform.X86)
                     .Select(pdm => new Tuple<BooleanExpressionBase, BatchExpressionBase>(
@@ -1124,15 +1124,15 @@ namespace FastBuildGen.BatchNode
                 MSBuildCliMacro msbuildCliMacroX86 = GetFastBuildCoreMSBuildEnvInitMSBuildConfigMSBuildCliMacro(
                     LiteralMSBuildCliX86
                     , LiteralMSBuildPlatform.LiteralValue
-                    , x86Modules);
+                    , solutionTargets);
                 blocMacro.Add(msbuildCliMacroX86);
                 blocMacro.Add(Nop);
-#warning TODO ALPHA ALPHA point - test this content
+#warning TODO ALPHA ALPHA point - test this content - up that test above all if () set 
                 //blocMacro.Add(new SetFalseCmd(LiteralMSBuildWithX86Targets));
                 //SetTrueCmd setTrueCmdX86 = new SetTrueCmd(LiteralMSBuildWithX86Targets);
                 BooleanExpressionBase booleanExpressionMSBuildWithX86Targets = new BooleanOperatorExpression(
                     EnumBooleanOperator.Or
-                    , x86Modules.Select(lv => lv.Item1).ToArray());
+                    , solutionTargets.Select(lv => lv.Item1).ToArray());
                 SetBooleanCmd setBooleanMSBuildWithX86Targets = new SetBooleanCmd(LiteralMSBuildWithX86Targets, booleanExpressionMSBuildWithX86Targets);
                 blocMacro.Add(setBooleanMSBuildWithX86Targets);
                 //blocMacro.AddRange(x86Modules.Select(lv => new IfCmd(new IsTrueConditional(lv.Item1), setTrueCmdX86)));

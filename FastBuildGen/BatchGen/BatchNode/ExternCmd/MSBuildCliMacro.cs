@@ -280,6 +280,7 @@ namespace BatchGen.BatchNode.ExternCmd
             {
                 foreach (Tuple<BooleanExpressionBase, BatchExpressionBase> target in Targets)
                 {
+#warning TODO ALPHA - add all fallback (bool?)
                     AddMSBuildCli(setsMacro, staticClis, LiteralMSBuildCli, target.Item1, new ComposedExpression(new ValueExpression("/t:"), target.Item2), null);
                 }
             }
