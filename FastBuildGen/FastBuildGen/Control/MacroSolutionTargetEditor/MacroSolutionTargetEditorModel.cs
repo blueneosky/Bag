@@ -46,6 +46,8 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             }
         }
 
+        public ObservableDictionary<Guid, FBSolutionTarget> AvailableSolutionTargets
+
         public ApplicationModel ApplicationModel
         {
             get { return _applicationModel; }
