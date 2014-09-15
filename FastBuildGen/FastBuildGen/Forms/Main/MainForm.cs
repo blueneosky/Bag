@@ -165,10 +165,13 @@ namespace FastBuildGen.Forms.Main
 
         private void SaveActionShortcut()
         {
-            bool state = _model.FastBuildDataChanged;
-            if (this.Validate() && state)
+            if (this.Validate())
             {
-                _controller.Save();
+                bool state = _model.FastBuildDataChanged;
+                if (state)
+                {
+                    _controller.Save();
+                }
             }
         }
 

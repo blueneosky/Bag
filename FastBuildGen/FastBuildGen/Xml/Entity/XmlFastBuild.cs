@@ -50,9 +50,9 @@ namespace FastBuildGen.Xml.Entity
         {
             FBModel result = new FBModel();
 
-            IEnumerable<FBSolutionTarget> solutionTargets = Xml01SolutionTargets
+            IEnumerable<FBSolutionTarget> solutionTargets = (Xml01SolutionTargets ?? new XmlSolutionTarget[0])
                 .Select(xst => xst.Deserialize());
-            IEnumerable<FBMacroSolutionTarget> macroSolutionTargets = Xml02MacroSolutionTargets
+            IEnumerable<FBMacroSolutionTarget> macroSolutionTargets = (Xml02MacroSolutionTargets ?? new XmlMacroSolutionTarget[0])
                 .Select(xst => xst.Deserialize());
 
             result.SolutionTargets.AddRange(solutionTargets);
@@ -63,7 +63,7 @@ namespace FastBuildGen.Xml.Entity
             Debug.Assert(macroSolutionTargetAll != null && macroSolutionTargetAll is FBMacroSolutionTargetAll);
             // restore 'all' target
             macroSolutionTargetAll.SolutionTargetIds.Clear();
-            macroSolutionTargetAll.SolutionTargetIds.AddRange(Xml04MacroSolutionTargetAllIds);
+            macroSolutionTargetAll.SolutionTargetIds.AddRange(Xml04MacroSolutionTargetAllIds ?? new Guid[0]);
 
             return result;
         }

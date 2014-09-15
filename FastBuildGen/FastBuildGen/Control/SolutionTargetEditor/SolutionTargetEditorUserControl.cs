@@ -172,6 +172,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             bool isReadOnly = withSolutionTarget ? SolutionTarget.ReadOnly.HasFlag(EnumFBTargetReadonly.MSBuildTarget) : true;
             if (withSolutionTarget)
             {
+                _enabledCheckBox.CheckState = CheckState.Checked;
                 _enabledCheckBox.Checked = SolutionTarget.Enabled;
             }
             else

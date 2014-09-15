@@ -29,7 +29,7 @@ namespace FastBuildGen.Xml.Entity
         {
             FBMacroSolutionTarget result = new FBMacroSolutionTarget(this.Xml01Id, EnumFBTargetReadonly.None);
             base.Deserialize(result);
-            result.SolutionTargetIds.AddRange(this.Xml05SolutionTargetIds);
+            result.SolutionTargetIds.AddRange(this.Xml05SolutionTargetIds ?? new Guid[0]);
 
             return result;
         }

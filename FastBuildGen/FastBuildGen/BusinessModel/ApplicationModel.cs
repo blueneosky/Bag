@@ -53,37 +53,97 @@ namespace FastBuildGen.BusinessModel
         private void Subscribe(FBModel fbModel)
         {
             _fbModel.PropertyChanged += _fbModel_PropertyChanged;
-            _fbModel.SolutionTargets.CollectionChanged += _fbModel_Targets_CollectionChanged;
-            _fbModel.MacroSolutionTargets.CollectionChanged += _fbModel_Targets_CollectionChanged;
-            _fbModel.SolutionTargets.ForEach(t => t.PropertyChanged += _fbModel_PropertyChanged);
-            _fbModel.MacroSolutionTargets.ForEach(t => t.PropertyChanged += _fbModel_PropertyChanged);
-            _fbModel.MacroSolutionTargets.ForEach(t => t.SolutionTargetIds.CollectionChanged += _fbModel_Targets_CollectionChanged);
+            _fbModel.SolutionTargets.CollectionChanged += _fbModel_SolutionTargets_CollectionChanged;
+            _fbModel.MacroSolutionTargets.CollectionChanged += _fbModel_MacroSolutionTargets_CollectionChanged;
+            _fbModel.SolutionTargets.ForEach(Subscribe);
+            _fbModel.MacroSolutionTargets.ForEach(Subscribe);
         }
 
         private void Unsubscribe(FBModel fbModel)
         {
             _fbModel.PropertyChanged -= _fbModel_PropertyChanged;
-            _fbModel.SolutionTargets.CollectionChanged -= _fbModel_Targets_CollectionChanged;
-            _fbModel.MacroSolutionTargets.CollectionChanged -= _fbModel_Targets_CollectionChanged;
-            _fbModel.SolutionTargets.ForEach(t => t.PropertyChanged -= _fbModel_PropertyChanged);
-            _fbModel.MacroSolutionTargets.ForEach(t => t.PropertyChanged -= _fbModel_PropertyChanged);
-            _fbModel.MacroSolutionTargets.ForEach(t => t.SolutionTargetIds.CollectionChanged -= _fbModel_Targets_CollectionChanged);
+            _fbModel.SolutionTargets.CollectionChanged -= _fbModel_SolutionTargets_CollectionChanged;
+            _fbModel.MacroSolutionTargets.CollectionChanged -= _fbModel_MacroSolutionTargets_CollectionChanged;
+            _fbModel.SolutionTargets.ForEach(Unsubscribe);
+            _fbModel.MacroSolutionTargets.ForEach(Unsubscribe);
         }
 
-        private void _fbModel_Targets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Subscribe(FBTarget fbTarget)
+        {
+            fbTarget.PropertyChanged += _fbModel_PropertyChanged;
+        }
+
+        private void Unsubscribe(FBTarget fbTarget)
+        {
+            fbTarget.PropertyChanged -= _fbModel_PropertyChanged;
+        }
+
+        private void Subscribe(FBSolutionTarget fbSolutionTarget)
+        {
+            Subscribe((FBTarget)fbSolutionTarget);
+        }
+
+        private void Unsubscribe(FBSolutionTarget fbSolutionTarget)
+        {
+            Unsubscribe((FBTarget)fbSolutionTarget);
+        }
+
+        private void Subscribe(FBMacroSolutionTarget fbMacroSolutionTarget)
+        {
+            Subscribe((FBTarget)fbMacroSolutionTarget);
+            fbMacroSolutionTarget.SolutionTargetIds.CollectionChanged += SolutionTargetIds_CollectionChanged;
+        }
+
+        private void SolutionTargetIds_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            DataChanged = true;
+        }
+
+        private void Unsubscribe(FBMacroSolutionTarget fbMacroSolutionTarget)
+        {
+            Unsubscribe((FBTarget)fbMacroSolutionTarget);
+            fbMacroSolutionTarget.SolutionTargetIds.CollectionChanged -= SolutionTargetIds_CollectionChanged;
+        }
+
+        private void _fbModel_SolutionTargets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    e.NewItems.OfType<FBTarget>().ForEach(t => t.PropertyChanged += _fbModel_PropertyChanged);
+                    e.NewItems.OfType<FBSolutionTarget>().ForEach(Subscribe);
                     break;
 
                 case NotifyCollectionChangedAction.Remove:
-                    e.OldItems.OfType<FBTarget>().ForEach(t => t.PropertyChanged -= _fbModel_PropertyChanged);
+                    e.OldItems.OfType<FBSolutionTarget>().ForEach(Unsubscribe);
                     break;
 
                 case NotifyCollectionChangedAction.Reset:
-                    e.OldItems.OfType<FBTarget>().ForEach(t => t.PropertyChanged -= _fbModel_PropertyChanged);
+                    e.OldItems.OfType<FBSolutionTarget>().ForEach(Unsubscribe);
+                    break;
+
+                case NotifyCollectionChangedAction.Move:
+                case NotifyCollectionChangedAction.Replace:
+                default:
+                    Debug.Fail("Unspecified case");
+                    break;
+            }
+            DataChanged = true;
+        }
+
+        private void _fbModel_MacroSolutionTargets_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    e.NewItems.OfType<FBMacroSolutionTarget>().ForEach(Subscribe);
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    e.OldItems.OfType<FBMacroSolutionTarget>().ForEach(Unsubscribe);
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    e.OldItems.OfType<FBMacroSolutionTarget>().ForEach(Unsubscribe);
                     break;
 
                 case NotifyCollectionChangedAction.Move:
