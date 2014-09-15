@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,8 +13,6 @@ using FastBuildGen.Xml.Entity;
 
 namespace FastBuildGen.File
 {
-#warning TODO DELTA point - add error management
-
     internal class FBFile : IDisposable
     {
         #region Factory
@@ -23,7 +20,7 @@ namespace FastBuildGen.File
         public static FBFile Read(string fileName)
         {
             FBFile result = new FBFile(fileName, FileMode.Open);
-            result.Read();
+            result.Read();  // note : throw formated exception
 
             return result;
         }
