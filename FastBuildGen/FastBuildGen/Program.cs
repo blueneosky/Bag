@@ -7,14 +7,9 @@ using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.UI;
 using FastBuildGen.Forms.Main;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen
 {
-#warning TODO - do not use a default config => load/save/import into ...
-#warning TODO - import from .sln
-#warning TODO - ALPHA BETA - Undo/Redo
-
     internal static class Program
     {
         /// <summary>
@@ -23,15 +18,6 @@ namespace FastBuildGen
         [STAThread]
         private static void Main()
         {
-            //string solutionPath = @"D:\_Workspaces\HEO\V1\Developpement\ProduitCommercial\ProduitCommercial.sln";
-            //Solution solution = new Solution(solutionPath);
-            //solution.MSBuildCompatibleProjects
-            //    .Select(p => p.ProjectName)
-            //    .ToList()
-            //    .ForEach(t => Debug.WriteLine(t));
-
-            //return;
-
             AppDomain.CurrentDomain.AssemblyResolve += (sender, arg) =>
             {
                 if (arg.Name.StartsWith("BatchGen"))
@@ -39,10 +25,8 @@ namespace FastBuildGen
                 return null;
             };
 
-            // create business model
-            IFastBuildModel model = new FastBuildModel();
-            IFastBuildController controller = new FastBuildController(model);
-            model.Initialize();
+            // create application model
+            ApplicationModel applicationModel = new ApplicationModel();
 
             // Style
             Application.EnableVisualStyles();
@@ -50,7 +34,7 @@ namespace FastBuildGen
             UIDoubleBufferedModeManager.GlobalDoubleBufferedEx = true;
 
             // Main form
-            MainFormModel mainFormModel = new MainFormModel(model);
+            MainFormModel mainFormModel = new MainFormModel(applicationModel);
             MainFormController mainFormController = new MainFormController(mainFormModel);
             MainForm mainForm = new MainForm(mainFormModel, mainFormController);
 

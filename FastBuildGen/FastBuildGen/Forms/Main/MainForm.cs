@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using FastBuildGen.Common.Forms;
-using FastBuildGen.Control.InternalVarsEditor;
-using FastBuildGen.Control.ModulesEditor;
-using FastBuildGen.Control.TargetsEditor;
+using FastBuildGen.Control.MacroSolutionTargetsEditor;
+using FastBuildGen.Control.SolutionTargetsEditor;
 using ImputationH31per.Util;
 
 namespace FastBuildGen.Forms.Main
@@ -26,33 +21,27 @@ namespace FastBuildGen.Forms.Main
         {
             InitializeComponent();
 
-            ModulesEditorModel modulesEditorModel = new ModulesEditorModel(model.FastBuildModel.FastBuildParamModel);
-            ModulesEditorController modulesEditorController = new ModulesEditorController(modulesEditorModel);
+            SolutionTargetsEditorModel modulesEditorModel = new SolutionTargetsEditorModel(model.ApplicationModel);
+            SolutionTargetsEditorController modulesEditorController = new SolutionTargetsEditorController(modulesEditorModel);
 
-            TargetsEditorModel targetsEditorModel = new TargetsEditorModel(model.FastBuildModel.FastBuildParamModel);
-            TargetsEditorController targetsEditorController = new TargetsEditorController(targetsEditorModel);
-
-            InternalVarsEditorModel internalVarsEditorModel = new InternalVarsEditorModel(model.FastBuildModel.FastBuildInternalVarModel);
-            InternalVarsEditorController internalVarsEditorController = new InternalVarsEditorController(internalVarsEditorModel);
+            MacroSolutionTargetsEditorModel targetsEditorModel = new MacroSolutionTargetsEditorModel(model.ApplicationModel);
+            MacroSolutionTargetsEditorController targetsEditorController = new MacroSolutionTargetsEditorController(targetsEditorModel);
 
             Initialize(model, controller
                 , modulesEditorModel, modulesEditorController
-                , targetsEditorModel, targetsEditorController
-                , internalVarsEditorModel, internalVarsEditorController);
+                , targetsEditorModel, targetsEditorController);
         }
 
         public MainForm(MainFormModel model, MainFormController controller
-            , ModulesEditorModel modulesEditorModel, ModulesEditorController modulesEditorController
-            , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController
-            , InternalVarsEditorModel internalVarsEditorModel, InternalVarsEditorController internalVarsEditorController)
+            , SolutionTargetsEditorModel modulesEditorModel, SolutionTargetsEditorController modulesEditorController
+            , MacroSolutionTargetsEditorModel targetsEditorModel, MacroSolutionTargetsEditorController targetsEditorController)
             : base()
         {
             InitializeComponent();
 
             Initialize(model, controller
                 , modulesEditorModel, modulesEditorController
-                , targetsEditorModel, targetsEditorController
-                , internalVarsEditorModel, internalVarsEditorController);
+                , targetsEditorModel, targetsEditorController);
         }
 
         private MainForm()
@@ -65,11 +54,9 @@ namespace FastBuildGen.Forms.Main
             switch (e.PropertyName)
             {
                 case ConstMainFormModelEvent.ConstFastBuildDataChanged:
-                    RefreshFastBuildDataChanged();
-                    break;
-
-                case ConstMainFormModelEvent.ConstActivePanel:
-                    RefreshActivePanel();
+                case ConstMainFormModelEvent.ConstApplicationModelFilePath:
+                case ConstMainFormModelEvent.ConstFBModelChanged:
+                    RefreshGui();
                     break;
 
                 default:
@@ -79,18 +66,16 @@ namespace FastBuildGen.Forms.Main
         }
 
         private void Initialize(MainFormModel model, MainFormController controller
-            , ModulesEditorModel modulesEditorModel, ModulesEditorController modulesEditorController
-            , TargetsEditorModel targetsEditorModel, TargetsEditorController targetsEditorController
-            , InternalVarsEditorModel internalVarsEditorModel, InternalVarsEditorController internalVarsEditorController)
+            , SolutionTargetsEditorModel modulesEditorModel, SolutionTargetsEditorController modulesEditorController
+            , MacroSolutionTargetsEditorModel targetsEditorModel, MacroSolutionTargetsEditorController targetsEditorController)
         {
             _model = model;
             _controller = controller;
 
             _initialText = this.Text;   // need to be placed after InitializeComponent();
 
-            _modulesEditorUserControl.Initialize(modulesEditorModel, modulesEditorController);
-            _targetsEditorUserControl.Initialize(targetsEditorModel, targetsEditorController);
-            _internalVarsEditorUserControl.Initialize(internalVarsEditorModel, internalVarsEditorController);
+            _solutionTargetsEditorUserControl.Initialize(modulesEditorModel, modulesEditorController);
+            _macroSolutionTargetsEditorUserControl.Initialize(targetsEditorModel, targetsEditorController);
 
             _model.PropertyChanged += _model_PropertyChanged;
 
@@ -103,7 +88,7 @@ namespace FastBuildGen.Forms.Main
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            bool success = _controller.SaveFastBuildDataBeforeClosing();
+            bool success = _controller.SaveFBModelBeforeClosing();
             e.Cancel = (false == success);
 
             base.OnFormClosing(e);
@@ -120,101 +105,86 @@ namespace FastBuildGen.Forms.Main
 
         #region Refresh
 
-        private void RefreshActivePanel()
+        private void RefreshGui()
         {
-            string activePanel = _model.ActivePanel;
-            switch (activePanel)
+            bool state;
+            string filePath;
+            if (_model.FBModel == null)
             {
-                case MainFormModel.ConstActivePanelModulesEditor:
-                    if (_mainTabControl.SelectedTab != _modulesTabPage)
-                        _mainTabControl.SelectedTab = _modulesTabPage;
-                    break;
-
-                case MainFormModel.ConstActivePanelTargetsEditor:
-                    if (_mainTabControl.SelectedTab != _targetsTabPage)
-                        _mainTabControl.SelectedTab = _targetsTabPage;
-                    break;
-
-                case MainFormModel.ConstActivePanelInternalVarsEditor:
-                    if (_mainTabControl.SelectedTab != _propertiesTabPage)
-                        _mainTabControl.SelectedTab = _propertiesTabPage;
-                    break;
-
-                default:
-                    Debug.Fail("Non managed case");
-                    break;
+                state = false;
+                filePath = "<none>";
             }
-        }
+            else
+            {
+                state = _model.FastBuildDataChanged;
+                filePath = _model.FilePath;
+                if (String.IsNullOrEmpty(filePath))
+                    filePath = "<new>";
+            }
 
-        private void RefreshFastBuildDataChanged()
-        {
-            bool state = _model.FastBuildDataChanged;
-
-            this.Text = _initialText + (state ? "(*)" : String.Empty);
+            this.Text = _initialText + " - " + filePath + (state ? "(*)" : String.Empty);
             _saveToolStripMenuItem.Enabled = state;
+            _mergeToolStripMenuItem.Enabled = _model.FBModel != null;
         }
 
         private void RefreshModel()
         {
-            RefreshFastBuildDataChanged();
-            RefreshActivePanel();
+            RefreshGui();
         }
 
         #endregion Refresh
 
         #region User inputs
 
-        private void _importToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _controller.ImportConfigFile();
-        }
-
-        private void _mainTabControl_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_mainTabControl.SelectedTab == _modulesTabPage)
-            {
-                _controller.SelectModulesEditor();
-            }
-            else if (_mainTabControl.SelectedTab == _targetsTabPage)
-            {
-                _controller.SelectTargetsEditor();
-            }
-            else if (_mainTabControl.SelectedTab == _propertiesTabPage)
-            {
-                _controller.SelectInternalVarsEditor();
-            }
-            else
-            {
-                Debug.Fail("Unexpected case");
-            }
-        }
-
         private void _mergeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.MergeConfigFile();
+            if (false == Validate()) return;
+            _controller.MergeWithSln();
         }
 
         private void _quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (false == Validate()) return;
             this.Close();
         }
 
         private void _saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.SaveAsConfigFile();
+            if (false == Validate()) return;
+            _controller.SaveAs();
         }
 
         private void _saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _controller.SaveFastBuildData();
+            bool state = _model.FastBuildDataChanged;
+            if (this.Validate() && state)
+            {
+                _controller.Save();
+            }
         }
 
         private void SaveActionShortcut()
         {
             if (this.Validate())
             {
-                _controller.SaveFastBuildData();
+                bool state = _model.FastBuildDataChanged;
+                if (state)
+                {
+                    _controller.Save();
+                }
             }
+        }
+
+        private void _newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (false == Validate()) return;
+            _controller.NewWithSln();
+        }
+
+        private void _openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (false == Validate()) return;
+            _controller.Open();
         }
 
         #endregion User inputs

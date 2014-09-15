@@ -14,5 +14,13 @@ namespace FastBuildGen.Common
                 source.Add(item);
             }
         }
+
+        public static void RemoveRange<TSource>(this ICollection<TSource> source, IEnumerable<TSource> items)
+        {
+            foreach (TSource item in items)
+            {
+                source.Remove(item);
+            }
+        }
     }
 }

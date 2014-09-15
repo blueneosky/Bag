@@ -5,65 +5,58 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Forms.Main
 {
     internal class MainFormModel : INotifyPropertyChanged
     {
-        public const string ConstActivePanelInternalVarsEditor = "InternalVarsEditor";
-        public const string ConstActivePanelModulesEditor = "ModulesEditor";
-        public const string ConstActivePanelTargetsEditor = "TargetsEditor";
+        private readonly ApplicationModel _applicationModel;
+        private string _filePath;
 
-        private readonly IFastBuildModel _fastBuildModel;
-
-        private string _activePanel;
-
-        public MainFormModel(IFastBuildModel fastBuildModel)
+        public MainFormModel(ApplicationModel applicationModel)
             : base()
         {
-            _fastBuildModel = fastBuildModel;
+            _applicationModel = applicationModel;
 
-            _fastBuildModel.PropertyChanged += _fastBuildModel_PropertyChanged;
-
-            ActivePanel = ConstActivePanelModulesEditor;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string ActivePanel
-        {
-            get { return _activePanel; }
-            set
-            {
-                if (_activePanel == value)
-                    return;
-                _activePanel = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstActivePanel));
-            }
+            _applicationModel.PropertyChanged += _applicationModel_PropertyChanged;
         }
 
         public bool FastBuildDataChanged
         {
-            get { return _fastBuildModel.DataChanged; }
+            get { return _applicationModel.DataChanged; }
         }
 
-        public IFastBuildModel FastBuildModel
+        public ApplicationModel ApplicationModel
         {
-            get { return _fastBuildModel; }
+            get { return _applicationModel; }
         }
 
-        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        public FBModel FBModel
         {
-            PropertyChanged.Notify(sender, e);
+            get { return _applicationModel.FBModel; }
         }
 
-        private void _fastBuildModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        public string FilePath
+        {
+            get { return _filePath; }
+            set
+            {
+                if (_filePath == value) return;
+                _filePath = value;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstApplicationModelFilePath));
+            }
+        }
+
+        private void _applicationModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case ConstIFastBuildModelEvent.ConstDataChanged:
+                case ConstFBEvent.ConstApplicationModelDataChanged:
                     UpdateFastBuildDataChanged();
+                    break;
+
+                case ConstFBEvent.ConstApplicationModelFBModel:
+                    UpdateFBModelChanged();
                     break;
 
                 default:
@@ -77,5 +70,22 @@ namespace FastBuildGen.Forms.Main
             // notify
             OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstFastBuildDataChanged));
         }
+
+        private void UpdateFBModelChanged()
+        {
+            // notify
+            OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModelEvent.ConstFBModelChanged));
+        }
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged.Notify(sender, e);
+        }
+
+        #endregion INotifyPropertyChanged
     }
 }

@@ -177,16 +177,23 @@ namespace FastBuildGen.Control.ListEditor
 
         private void RefreshElements()
         {
+            IEnumerable<ListEditorElement> elements = _model.Elements;
+
             BeginUpdate();
             _listViewEx.BeginUpdate();
 
             _listViewEx.Items.Clear();
-            ListViewItemElement[] items = _model.Elements
+            ListViewItemElement[] items = (elements ?? new ListEditorElement[0])
                 .Select(e => new ListViewItemElement(e))
                 .ToArray();
             _listViewEx.Items.AddRange(items);
 
             _listViewEx.EndUpdate();
+
+            bool isEnabled = elements != null;
+            _listPanel.Enabled = isEnabled;
+            _buttonsPanel.Enabled = isEnabled;
+
             EndUpdate();
         }
 

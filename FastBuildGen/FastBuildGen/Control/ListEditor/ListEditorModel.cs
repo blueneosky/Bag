@@ -42,9 +42,16 @@ namespace FastBuildGen.Control.ListEditor
             get { return _elements; }
             protected set
             {
-                _elements = value
-                    .OrderBy(e => e.Text)
-                    .ToArray();
+                if (value == null)
+                {
+                    _elements = null;
+                }
+                else
+                {
+                    _elements = value
+                        .OrderBy(e => e.Text)
+                        .ToArray();
+                }
                 OnElementsChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
                 UpdateElementSelected();
             }
