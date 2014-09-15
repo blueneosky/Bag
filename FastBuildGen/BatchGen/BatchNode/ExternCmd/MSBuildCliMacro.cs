@@ -13,7 +13,6 @@ namespace BatchGen.BatchNode.ExternCmd
     public class MSBuildCliMacro : BatchStatementNodeBase
     {
         private const string ConstFormatParmaPlatform = "/p:Platform=";
-        private Tuple<BooleanExpressionBase, BatchExpressionBase> _baseOutputPath;
         private BatchExpressionBase _configuration;
         private Tuple<BooleanExpressionBase, BatchExpressionBase> _errorsLogFile;
         private LiteralBatch _literalMSBuildCli;
@@ -40,7 +39,6 @@ namespace BatchGen.BatchNode.ExternCmd
             , BooleanExpressionBase rebuild
             , EnumPlatform platform
             , Tuple<BooleanExpressionBase, BatchExpressionBase> errorsLogFile
-            , Tuple<BooleanExpressionBase, BatchExpressionBase> baseOutputPath
             , IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> targets
             )
         {
@@ -55,7 +53,6 @@ namespace BatchGen.BatchNode.ExternCmd
             _rebuild = rebuild;
             _platform = MSBuildCmd.ConstExpressionByPlatforms[platform];
             _errorsLogFile = errorsLogFile;
-            _baseOutputPath = baseOutputPath;
             _targets = targets != null ? targets.ToArray() : new Tuple<BooleanExpressionBase, BatchExpressionBase>[] { };
         }
 
@@ -71,7 +68,6 @@ namespace BatchGen.BatchNode.ExternCmd
             , BooleanExpressionBase rebuild
             , BatchExpressionBase platform
             , Tuple<BooleanExpressionBase, BatchExpressionBase> errorsLogFile
-            , Tuple<BooleanExpressionBase, BatchExpressionBase> baseOutputPath
             , IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> targets
             )
         {
@@ -86,13 +82,7 @@ namespace BatchGen.BatchNode.ExternCmd
             _rebuild = rebuild;
             _platform = platform;
             _errorsLogFile = errorsLogFile;
-            _baseOutputPath = baseOutputPath;
             _targets = targets != null ? targets.ToArray() : new Tuple<BooleanExpressionBase, BatchExpressionBase>[] { };
-        }
-
-        public Tuple<BooleanExpressionBase, BatchExpressionBase> BaseOutputPath
-        {
-            get { return _baseOutputPath; }
         }
 
         public BatchExpressionBase Configuration
@@ -273,14 +263,11 @@ namespace BatchGen.BatchNode.ExternCmd
             AddMSBuildCli(setsMacro, staticClis, LiteralMSBuildCli, BooleanValueExpressionBase.GetExpressionValue(null != Platform), FormatParmaPlatform(Platform), null);
             if (ErrorsLogFile != null)
                 AddMSBuildCli(setsMacro, staticClis, LiteralMSBuildCli, ErrorsLogFile.Item1, new ComposedExpression(new ValueExpression("/fl /flp:errorsonly;logfile="), ErrorsLogFile.Item2), null);
-            if (BaseOutputPath != null)
-                AddMSBuildCli(setsMacro, staticClis, LiteralMSBuildCli, BaseOutputPath.Item1, new ComposedExpression(new ValueExpression("/p:BaseOutputPath="), BaseOutputPath.Item2), null);
 
             if (Targets.Any())
             {
                 foreach (Tuple<BooleanExpressionBase, BatchExpressionBase> target in Targets)
                 {
-#warning TODO ALPHA - add all fallback (bool?)
                     AddMSBuildCli(setsMacro, staticClis, LiteralMSBuildCli, target.Item1, new ComposedExpression(new ValueExpression("/t:"), target.Item2), null);
                 }
             }

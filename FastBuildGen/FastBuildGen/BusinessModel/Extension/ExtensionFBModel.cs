@@ -112,7 +112,7 @@ namespace FastBuildGen.BusinessModel.Extension
             return model.InternalVars[ConstFBModel.ConstLiteralHeoLanceurPath];
         }
 
-        public static string LiteralMSBuildCliX86(this FBModel model)
+        public static string LiteralMSBuildCli(this FBModel model)
         {
             return model.InternalVars[ConstFBModel.ConstLiteralMSBuildCli];
         }
@@ -132,19 +132,19 @@ namespace FastBuildGen.BusinessModel.Extension
             return model.InternalVars[ConstFBModel.ConstLiteralMSBuildPlatform];
         }
 
-        public static string LiteralMSBuildsWithTargets(this FBModel model)
+        public static string LiteralMSBuildWithTargets(this FBModel model)
         {
-            return model.InternalVars[ConstFBModel.ConstLiteralMSBuildsWithTargets];
+            return model.InternalVars[ConstFBModel.ConstLiteralMSBuildWithTargets];
+        }
+
+        public static string LiteralMSBuildForcedAll(this FBModel model)
+        {
+            return model.InternalVars[ConstFBModel.ConstLiteralMSBuildForcedAll];
         }
 
         public static string LiteralMSBuildTryLoopCond(this FBModel model)
         {
             return model.InternalVars[ConstFBModel.ConstLiteralMSBuildTryLoopCond];
-        }
-
-        public static string LiteralMSBuildWithX86Targets(this FBModel model)
-        {
-            return model.InternalVars[ConstFBModel.ConstLiteralMSBuildWithX86Targets];
         }
 
         public static string LiteralSGenPlusCli(this FBModel model)
