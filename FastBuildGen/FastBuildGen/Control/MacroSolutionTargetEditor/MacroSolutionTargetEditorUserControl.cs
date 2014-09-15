@@ -4,14 +4,13 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
 using FastBuildGen.Control.PDEditor;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
-#warning TODO - ALPHA ALPHA ALPHA BETA point - do a better refresh for availlable modules : don't reset position of the list after an add
-
     internal partial class MacroSolutionTargetEditorUserControl : BaseUserControl
     {
         #region Members
@@ -151,17 +150,61 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             BeginUpdate();
             _availableListBox.BeginUpdate();
 
-            IEnumerable<FBSolutionTarget> availableSolutionTargets = _model.AvailableSolutionTargets;
+            IEnumerable<FBSolutionTarget> solutionTargets = _model.AvailableSolutionTargets;
 
-            _availableListBox.Items.Clear();
-            object[] items = availableSolutionTargets
-                .Select(m => new SolutionTargetItem(m))
-                .OrderBy(m => m.ToString())
-                .ToArray();
-            _availableListBox.Items.AddRange(items);
+            UpdateListBox(_availableListBox.Items, solutionTargets);
 
             _availableListBox.EndUpdate();
             EndUpdate();
+        }
+
+        private void UpdateListBox(ListBox.ObjectCollection listBoxCollection, IEnumerable<FBSolutionTarget> solutionTargets)
+        {
+            SolutionTargetItem[] newItems = solutionTargets
+                .Select(m => new SolutionTargetItem(m))
+                .OrderBy(m => m.ToString())
+                .ToArray();
+
+            int oldItemIndex = 0;
+            int newItemIndex = 0;
+            while (oldItemIndex < listBoxCollection.Count || newItemIndex < newItems.Length)
+            {
+                SolutionTargetItem oldItem = oldItemIndex < listBoxCollection.Count ? (SolutionTargetItem)listBoxCollection[oldItemIndex] : null;
+                SolutionTargetItem newItem = newItemIndex < newItems.Length ? newItems[newItemIndex] : null;
+
+                if (oldItem == null)
+                {
+                    Debug.Assert(newItem != null);
+                    listBoxCollection.Add(newItem);
+                    oldItemIndex++;
+                    newItemIndex++;
+                }
+                else if (newItem == null)
+                {
+                    listBoxCollection.RemoveAt(oldItemIndex);
+                }
+                else if (newItem.SameAs(oldItem))
+                {
+                    oldItemIndex++;
+                    newItemIndex++;
+                }
+                else
+                {
+                    int comp = String.Compare(newItem.ToString(), oldItem.ToString());
+                    if (comp < 0)
+                    {
+                        // new befor old
+                        listBoxCollection.Insert(oldItemIndex, newItem);
+                        oldItemIndex++;
+                        newItemIndex++;
+                    }
+                    else
+                    {
+                        // new after old, but don't recognize (no longer exist => delete)
+                        listBoxCollection.RemoveAt(oldItemIndex);
+                    }
+                }
+            }
         }
 
         private void RefreshSolutionTargets()
@@ -179,13 +222,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
                 solutionTargets = MacroSolutionTarget.SolutionTargetIds
                     .Join(_model.ApplicationModel.FBModel.SolutionTargets, id => id, st => st.Id, (id, st) => st);
             }
-
-            _projectsListBox.Items.Clear();
-            object[] items = solutionTargets
-                .Select(m => new SolutionTargetItem(m))
-                .OrderBy(m => m.ToString())
-                .ToArray();
-            _projectsListBox.Items.AddRange(items);
+            UpdateListBox(_projectsListBox.Items, solutionTargets);
 
             _projectsListBox.EndUpdate();
 

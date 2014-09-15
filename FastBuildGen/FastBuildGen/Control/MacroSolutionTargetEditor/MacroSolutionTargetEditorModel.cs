@@ -9,7 +9,6 @@ using FastBuildGen.Common;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
-#warning TODO - ALPHA ALPHA ALPHA ALPHA point - do a better refresh for availlable modules : replace available and targets by ObservableDictionary ...
     internal class MacroSolutionTargetEditorModel : INotifyPropertyChanged
     {
         private readonly ApplicationModel _applicationModel;
@@ -45,8 +44,6 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMacroSolutionTargetEditorModelEvent.ConstAvailableSolutionTargets));
             }
         }
-
-        public ObservableDictionary<Guid, FBSolutionTarget> AvailableSolutionTargets
 
         public ApplicationModel ApplicationModel
         {
