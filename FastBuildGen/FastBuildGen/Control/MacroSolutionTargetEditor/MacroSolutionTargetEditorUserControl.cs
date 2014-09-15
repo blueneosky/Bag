@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
-using FastBuildGen.Control.PDEditor;
+using FastBuildGen.Control.TargetEditor;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
@@ -31,14 +31,14 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         public void Initialize(MacroSolutionTargetEditorModel model, MacroSolutionTargetEditorController controller)
         {
-            PDEditorModel pdEditorModel = new PDEditorModelWrapper(model);
-            PDEditorController pdEditorController = new PDEditorController(pdEditorModel);
+            TargetEditorModel targetEditorModel = new TargetEditorModelWrapper(model);
+            TargetEditorController targetEditorController = new TargetEditorController(targetEditorModel);
 
-            Initialize(model, controller, pdEditorModel, pdEditorController);
+            Initialize(model, controller, targetEditorModel, targetEditorController);
         }
 
         public void Initialize(MacroSolutionTargetEditorModel model, MacroSolutionTargetEditorController controller
-            , PDEditorModel pdEditorModel, PDEditorController pdEditorController)
+            , TargetEditorModel targetEditorModel, TargetEditorController targetEditorController)
         {
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
@@ -47,7 +47,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             _controller = controller;
 
             _model.PropertyChanged += _model_PropertyChanged;
-            _pdEditorUserControl.Initialize(pdEditorModel, pdEditorController);
+            _targetEditorUserControl.Initialize(targetEditorModel, targetEditorController);
 
             UpdateSolutionTargets();
             RefreshAvailableSolutionTargets();

@@ -6,14 +6,14 @@ using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
 
-namespace FastBuildGen.Control.PDEditor
+namespace FastBuildGen.Control.TargetEditor
 {
-    internal class PDEditorModel : INotifyPropertyChanged
+    internal class TargetEditorModel : INotifyPropertyChanged
     {
         private readonly ApplicationModel _applicationModel;
         private FBTarget _target;
 
-        public PDEditorModel(ApplicationModel applicationModel)
+        public TargetEditorModel(ApplicationModel applicationModel)
         {
             _applicationModel = applicationModel;
         }
@@ -33,7 +33,7 @@ namespace FastBuildGen.Control.PDEditor
                 if (Object.Equals(_target, value))
                     return;
                 _target = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstTarget));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstTargetEditorModelEvent.ConstTarget));
             }
         }
 

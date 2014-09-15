@@ -7,13 +7,13 @@ using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
 
-namespace FastBuildGen.Control.PDEditor
+namespace FastBuildGen.Control.TargetEditor
 {
-    internal class PDEditorController
+    internal class TargetEditorController
     {
-        private readonly PDEditorModel _model;
+        private readonly TargetEditorModel _model;
 
-        public PDEditorController(PDEditorModel model)
+        public TargetEditorController(TargetEditorModel model)
         {
             _model = model;
         }

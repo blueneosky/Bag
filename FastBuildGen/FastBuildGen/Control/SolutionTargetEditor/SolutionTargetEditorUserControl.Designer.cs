@@ -34,7 +34,7 @@
             this._msBuildTargetLabel = new System.Windows.Forms.Label();
             this._enabledLabel = new System.Windows.Forms.Label();
             this._enabledCheckBox = new System.Windows.Forms.CheckBox();
-            this._pdEditorUserControl = new FastBuildGen.Control.PDEditor.PDEditorUserControl();
+            this._targetEditorUserControl = new FastBuildGen.Control.TargetEditor.TargetEditorUserControl();
             this._errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this._tableLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._errorProvider)).BeginInit();
@@ -101,14 +101,14 @@
             this._enabledCheckBox.UseVisualStyleBackColor = true;
             this._enabledCheckBox.CheckedChanged += new System.EventHandler(this._enabledCheckBox_CheckedChanged);
             // 
-            // _pdEditorUserControl
+            // _targetEditorUserControl
             // 
-            this._pdEditorUserControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this._pdEditorUserControl.DoubleBufferedEx = false;
-            this._pdEditorUserControl.Location = new System.Drawing.Point(0, 0);
-            this._pdEditorUserControl.Name = "_pdEditorUserControl";
-            this._pdEditorUserControl.Size = new System.Drawing.Size(679, 186);
-            this._pdEditorUserControl.TabIndex = 0;
+            this._targetEditorUserControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this._targetEditorUserControl.DoubleBufferedEx = false;
+            this._targetEditorUserControl.Location = new System.Drawing.Point(0, 0);
+            this._targetEditorUserControl.Name = "_targetEditorUserControl";
+            this._targetEditorUserControl.Size = new System.Drawing.Size(679, 186);
+            this._targetEditorUserControl.TabIndex = 0;
             // 
             // _errorProvider
             // 
@@ -119,7 +119,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._tableLayoutPanel);
-            this.Controls.Add(this._pdEditorUserControl);
+            this.Controls.Add(this._targetEditorUserControl);
             this.Name = "SolutionTargetEditorUserControl";
             this.Size = new System.Drawing.Size(679, 343);
             this._tableLayoutPanel.ResumeLayout(false);
@@ -131,7 +131,7 @@
 
         #endregion
 
-        private PDEditor.PDEditorUserControl _pdEditorUserControl;
+        private TargetEditor.TargetEditorUserControl _targetEditorUserControl;
         private System.Windows.Forms.Label _msBuildTargetLabel;
         private System.Windows.Forms.Label _enabledLabel;
         private System.Windows.Forms.TextBox _msBuildTargetTextBox;

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FastBuildGen.Control.PDEditor
+namespace FastBuildGen.Control.TargetEditor
 {
-    internal static class ConstPDEditorModelEvent
+    internal static class ConstTargetEditorModelEvent
     {
         public const string ConstTarget = ConstPrefix + "Target";
-        private const string ConstPrefix = "PDEditorModel_";
+        private const string ConstPrefix = "TargetEditorModel_";
     }
 }

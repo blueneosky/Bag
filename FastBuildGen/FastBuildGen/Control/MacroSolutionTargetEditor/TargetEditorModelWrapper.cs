@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common;
-using FastBuildGen.Control.PDEditor;
+using FastBuildGen.Control.TargetEditor;
 
 namespace FastBuildGen.Control.MacroSolutionTargetEditor
 {
-    internal class PDEditorModelWrapper : PDEditorModel
+    internal class TargetEditorModelWrapper : TargetEditorModel
     {
         private readonly MacroSolutionTargetEditorModel _model;
 
-        public PDEditorModelWrapper(MacroSolutionTargetEditorModel model)
+        public TargetEditorModelWrapper(MacroSolutionTargetEditorModel model)
             : base(model.ApplicationModel)
         {
             _model = model;
@@ -30,7 +30,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
         private void _model_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == ConstMacroSolutionTargetEditorModelEvent.ConstMacroSolutionTarget)
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstPDEditorModelEvent.ConstTarget));
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstTargetEditorModelEvent.ConstTarget));
         }
     }
 }

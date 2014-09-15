@@ -118,17 +118,17 @@
     <Compile Include="Control\ListEditor\ListEditorUserControl.Designer.cs">
       <DependentUpon>ListEditorUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Control\PDEditor\ConstPDEditorModelEvent.cs" />
-    <Compile Include="Control\PDEditor\PDEditorController.cs" />
-    <Compile Include="Control\PDEditor\PDEditorUserControl.cs">
+    <Compile Include="Control\TargetEditor\ConstTargetEditorModelEvent.cs" />
+    <Compile Include="Control\TargetEditor\TargetEditorController.cs" />
+    <Compile Include="Control\TargetEditor\TargetEditorUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Control\PDEditor\PDEditorUserControl.Designer.cs">
-      <DependentUpon>PDEditorUserControl.cs</DependentUpon>
+    <Compile Include="Control\TargetEditor\TargetEditorUserControl.Designer.cs">
+      <DependentUpon>TargetEditorUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Control\PDEditor\PDEditorModel.cs" />
+    <Compile Include="Control\TargetEditor\TargetEditorModel.cs" />
     <Compile Include="Control\SolutionTargetEditor\ConstSolutionTargetEditorModelEvent.cs" />
-    <Compile Include="Control\SolutionTargetEditor\PDEditorModelWrapper.cs" />
+    <Compile Include="Control\SolutionTargetEditor\TargetEditorModelWrapper.cs" />
     <Compile Include="Control\SolutionTargetEditor\SolutionTargetEditorController.cs" />
     <Compile Include="Control\SolutionTargetEditor\SolutionTargetEditorModel.cs" />
     <Compile Include="Control\SolutionTargetEditor\SolutionTargetEditorUserControl.cs">
@@ -148,7 +148,7 @@
       <DependentUpon>SolutionTargetsEditorUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Control\MacroSolutionTargetEditor\ConstMacroSolutionTargetEditorModelEvent.cs" />
-    <Compile Include="Control\MacroSolutionTargetEditor\PDEditorModelWrapper.cs" />
+    <Compile Include="Control\MacroSolutionTargetEditor\TargetEditorModelWrapper.cs" />
     <Compile Include="Control\MacroSolutionTargetEditor\MacroSolutionTargetEditorUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -203,8 +203,8 @@
     <EmbeddedResource Include="Control\ListEditor\ListEditorUserControl.resx">
       <DependentUpon>ListEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Control\PDEditor\PDEditorUserControl.resx">
-      <DependentUpon>PDEditorUserControl.cs</DependentUpon>
+    <EmbeddedResource Include="Control\TargetEditor\TargetEditorUserControl.resx">
+      <DependentUpon>TargetEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Control\SolutionTargetEditor\SolutionTargetEditorUserControl.resx">
       <DependentUpon>SolutionTargetEditorUserControl.cs</DependentUpon>

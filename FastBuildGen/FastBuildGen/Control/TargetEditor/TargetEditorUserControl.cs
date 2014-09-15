@@ -7,15 +7,14 @@ using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
 
-namespace FastBuildGen.Control.PDEditor
+namespace FastBuildGen.Control.TargetEditor
 {
-#warning TODO GAMMA point - renamme PDEditorXXX to FBTEditorXXX
-    internal partial class PDEditorUserControl : BaseUserControl
+    internal partial class TargetEditorUserControl : BaseUserControl
     {
         #region Members
 
-        private PDEditorController _controller;
-        private PDEditorModel _model;
+        private TargetEditorController _controller;
+        private TargetEditorModel _model;
 
         private FBTarget _target;
 
@@ -23,12 +22,12 @@ namespace FastBuildGen.Control.PDEditor
 
         #region ctor
 
-        public PDEditorUserControl()
+        public TargetEditorUserControl()
         {
             InitializeComponent();
         }
 
-        public void Initialize(PDEditorModel model, PDEditorController controller)
+        public void Initialize(TargetEditorModel model, TargetEditorController controller)
         {
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
@@ -86,7 +85,7 @@ namespace FastBuildGen.Control.PDEditor
         {
             switch (e.PropertyName)
             {
-                case ConstPDEditorModelEvent.ConstTarget:
+                case ConstTargetEditorModelEvent.ConstTarget:
                     UpdateParamDescription();
                     break;
 

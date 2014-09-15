@@ -1,6 +1,6 @@
-﻿namespace FastBuildGen.Control.PDEditor
+﻿namespace FastBuildGen.Control.TargetEditor
 {
-    partial class PDEditorUserControl
+    partial class TargetEditorUserControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -185,12 +185,12 @@
             // 
             this._errorProvider.ContainerControl = this;
             // 
-            // PDEditorUserControl
+            // TargetEditorUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._tableLayoutPanel);
-            this.Name = "PDEditorUserControl";
+            this.Name = "TargetEditorUserControl";
             this.Size = new System.Drawing.Size(623, 242);
             this._tableLayoutPanel.ResumeLayout(false);
             this._tableLayoutPanel.PerformLayout();

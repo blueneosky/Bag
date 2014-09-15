@@ -35,7 +35,7 @@
             this._modulesGroupBox = new System.Windows.Forms.GroupBox();
             this._modulesPanel = new System.Windows.Forms.Panel();
             this._projectsListBox = new System.Windows.Forms.ListBox();
-            this._pdEditorUserControl = new FastBuildGen.Control.PDEditor.PDEditorUserControl();
+            this._targetEditorUserControl = new FastBuildGen.Control.TargetEditor.TargetEditorUserControl();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
@@ -127,21 +127,21 @@
             this._projectsListBox.TabIndex = 0;
             this._projectsListBox.DoubleClick += new System.EventHandler(this._modulesListBox_DoubleClick);
             // 
-            // _pdEditorUserControl
+            // _targetEditorUserControl
             // 
-            this._pdEditorUserControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this._pdEditorUserControl.DoubleBufferedEx = false;
-            this._pdEditorUserControl.Location = new System.Drawing.Point(0, 0);
-            this._pdEditorUserControl.Name = "_pdEditorUserControl";
-            this._pdEditorUserControl.Size = new System.Drawing.Size(698, 186);
-            this._pdEditorUserControl.TabIndex = 0;
+            this._targetEditorUserControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this._targetEditorUserControl.DoubleBufferedEx = false;
+            this._targetEditorUserControl.Location = new System.Drawing.Point(0, 0);
+            this._targetEditorUserControl.Name = "_targetEditorUserControl";
+            this._targetEditorUserControl.Size = new System.Drawing.Size(698, 186);
+            this._targetEditorUserControl.TabIndex = 0;
             // 
             // MacroSolutionTargetEditorUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this._splitContainer);
-            this.Controls.Add(this._pdEditorUserControl);
+            this.Controls.Add(this._targetEditorUserControl);
             this.Name = "MacroSolutionTargetEditorUserControl";
             this.Size = new System.Drawing.Size(698, 620);
             this._splitContainer.Panel1.ResumeLayout(false);
@@ -158,7 +158,7 @@
 
         #endregion
 
-        private PDEditor.PDEditorUserControl _pdEditorUserControl;
+        private TargetEditor.TargetEditorUserControl _targetEditorUserControl;
         private System.Windows.Forms.SplitContainer _splitContainer;
         private System.Windows.Forms.GroupBox _availableGroupBox;
         private System.Windows.Forms.GroupBox _modulesGroupBox;
