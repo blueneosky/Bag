@@ -1,14 +1,14 @@
 ﻿A quoi sert FastBuildGen ?
 FastBuildGen (ou FBGen) permet de paramètrer les option de compilation de fastbuild.bat
 
+A quoi correspond un "mot clef" (ou 'keyword')
+Un "mot clef" est un nom unique utiliser comme cible pour la ligne de commande de fastbuild.bat. Ce mot clef permet de spécifier la compilation d'un projet ou d'une macro spécifique.
+
 A quoi correspond un 'Projet'
 Un 'Projet' correspond à un projet de la solution.
 
 A quoi correspond une 'Macro'
 Une 'Macro' correspond à un ensemble de projet qui pourront être compiler avec une seul "mot clef" (ou 'keyword').
-
-A quoi correspond un "mot clef" (ou 'keyword')
-Un "mot clef" est un nom unique utilisé pour désigner la compilation d'un projet ou d'un ensemble de projet (via une macro)
 
 Pourquoi un 'Projet' n'apparait pas en tant que cible dans fastbuild.bat ?
 Pour qu'un 'Projet' soit disponible, il faut l'activer via l'option "Exposé"
