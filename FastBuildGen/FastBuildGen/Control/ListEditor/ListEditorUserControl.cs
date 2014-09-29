@@ -38,7 +38,7 @@ namespace FastBuildGen.Control.ListEditor
             _model.ElementsChanged += _model_ElementsChanged;
 
             UpdateElementSelected();
-            RefreshModele();
+            RefreshModel();
         }
 
         #endregion ctor
@@ -157,7 +157,7 @@ namespace FastBuildGen.Control.ListEditor
 
         #endregion Model events
 
-        #region Modele Update
+        #region Model Update
 
         private void UpdateElementSelected()
         {
@@ -166,7 +166,7 @@ namespace FastBuildGen.Control.ListEditor
             RefreshElementSelected();
         }
 
-        #endregion Modele Update
+        #endregion Model Update
 
         #region UI Update
 
@@ -221,7 +221,7 @@ namespace FastBuildGen.Control.ListEditor
             EndUpdate();
         }
 
-        private void RefreshModele()
+        private void RefreshModel()
         {
             RefreshAddEnable();
             RefreshRemoveEnable();

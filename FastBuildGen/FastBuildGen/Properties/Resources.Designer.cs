@@ -66,5 +66,17 @@ namespace FastBuildGen.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Question 1 ?
+        ///Faire le truc...
+        ///Question 2 ?
+        ///Faire l&apos;autre truc....
+        /// </summary>
+        internal static string Faq {
+            get {
+                return ResourceManager.GetString("Faq", resourceCulture);
+            }
+        }
     }
 }

@@ -124,6 +124,15 @@
     <Compile Include="Common\UI\UIException.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Control\Faq\ConstFaqModelEvent.cs" />
+    <Compile Include="Control\Faq\FaqController.cs" />
+    <Compile Include="Control\Faq\FaqModel.cs" />
+    <Compile Include="Control\Faq\FaqUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Control\Faq\FaqUserControl.Designer.cs">
+      <DependentUpon>FaqUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Control\ListEditor\ConstListEditorElementEvent.cs" />
     <Compile Include="Control\ListEditor\ListEditorElement.cs" />
     <Compile Include="Control\ListEditor\ListViewItemElement.cs" />
@@ -216,6 +225,9 @@
     <EmbeddedResource Include="Common\Forms\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Control\Faq\FaqUserControl.resx">
+      <DependentUpon>FaqUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Control\ListEditor\ListEditorUserControl.resx">
       <DependentUpon>ListEditorUserControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -271,6 +283,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="faq.txt" />
     <Content Include="Lib\BatchGen.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

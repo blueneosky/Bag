@@ -126,7 +126,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
 
         #endregion Model events
 
-        #region Modele Update
+        #region Model Update
 
         private void UpdateSolutionTarget()
         {
@@ -135,7 +135,7 @@ namespace FastBuildGen.Control.SolutionTargetEditor
             RefreshSolutionTarget();
         }
 
-        #endregion Modele Update
+        #endregion Model Update
 
         #region UI Update
 

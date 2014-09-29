@@ -33,6 +33,8 @@
             this._solutionTargetsEditorUserControl = new FastBuildGen.Control.SolutionTargetsEditor.SolutionTargetsEditorUserControl();
             this._macroSolutionTargetsTabPage = new System.Windows.Forms.TabPage();
             this._macroSolutionTargetsEditorUserControl = new FastBuildGen.Control.MacroSolutionTargetsEditor.MacroSolutionTargetsEditorUserControl();
+            this._faqTabPage = new System.Windows.Forms.TabPage();
+            this._faqUserControl = new FastBuildGen.Control.Faq.FaqUserControl();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
             this._menuStrip = new System.Windows.Forms.MenuStrip();
             this._fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,6 +50,7 @@
             this._mainTabControl.SuspendLayout();
             this._solutionTargetsTabPage.SuspendLayout();
             this._macroSolutionTargetsTabPage.SuspendLayout();
+            this._faqTabPage.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
             this.toolStripContainer1.SuspendLayout();
@@ -58,6 +61,7 @@
             // 
             this._mainTabControl.Controls.Add(this._solutionTargetsTabPage);
             this._mainTabControl.Controls.Add(this._macroSolutionTargetsTabPage);
+            this._mainTabControl.Controls.Add(this._faqTabPage);
             this._mainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this._mainTabControl.Location = new System.Drawing.Point(3, 3);
             this._mainTabControl.Name = "_mainTabControl";
@@ -102,8 +106,28 @@
             this._macroSolutionTargetsEditorUserControl.DoubleBufferedEx = false;
             this._macroSolutionTargetsEditorUserControl.Location = new System.Drawing.Point(3, 3);
             this._macroSolutionTargetsEditorUserControl.Name = "_macroSolutionTargetsEditorUserControl";
-            this._macroSolutionTargetsEditorUserControl.Size = new System.Drawing.Size(750, 434);
+            this._macroSolutionTargetsEditorUserControl.Size = new System.Drawing.Size(186, 68);
             this._macroSolutionTargetsEditorUserControl.TabIndex = 0;
+            // 
+            // _faqTabPage
+            // 
+            this._faqTabPage.Controls.Add(this._faqUserControl);
+            this._faqTabPage.Location = new System.Drawing.Point(4, 22);
+            this._faqTabPage.Name = "_faqTabPage";
+            this._faqTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this._faqTabPage.Size = new System.Drawing.Size(756, 440);
+            this._faqTabPage.TabIndex = 2;
+            this._faqTabPage.Text = "FAQ";
+            this._faqTabPage.UseVisualStyleBackColor = true;
+            // 
+            // _faqUserControl
+            // 
+            this._faqUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._faqUserControl.DoubleBufferedEx = false;
+            this._faqUserControl.Location = new System.Drawing.Point(3, 3);
+            this._faqUserControl.Name = "_faqUserControl";
+            this._faqUserControl.Size = new System.Drawing.Size(750, 434);
+            this._faqUserControl.TabIndex = 0;
             // 
             // toolStripContainer1
             // 
@@ -220,6 +244,7 @@
             this._mainTabControl.ResumeLayout(false);
             this._solutionTargetsTabPage.ResumeLayout(false);
             this._macroSolutionTargetsTabPage.ResumeLayout(false);
+            this._faqTabPage.ResumeLayout(false);
             this.toolStripContainer1.ContentPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
             this.toolStripContainer1.TopToolStripPanel.PerformLayout();
@@ -250,5 +275,7 @@
         private System.Windows.Forms.ToolStripMenuItem _newToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _openToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.TabPage _faqTabPage;
+        private Control.Faq.FaqUserControl _faqUserControl;
     }
 }

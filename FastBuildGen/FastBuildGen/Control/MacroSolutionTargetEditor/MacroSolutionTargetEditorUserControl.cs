@@ -132,7 +132,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
 
         #endregion Model events
 
-        #region Modele Update
+        #region Model Update
 
         private void UpdateSolutionTargets()
         {
@@ -141,7 +141,7 @@ namespace FastBuildGen.Control.MacroSolutionTargetEditor
             RefreshMacroSolutionTarget();
         }
 
-        #endregion Modele Update
+        #endregion Model Update
 
         #region UI Update
 

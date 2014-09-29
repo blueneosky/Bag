@@ -5,6 +5,7 @@ using FastBuildGen.Common.Forms;
 using FastBuildGen.Control.MacroSolutionTargetsEditor;
 using FastBuildGen.Control.SolutionTargetsEditor;
 using ImputationH31per.Util;
+using FastBuildGen.Control.Faq;
 
 namespace FastBuildGen.Forms.Main
 {
@@ -27,21 +28,27 @@ namespace FastBuildGen.Forms.Main
             MacroSolutionTargetsEditorModel targetsEditorModel = new MacroSolutionTargetsEditorModel(model.ApplicationModel);
             MacroSolutionTargetsEditorController targetsEditorController = new MacroSolutionTargetsEditorController(targetsEditorModel);
 
+            FaqModel faqModel = new FaqModel();
+            FaqController faqController = new FaqController(faqModel);
+
             Initialize(model, controller
                 , modulesEditorModel, modulesEditorController
-                , targetsEditorModel, targetsEditorController);
+                , targetsEditorModel, targetsEditorController
+                , faqModel, faqController);
         }
 
         public MainForm(MainFormModel model, MainFormController controller
             , SolutionTargetsEditorModel modulesEditorModel, SolutionTargetsEditorController modulesEditorController
-            , MacroSolutionTargetsEditorModel targetsEditorModel, MacroSolutionTargetsEditorController targetsEditorController)
+            , MacroSolutionTargetsEditorModel targetsEditorModel, MacroSolutionTargetsEditorController targetsEditorController
+            , FaqModel faqModel, FaqController faqController)
             : base()
         {
             InitializeComponent();
 
             Initialize(model, controller
                 , modulesEditorModel, modulesEditorController
-                , targetsEditorModel, targetsEditorController);
+                , targetsEditorModel, targetsEditorController
+                , faqModel, faqController);
         }
 
         private MainForm()
@@ -67,7 +74,8 @@ namespace FastBuildGen.Forms.Main
 
         private void Initialize(MainFormModel model, MainFormController controller
             , SolutionTargetsEditorModel modulesEditorModel, SolutionTargetsEditorController modulesEditorController
-            , MacroSolutionTargetsEditorModel targetsEditorModel, MacroSolutionTargetsEditorController targetsEditorController)
+            , MacroSolutionTargetsEditorModel targetsEditorModel, MacroSolutionTargetsEditorController targetsEditorController
+            , FaqModel faqModel, FaqController faqController)
         {
             _model = model;
             _controller = controller;
@@ -76,6 +84,7 @@ namespace FastBuildGen.Forms.Main
 
             _solutionTargetsEditorUserControl.Initialize(modulesEditorModel, modulesEditorController);
             _macroSolutionTargetsEditorUserControl.Initialize(targetsEditorModel, targetsEditorController);
+            _faqUserControl.Initialize(faqModel, faqController);
 
             _model.PropertyChanged += _model_PropertyChanged;
 
