@@ -88,18 +88,18 @@
             this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 239F));
             this._tableLayoutPanel.Controls.Add(this._groupesGroupBox, 0, 1);
             this._tableLayoutPanel.Controls.Add(this._dateGroupBox, 0, 0);
-            this._tableLayoutPanel.Controls.Add(this._tachesGroupBox, 2, 0);
-            this._tableLayoutPanel.Controls.Add(this._ticketsGroupBox, 1, 0);
-            this._tableLayoutPanel.Controls.Add(this._regroupementGroupBox, 0, 3);
-            this._tableLayoutPanel.Controls.Add(this._regroupementsGroupBox, 1, 3);
+            this._tableLayoutPanel.Controls.Add(this._regroupementGroupBox, 0, 2);
+            this._tableLayoutPanel.Controls.Add(this._regroupementsGroupBox, 1, 2);
+            this._tableLayoutPanel.Controls.Add(this._tachesGroupBox, 1, 0);
+            this._tableLayoutPanel.Controls.Add(this._ticketsGroupBox, 2, 0);
             this._tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._tableLayoutPanel.Name = "_tableLayoutPanel";
-            this._tableLayoutPanel.RowCount = 4;
+            this._tableLayoutPanel.RowCount = 3;
             this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
-            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 32.33645F));
-            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 27.28972F));
-            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40.18692F));
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 54.20744F));
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.79256F));
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this._tableLayoutPanel.Size = new System.Drawing.Size(805, 565);
             this._tableLayoutPanel.TabIndex = 0;
             // 
@@ -111,8 +111,7 @@
             this._groupesGroupBox.Controls.Add(this._groupesListBox);
             this._groupesGroupBox.Location = new System.Drawing.Point(3, 57);
             this._groupesGroupBox.Name = "_groupesGroupBox";
-            this._tableLayoutPanel.SetRowSpan(this._groupesGroupBox, 2);
-            this._groupesGroupBox.Size = new System.Drawing.Size(277, 298);
+            this._groupesGroupBox.Size = new System.Drawing.Size(277, 270);
             this._groupesGroupBox.TabIndex = 2;
             this._groupesGroupBox.TabStop = false;
             this._groupesGroupBox.Text = "Groupes";
@@ -123,7 +122,7 @@
             this._groupesListBox.FormattingEnabled = true;
             this._groupesListBox.Location = new System.Drawing.Point(3, 16);
             this._groupesListBox.Name = "_groupesListBox";
-            this._groupesListBox.Size = new System.Drawing.Size(271, 279);
+            this._groupesListBox.Size = new System.Drawing.Size(271, 251);
             this._groupesListBox.TabIndex = 0;
             // 
             // _dateGroupBox
@@ -154,10 +153,10 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._tachesGroupBox.Controls.Add(this._tachesListBox);
-            this._tachesGroupBox.Location = new System.Drawing.Point(569, 3);
+            this._tachesGroupBox.Location = new System.Drawing.Point(286, 3);
             this._tachesGroupBox.Name = "_tachesGroupBox";
-            this._tableLayoutPanel.SetRowSpan(this._tachesGroupBox, 3);
-            this._tachesGroupBox.Size = new System.Drawing.Size(233, 352);
+            this._tableLayoutPanel.SetRowSpan(this._tachesGroupBox, 2);
+            this._tachesGroupBox.Size = new System.Drawing.Size(277, 324);
             this._tachesGroupBox.TabIndex = 1;
             this._tachesGroupBox.TabStop = false;
             this._tachesGroupBox.Text = "Tâches";
@@ -168,7 +167,7 @@
             this._tachesListBox.FormattingEnabled = true;
             this._tachesListBox.Location = new System.Drawing.Point(3, 16);
             this._tachesListBox.Name = "_tachesListBox";
-            this._tachesListBox.Size = new System.Drawing.Size(227, 333);
+            this._tachesListBox.Size = new System.Drawing.Size(271, 305);
             this._tachesListBox.TabIndex = 2;
             // 
             // _ticketsGroupBox
@@ -177,10 +176,10 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._ticketsGroupBox.Controls.Add(this._ticketsListBox);
-            this._ticketsGroupBox.Location = new System.Drawing.Point(286, 3);
+            this._ticketsGroupBox.Location = new System.Drawing.Point(569, 3);
             this._ticketsGroupBox.Name = "_ticketsGroupBox";
-            this._tableLayoutPanel.SetRowSpan(this._ticketsGroupBox, 3);
-            this._ticketsGroupBox.Size = new System.Drawing.Size(277, 352);
+            this._tableLayoutPanel.SetRowSpan(this._ticketsGroupBox, 2);
+            this._ticketsGroupBox.Size = new System.Drawing.Size(233, 324);
             this._ticketsGroupBox.TabIndex = 3;
             this._ticketsGroupBox.TabStop = false;
             this._ticketsGroupBox.Text = "Tickets";
@@ -191,7 +190,7 @@
             this._ticketsListBox.FormattingEnabled = true;
             this._ticketsListBox.Location = new System.Drawing.Point(3, 16);
             this._ticketsListBox.Name = "_ticketsListBox";
-            this._ticketsListBox.Size = new System.Drawing.Size(271, 333);
+            this._ticketsListBox.Size = new System.Drawing.Size(227, 305);
             this._ticketsListBox.TabIndex = 1;
             // 
             // _regroupementGroupBox
@@ -201,9 +200,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._regroupementGroupBox.Controls.Add(this._regroupementListBox);
             this._regroupementGroupBox.Controls.Add(this.panel1);
-            this._regroupementGroupBox.Location = new System.Drawing.Point(3, 361);
+            this._regroupementGroupBox.Location = new System.Drawing.Point(3, 333);
             this._regroupementGroupBox.Name = "_regroupementGroupBox";
-            this._regroupementGroupBox.Size = new System.Drawing.Size(277, 201);
+            this._regroupementGroupBox.Size = new System.Drawing.Size(277, 229);
             this._regroupementGroupBox.TabIndex = 5;
             this._regroupementGroupBox.TabStop = false;
             this._regroupementGroupBox.Text = "Regroupement";
@@ -214,7 +213,7 @@
             this._regroupementListBox.FormattingEnabled = true;
             this._regroupementListBox.Location = new System.Drawing.Point(3, 16);
             this._regroupementListBox.Name = "_regroupementListBox";
-            this._regroupementListBox.Size = new System.Drawing.Size(271, 153);
+            this._regroupementListBox.Size = new System.Drawing.Size(271, 181);
             this._regroupementListBox.TabIndex = 2;
             // 
             // panel1
@@ -222,7 +221,7 @@
             this.panel1.Controls.Add(this._nomGroupementTextBox);
             this.panel1.Controls.Add(this._ajouterGroupementButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(3, 169);
+            this.panel1.Location = new System.Drawing.Point(3, 197);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(271, 29);
             this.panel1.TabIndex = 3;
@@ -254,9 +253,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._tableLayoutPanel.SetColumnSpan(this._regroupementsGroupBox, 2);
             this._regroupementsGroupBox.Controls.Add(this._regroupementsListBox);
-            this._regroupementsGroupBox.Location = new System.Drawing.Point(286, 361);
+            this._regroupementsGroupBox.Location = new System.Drawing.Point(286, 333);
             this._regroupementsGroupBox.Name = "_regroupementsGroupBox";
-            this._regroupementsGroupBox.Size = new System.Drawing.Size(516, 201);
+            this._regroupementsGroupBox.Size = new System.Drawing.Size(516, 229);
             this._regroupementsGroupBox.TabIndex = 6;
             this._regroupementsGroupBox.TabStop = false;
             this._regroupementsGroupBox.Text = "Regroupements";
@@ -267,7 +266,7 @@
             this._regroupementsListBox.FormattingEnabled = true;
             this._regroupementsListBox.Location = new System.Drawing.Point(3, 16);
             this._regroupementsListBox.Name = "_regroupementsListBox";
-            this._regroupementsListBox.Size = new System.Drawing.Size(510, 182);
+            this._regroupementsListBox.Size = new System.Drawing.Size(510, 210);
             this._regroupementsListBox.TabIndex = 3;
             // 
             // _resultatGroupBox

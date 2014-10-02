@@ -9,5 +9,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
     public interface IRapportMensuelFormModele
     {
         IImputationH31perModele ImputationH31perModele { get; }
+
+
     }
 }
