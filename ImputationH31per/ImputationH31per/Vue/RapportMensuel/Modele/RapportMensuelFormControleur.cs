@@ -21,5 +21,30 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         }
 
         #endregion ctor
+
+        #region IRapportMensuelFormControleur Membres
+
+#warning TODO - point ALPHA - implémenter !
+        public void DefinirDateMoisAnnee(DateTime dateTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DefinirGroupeSelectionne(Entite.GroupeItem groupeItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DefinirTacheSelectionnee(Entite.TacheItem tacheItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DefinirTicketSelectionne(Entite.TicketItem ticketItem)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

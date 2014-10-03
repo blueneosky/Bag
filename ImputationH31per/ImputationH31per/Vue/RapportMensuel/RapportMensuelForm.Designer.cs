@@ -33,18 +33,18 @@
             this._groupesGroupBox = new System.Windows.Forms.GroupBox();
             this._groupesListBox = new System.Windows.Forms.ListBox();
             this._dateGroupBox = new System.Windows.Forms.GroupBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this._tachesGroupBox = new System.Windows.Forms.GroupBox();
-            this._tachesListBox = new System.Windows.Forms.ListBox();
-            this._ticketsGroupBox = new System.Windows.Forms.GroupBox();
-            this._ticketsListBox = new System.Windows.Forms.ListBox();
+            this._moisAnneeDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this._regroupementGroupBox = new System.Windows.Forms.GroupBox();
             this._regroupementListBox = new System.Windows.Forms.ListBox();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this._regroupementPanel = new System.Windows.Forms.Panel();
             this._nomGroupementTextBox = new System.Windows.Forms.TextBox();
             this._ajouterGroupementButton = new System.Windows.Forms.Button();
             this._regroupementsGroupBox = new System.Windows.Forms.GroupBox();
             this._regroupementsListBox = new System.Windows.Forms.ListBox();
+            this._tachesGroupBox = new System.Windows.Forms.GroupBox();
+            this._tachesListBox = new System.Windows.Forms.ListBox();
+            this._ticketsGroupBox = new System.Windows.Forms.GroupBox();
+            this._ticketsListBox = new System.Windows.Forms.ListBox();
             this._resultatGroupBox = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this._textBox = new System.Windows.Forms.TextBox();
@@ -55,11 +55,11 @@
             this._tableLayoutPanel.SuspendLayout();
             this._groupesGroupBox.SuspendLayout();
             this._dateGroupBox.SuspendLayout();
+            this._regroupementGroupBox.SuspendLayout();
+            this._regroupementPanel.SuspendLayout();
+            this._regroupementsGroupBox.SuspendLayout();
             this._tachesGroupBox.SuspendLayout();
             this._ticketsGroupBox.SuspendLayout();
-            this._regroupementGroupBox.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this._regroupementsGroupBox.SuspendLayout();
             this._resultatGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,7 +111,7 @@
             this._groupesGroupBox.Controls.Add(this._groupesListBox);
             this._groupesGroupBox.Location = new System.Drawing.Point(3, 57);
             this._groupesGroupBox.Name = "_groupesGroupBox";
-            this._groupesGroupBox.Size = new System.Drawing.Size(277, 270);
+            this._groupesGroupBox.Size = new System.Drawing.Size(277, 271);
             this._groupesGroupBox.TabIndex = 2;
             this._groupesGroupBox.TabStop = false;
             this._groupesGroupBox.Text = "Groupes";
@@ -122,15 +122,16 @@
             this._groupesListBox.FormattingEnabled = true;
             this._groupesListBox.Location = new System.Drawing.Point(3, 16);
             this._groupesListBox.Name = "_groupesListBox";
-            this._groupesListBox.Size = new System.Drawing.Size(271, 251);
+            this._groupesListBox.Size = new System.Drawing.Size(271, 252);
             this._groupesListBox.TabIndex = 0;
+            this._groupesListBox.SelectedIndexChanged += new System.EventHandler(this._groupesListBox_SelectedIndexChanged);
             // 
             // _dateGroupBox
             // 
             this._dateGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this._dateGroupBox.Controls.Add(this.dateTimePicker1);
+            this._dateGroupBox.Controls.Add(this._moisAnneeDateTimePicker);
             this._dateGroupBox.Location = new System.Drawing.Point(3, 3);
             this._dateGroupBox.Name = "_dateGroupBox";
             this._dateGroupBox.Size = new System.Drawing.Size(277, 48);
@@ -138,60 +139,15 @@
             this._dateGroupBox.TabStop = false;
             this._dateGroupBox.Text = "Date";
             // 
-            // dateTimePicker1
+            // _moisAnneeDateTimePicker
             // 
-            this.dateTimePicker1.CustomFormat = "MMMM yyyy";
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(6, 19);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(152, 20);
-            this.dateTimePicker1.TabIndex = 0;
-            // 
-            // _tachesGroupBox
-            // 
-            this._tachesGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this._tachesGroupBox.Controls.Add(this._tachesListBox);
-            this._tachesGroupBox.Location = new System.Drawing.Point(286, 3);
-            this._tachesGroupBox.Name = "_tachesGroupBox";
-            this._tableLayoutPanel.SetRowSpan(this._tachesGroupBox, 2);
-            this._tachesGroupBox.Size = new System.Drawing.Size(277, 324);
-            this._tachesGroupBox.TabIndex = 1;
-            this._tachesGroupBox.TabStop = false;
-            this._tachesGroupBox.Text = "Tâches";
-            // 
-            // _tachesListBox
-            // 
-            this._tachesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._tachesListBox.FormattingEnabled = true;
-            this._tachesListBox.Location = new System.Drawing.Point(3, 16);
-            this._tachesListBox.Name = "_tachesListBox";
-            this._tachesListBox.Size = new System.Drawing.Size(271, 305);
-            this._tachesListBox.TabIndex = 2;
-            // 
-            // _ticketsGroupBox
-            // 
-            this._ticketsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this._ticketsGroupBox.Controls.Add(this._ticketsListBox);
-            this._ticketsGroupBox.Location = new System.Drawing.Point(569, 3);
-            this._ticketsGroupBox.Name = "_ticketsGroupBox";
-            this._tableLayoutPanel.SetRowSpan(this._ticketsGroupBox, 2);
-            this._ticketsGroupBox.Size = new System.Drawing.Size(233, 324);
-            this._ticketsGroupBox.TabIndex = 3;
-            this._ticketsGroupBox.TabStop = false;
-            this._ticketsGroupBox.Text = "Tickets";
-            // 
-            // _ticketsListBox
-            // 
-            this._ticketsListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._ticketsListBox.FormattingEnabled = true;
-            this._ticketsListBox.Location = new System.Drawing.Point(3, 16);
-            this._ticketsListBox.Name = "_ticketsListBox";
-            this._ticketsListBox.Size = new System.Drawing.Size(227, 305);
-            this._ticketsListBox.TabIndex = 1;
+            this._moisAnneeDateTimePicker.CustomFormat = "MMMM yyyy";
+            this._moisAnneeDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this._moisAnneeDateTimePicker.Location = new System.Drawing.Point(6, 19);
+            this._moisAnneeDateTimePicker.Name = "_moisAnneeDateTimePicker";
+            this._moisAnneeDateTimePicker.Size = new System.Drawing.Size(152, 20);
+            this._moisAnneeDateTimePicker.TabIndex = 0;
+            this._moisAnneeDateTimePicker.ValueChanged += new System.EventHandler(this._moisAnneeDateTimePicker_ValueChanged);
             // 
             // _regroupementGroupBox
             // 
@@ -199,10 +155,10 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._regroupementGroupBox.Controls.Add(this._regroupementListBox);
-            this._regroupementGroupBox.Controls.Add(this.panel1);
-            this._regroupementGroupBox.Location = new System.Drawing.Point(3, 333);
+            this._regroupementGroupBox.Controls.Add(this._regroupementPanel);
+            this._regroupementGroupBox.Location = new System.Drawing.Point(3, 334);
             this._regroupementGroupBox.Name = "_regroupementGroupBox";
-            this._regroupementGroupBox.Size = new System.Drawing.Size(277, 229);
+            this._regroupementGroupBox.Size = new System.Drawing.Size(277, 228);
             this._regroupementGroupBox.TabIndex = 5;
             this._regroupementGroupBox.TabStop = false;
             this._regroupementGroupBox.Text = "Regroupement";
@@ -213,18 +169,18 @@
             this._regroupementListBox.FormattingEnabled = true;
             this._regroupementListBox.Location = new System.Drawing.Point(3, 16);
             this._regroupementListBox.Name = "_regroupementListBox";
-            this._regroupementListBox.Size = new System.Drawing.Size(271, 181);
+            this._regroupementListBox.Size = new System.Drawing.Size(271, 180);
             this._regroupementListBox.TabIndex = 2;
             // 
-            // panel1
+            // _regroupementPanel
             // 
-            this.panel1.Controls.Add(this._nomGroupementTextBox);
-            this.panel1.Controls.Add(this._ajouterGroupementButton);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(3, 197);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(271, 29);
-            this.panel1.TabIndex = 3;
+            this._regroupementPanel.Controls.Add(this._nomGroupementTextBox);
+            this._regroupementPanel.Controls.Add(this._ajouterGroupementButton);
+            this._regroupementPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._regroupementPanel.Location = new System.Drawing.Point(3, 196);
+            this._regroupementPanel.Name = "_regroupementPanel";
+            this._regroupementPanel.Size = new System.Drawing.Size(271, 29);
+            this._regroupementPanel.TabIndex = 3;
             // 
             // _nomGroupementTextBox
             // 
@@ -253,9 +209,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._tableLayoutPanel.SetColumnSpan(this._regroupementsGroupBox, 2);
             this._regroupementsGroupBox.Controls.Add(this._regroupementsListBox);
-            this._regroupementsGroupBox.Location = new System.Drawing.Point(286, 333);
+            this._regroupementsGroupBox.Location = new System.Drawing.Point(286, 334);
             this._regroupementsGroupBox.Name = "_regroupementsGroupBox";
-            this._regroupementsGroupBox.Size = new System.Drawing.Size(516, 229);
+            this._regroupementsGroupBox.Size = new System.Drawing.Size(516, 228);
             this._regroupementsGroupBox.TabIndex = 6;
             this._regroupementsGroupBox.TabStop = false;
             this._regroupementsGroupBox.Text = "Regroupements";
@@ -266,8 +222,56 @@
             this._regroupementsListBox.FormattingEnabled = true;
             this._regroupementsListBox.Location = new System.Drawing.Point(3, 16);
             this._regroupementsListBox.Name = "_regroupementsListBox";
-            this._regroupementsListBox.Size = new System.Drawing.Size(510, 210);
+            this._regroupementsListBox.Size = new System.Drawing.Size(510, 209);
             this._regroupementsListBox.TabIndex = 3;
+            // 
+            // _tachesGroupBox
+            // 
+            this._tachesGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._tachesGroupBox.Controls.Add(this._tachesListBox);
+            this._tachesGroupBox.Location = new System.Drawing.Point(286, 3);
+            this._tachesGroupBox.Name = "_tachesGroupBox";
+            this._tableLayoutPanel.SetRowSpan(this._tachesGroupBox, 2);
+            this._tachesGroupBox.Size = new System.Drawing.Size(277, 325);
+            this._tachesGroupBox.TabIndex = 1;
+            this._tachesGroupBox.TabStop = false;
+            this._tachesGroupBox.Text = "Tâches";
+            // 
+            // _tachesListBox
+            // 
+            this._tachesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._tachesListBox.FormattingEnabled = true;
+            this._tachesListBox.Location = new System.Drawing.Point(3, 16);
+            this._tachesListBox.Name = "_tachesListBox";
+            this._tachesListBox.Size = new System.Drawing.Size(271, 306);
+            this._tachesListBox.TabIndex = 2;
+            this._tachesListBox.SelectedIndexChanged += new System.EventHandler(this._tachesListBox_SelectedIndexChanged);
+            // 
+            // _ticketsGroupBox
+            // 
+            this._ticketsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._ticketsGroupBox.Controls.Add(this._ticketsListBox);
+            this._ticketsGroupBox.Location = new System.Drawing.Point(569, 3);
+            this._ticketsGroupBox.Name = "_ticketsGroupBox";
+            this._tableLayoutPanel.SetRowSpan(this._ticketsGroupBox, 2);
+            this._ticketsGroupBox.Size = new System.Drawing.Size(233, 325);
+            this._ticketsGroupBox.TabIndex = 3;
+            this._ticketsGroupBox.TabStop = false;
+            this._ticketsGroupBox.Text = "Tickets";
+            // 
+            // _ticketsListBox
+            // 
+            this._ticketsListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._ticketsListBox.FormattingEnabled = true;
+            this._ticketsListBox.Location = new System.Drawing.Point(3, 16);
+            this._ticketsListBox.Name = "_ticketsListBox";
+            this._ticketsListBox.Size = new System.Drawing.Size(227, 306);
+            this._ticketsListBox.TabIndex = 1;
+            this._ticketsListBox.SelectedIndexChanged += new System.EventHandler(this._ticketsListBox_SelectedIndexChanged);
             // 
             // _resultatGroupBox
             // 
@@ -320,12 +324,12 @@
             this._tableLayoutPanel.ResumeLayout(false);
             this._groupesGroupBox.ResumeLayout(false);
             this._dateGroupBox.ResumeLayout(false);
+            this._regroupementGroupBox.ResumeLayout(false);
+            this._regroupementPanel.ResumeLayout(false);
+            this._regroupementPanel.PerformLayout();
+            this._regroupementsGroupBox.ResumeLayout(false);
             this._tachesGroupBox.ResumeLayout(false);
             this._ticketsGroupBox.ResumeLayout(false);
-            this._regroupementGroupBox.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this._regroupementsGroupBox.ResumeLayout(false);
             this._resultatGroupBox.ResumeLayout(false);
             this._resultatGroupBox.PerformLayout();
             this.ResumeLayout(false);
@@ -347,11 +351,11 @@
         private System.Windows.Forms.ListBox _tachesListBox;
         private System.Windows.Forms.ListBox _ticketsListBox;
         private System.Windows.Forms.ListBox _groupesListBox;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker _moisAnneeDateTimePicker;
         private System.Windows.Forms.ListBox _regroupementListBox;
         private System.Windows.Forms.GroupBox _regroupementsGroupBox;
         private System.Windows.Forms.ListBox _regroupementsListBox;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel _regroupementPanel;
         private System.Windows.Forms.TextBox _nomGroupementTextBox;
         private System.Windows.Forms.Button _ajouterGroupementButton;
     }

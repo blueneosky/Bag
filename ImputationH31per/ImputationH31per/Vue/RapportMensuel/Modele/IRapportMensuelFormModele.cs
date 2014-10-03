@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using ImputationH31per.Modele;
 using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
+using System.ComponentModel;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele
 {
-    public interface IRapportMensuelFormModele
+    public interface IRapportMensuelFormModele : INotifyPropertyChanged
     {
         IImputationH31perModele ImputationH31perModele { get; }
 

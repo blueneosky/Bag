@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ImputationH31per.Modele;
+using System.ComponentModel;
+using ImputationH31per.Util;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele
 {
@@ -11,6 +13,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         #region Mebres
 
         private readonly IImputationH31perModele _imputationH31perModele;
+
+        private DateTime _dateMoisAnnee;
 
         #endregion Mebres
 
@@ -34,19 +38,19 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         #region IRapportMensuelFormModele Membres
 
-#warning TODO - point ALPHA - implémenter !
         public DateTime DateMoisAnnee
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return _dateMoisAnnee; }
             set
             {
-                throw new NotImplementedException();
+                if ((_dateMoisAnnee.Month == value.Month) && (_dateMoisAnnee.Year == value.Year))
+                    return;
+                _dateMoisAnnee = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteDateMoisAnnee));
             }
         }
 
+#warning TODO - point ALPHA - implémenter !
         public IEnumerable<Entite.GroupeItem> Groupes
         {
             get { throw new NotImplementedException(); }
@@ -96,6 +100,17 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 throw new NotImplementedException();
             }
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged Membres
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void NotifierPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            PropertyChanged.Notifier(sender, e);
         }
 
         #endregion

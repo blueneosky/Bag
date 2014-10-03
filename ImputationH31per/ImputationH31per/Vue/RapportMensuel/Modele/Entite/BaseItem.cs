@@ -52,7 +52,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         {
             get { return _typeItem; }
         }
-        
+
         #endregion IItem<T> Membres
 
         #region Méthodes
@@ -75,7 +75,17 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 
         protected abstract string ObtenirLibelleEntite();
 
-        #endregion Méthodes
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            if (Object.ReferenceEquals(this, obj)) return true;
+            IItem<T> item = obj as IItem<T>;
+            bool resultat = (this.TypeItem == item.TypeItem)
+                && (this.TypeItem != EnumTypeItem.Entite || Object.Equals(this.Entite, item.Entite));
 
+            return resultat;
+        }
+
+        #endregion Méthodes
     }
 }
