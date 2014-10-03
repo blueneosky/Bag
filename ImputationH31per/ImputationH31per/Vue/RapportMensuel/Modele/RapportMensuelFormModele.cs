@@ -31,5 +31,73 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         }
 
         #endregion Propriétés
+
+        #region IRapportMensuelFormModele Membres
+
+#warning TODO - point ALPHA - implémenter !
+        public DateTime DateMoisAnnee
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IEnumerable<Entite.GroupeItem> Groupes
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public IEnumerable<Entite.TacheItem> Taches
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public IEnumerable<Entite.TicketItem> Tickets
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public Entite.GroupeItem GroupeSelectionne
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Entite.TacheItem TacheSelectionnee
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public Entite.TicketItem TicketSelectionne
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        #endregion
     }
 }

@@ -6,32 +6,22 @@ using ImputationH31per.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
-    public abstract class InformationBaseItem<TInformationTacheTfs> : BaseItem, IInformationItem<TInformationTacheTfs>
+    public abstract class InformationBaseItem<TInformationTacheTfs> : BaseItem<TInformationTacheTfs>, IInformationItem<TInformationTacheTfs>
           where TInformationTacheTfs : IInformationTacheTfs
     {
-        #region Membres
-
-        private readonly TInformationTacheTfs _information;
-
-        #endregion Membres
-
-        #region ctor
-
-        public InformationBaseItem(TInformationTacheTfs information)
+        protected InformationBaseItem(EnumTypeItem typeItem)
+            : base(typeItem)
         {
-            _information = information;
         }
 
-        #endregion ctor
-
-        #region IElementInformation<TInformationTacheTfs> Membres
+        protected InformationBaseItem(TInformationTacheTfs information)
+            : base(information)
+        {
+        }
 
         public TInformationTacheTfs Information
         {
-            get { return _information; }
+            get { return Entite; }
         }
-
-        #endregion IElementInformation<TInformationTacheTfs> Membres
-
     }
 }

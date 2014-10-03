@@ -5,15 +5,28 @@ using System.Text;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele
 {
-  public static class ConstanteIRapportMensuelFormModele
+    public static class ConstanteIRapportMensuelFormModele
     {
         #region TypeNotifiable
 
-      public static Type ConstanteTypeNotifiable = typeof(IRapportMensuelFormModele);
+        public static Type ConstanteTypeNotifiable = typeof(IRapportMensuelFormModele);
 
         #endregion TypeNotifiable
 
-        // Constante...
+        // ConstanteProprieteDateMoisAnnee
+        // ConstanteProprieteGroupes
+        // ConstanteProprieteTaches
+        // ConstanteProprieteTickets
+        // ConstanteProprieteGroupeSelectionne
+        // ConstanteProprieteTacheSelectionnee
+        // ConstanteProprieteTicketSelectionne
 
+        public const string ConstanteProprieteDateMoisAnnee = "DateMoisAnnee";
+        public const string ConstanteProprieteGroupes = "Groupes";
+        public const string ConstanteProprieteTaches = "Taches";
+        public const string ConstanteProprieteTickets = "Tickets";
+        public const string ConstanteProprieteGroupeSelectionne = "GroupeSelectionne";
+        public const string ConstanteProprieteTacheSelectionnee = "TacheSelectionnee";
+        public const string ConstanteProprieteTicketSelectionne = "TicketSelectionne";
     }
 }
