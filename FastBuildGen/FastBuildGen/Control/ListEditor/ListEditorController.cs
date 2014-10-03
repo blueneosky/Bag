@@ -6,7 +6,7 @@ using FastBuildGen.Common;
 
 namespace FastBuildGen.Control.ListEditor
 {
-    internal abstract class ListEditorController 
+    internal abstract class ListEditorController
     {
         private readonly ListEditorModel _model;
 

@@ -12,7 +12,8 @@ using BatchGen.BatchNode.Goto;
 using BatchGen.BatchNode.Macro;
 using BatchGen.BatchNode.Sub;
 using FastBuildGen.BusinessModel;
-using FastBuildGen.BusinessModel.Old;
+using FastBuildGen.BusinessModel.Extension;
+using System.Diagnostics;
 
 namespace FastBuildGen.BatchNode
 {
@@ -34,7 +35,6 @@ namespace FastBuildGen.BatchNode
 
 #if DEBUG
             result = new RemBatch("FastBuildBatchFile." + comment);
-            //result = new BlocMacro();
 #else
                 result = new BlocMacro();
 #endif
@@ -137,44 +137,44 @@ namespace FastBuildGen.BatchNode
 
         #region FastBuild Property wraper
 
-        private IEnumerable<IEnumerable<IParamDescription>> AllParamDescriptions
+        private IEnumerable<IEnumerable<FBTarget>> AllTargets
         {
             get
             {
-                yield return BaseParamDescriptions;
+                yield return BaseTargets;
                 yield return SolutionTargets;
                 yield return MacroSolutionTargets;
             }
         }
 
-        private IEnumerable<FBTarget> BaseParamDescriptions
+        private IEnumerable<FBTarget> BaseTargets
         {
-            get { return Enumerable.Concat(ParamDescriptionCommons, ParamDescriptionHeo); }
+            get { return Enumerable.Concat(CommonTargets, HeoParamTargets); }
         }
 
-        private IEnumerable<FBTarget> ParamDescriptionCommons
+        private IEnumerable<FBTarget> CommonTargets
         {
             get { return _fbModel.ParamTargets; }
         }
 
-        private IEnumerable<FBTarget> ParamDescriptionHeo
+        private IEnumerable<FBTarget> HeoParamTargets
         {
             get { return _fbModel.HeoParamTargets; }
         }
 
         private IEnumerable<FBSolutionTarget> SolutionTargets
         {
-            get { return _fbModel.SolutionTargets.Values; }
+            get { return _fbModel.SolutionTargets; }
         }
 
         private IEnumerable<FBMacroSolutionTarget> MacroSolutionTargets
         {
-            get { return _fbModel.MacroSolutionTargets.Values; }
+            get { return _fbModel.MacroSolutionTargets; }
         }
 
-        private IParamDescription GetParamDescription(string keyWord)
+        private FBTarget GetFBTarget(string keyWord)
         {
-            IParamDescription result = AllParamDescriptions
+            FBTarget result = AllTargets
                 .SelectMany(e => e)
                 .First(pd => pd.Keyword == keyWord);
 
@@ -183,28 +183,21 @@ namespace FastBuildGen.BatchNode
 
         #endregion FastBuild Property wraper
 
-
-
         #region Literal
 
         private LiteralBatch _literalConfigurationPathCache;
         private LiteralBatch _literalEnvSystemVcvarsallCheckStatusCache;
-        private LiteralBatch _literalHeoForcedOutputDirPathCache;
         private LiteralBatch _literalHeoLanceurBinPathCache;
         private LiteralBatch _literalHeoLanceurPathCache;
-        private Dictionary<string, LiteralBatch> _literalModuleMSBuildTargetByKeyWordsCache;
-        private LiteralBatch _literalMSBuildCliWin32Cache;
-        private LiteralBatch _literalMSBuildCliX86Cache;
+        private Dictionary<string, LiteralBatch> _literalSolutionMSBuildTargetByKeyWordsCache;
+        private LiteralBatch _literalMSBuildCliCache;
         private LiteralBatch _literalMSBuildConfigurationCache;
         private LiteralBatch _literalMSBuildLogFileCache;
         private LiteralBatch _literalMSBuildPlatformValue;
-        private LiteralBatch _literalMSBuildsWithTargetsCache;
+        private LiteralBatch _literalMSBuildWithTargetsCache;
+        private LiteralBatch _literalMSBuildForcedAllCache;
         private LiteralBatch _literalMSBuildTryLoopCondCache;
-        private LiteralBatch _literalMSBuildWin32NeedRunCache;
-        private LiteralBatch _literalMSBuildWithWin32TargetsCache;
-        private LiteralBatch _literalMSBuildWithX86TargetsCache;
-        private LiteralBatch _literalMSBuildX86NeedRunCache;
-        private Dictionary<string, LiteralBatch> _literalParamDescriptionByKeyWordsCache;
+        private Dictionary<string, LiteralBatch> _literalTargetByKeyWordsCache;
         private LiteralBatch _literalSGenPlusCliCache;
 
         private LiteralBatch _literalSGenPlusConfigFilePathCache;
@@ -239,16 +232,6 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        public LiteralBatch LiteralHeoForcedOutputDirPath
-        {
-            get
-            {
-                if (_literalHeoForcedOutputDirPathCache == null)
-                    _literalHeoForcedOutputDirPathCache = new LiteralBatch(_fbModel.LiteralHeoForcedOutputDirPath());
-                return _literalHeoForcedOutputDirPathCache;
-            }
-        }
-
         public LiteralBatch LiteralHeoLanceurBinPath
         {
             get
@@ -269,39 +252,29 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        public Dictionary<string, LiteralBatch> LiteralModuleMSBuildTargetByKeyWords
+        public Dictionary<string, LiteralBatch> LiteralSolutionMSBuildTargetByKeyWords
         {
             get
             {
-                if (_literalModuleMSBuildTargetByKeyWordsCache == null)
+                if (_literalSolutionMSBuildTargetByKeyWordsCache == null)
                 {
-                    _literalModuleMSBuildTargetByKeyWordsCache = SolutionTargets
+                    _literalSolutionMSBuildTargetByKeyWordsCache = SolutionTargets
                         .ToDictionary(
                             pd => pd.Keyword
                             , pd => new LiteralBatch(pd.VarName)
                         );
                 }
-                return _literalModuleMSBuildTargetByKeyWordsCache;
+                return _literalSolutionMSBuildTargetByKeyWordsCache;
             }
         }
 
-        public LiteralBatch LiteralMSBuildCliWin32
+        public LiteralBatch LiteralMSBuildCli
         {
             get
             {
-                if (_literalMSBuildCliWin32Cache == null)
-                    _literalMSBuildCliWin32Cache = new LiteralBatch(_fbModel.LiteralMSBuildCliWin32());
-                return _literalMSBuildCliWin32Cache;
-            }
-        }
-
-        public LiteralBatch LiteralMSBuildCliX86
-        {
-            get
-            {
-                if (_literalMSBuildCliX86Cache == null)
-                    _literalMSBuildCliX86Cache = new LiteralBatch(_fbModel.LiteralMSBuildCliX86());
-                return _literalMSBuildCliX86Cache;
+                if (_literalMSBuildCliCache == null)
+                    _literalMSBuildCliCache = new LiteralBatch(_fbModel.LiteralMSBuildCli());
+                return _literalMSBuildCliCache;
             }
         }
 
@@ -335,13 +308,23 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        public LiteralBatch LiteralMSBuildsWithTargets
+        public LiteralBatch LiteralMSBuildWithTargets
         {
             get
             {
-                if (_literalMSBuildsWithTargetsCache == null)
-                    _literalMSBuildsWithTargetsCache = new LiteralBatch(_fbModel.LiteralMSBuildsWithTargets());
-                return _literalMSBuildsWithTargetsCache;
+                if (_literalMSBuildWithTargetsCache == null)
+                    _literalMSBuildWithTargetsCache = new LiteralBatch(_fbModel.LiteralMSBuildWithTargets());
+                return _literalMSBuildWithTargetsCache;
+            }
+        }
+
+        public LiteralBatch LiteralMSBuildForcedAll
+        {
+            get
+            {
+                if (_literalMSBuildForcedAllCache == null)
+                    _literalMSBuildForcedAllCache = new LiteralBatch(_fbModel.LiteralMSBuildForcedAll());
+                return _literalMSBuildForcedAllCache;
             }
         }
 
@@ -355,53 +338,13 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        public LiteralBatch LiteralMSBuildWin32NeedRun
+        public Dictionary<string, LiteralBatch> LiteralTargetByKeyWords
         {
             get
             {
-                if (_literalMSBuildWin32NeedRunCache == null)
-                    _literalMSBuildWin32NeedRunCache = new LiteralBatch(_fbModel.LiteralMSBuildWin32NeedRun());
-                return _literalMSBuildWin32NeedRunCache;
-            }
-        }
-
-        public LiteralBatch LiteralMSBuildWithWin32Targets
-        {
-            get
-            {
-                if (_literalMSBuildWithWin32TargetsCache == null)
-                    _literalMSBuildWithWin32TargetsCache = new LiteralBatch(_fbModel.LiteralMSBuildWithWin32Targets());
-                return _literalMSBuildWithWin32TargetsCache;
-            }
-        }
-
-        public LiteralBatch LiteralMSBuildWithX86Targets
-        {
-            get
-            {
-                if (_literalMSBuildWithX86TargetsCache == null)
-                    _literalMSBuildWithX86TargetsCache = new LiteralBatch(_fbModel.LiteralMSBuildWithX86Targets());
-                return _literalMSBuildWithX86TargetsCache;
-            }
-        }
-
-        public LiteralBatch LiteralMSBuildX86NeedRun
-        {
-            get
-            {
-                if (_literalMSBuildX86NeedRunCache == null)
-                    _literalMSBuildX86NeedRunCache = new LiteralBatch(_fbModel.LiteralMSBuildX86NeedRun());
-                return _literalMSBuildX86NeedRunCache;
-            }
-        }
-
-        public Dictionary<string, LiteralBatch> LiteralParamDescriptionByKeyWords
-        {
-            get
-            {
-                if (_literalParamDescriptionByKeyWordsCache == null)
+                if (_literalTargetByKeyWordsCache == null)
                 {
-                    _literalParamDescriptionByKeyWordsCache = AllParamDescriptions
+                    _literalTargetByKeyWordsCache = AllTargets
                         .SelectMany(e => e)
                         .ToDictionary(
                             pd => pd.Keyword
@@ -409,7 +352,7 @@ namespace FastBuildGen.BatchNode
                         )
                         ;
                 }
-                return _literalParamDescriptionByKeyWordsCache;
+                return _literalTargetByKeyWordsCache;
             }
         }
 
@@ -605,16 +548,16 @@ namespace FastBuildGen.BatchNode
             {
                 if (_helpLinesCache == null)
                 {
-                    IEnumerable<IParamDescription> baseParamDescriptions = BaseParamDescriptions.ToArray();
-                    IEnumerable<IParamDescription> heoParamDescriptions = Enumerable.Concat<IParamDescription>(
-                            SolutionTargets
+                    IEnumerable<FBTarget> baseTargets = BaseTargets.ToArray();
+                    IEnumerable<FBTarget> heoTarget = Enumerable.Concat<FBTarget>(
+                            SolutionTargets.Where(st => st.Enabled)
                             , MacroSolutionTargets
                         )
                         .ToArray();
-                    int padingBaseParamDescriptions = baseParamDescriptions.Any() ? baseParamDescriptions.Max(pd => pd.SwitchKeyword.Length) : 0;
-                    int padingHeoParamDescriptions = heoParamDescriptions.Any() ? heoParamDescriptions.Max(pd => pd.SwitchKeyword.Length) : 0;
-                    _helpLinesCache = baseParamDescriptions.Select(pd => TranslateParamDescriptionToHelpLine(pd, padingBaseParamDescriptions));
-                    if (heoParamDescriptions.Any())
+                    int padingBaseTargets = baseTargets.Any() ? baseTargets.Max(pd => pd.SwitchKeyword.Length) : 0;
+                    int padingHeoTargets = heoTarget.Any() ? heoTarget.Max(pd => pd.SwitchKeyword.Length) : 0;
+                    _helpLinesCache = baseTargets.Select(pd => TranslateTargetToHelpLine(pd, padingBaseTargets));
+                    if (heoTarget.Any())
                     {
                         _helpLinesCache = _helpLinesCache
                             .Concat(new[]
@@ -622,7 +565,7 @@ namespace FastBuildGen.BatchNode
                                 String.Empty,       // line field
                                 _fbModel.LabelTextSectionHeoModules(),
                             })
-                            .Concat(heoParamDescriptions.Select(pd => TranslateParamDescriptionToHelpLine(pd, padingHeoParamDescriptions)));
+                            .Concat(heoTarget.Select(pd => TranslateTargetToHelpLine(pd, padingHeoTargets)));
                     }
                     _helpLinesCache = _helpLinesCache.ToArray();
                 }
@@ -642,9 +585,9 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        private string TranslateParamDescriptionToHelpLine(IParamDescription paramDescription, int pading)
+        private string TranslateTargetToHelpLine(FBTarget target, int pading)
         {
-            return String.Format("{0} : {1}", paramDescription.SwitchKeyword.PadRight(pading, ' '), paramDescription.HelpText);
+            return String.Format("{0} : {1}", target.SwitchKeyword.PadRight(pading, ' '), target.HelpText);
         }
 
         #endregion Help summer comment
@@ -774,10 +717,10 @@ namespace FastBuildGen.BatchNode
             get
             {
                 bool isFirst = true;
-                foreach (var paramDescriptions in AllParamDescriptions)
+                foreach (var targets in AllTargets)
                 {
-                    if (false == paramDescriptions.Any()) continue;
-                    if (paramDescriptions.First() is ParamDescriptionHeoTarget) continue;
+                    if (false == targets.Any()) continue;
+                    if (targets.First() is FBMacroSolutionTarget) continue;
 
                     if (false == isFirst)
                     {
@@ -788,9 +731,9 @@ namespace FastBuildGen.BatchNode
                         isFirst = false;
                     }
 
-                    foreach (var paramDescription in paramDescriptions)
+                    foreach (var target in targets)
                     {
-                        LiteralBatch literal = LiteralParamDescriptionByKeyWords[paramDescription.Keyword];
+                        LiteralBatch literal = LiteralTargetByKeyWords[target.Keyword];
                         SetFalseCmd setFalseCmd = new SetFalseCmd(literal);
                         yield return setFalseCmd;
                     }
@@ -831,9 +774,9 @@ namespace FastBuildGen.BatchNode
                 BatchExpressionBase leftIfTest = EnvSystemLiteral.BatchParam1;
 
                 bool isFirst = true;
-                foreach (var paramDescriptions in this.AllParamDescriptions)
+                foreach (var targets in this.AllTargets)
                 {
-                    if (paramDescriptions.Any())
+                    if (targets.Any())
                     {
                         if (isFirst)
                         {
@@ -843,15 +786,12 @@ namespace FastBuildGen.BatchNode
                         {
                             blocMacro.Add(Nop);
                         }
-                        foreach (var paramDescription in paramDescriptions)
+                        foreach (var target in targets)
                         {
                             bool isInnerFirst = true;
-                            ParamDescriptionHeoTarget paramDescriptionHeoTarget = paramDescription as ParamDescriptionHeoTarget;
-                            if (paramDescriptionHeoTarget == null)
-                            {
-                                blocMacro.Add(GetParametersAnalyseParsingCmd(paramDescription.SwitchKeyword, paramDescription, leftIfTest));
-                            }
-                            else
+                            FBMacroSolutionTarget macroSolutionTarget = target as FBMacroSolutionTarget;
+                            FBSolutionTarget solutionTarget = target as FBSolutionTarget;
+                            if (macroSolutionTarget != null)
                             {
                                 if (isInnerFirst)
                                 {
@@ -861,8 +801,19 @@ namespace FastBuildGen.BatchNode
                                 {
                                     blocMacro.Add(Nop);
                                 }
-                                string switchKeyword = paramDescriptionHeoTarget.SwitchKeyword;
-                                blocMacro.AddRange(paramDescriptionHeoTarget.Dependencies.Select(pd => GetParametersAnalyseParsingCmd(switchKeyword, pd, leftIfTest)));
+                                string switchKeyword = macroSolutionTarget.SwitchKeyword;
+                                blocMacro.AddRange(macroSolutionTarget.SolutionTargetIds
+                                    .Join(SolutionTargets, id => id, st => st.Id, (id, st) => st)
+                                    .Select(pd => GetParametersAnalyseParsingCmd(switchKeyword, pd, leftIfTest)));
+                            }
+                            else if (solutionTarget != null)
+                            {
+                                if (solutionTarget.Enabled)
+                                    blocMacro.Add(GetParametersAnalyseParsingCmd(target.SwitchKeyword, target, leftIfTest));
+                            }
+                            else
+                            {
+                                blocMacro.Add(GetParametersAnalyseParsingCmd(target.SwitchKeyword, target, leftIfTest));
                             }
                         }
                     }
@@ -876,11 +827,11 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        private BatchFileNodeBase GetParametersAnalyseParsingCmd(string switchKeyword, IParamDescription paramDescription, BatchExpressionBase leftIfTest)
+        private BatchFileNodeBase GetParametersAnalyseParsingCmd(string switchKeyword, FBTarget target, BatchExpressionBase leftIfTest)
         {
             BatchExpressionBase rightIfTest = new ValueExpression(switchKeyword);
             ConditionalCodeNode ifTest = new ConditionalCodeNode(leftIfTest, rightIfTest);
-            LiteralBatch literal = LiteralParamDescriptionByKeyWords[paramDescription.Keyword];
+            LiteralBatch literal = LiteralTargetByKeyWords[target.Keyword];
             SetTrueCmd setTrueCmd = new SetTrueCmd(literal);
             IfCmd ifCmd = new IfCmd(ifTest, setTrueCmd);
 
@@ -899,8 +850,8 @@ namespace FastBuildGen.BatchNode
 
                 blocMacro.Add(GetDebugRem("ParametersAnalyseUsageAndVer"));
 
-                LiteralBooleanExpression literalValueHelp = LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchHelp].LiteralBoolean;
-                LiteralBooleanExpression literalValueVer = LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchVer].LiteralBoolean;
+                LiteralBooleanExpression literalValueHelp = LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchHelp].LiteralBoolean;
+                LiteralBooleanExpression literalValueVer = LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchVer].LiteralBoolean;
 
                 blocMacro.Add(new IfCmd(new IsTrueConditional(literalValueHelp), new GotoCmd(LabelGotoHelp)));
                 blocMacro.Add(new IfCmd(new IsTrueConditional(literalValueVer), new GotoCmd(LabelGotoVersion)));
@@ -942,7 +893,7 @@ namespace FastBuildGen.BatchNode
                 blocMacro.Add(Nop);
 
                 //if NOT (%para_wait%) == (0) ( pause )
-                blocMacro.Add(new IfCmd(new IsTrueConditional(LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchWait]), new PauseCmd()));
+                blocMacro.Add(new IfCmd(new IsTrueConditional(LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchWait]), new PauseCmd()));
 
                 return blocMacro;
             }
@@ -1108,9 +1059,9 @@ namespace FastBuildGen.BatchNode
 
                 // modules
                 blocMacro.Add(new RemBatch("HEO Modules constants"));
-                foreach (ParamDescriptionHeoModule paramDescription in SolutionTargets)
+                foreach (FBSolutionTarget solutionTarget in SolutionTargets)
                 {
-                    blocMacro.Add(new SetExpressionCmd(LiteralModuleMSBuildTargetByKeyWords[paramDescription.Keyword], new ValueExpression(paramDescription.MSBuildTarget)));
+                    blocMacro.Add(new SetExpressionCmd(LiteralSolutionMSBuildTargetByKeyWords[solutionTarget.Keyword], new ValueExpression(solutionTarget.MSBuildTarget)));
                 }
 
                 return blocMacro;
@@ -1133,11 +1084,11 @@ namespace FastBuildGen.BatchNode
                 // Build Configuration (Debug, Release, ...)
                 blocMacro.Add(new SetExpressionCmd(LiteralMSBuildConfiguration, MSBuildCmd.ConstExpressionConfigurationDebug));
                 blocMacro.Add(new IfCmd(
-                    new IsTrueConditional(LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchDsac])
+                    new IsTrueConditional(LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchDsac])
                     , new SetExpressionCmd(LiteralMSBuildConfiguration, new ValueExpression(_fbModel.ValueMSBuildConfigurationDsac()))
                     ));
                 blocMacro.Add(new IfCmd(
-                    new IsTrueConditional(LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchRelease])
+                    new IsTrueConditional(LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchRelease])
                     , new SetExpressionCmd(LiteralMSBuildConfiguration, MSBuildCmd.ConstExpressionConfigurationRelease)
                     ));
                 blocMacro.Add(Nop);
@@ -1145,7 +1096,6 @@ namespace FastBuildGen.BatchNode
                 // SET varfb_HeoLanceurPath=..\Lanceur\Heo.Lanceur
                 // SET varfb_ConfigurationPath=bin\x86\%varfb_MSBuildConfiguration%
                 // SET varfb_HeoLanceurBinPath=%varfb_HeoLanceurPath%\%varfb_ConfigurationPath%
-                // set varfb_outputDir=.%HeoLanceurBinPath%
                 blocMacro.Add(new SetExpressionCmd(LiteralHeoLanceurPath, new ValueExpression(_fbModel.ValueHeoLanceurPath())));
                 blocMacro.Add(new SetExpressionCmd(LiteralConfigurationPath, new ComposedExpression(
                     new ValueExpression(_fbModel.ValuePathBin())
@@ -1157,78 +1107,49 @@ namespace FastBuildGen.BatchNode
                     , new ValueExpression("\\")
                     , LiteralConfigurationPath.LiteralValue
                     )));
-                blocMacro.Add(new SetExpressionCmd(LiteralHeoForcedOutputDirPath, LiteralHeoLanceurBinPath.LiteralValue));
                 blocMacro.Add(Nop);
 
-                // MSBuild Cli Win32
-                blocMacro.Add(new RemBatch("MSBuild configuration (win32)"));
-                IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> win32Modules = SolutionTargets
-                    .Where(pdm => pdm.Platform == FastBuildGen.BusinessModel.Old.EnumPlatform.Win32)
-                    .Select(pdm => new Tuple<BooleanExpressionBase, BatchExpressionBase>(
-                        LiteralParamDescriptionByKeyWords[pdm.Keyword].LiteralBoolean
-                        , LiteralModuleMSBuildTargetByKeyWords[pdm.Keyword].LiteralValue
+                IEnumerable<Tuple<LiteralBooleanExpression, LiteralValueExpression, FBSolutionTarget>> solutionTargets = SolutionTargets
+                    .Select(st => Tuple.Create(
+                        LiteralTargetByKeyWords[st.Keyword].LiteralBoolean
+                        , LiteralSolutionMSBuildTargetByKeyWords[st.Keyword].LiteralValue
+                        , st
                         ))
                     .ToArray();
-                MSBuildCliMacro msbuildCliMacroWin32 = GetFastBuildCoreMSBuildEnvInitMSBuildConfigMSBuildCliMacro(
-                    LiteralMSBuildCliWin32
-                    , MSBuildCmd.ConstExpressionByPlatforms[BatchGen.BatchNode.ExternCmd.EnumPlatform.Win32]
-                    , win32Modules
+
+                // MSBuild Check target
+                blocMacro.Add(new RemBatch("MSBuild check target"));
+                BooleanExpressionBase booleanExpressionMSBuildWithX86Targets = new BooleanOperatorExpression(
+                    EnumBooleanOperator.Or
+                    , solutionTargets.Select(lv => lv.Item1).ToArray());
+                SetBooleanCmd setBooleanMSBuildWithTargets = new SetBooleanCmd(LiteralMSBuildWithTargets, booleanExpressionMSBuildWithX86Targets);
+                blocMacro.Add(setBooleanMSBuildWithTargets);
+                blocMacro.Add(new SetBooleanCmd(LiteralMSBuildForcedAll, new NotBooleanExpression(LiteralMSBuildWithTargets.LiteralBoolean)));
+                BlocMacro blocMacroIfForcedAllThen = new BlocMacro();
+                FBMacroSolutionTargetAll macroSolutionTargetAll =  MacroSolutionTargets
+                    .OfType<FBMacroSolutionTargetAll>()
+                    .FirstOrDefault();
+                Debug.Assert(macroSolutionTargetAll!=null);
+                blocMacroIfForcedAllThen.AddRange(
+                    macroSolutionTargetAll.SolutionTargetIds
+                        .Join(solutionTargets, id => id, t => t.Item3.Id, (id, t) => t)
+                        .Select(t => new SetBooleanCmd(LiteralTargetByKeyWords[t.Item3.Keyword], TrueValueExpression.ValueExpression))
                     );
-                blocMacro.Add(msbuildCliMacroWin32);
-                blocMacro.Add(Nop);
-                blocMacro.Add(new SetFalseCmd(LiteralMSBuildWithWin32Targets));
-                SetTrueCmd setTrueCmdWin32 = new SetTrueCmd(LiteralMSBuildWithWin32Targets);
-                blocMacro.AddRange(win32Modules.Select(lv => new IfCmd(new IsTrueConditional(lv.Item1), setTrueCmdWin32)));
+
+                IfMacro ifMacroForcedAll = new IfMacro(
+                    new IsTrueConditional(LiteralMSBuildForcedAll.LiteralBoolean)
+                    , blocMacroIfForcedAllThen
+                    , null);
+                blocMacro.Add(ifMacroForcedAll);
                 blocMacro.Add(Nop);
 
                 // MSBuild Cli X86
                 blocMacro.Add(new RemBatch("MSBuild configuration (x86)"));
-                IEnumerable<Tuple<BooleanExpressionBase, BatchExpressionBase>> x86Modules = SolutionTargets
-                    .Where(pdm => pdm.Platform == FastBuildGen.BusinessModel.Old.EnumPlatform.X86)
-                    .Select(pdm => new Tuple<BooleanExpressionBase, BatchExpressionBase>(
-                        LiteralParamDescriptionByKeyWords[pdm.Keyword].LiteralBoolean
-                        , LiteralModuleMSBuildTargetByKeyWords[pdm.Keyword].LiteralValue
-                        ))
-                    .ToArray();
                 MSBuildCliMacro msbuildCliMacroX86 = GetFastBuildCoreMSBuildEnvInitMSBuildConfigMSBuildCliMacro(
-                    LiteralMSBuildCliX86
+                    LiteralMSBuildCli
                     , LiteralMSBuildPlatform.LiteralValue
-                    , x86Modules);
+                    , solutionTargets.Select(t => new Tuple<BooleanExpressionBase, BatchExpressionBase>(t.Item1, t.Item2)) );
                 blocMacro.Add(msbuildCliMacroX86);
-                blocMacro.Add(Nop);
-                blocMacro.Add(new SetFalseCmd(LiteralMSBuildWithX86Targets));
-                SetTrueCmd setTrueCmdX86 = new SetTrueCmd(LiteralMSBuildWithX86Targets);
-                blocMacro.AddRange(x86Modules.Select(lv => new IfCmd(new IsTrueConditional(lv.Item1), setTrueCmdX86)));
-                blocMacro.Add(Nop);
-
-                // MSBuild check execution
-                blocMacro.Add(new RemBatch("MSBuild check execution"));
-                // SET /A varfb_MSBuildsWithTargets="(%varfb_MSBuildWithWin32Targets%|%varfb_MSBuildWithX86Targets%)"
-                blocMacro.Add(new SetBooleanCmd(
-                    LiteralMSBuildsWithTargets
-                    , new BooleanOperatorExpression(
-                        EnumBooleanOperator.Or
-                        , LiteralMSBuildWithWin32Targets.LiteralBoolean
-                        , LiteralMSBuildWithX86Targets.LiteralBoolean
-                        )
-                    ));
-                //SET /A varfb_MSBuildWin32NeedRun="((!%varfb_MSBuildsWithTargets%)|%varfb_MSBuildWithWin32Targets%)"
-                blocMacro.Add(new SetBooleanCmd(
-                    LiteralMSBuildWin32NeedRun
-                    , new BooleanOperatorExpression(
-                        EnumBooleanOperator.Or
-                        , new NotBooleanExpression(LiteralMSBuildsWithTargets.LiteralBoolean)
-                        , LiteralMSBuildWithWin32Targets.LiteralBoolean
-                        )
-                    ));
-                blocMacro.Add(new SetBooleanCmd(
-                    LiteralMSBuildX86NeedRun
-                    , new BooleanOperatorExpression(
-                        EnumBooleanOperator.Or
-                        , new NotBooleanExpression(LiteralMSBuildsWithTargets.LiteralBoolean)
-                        , LiteralMSBuildWithX86Targets.LiteralBoolean
-                        )
-                    ));
 
                 return blocMacro;
             }
@@ -1240,20 +1161,16 @@ namespace FastBuildGen.BatchNode
                 literalMSBuildCli
                 , TrueValueExpression.ValueExpression
                 , TrueValueExpression.ValueExpression
-                , LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchPara].LiteralBoolean
-                , LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchQuiet].LiteralBoolean
+                , LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchPara].LiteralBoolean
+                , LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchQuiet].LiteralBoolean
                 , new QuotedValueExpression(LiteralMSBuildConfiguration.LiteralValue)
-                , LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchFxcop].LiteralBoolean
-                , LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchNowarn].LiteralBoolean
-                , LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchRebuild].LiteralBoolean
+                , LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchFxcop].LiteralBoolean
+                , LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchNowarn].LiteralBoolean
+                , LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchRebuild].LiteralBoolean
                 , platform
                 , new Tuple<BooleanExpressionBase, BatchExpressionBase>(
                     FalseValueExpression.ValueExpression
                     , LiteralMSBuildLogFile.LiteralValue
-                    )
-                , new Tuple<BooleanExpressionBase, BatchExpressionBase>(
-                    LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchForceOutputDirPath].LiteralBoolean
-                    , LiteralHeoForcedOutputDirPath.LiteralValue
                     )
                 , targets
                 );
@@ -1308,10 +1225,6 @@ namespace FastBuildGen.BatchNode
                 blocMacro.Add(CallSubKillHeo);
                 blocMacro.Add(Nop);
 
-                // Win32 building
-                blocMacro.Add(FastBuildCoreBuildWin32);
-                blocMacro.Add(Nop);
-
                 // x86 building
                 blocMacro.Add(FastBuildCoreBuildX86);
                 blocMacro.Add(Nop);
@@ -1331,25 +1244,6 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        public BlocMacroFileNode FastBuildCoreBuildWin32
-        {
-            get
-            {
-                BlocMacroFileNode blocMacro = new BlocMacroFileNode();
-
-                blocMacro.Add(GetDebugRem("FastBuildCoreBuildWin32"));
-
-                BatchFileNodeBase fastBuildCoreBuildWin32Node = GetFastBuildCoreBuild(
-                    LiteralMSBuildWin32NeedRun
-                    , _fbModel.BaseLabelMacroMSBuildWin32NeedRun()
-                    , LiteralMSBuildCliWin32
-                    , _fbModel.BaseLabelMacroMSBuildWin32TryLoop());
-                blocMacro.Add(fastBuildCoreBuildWin32Node);
-
-                return blocMacro;
-            }
-        }
-
         public BlocMacroFileNode FastBuildCoreBuildX86
         {
             get
@@ -1358,12 +1252,8 @@ namespace FastBuildGen.BatchNode
 
                 blocMacro.Add(GetDebugRem("FastBuildCoreBuildX86"));
 
-                BatchFileNodeBase fastBuildCoreBuildWin32Node = GetFastBuildCoreBuild(
-                    LiteralMSBuildX86NeedRun
-                    , _fbModel.BaseLAbelMacroMSBuildX86NeedRun()
-                    , LiteralMSBuildCliX86
-                    , _fbModel.BaseLabelMacroMSBuildX86TryLoop());
-                blocMacro.Add(fastBuildCoreBuildWin32Node);
+                BatchFileNodeBase fastBuildCoreBuildX86Node = GetFastBuildCoreBuild(LiteralMSBuildCli);
+                blocMacro.Add(fastBuildCoreBuildX86Node);
 
                 return blocMacro;
             }
@@ -1388,7 +1278,7 @@ namespace FastBuildGen.BatchNode
                     , new SetFalseCmd(LiteralSGenPlusNeedRun)
                     ));
                 blocMacro.Add(new IfCmd(
-                    new IsTrueConditional(LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchNosgp])
+                    new IsTrueConditional(LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchNosgp])
                     , new SetFalseCmd(LiteralSGenPlusNeedRun)
                     ));
 
@@ -1459,27 +1349,7 @@ namespace FastBuildGen.BatchNode
             }
         }
 
-        private BatchFileNodeBase GetFastBuildCoreBuild(LiteralBatch literalMSBuildNeedRun, string baseLabelMacroMSBuildNeedRun, LiteralBatch literalMSBuildCli, string baseLabelMacroMSBuildTryLoop)
-        {
-            BlocMacroFileNode macroResult = new BlocMacroFileNode();
-
-            // lunch MSBuild if needed
-            // IF (%varfb_MSBuildWin32NeedRun%) == (1) [...]
-            BlocMacroFileNode macroBlocRunMSBuild = new BlocMacroFileNode();
-            IfGotoMacro ifGotoMacroNeedRun = new IfGotoMacro(
-                new IsTrueConditional(literalMSBuildNeedRun)
-                , macroBlocRunMSBuild
-                , null
-                , baseLabelMacroMSBuildNeedRun
-                );
-            macroResult.Add(ifGotoMacroNeedRun);
-
-            macroBlocRunMSBuild.Add(GetFastBuildCoreBuildBody(literalMSBuildCli));
-
-            return macroResult;
-        }
-
-        private BatchFileNodeBase GetFastBuildCoreBuildBody(LiteralBatch literalMSBuildCli)
+        private BatchFileNodeBase GetFastBuildCoreBuild(LiteralBatch literalMSBuildCli)
         {
             BlocMacro macroResult = new BlocMacro();
 
@@ -1598,7 +1468,7 @@ namespace FastBuildGen.BatchNode
                 nodeThen.Add(new EchoCmd(String.Empty));
 
                 IfMacro ifMacro = new IfMacro(
-                    new IsTrueConditional(LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchVshost])
+                    new IsTrueConditional(LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchVshost])
                     , nodeThen
                     , null
                 );
@@ -1633,7 +1503,7 @@ namespace FastBuildGen.BatchNode
                 nodeThen.Add(new EchoCmd(String.Empty));
 
                 IfMacro ifMacro = new IfMacro(
-                    new IsTrueConditional(LiteralParamDescriptionByKeyWords[FastBuildParamModel.ConstKeywordParamSwitchKillheo])
+                    new IsTrueConditional(LiteralTargetByKeyWords[FBModel.ConstKeywordParamSwitchKillheo])
                     , nodeThen
                     , null
                 );

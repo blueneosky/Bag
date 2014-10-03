@@ -7,7 +7,6 @@ namespace FastBuildGen.Control.TargetEditor
 {
     internal static class ConstTargetEditorModelEvent
     {
-        public const string ConstAvailableModules = ConstPrefix + "AvailableModules";
         public const string ConstTarget = ConstPrefix + "Target";
         private const string ConstPrefix = "TargetEditorModel_";
     }

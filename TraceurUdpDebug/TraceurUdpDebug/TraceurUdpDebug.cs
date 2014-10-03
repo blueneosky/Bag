@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 namespace System.Diagnostics
 {
@@ -19,7 +18,8 @@ namespace System.Diagnostics
         private const int ConstantePortEnvoie = 9990;
         private static readonly IPAddress ConstanteAdresseEnvoie = IPAddress.Loopback;
         private static bool _doitIndenterTrace = true;
-        private static TraceurUdpDebugWriter _writer;
+
+        private static IPEndPoint _endPoint = new IPEndPoint(ConstanteAdresseEnvoie, ConstantePortEnvoie);
 
         /// <summary>
         /// Envoi le texte vers la fenetre "udpDebugConsole"
@@ -34,11 +34,6 @@ namespace System.Diagnostics
             DateTime dt = DateTime.Now;
 
             StringBuilder sb = new StringBuilder();
-
-            if (_writer == null)
-            {
-                _writer = new TraceurUdpDebugWriter();
-            }
 
             if (addPreSaut)
             {
@@ -73,7 +68,11 @@ namespace System.Diagnostics
             }
 
             String texte = sb.ToString();
-            _writer.Write(texte);
+            Byte[] buffer = System.Text.Encoding.Unicode.GetBytes(texte);
+            using (UdpClient udpClient = new UdpClient())
+            {
+                udpClient.Send(buffer, buffer.Length, _endPoint);
+            }
         }
 
         /// <summary>
@@ -337,167 +336,5 @@ namespace System.Diagnostics
         #endregion TraceurUdpDebugTraceListener
 
         #endregion Ecouteur de Debug et Trace
-
-        #region TraceurUdpDebugWriter
-
-        private class TraceurUdpDebugWriter : IDisposable
-        {
-            private Queue<Tuple<int, Byte[]>> _fileAttente;
-            private object _fileAttenteLock = new object();
-            private UdpClient _udpClient;
-            private IPEndPoint _endPoint;
-            private Thread _sendThread;
-            private volatile bool _isSendThreadRunning;
-
-            public TraceurUdpDebugWriter()
-            {
-                _fileAttente = new Queue<Tuple<int, byte[]>> { };
-                _endPoint = new IPEndPoint(ConstanteAdresseEnvoie, ConstantePortEnvoie);
-                _udpClient = new System.Net.Sockets.UdpClient();
-                _isSendThreadRunning = false;
-            }
-
-            public void Write(string texte)
-            {
-                lock (_fileAttenteLock)
-                {
-                    Byte[] buffer = System.Text.Encoding.Unicode.GetBytes(texte);
-                    _fileAttente.Enqueue(Tuple.Create(buffer.Count(), buffer));
-                    if (false == _isSendThreadRunning)
-                    {
-                        _isSendThreadRunning = true;
-                        _sendThread = new Thread(new ThreadStart(AutoSendThreadProcess));
-                        _sendThread.Start();
-                    }
-                }
-            }
-
-            private void AutoSendThreadProcess()
-            {
-                bool needWrite = true;
-
-                while (needWrite)
-                {
-                    SendData();
-                    Thread.Sleep(50);
-
-                    lock (_fileAttenteLock)
-                    {
-                        needWrite = _fileAttente.Count > 0;
-                        _isSendThreadRunning = needWrite;
-                    }
-                }
-            }
-
-            private void SendData()
-            {
-                const int ConstBufferMaxSize = 2 << 14;
-
-                Queue<Tuple<int, byte[]>> fileAttente;
-                lock (_fileAttenteLock)
-                {
-                    fileAttente = _fileAttente;
-                    _fileAttente = new Queue<Tuple<int, byte[]>> { };
-                }
-
-                while (fileAttente.Count > 0)
-                {
-                    byte[] buffer;
-                    Tuple<int, Byte[]> tuple;
-                    int totalSize = 0;
-                    using (MemoryStream stream = new MemoryStream(ConstBufferMaxSize))
-                    {
-                        tuple = fileAttente.Peek();
-                        int size = tuple.Item1;
-                        while (((totalSize + size) < ConstBufferMaxSize) && fileAttente.Any())
-                        {
-                            totalSize += size;
-                            stream.Write(tuple.Item2, 0, size);
-                            fileAttente.Dequeue();
-
-                            if (fileAttente.Any())
-                            {
-                                tuple = fileAttente.Peek();
-                                size = tuple.Item1;
-                            }
-                            else
-                            {
-                                tuple = null;
-                                size = 0;
-                            }
-                        }
-                        buffer = stream.ToArray();
-                    }
-                    if (totalSize == 0)
-                    {
-                        // the next one is bigger than limit - dump as is
-                        tuple = _fileAttente.Dequeue();
-                        totalSize = tuple.Item1;
-                        buffer = tuple.Item2;
-                    }
-
-                    _udpClient.Send(buffer, totalSize, _endPoint);
-                }
-            }
-
-            #region IDisposable
-
-            private bool disposed;
-
-            // Dispose(bool disposing) executes in two distinct scenarios.
-            // If disposing equals true, the method has been called directly
-            // or indirectly by a user's code. Managed and unmanaged resources
-            // can be disposed.
-            // If disposing equals false, the method has been called by the
-            // runtime from inside the finalizer and you should not reference
-            // other objects. Only unmanaged resources can be disposed.
-            protected virtual void Dispose(bool disposing)
-            {
-                // Check to see if Dispose has already been called.
-                if (this.disposed)
-                    return;
-
-                disposed = true;
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
-                if (disposing)
-                {
-                    // Dispose managed resources.
-                    if (_sendThread != null)
-                    {
-                        _sendThread.Join(10000); // wait thread exit
-                        _sendThread = null;
-                    }
-                    if (_udpClient != null)
-                    {
-                        _udpClient.Close();
-                        _udpClient = null;
-                    }
-                }
-
-                // Call the appropriate methods to clean up
-                // unmanaged resources here.
-                // If disposing is false,
-                // only the following code is executed.
-                // note : nothing
-
-                // Note disposing has been done.
-            }
-
-            public void Dispose()
-            {
-                Dispose(true);
-                GC.SuppressFinalize(this);
-            }
-
-            ~TraceurUdpDebugWriter()
-            {
-                Dispose(false);
-            }
-
-            #endregion IDisposable
-        }
-
-        #endregion TraceurUdpDebugWriter
     }
 }
