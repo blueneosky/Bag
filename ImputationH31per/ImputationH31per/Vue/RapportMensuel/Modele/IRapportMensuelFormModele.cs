@@ -12,7 +12,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
     {
         IImputationH31perModele ImputationH31perModele { get; }
 
-        DateTime DateMoisAnnee { get; set; }
+        DateTimeOffset DateMoisAnnee { get; set; }
 
         IEnumerable<GroupeItem> Groupes { get; }
 

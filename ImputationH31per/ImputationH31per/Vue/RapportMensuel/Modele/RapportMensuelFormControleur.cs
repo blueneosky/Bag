@@ -25,7 +25,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         #region IRapportMensuelFormControleur Membres
 
-        public void DefinirDateMoisAnnee(DateTime dateTime)
+        public void DefinirDateMoisAnnee(DateTimeOffset dateTime)
         {
             _modele.DateMoisAnnee = dateTime;
         }
@@ -46,5 +46,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         }
 
         #endregion
+
     }
 }

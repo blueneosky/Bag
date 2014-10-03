@@ -8,7 +8,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 {
     public interface IRapportMensuelFormControleur
     {
-        void DefinirDateMoisAnnee(DateTime dateTime);
+        void DefinirDateMoisAnnee(DateTimeOffset dateTime);
 
         void DefinirGroupeSelectionne(GroupeItem groupeItem);
 

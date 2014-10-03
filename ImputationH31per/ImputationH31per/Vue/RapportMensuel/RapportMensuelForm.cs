@@ -78,6 +78,30 @@ namespace ImputationH31per.Vue.RapportMensuel
                     RafraichirMoisAnnee();
                     break;
 
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteGroupes:
+                    RafraichirGroupes();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteGroupeSelectionne:
+                    RafraichirGroupeSelectionne();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteTaches:
+                    RafraichirTaches();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteTacheSelectionnee:
+                    RafraichirTacheSelectionnee();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteTickets:
+                    RafraichirTickets();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteTicketSelectionne:
+                    RafraichirTicketSelectionne();
+                    break;
+
                 default:
                     // non géré
                     break;
@@ -91,13 +115,19 @@ namespace ImputationH31per.Vue.RapportMensuel
         private void RafraichirModele()
         {
             RafraichirMoisAnnee();
+            RafraichirGroupes();
+            RafraichirGroupeSelectionne();
+            RafraichirTaches();
+            RafraichirTacheSelectionnee();
+            RafraichirTickets();
+            RafraichirTicketSelectionne();
         }
 
         private void RafraichirMoisAnnee()
         {
             CommencerMiseAJour();
 
-            DateTime dateMoisAnnee = _modele.DateMoisAnnee;
+            DateTime dateMoisAnnee = _modele.DateMoisAnnee.LocalDateTime;
             _moisAnneeDateTimePicker.Value = dateMoisAnnee;
 
             TerminerMiseAJour();
@@ -108,12 +138,12 @@ namespace ImputationH31per.Vue.RapportMensuel
             CommencerMiseAJour();
 
             RafraichirListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.Groupes);
-            RafraichirGroupe();
+            RafraichirGroupeSelectionne();
 
             TerminerMiseAJour();
         }
 
-        private void RafraichirGroupe()
+        private void RafraichirGroupeSelectionne()
         {
             CommencerMiseAJour();
 
@@ -127,12 +157,12 @@ namespace ImputationH31per.Vue.RapportMensuel
             CommencerMiseAJour();
 
             RafraichirListBox<TacheItem, IInformationTacheTfs>(_tachesListBox, _modele.Taches);
-            RafraichirTache();
+            RafraichirTacheSelectionnee();
 
             TerminerMiseAJour();
         }
 
-        private void RafraichirTache()
+        private void RafraichirTacheSelectionnee()
         {
             CommencerMiseAJour();
 
@@ -146,12 +176,12 @@ namespace ImputationH31per.Vue.RapportMensuel
             CommencerMiseAJour();
 
             RafraichirListBox<TicketItem, IInformationTicketTfs>(_ticketsListBox, _modele.Tickets);
-            RafraichirTicket();
+            RafraichirTicketSelectionne();
 
             TerminerMiseAJour();
         }
 
-        private void RafraichirTicket()
+        private void RafraichirTicketSelectionne()
         {
             CommencerMiseAJour();
 
