@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele
 {
@@ -24,25 +25,24 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         #region IRapportMensuelFormControleur Membres
 
-#warning TODO - point ALPHA - implémenter !
         public void DefinirDateMoisAnnee(DateTime dateTime)
         {
-            throw new NotImplementedException();
+            _modele.DateMoisAnnee = dateTime;
         }
 
-        public void DefinirGroupeSelectionne(Entite.GroupeItem groupeItem)
+        public void DefinirGroupeSelectionne(GroupeItem groupe)
         {
-            throw new NotImplementedException();
+            _modele.GroupeSelectionne = groupe;
         }
 
-        public void DefinirTacheSelectionnee(Entite.TacheItem tacheItem)
+        public void DefinirTacheSelectionnee(TacheItem tache)
         {
-            throw new NotImplementedException();
+            _modele.TacheSelectionnee = tache;
         }
 
-        public void DefinirTicketSelectionne(Entite.TicketItem ticketItem)
+        public void DefinirTicketSelectionne(TicketItem ticket)
         {
-            throw new NotImplementedException();
+            _modele.TicketSelectionne = ticket;
         }
 
         #endregion

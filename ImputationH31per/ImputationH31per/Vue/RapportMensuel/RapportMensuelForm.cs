@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using ImputationH31per.Modele;
+using ImputationH31per.Modele.Entite;
 using ImputationH31per.Util;
 using ImputationH31per.Vue.RapportMensuel.Modele;
 using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
@@ -102,22 +103,71 @@ namespace ImputationH31per.Vue.RapportMensuel
             TerminerMiseAJour();
         }
 
-        private void RacraichirGroupes()
+        private void RafraichirGroupes()
         {
             CommencerMiseAJour();
 
-            //_modele.Groupes.
+            RafraichirListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.Groupes);
+            RafraichirGroupe();
 
             TerminerMiseAJour();
         }
-#warning TODO - point ALPHA - implémenter !
 
-        private void UpdateListBox<TItem, T>(ListBox.ObjectCollection listBoxCollection, IEnumerable<TItem> items)
-            where TItem :  class, IItem<T>
+        private void RafraichirGroupe()
         {
-            ItemListViewItem<TItem, T>[] nouveauItems = items
-                .Select(m => new ItemListViewItem<TItem, T>(m))
-                .OrderBy(m => m.ToString())
+            CommencerMiseAJour();
+
+            RafraichirSelectionListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.GroupeSelectionne);
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirTaches()
+        {
+            CommencerMiseAJour();
+
+            RafraichirListBox<TacheItem, IInformationTacheTfs>(_tachesListBox, _modele.Taches);
+            RafraichirTache();
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirTache()
+        {
+            CommencerMiseAJour();
+
+            RafraichirSelectionListBox<TacheItem, IInformationTacheTfs>(_tachesListBox, _modele.TacheSelectionnee);
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirTickets()
+        {
+            CommencerMiseAJour();
+
+            RafraichirListBox<TicketItem, IInformationTicketTfs>(_ticketsListBox, _modele.Tickets);
+            RafraichirTicket();
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirTicket()
+        {
+            CommencerMiseAJour();
+
+            RafraichirSelectionListBox<TicketItem, IInformationTicketTfs>(_ticketsListBox, _modele.TicketSelectionne);
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirListBox<TItem, T>(ListBox listBox, IEnumerable<TItem> items)
+            where TItem : class, IItem<T>
+        {
+            listBox.BeginUpdate();
+
+            ListBox.ObjectCollection listBoxCollection = listBox.Items;
+            TItem[] nouveauItems = items
+                .OrderBy(i => i.Libelle)
                 .ToArray();
 
             int ancienIndexItem = 0;
@@ -125,31 +175,32 @@ namespace ImputationH31per.Vue.RapportMensuel
             while (ancienIndexItem < listBoxCollection.Count || nouveauIndexItem < nouveauItems.Length)
             {
                 ItemListViewItem<TItem, T> ancienIlvItem = ancienIndexItem < listBoxCollection.Count ? (ItemListViewItem<TItem, T>)listBoxCollection[ancienIndexItem] : null;
-                ItemListViewItem<TItem, T> nouveauIlvItem = nouveauIndexItem < nouveauItems.Length ? nouveauItems[nouveauIndexItem] : null;
+                TItem nouveauItem = nouveauIndexItem < nouveauItems.Length ? nouveauItems[nouveauIndexItem] : null;
+                Func<ItemListViewItem<TItem, T>> nouveauIlvItem = () => new ItemListViewItem<TItem, T>(nouveauItem);
 
                 if (ancienIlvItem == null)
                 {
-                    Debug.Assert(nouveauIlvItem != null);
-                    listBoxCollection.Add(nouveauIlvItem);
+                    Debug.Assert(nouveauItem != null);
+                    listBoxCollection.Add(nouveauIlvItem());
                     ancienIndexItem++;
                     nouveauIndexItem++;
                 }
-                else if (nouveauIlvItem == null)
+                else if (nouveauItem == null)
                 {
                     listBoxCollection.RemoveAt(ancienIndexItem);
                 }
-                else if (ancienIlvItem.Equals(nouveauIlvItem))
+                else if (ancienIlvItem.Equals(nouveauItem))
                 {
                     ancienIndexItem++;
                     nouveauIndexItem++;
                 }
                 else
                 {
-                    int comp = String.Compare(nouveauIlvItem.ToString(), ancienIlvItem.ToString());
+                    int comp = String.Compare(nouveauItem.Libelle, ancienIlvItem.Item.Libelle);
                     if (comp < 0)
                     {
                         // nouveau avant l'ancien
-                        listBoxCollection.Insert(ancienIndexItem, nouveauIlvItem);
+                        listBoxCollection.Insert(ancienIndexItem, nouveauIlvItem());
                         ancienIndexItem++;
                         nouveauIndexItem++;
                     }
@@ -160,6 +211,32 @@ namespace ImputationH31per.Vue.RapportMensuel
                     }
                 }
             }
+
+            listBox.EndUpdate();
+        }
+
+        private void RafraichirSelectionListBox<TItem, T>(ListBox listBox, TItem itemSelectionne)
+            where TItem : class, IItem<T>
+        {
+            listBox.BeginUpdate();
+
+            if (itemSelectionne == null)
+            {
+                listBox.SelectedIndex = -1;
+            }
+            else if ((listBox.SelectedIndex < 0) || (false == listBox.SelectedItem.Equals(itemSelectionne)))
+            {
+                ListBox.ObjectCollection listBoxCollection = listBox.Items;
+                int index = listBoxCollection
+                    .Cast<ItemListViewItem<TItem, T>>()
+                    .TakeWhile(ilvItem => false == ilvItem.Equals(itemSelectionne))
+                    .Count();
+                if (index == listBoxCollection.Count)
+                    index = -1;
+                listBox.SelectedIndex = index;
+            }
+
+            listBox.EndUpdate();
         }
 
         #endregion Mise à jour interface depuis modele
@@ -195,7 +272,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         #region ElementListViewItem
 
         private class ItemListViewItem<TItem, T> : ListViewItem
-            where TItem :class, IItem<T>
+            where TItem : class, IItem<T>
         {
             private TItem _item;
 
@@ -218,7 +295,6 @@ namespace ImputationH31per.Vue.RapportMensuel
                 if (item == null) return false;
                 return this.Item.Equals(item);
             }
-
         }
 
         #endregion ElementListViewItem
