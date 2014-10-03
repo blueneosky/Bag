@@ -6,11 +6,11 @@ using ImputationH31per.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
-    public class ElementGroupe : ElementInformationBase<IInformationTacheTfs>
+    public class GroupeItem : InformationBaseItem<IInformationTacheTfs>
     {
         #region ctor
 
-        public ElementGroupe(IInformationTacheTfs information)
+        public GroupeItem(IInformationTacheTfs information)
             : base(information)
         {
         }

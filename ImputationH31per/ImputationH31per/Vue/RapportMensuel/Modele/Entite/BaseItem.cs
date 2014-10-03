@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
-    public abstract class ElemntBase : IElement
+    public abstract class BaseItem : IItem
     {
         #region IElement Membres
 

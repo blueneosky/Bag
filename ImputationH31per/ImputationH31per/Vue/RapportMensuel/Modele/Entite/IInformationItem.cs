@@ -6,7 +6,7 @@ using ImputationH31per.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
-    public interface IElementInformation<out TInformationTacheTfs> : IElement
+    public interface IInformationItem<out TInformationTacheTfs> : IItem
         where TInformationTacheTfs : IInformationTacheTfs
     {
         TInformationTacheTfs Information { get; }

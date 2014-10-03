@@ -6,7 +6,7 @@ using ImputationH31per.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
-    public abstract class ElementInformationBase<TInformationTacheTfs> : ElemntBase, IElementInformation<TInformationTacheTfs>
+    public abstract class InformationBaseItem<TInformationTacheTfs> : BaseItem, IInformationItem<TInformationTacheTfs>
           where TInformationTacheTfs : IInformationTacheTfs
     {
         #region Membres
@@ -17,7 +17,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 
         #region ctor
 
-        public ElementInformationBase(TInformationTacheTfs information)
+        public InformationBaseItem(TInformationTacheTfs information)
         {
             _information = information;
         }

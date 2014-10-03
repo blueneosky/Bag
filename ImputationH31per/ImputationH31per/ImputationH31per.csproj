@@ -257,12 +257,12 @@
       <DependentUpon>RapportMailForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Vue\RapportMensuel\Modele\ConstanteIRapportMensuelFormModele.cs" />
-    <Compile Include="Vue\RapportMensuel\Modele\Entite\ElementGroupe.cs" />
-    <Compile Include="Vue\RapportMensuel\Modele\Entite\ElementInformationBase.cs" />
-    <Compile Include="Vue\RapportMensuel\Modele\Entite\ElementTache.cs" />
-    <Compile Include="Vue\RapportMensuel\Modele\Entite\ElemntBase.cs" />
-    <Compile Include="Vue\RapportMensuel\Modele\Entite\IElement.cs" />
-    <Compile Include="Vue\RapportMensuel\Modele\Entite\IElementInformation.cs" />
+    <Compile Include="Vue\RapportMensuel\Modele\Entite\GroupeItem.cs" />
+    <Compile Include="Vue\RapportMensuel\Modele\Entite\InformationBaseItem.cs" />
+    <Compile Include="Vue\RapportMensuel\Modele\Entite\TacheItem.cs" />
+    <Compile Include="Vue\RapportMensuel\Modele\Entite\BaseItem.cs" />
+    <Compile Include="Vue\RapportMensuel\Modele\Entite\IItem.cs" />
+    <Compile Include="Vue\RapportMensuel\Modele\Entite\IInformationItem.cs" />
     <Compile Include="Vue\RapportMensuel\Modele\IRapportMensuelFormControleur.cs" />
     <Compile Include="Vue\RapportMensuel\Modele\IRapportMensuelFormModele.cs" />
     <Compile Include="Vue\RapportMensuel\RapportMensuelForm.cs">
