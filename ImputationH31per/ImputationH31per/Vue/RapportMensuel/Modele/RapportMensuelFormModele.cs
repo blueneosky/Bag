@@ -23,7 +23,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private readonly IImputationH31perModele _imputationH31perModele;
 
         private DateTimeOffset _dateMoisAnnee;
-        private IEnumerable<IInformationImputationTfs> _informationImputations;
+        private IEnumerable<IInformationImputationTfs> _imputationsDuMois;
+        private IEnumerable<IInformationImputationTfs> _imputationRestantes;
         private IEnumerable<GroupeItem> _groupes;
         private GroupeItem _groupeSelectionne;
         private IEnumerable<TacheItem> _taches;
@@ -60,16 +61,28 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                     return;
                 _dateMoisAnnee = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteDateMoisAnnee));
-                MettreAJourInformationImputations();
+                MettreAJourImputationDuMois();
             }
         }
 
-        public IEnumerable<IInformationImputationTfs> InformationImputations
+        public IEnumerable<IInformationImputationTfs> ImputationsDuMois
         {
-            get { return _informationImputations; }
+            get { return _imputationsDuMois; }
             set
             {
-                _informationImputations = value;
+                _imputationsDuMois = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteImputationsDuMois));
+                MettreAJourImputationRestantes();
+            }
+        }
+
+        public IEnumerable<IInformationImputationTfs> ImputationRestantes
+        {
+            get { return _imputationRestantes; }
+            set
+            {
+                _imputationRestantes = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteImputationRestantes));
                 MettreAJourGroupes();
             }
         }
@@ -144,26 +157,36 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         #region Mise à jour de propriétés
 
-        private void MettreAJourInformationImputations()
+        private void MettreAJourImputationDuMois()
         {
-#warning TODO - point ALPHA ALPHA - vérifie l'écart jour...
-            DateTimeOffset moisAnnee = DateMoisAnnee;
+            DateTimeOffset moisAnnee = DateMoisAnnee
+                .AddDays(-DateMoisAnnee.Day + 1)
+                .Add(-DateMoisAnnee.TimeOfDay);
             DateTimeOffset dateMin = moisAnnee;
             DateTimeOffset dateMax = moisAnnee.AddMonths(1).Date;
 
-            InformationImputations = _imputationH31perModele.ImputationTfss
+            ImputationsDuMois = _imputationH31perModele.ImputationTfss
                 .Where(i => { DateTimeOffset date = i.DateImputationPlusRecente(); return date.EstComprisEntre(dateMin, dateMax); })
                 .Reverse()  // optimisation
                 .OrderBy(i => i, ConstanteOrdreAffichageImputationTfs)
                 .Execute();
         }
 
+        private void MettreAJourImputationRestantes()
+        {
+#warning TODO - point BETA ALPHA - implémenter !
+            ImputationRestantes = ImputationsDuMois;
+        }
+
 #warning TODO - point ALPHA - implémenter !
 
         private void MettreAJourGroupes()
         {
-#warning TODO - point ALPHA - implémenter !
-            Groupes = Enumerable.Empty<GroupeItem>();
+            Groupes = ImputationRestantes
+                .GroupBy(i => i.NomGroupement)
+                .Select(grp => new GroupeItem(grp.Key))
+                .Concat(new[] { GroupeItem.Tous, GroupeItem.Aucun })
+                .ToArray();
         }
 
         private void MettreAJourGroupeSelectionne()
@@ -199,7 +222,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private void MettreAJourGroupement()
         {
 #warning TODO - point ALPHA - implémenter !
-            
         }
 
         #endregion Mise à jour de propriétés

@@ -62,9 +62,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
             switch (_typeItem)
             {
                 case EnumTypeItem.Aucun:
-                    return "Aucun";
+                    return "- Aucun -";
                 case EnumTypeItem.Tous:
-                    return "Tous";
+                    return "- Tous -";
                 case EnumTypeItem.Entite:
                     return ObtenirLibelleEntite();
                 default:

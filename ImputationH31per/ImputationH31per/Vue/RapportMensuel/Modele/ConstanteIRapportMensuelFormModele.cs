@@ -14,6 +14,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         #endregion TypeNotifiable
 
         // ConstanteProprieteDateMoisAnnee
+        // ConstanteProprieteImputationsDuMois
+        // ConstanteProprieteImputationRestantes
         // ConstanteProprieteGroupes
         // ConstanteProprieteTaches
         // ConstanteProprieteTickets
@@ -22,6 +24,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         // ConstanteProprieteTicketSelectionne
 
         public const string ConstanteProprieteDateMoisAnnee = "DateMoisAnnee";
+        public const string ConstanteProprieteImputationsDuMois = "ImputationsDuMois";
+        public const string ConstanteProprieteImputationRestantes = "ImputationRestantes";
         public const string ConstanteProprieteGroupes = "Groupes";
         public const string ConstanteProprieteTaches = "Taches";
         public const string ConstanteProprieteTickets = "Tickets";

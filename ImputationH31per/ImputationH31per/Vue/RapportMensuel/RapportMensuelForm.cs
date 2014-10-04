@@ -137,7 +137,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         {
             CommencerMiseAJour();
 
-            RafraichirListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.Groupes);
+            RafraichirListBox<GroupeItem, string>(_groupesListBox, _modele.Groupes);
             RafraichirGroupeSelectionne();
 
             TerminerMiseAJour();
@@ -147,7 +147,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         {
             CommencerMiseAJour();
 
-            RafraichirSelectionListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.GroupeSelectionne);
+            RafraichirSelectionListBox<GroupeItem, string>(_groupesListBox, _modele.GroupeSelectionne);
 
             TerminerMiseAJour();
         }
@@ -204,14 +204,14 @@ namespace ImputationH31per.Vue.RapportMensuel
             int nouveauIndexItem = 0;
             while (ancienIndexItem < listBoxCollection.Count || nouveauIndexItem < nouveauItems.Length)
             {
-                ItemListViewItem<TItem, T> ancienIlvItem = ancienIndexItem < listBoxCollection.Count ? (ItemListViewItem<TItem, T>)listBoxCollection[ancienIndexItem] : null;
+                ListBoxItem<TItem, T> ancienLBItem = ancienIndexItem < listBoxCollection.Count ? (ListBoxItem<TItem, T>)listBoxCollection[ancienIndexItem] : null;
                 TItem nouveauItem = nouveauIndexItem < nouveauItems.Length ? nouveauItems[nouveauIndexItem] : null;
-                Func<ItemListViewItem<TItem, T>> nouveauIlvItem = () => new ItemListViewItem<TItem, T>(nouveauItem);
+                Func<ListBoxItem<TItem, T>> nouveauLBItem = () => new ListBoxItem<TItem, T>(nouveauItem);
 
-                if (ancienIlvItem == null)
+                if (ancienLBItem == null)
                 {
                     Debug.Assert(nouveauItem != null);
-                    listBoxCollection.Add(nouveauIlvItem());
+                    listBoxCollection.Add(nouveauLBItem());
                     ancienIndexItem++;
                     nouveauIndexItem++;
                 }
@@ -219,18 +219,18 @@ namespace ImputationH31per.Vue.RapportMensuel
                 {
                     listBoxCollection.RemoveAt(ancienIndexItem);
                 }
-                else if (ancienIlvItem.Equals(nouveauItem))
+                else if (ancienLBItem.Equals(nouveauItem))
                 {
                     ancienIndexItem++;
                     nouveauIndexItem++;
                 }
                 else
                 {
-                    int comp = String.Compare(nouveauItem.Libelle, ancienIlvItem.Item.Libelle);
+                    int comp = String.Compare(nouveauItem.Libelle, ancienLBItem.Item.Libelle);
                     if (comp < 0)
                     {
                         // nouveau avant l'ancien
-                        listBoxCollection.Insert(ancienIndexItem, nouveauIlvItem());
+                        listBoxCollection.Insert(ancienIndexItem, nouveauLBItem());
                         ancienIndexItem++;
                         nouveauIndexItem++;
                     }
@@ -258,7 +258,7 @@ namespace ImputationH31per.Vue.RapportMensuel
             {
                 ListBox.ObjectCollection listBoxCollection = listBox.Items;
                 int index = listBoxCollection
-                    .Cast<ItemListViewItem<TItem, T>>()
+                    .Cast<ListBoxItem<TItem, T>>()
                     .TakeWhile(ilvItem => false == ilvItem.Equals(itemSelectionne))
                     .Count();
                 if (index == listBoxCollection.Count)
@@ -282,32 +282,34 @@ namespace ImputationH31per.Vue.RapportMensuel
         private void _groupesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (EstMiseAJourEnCours) return;
-            _controleur.DefinirGroupeSelectionne(_groupesListBox.SelectedItem as GroupeItem);
+            ListBoxItem<GroupeItem, string> lbItem = _groupesListBox.SelectedItem as ListBoxItem<GroupeItem, string>;
+            _controleur.DefinirGroupeSelectionne(lbItem != null ? lbItem.Item : null);
         }
 
         private void _tachesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (EstMiseAJourEnCours) return;
-            _controleur.DefinirTacheSelectionnee(_groupesListBox.SelectedItem as TacheItem);
+            ListBoxItem<TacheItem, IInformationTacheTfs> lbItem = _groupesListBox.SelectedItem as ListBoxItem<TacheItem, IInformationTacheTfs>;
+            _controleur.DefinirTacheSelectionnee(lbItem != null ? lbItem.Item : null);
         }
 
         private void _ticketsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (EstMiseAJourEnCours) return;
-            _controleur.DefinirTicketSelectionne(_groupesListBox.SelectedItem as TicketItem);
+            ListBoxItem<TicketItem, IInformationTicketTfs> lbItem = _groupesListBox.SelectedItem as ListBoxItem<TicketItem, IInformationTicketTfs>;
+            _controleur.DefinirTicketSelectionne(lbItem != null ? lbItem.Item : null);
         }
 
         #endregion Actions utilisateur
 
         #region ElementListViewItem
 
-        private class ItemListViewItem<TItem, T> : ListViewItem
+        private class ListBoxItem<TItem, T>
             where TItem : class, IItem<T>
         {
             private TItem _item;
 
-            public ItemListViewItem(TItem item)
-                : base(item.Libelle)
+            public ListBoxItem(TItem item)
             {
                 _item = item;
             }
@@ -320,10 +322,15 @@ namespace ImputationH31per.Vue.RapportMensuel
             public override bool Equals(object obj)
             {
                 if (Object.ReferenceEquals(this, obj)) return true;
-                ItemListViewItem<TItem, T> ilvItem = obj as ItemListViewItem<TItem, T>;
+                ListBoxItem<TItem, T> ilvItem = obj as ListBoxItem<TItem, T>;
                 TItem item = (ilvItem != null) ? ilvItem.Item : obj as TItem;
                 if (item == null) return false;
                 return this.Item.Equals(item);
+            }
+
+            public override string ToString()
+            {
+                return _item.Libelle;
             }
         }
 
