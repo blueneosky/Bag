@@ -86,6 +86,13 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
             return resultat;
         }
 
+        public override int GetHashCode()
+        {
+            if (TypeItem == EnumTypeItem.Entite)
+                return Entite.GetHashCode();
+            return (int)TypeItem;
+        }
+
         #endregion Méthodes
     }
 }

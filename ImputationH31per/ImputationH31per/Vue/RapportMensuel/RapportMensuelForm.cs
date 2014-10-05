@@ -328,6 +328,11 @@ namespace ImputationH31per.Vue.RapportMensuel
                 return this.Item.Equals(item);
             }
 
+            public override int GetHashCode()
+            {
+                return _item.GetHashCode();
+            }
+
             public override string ToString()
             {
                 return _item.Libelle;
