@@ -81,9 +81,14 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
             if (Object.ReferenceEquals(this, obj)) return true;
             IItem<T> item = obj as IItem<T>;
             bool resultat = (this.TypeItem == item.TypeItem)
-                && (this.TypeItem != EnumTypeItem.Entite || Object.Equals(this.Entite, item.Entite));
+                && (this.TypeItem != EnumTypeItem.Entite || EntiteEgale(item.Entite));
 
             return resultat;
+        }
+
+        protected virtual bool EntiteEgale(T entite)
+        {
+            return Object.Equals(Entite, entite);
         }
 
         public override int GetHashCode()

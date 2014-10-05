@@ -22,5 +22,13 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         {
             return String.Format("{0} : {1}", Information.NumeroComplet(), Information.NomComplet());
         }
+
+        protected override bool EntiteEgale(IInformationTacheTfs entite)
+        {
+            return Entite.Numero == entite.Numero;
+        }
+
+        public static readonly TacheItem Tous = new TacheItem(EnumTypeItem.Tous);
+        public static readonly TacheItem Aucun = new TacheItem(EnumTypeItem.Aucun);
     }
 }

@@ -22,7 +22,12 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
             return Entite;
         }
 
-        public static GroupeItem Tous = new GroupeItem(EnumTypeItem.Tous);
-        public static GroupeItem Aucun = new GroupeItem(EnumTypeItem.Aucun);
+        protected override bool EntiteEgale(string entite)
+        {
+            return String.Equals(Entite, entite);
+        }
+
+        public static readonly GroupeItem Tous = new GroupeItem(EnumTypeItem.Tous);
+        public static readonly GroupeItem Aucun = new GroupeItem(EnumTypeItem.Aucun);
     }
 }
