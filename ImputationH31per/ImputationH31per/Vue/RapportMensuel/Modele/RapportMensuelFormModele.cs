@@ -31,6 +31,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private IEnumerable<IInformationImputationTfs> _imputationPourTaches;
         private IEnumerable<TacheItem> _taches;
         private TacheItem _tacheSelectionnee;
+        private IEnumerable<IInformationImputationTfs> _imputationPourTickets;
         private IEnumerable<TicketItem> _tickets;
         private TicketItem _ticketSelectionne;
 
@@ -152,6 +153,17 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 _tacheSelectionnee = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteTacheSelectionnee));
+                MettreAJourImputationPourTickets();
+            }
+        }
+
+        public IEnumerable<IInformationImputationTfs> ImputationPourTickets
+        {
+            get { return _imputationPourTickets; }
+            private set
+            {
+                _imputationPourTickets = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteImputationPourTickets));
                 MettreAJourTickets();
             }
         }
@@ -250,7 +262,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             ImputationPourTaches = imputations;
         }
 
-
         private void MettreAJourTaches()
         {
             List<TacheItem> taches = ImputationPourTaches
@@ -268,16 +279,46 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             TacheSelectionnee = ObtenirMiseAJourSelectionItem<TacheItem, IInformationTacheTfs>(Taches, TacheSelectionnee);
         }
 
+        private void MettreAJourImputationPourTickets()
+        {
+            IEnumerable<IInformationImputationTfs> imputations;
+            EnumTypeItem typeItem = (TacheSelectionnee != null) ? TacheSelectionnee.TypeItem : EnumTypeItem.Aucun;
+            switch (typeItem)
+            {
+                case EnumTypeItem.Tous:
+                    imputations = ImputationPourTaches;
+                    break;
+
+                case EnumTypeItem.Entite:
+                    int numeroTache = TacheSelectionnee.Entite.Numero;
+                    imputations = ImputationPourTaches
+                        .Where(i => String.Equals(i.Numero, numeroTache))
+                        .Execute();
+                    break;
+
+                case EnumTypeItem.Aucun:
+                default:
+                    imputations = new IInformationImputationTfs[0];
+                    break;
+            }
+            ImputationPourTickets = imputations;
+        }
+
         private void MettreAJourTickets()
         {
-#warning TODO - point ALPHA - implémenter !
-            Tickets = Enumerable.Empty<TicketItem>();
+            List<TicketItem> ticket = ImputationPourTickets
+                .GroupBy(i => i.NumeroComplet())
+                .Select(grp => new TicketItem(grp.First()))
+                .ToList();
+            if (ticket.Any())
+                ticket.Add(TicketItem.Tous);
+            ticket.Add(TicketItem.Aucun);
+            Tickets = ticket;
         }
 
         private void MettreAJourTicketSelectionne()
         {
-#warning TODO - point ALPHA - implémenter !
-            TicketSelectionne = null;
+            TicketSelectionne = ObtenirMiseAJourSelectionItem<TicketItem, IInformationTicketTfs>(Tickets, TicketSelectionne);
         }
 
         private void MettreAJourGroupement()

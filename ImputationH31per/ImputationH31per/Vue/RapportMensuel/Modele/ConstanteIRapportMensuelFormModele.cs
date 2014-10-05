@@ -22,6 +22,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         // ConstanteProprieteImputationPourTaches
         // ConstanteProprieteTaches
         // ConstanteProprieteTacheSelectionnee
+        // ConstanteProprieteImputationPourTickets
         // ConstanteProprieteTickets
         // ConstanteProprieteTicketSelectionne
 
@@ -33,6 +34,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         public const string ConstanteProprieteGroupeSelectionne = "GroupeSelectionne";
         public const string ConstanteProprieteImputationPourTaches = "ImputationPourTaches";
         public const string ConstanteProprieteTaches = "Taches";
+        public const string ConstanteProprieteImputationPourTickets = "ImputationPourTickets";
         public const string ConstanteProprieteTacheSelectionnee = "TacheSelectionnee";
         public const string ConstanteProprieteTickets = "Tickets";
         public const string ConstanteProprieteTicketSelectionne = "TicketSelectionne";

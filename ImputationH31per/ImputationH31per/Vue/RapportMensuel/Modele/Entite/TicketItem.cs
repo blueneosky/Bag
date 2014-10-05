@@ -6,7 +6,7 @@ using ImputationH31per.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
-    public class TicketItem : InformationBaseItem<IInformationImputationTfs>
+    public class TicketItem : InformationBaseItem<IInformationTicketTfs>
     {
         public TicketItem(EnumTypeItem typeItem)
             : base(typeItem)
@@ -22,5 +22,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         {
             return String.Format("{0} : {1}", Information.NumeroComplet(), Information.NomComplet());
         }
+
+        public static readonly TicketItem Tous = new TicketItem(EnumTypeItem.Tous);
+        public static readonly TicketItem Aucun = new TicketItem(EnumTypeItem.Aucun);
     }
 }
