@@ -28,6 +28,5 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         }
 
         public static readonly GroupeItem Tous = new GroupeItem(EnumTypeItem.Tous);
-        public static readonly GroupeItem Aucun = new GroupeItem(EnumTypeItem.Aucun);
     }
 }

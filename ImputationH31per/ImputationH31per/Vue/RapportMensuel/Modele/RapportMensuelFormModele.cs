@@ -186,7 +186,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 _ticketSelectionne = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteTicketSelectionne));
-                MettreAJourGroupement();
             }
         }
 
@@ -226,9 +225,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 .GroupBy(i => i.NomGroupement)
                 .Select(grp => new GroupeItem(grp.Key))
                 .ToList();
-            if (groupes.Any())
-                groupes.Add(GroupeItem.Tous);
-            groupes.Add(GroupeItem.Aucun);
+            groupes.Add(GroupeItem.Tous);
             Groupes = groupes;
         }
 
@@ -240,7 +237,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private void MettreAJourImputationPourTaches()
         {
             IEnumerable<IInformationImputationTfs> imputations;
-            EnumTypeItem typeItem = (GroupeSelectionne != null) ? GroupeSelectionne.TypeItem : EnumTypeItem.Aucun;
+            EnumTypeItem typeItem = (GroupeSelectionne != null) ? GroupeSelectionne.TypeItem : EnumTypeItem.Tous;
             switch (typeItem)
             {
                 case EnumTypeItem.Tous:
@@ -254,7 +251,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                         .Execute();
                     break;
 
-                case EnumTypeItem.Aucun:
                 default:
                     imputations = new IInformationImputationTfs[0];
                     break;
@@ -268,9 +264,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 .GroupBy(i => i.Numero)
                 .Select(grp => new TacheItem(grp.First()))
                 .ToList();
-            if (taches.Any())
-                taches.Add(TacheItem.Tous);
-            taches.Add(TacheItem.Aucun);
+            taches.Add(TacheItem.Tous);
             Taches = taches;
         }
 
@@ -282,7 +276,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private void MettreAJourImputationPourTickets()
         {
             IEnumerable<IInformationImputationTfs> imputations;
-            EnumTypeItem typeItem = (TacheSelectionnee != null) ? TacheSelectionnee.TypeItem : EnumTypeItem.Aucun;
+            EnumTypeItem typeItem = (TacheSelectionnee != null) ? TacheSelectionnee.TypeItem : EnumTypeItem.Tous;
             switch (typeItem)
             {
                 case EnumTypeItem.Tous:
@@ -296,7 +290,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                         .Execute();
                     break;
 
-                case EnumTypeItem.Aucun:
                 default:
                     imputations = new IInformationImputationTfs[0];
                     break;
@@ -310,9 +303,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 .GroupBy(i => i.NumeroComplet())
                 .Select(grp => new TicketItem(grp.First()))
                 .ToList();
-            if (ticket.Any())
-                ticket.Add(TicketItem.Tous);
-            ticket.Add(TicketItem.Aucun);
+            ticket.Add(TicketItem.Tous);
             Tickets = ticket;
         }
 
@@ -330,26 +321,16 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
          where TItem : class, IItem<TEntite>
         {
             TItem nouveauItem = null;
-            if (ancienItem != null)
+            if ((ancienItem != null) && (ancienItem.TypeItem == EnumTypeItem.Entite))
             {
-                EnumTypeItem ancienTypeItem = ancienItem.TypeItem;
-                if (ancienTypeItem == EnumTypeItem.Tous)
-                {
-                    nouveauItem = source
-                        .Where(i => i.TypeItem == EnumTypeItem.Tous)
-                        .FirstOrDefault();
-                }
-                else if (ancienTypeItem == EnumTypeItem.Entite)
-                {
-                    nouveauItem = source
-                        .Where(i => (i.TypeItem == EnumTypeItem.Entite) && ancienItem.Equals(i))
-                        .FirstOrDefault();
-                }
+                nouveauItem = source
+                    .Where(i => (i.TypeItem == EnumTypeItem.Entite) && ancienItem.Equals(i))
+                    .FirstOrDefault();
             }
             if (nouveauItem == null)
             {
                 nouveauItem = source
-                    .Where(i => i.TypeItem == EnumTypeItem.Aucun)
+                    .Where(i => i.TypeItem == EnumTypeItem.Tous)
                     .FirstOrDefault();
             }
 

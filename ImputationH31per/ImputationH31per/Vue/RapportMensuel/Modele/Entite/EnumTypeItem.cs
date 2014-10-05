@@ -7,8 +7,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
     public enum EnumTypeItem
     {
-        Aucun = 0,
-        Tous,
+        Tous = 1,
         Entite,
     }
 }
