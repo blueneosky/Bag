@@ -289,14 +289,14 @@ namespace ImputationH31per.Vue.RapportMensuel
         private void _tachesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (EstMiseAJourEnCours) return;
-            ListBoxItem<TacheItem, IInformationTacheTfs> lbItem = _groupesListBox.SelectedItem as ListBoxItem<TacheItem, IInformationTacheTfs>;
+            ListBoxItem<TacheItem, IInformationTacheTfs> lbItem = _tachesListBox.SelectedItem as ListBoxItem<TacheItem, IInformationTacheTfs>;
             _controleur.DefinirTacheSelectionnee(lbItem != null ? lbItem.Item : null);
         }
 
         private void _ticketsListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (EstMiseAJourEnCours) return;
-            ListBoxItem<TicketItem, IInformationTicketTfs> lbItem = _groupesListBox.SelectedItem as ListBoxItem<TicketItem, IInformationTicketTfs>;
+            ListBoxItem<TicketItem, IInformationTicketTfs> lbItem = _ticketsListBox.SelectedItem as ListBoxItem<TicketItem, IInformationTicketTfs>;
             _controleur.DefinirTicketSelectionne(lbItem != null ? lbItem.Item : null);
         }
 

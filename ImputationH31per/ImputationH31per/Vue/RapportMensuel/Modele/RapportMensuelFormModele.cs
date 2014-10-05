@@ -250,7 +250,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             ImputationPourTaches = imputations;
         }
 
-#warning TODO - point ALPHA - implémenter !
 
         private void MettreAJourTaches()
         {
@@ -266,8 +265,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private void MettreAJourTacheSelectionnee()
         {
-#warning TODO - point ALPHA - implémenter !
-            TacheSelectionnee = null;
+            TacheSelectionnee = ObtenirMiseAJourSelectionItem<TacheItem, IInformationTacheTfs>(Taches, TacheSelectionnee);
         }
 
         private void MettreAJourTickets()
