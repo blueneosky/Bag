@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
 using ImputationH31per.Modele.Entite;
+using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele
 {
@@ -46,7 +46,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             _modele.TicketSelectionne = ticket;
         }
 
-
         public void AjouterAuRegroupement(GroupeItem groupeItem)
         {
             if (groupeItem == null) return;
@@ -56,13 +55,27 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         public void AjouterAuRegroupement(TacheItem tacheItem)
         {
             if (tacheItem == null) return;
-            _modele.AjouterAuRegroupement(tacheItem);
+            if (tacheItem.TypeItem == EnumTypeItem.Tous)
+            {
+                AjouterAuRegroupement(_modele.GroupeSelectionne);
+            }
+            else
+            {
+                _modele.AjouterAuRegroupement(tacheItem);
+            }
         }
 
         public void AjouterAuRegroupement(TicketItem ticketItem)
         {
             if (ticketItem == null) return;
-            _modele.AjouterAuRegroupement(ticketItem);
+            if (ticketItem.TypeItem == EnumTypeItem.Tous)
+            {
+                AjouterAuRegroupement(_modele.TacheSelectionnee);
+            }
+            else
+            {
+                _modele.AjouterAuRegroupement(ticketItem);
+            }
         }
 
         public void RetirerDuRegroupement(IInformationItem<IInformationTacheTfs> informationItem)
@@ -71,6 +84,11 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             _modele.RetirerDuRegroupement(informationItem);
         }
 
-        #endregion
+        public void DefinirRegroupementCourantItemSelectionne(IInformationItem<IInformationTacheTfs> informationItem)
+        {
+            _modele.RegroupementCourantItemSelectionne = informationItem;
+        }
+
+        #endregion IRapportMensuelFormControleur Membres
     }
 }

@@ -28,6 +28,11 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
             return String.Equals(Entite.NomGroupement, entite.NomGroupement);
         }
 
+        public override EnumTypeInformation TypeInformation
+        {
+            get { return EnumTypeInformation.Groupe; }
+        }
+
         public static readonly GroupeItem Tous = new GroupeItem(EnumTypeItem.Tous);
     }
 }

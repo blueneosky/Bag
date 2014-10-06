@@ -26,9 +26,10 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         // ConstanteProprieteImputationPourTickets
         // ConstanteProprieteTickets
         // ConstanteProprieteTicketSelectionne
-        // ConstanteProprieteItemsRegroupementCourant
-        // ConstanteProprieteItemRegroupementCourantselectionne
+        // ConstanteProprieteRegroupementCourant
+        // ConstanteProprieteRegroupementCourantItemSelectionne
         // ConstanteProprieteImputationsDuRegroupementCourant
+        // ConstanteProprieteRegroupements
 
         public const string ConstanteProprieteDateMoisAnnee = "DateMoisAnnee";
         public const string ConstanteProprieteImputationsDuMois = "ImputationsDuMois";
@@ -43,8 +44,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         public const string ConstanteProprieteTacheSelectionnee = "TacheSelectionnee";
         public const string ConstanteProprieteTickets = "Tickets";
         public const string ConstanteProprieteTicketSelectionne = "TicketSelectionne";
-        public const string ConstanteProprieteItemsRegroupementCourant = "ItemsRegroupementCourant";
-        public const string ConstanteProprieteItemRegroupementCourantSelectionne = "ItemRegroupementCourantSelectionne";
+        public const string ConstanteProprieteRegroupementCourant = "RegroupementCourant";
+        public const string ConstanteProprieteRegroupementCourantItemSelectionne = "RegroupementCourantItemSelectionne";
         public const string ConstanteProprieteImputationsDuRegroupementCourant = "ImputationsDuRegroupementCourant";
+        public const string ConstanteProprieteRegroupements = "Regroupements";
     }
 }

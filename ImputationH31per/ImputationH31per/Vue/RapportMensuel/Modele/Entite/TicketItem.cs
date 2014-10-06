@@ -29,6 +29,11 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
                 && (Entite.NumeroComplementaire == entite.NumeroComplementaire);
         }
 
+        public override EnumTypeInformation TypeInformation
+        {
+            get { return EnumTypeInformation.Ticket; }
+        }
+
         public static readonly TicketItem Tous = new TicketItem(EnumTypeItem.Tous);
     }
 }

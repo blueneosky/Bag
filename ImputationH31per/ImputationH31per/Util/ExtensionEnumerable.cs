@@ -80,6 +80,23 @@ namespace ImputationH31per.Util
             return NaturalOrderByCore(source, keySelector, true);
         }
 
+        public static string NomUnique(this IEnumerable<string> source, string baseDuNom)
+        {
+            HashSet<string> set = new HashSet<string>(source);
+
+            string nom = baseDuNom;
+            bool utilise = set.Contains(nom);
+
+            int index = 0;
+            while (utilise)
+            {
+                nom = baseDuNom + index++;
+                utilise = set.Contains(nom);
+            }
+
+            return nom;
+        }
+
         #region Natural Order By
 
         private static IComparer<string[]> _naturalOrderByComprarer;

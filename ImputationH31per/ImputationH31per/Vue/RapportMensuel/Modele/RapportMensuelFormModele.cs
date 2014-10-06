@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using ImputationH31per.Modele;
@@ -35,9 +36,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private IEnumerable<IInformationImputationTfs> _imputationPourTickets;
         private IEnumerable<TicketItem> _tickets;
         private TicketItem _ticketSelectionne;
-        private IEnumerable<IInformationItem<IInformationTacheTfs>> _itemsRegroupementCourant;
-        private IInformationItem<IInformationTacheTfs> _itemRegroupementCourantSelectionne;
-        private IEnumerable<IInformationTacheTfs> _imputationsDuRegroupementCourant;
+        private Regroupement _regroupementCourant;
+        private IInformationItem<IInformationTacheTfs> _regroupementCourantItemSelectionne;
+        private IEnumerable<IInformationImputationTfs> _imputationsDuRegroupementCourant;
 
         #endregion Membres
 
@@ -47,6 +48,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         {
             this._imputationH31perModele = imputationH31perModele;
 
+            _regroupements = new Regroupement[0];   // pour ne pas impacter de rafraichissement en cascade
             this.DateMoisAnnee = DateTime.Now;  // déclenche la mise à jour en cascadde du modèle
         }
 
@@ -66,6 +68,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 if ((_dateMoisAnnee.Month == value.Month) && (_dateMoisAnnee.Year == value.Year))
                     return;
+                Regroupements = new Regroupement[0];
+                RegroupementCourant = null;
                 _dateMoisAnnee = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteDateMoisAnnee));
                 MettreAJourImputationDuMois();
@@ -204,34 +208,54 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             }
         }
 
-        public IEnumerable<IInformationItem<IInformationTacheTfs>> ItemsRegroupementCourant
+        public Regroupement RegroupementCourant
         {
-            get { return _itemsRegroupementCourant; }
+            get
+            {
+                if (_regroupementCourant == null)
+                    _regroupementCourant = new Regroupement(Regroupements.Select(r => r.Nom).NomUnique("nouveau"));
+                return _regroupementCourant;
+            }
             private set
             {
-                _itemsRegroupementCourant = value;
-                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteItemsRegroupementCourant));
+                _regroupementCourant = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourant));
+                MettreAJourRegroupementCourantItemSelectionne();
                 MettreAJourImputationsDuRegroupementCourant();
             }
         }
 
-        public IInformationItem<IInformationTacheTfs> ItemRegroupementCourantSelectionne
+        public IInformationItem<IInformationTacheTfs> RegroupementCourantItemSelectionne
         {
-            get { return _itemRegroupementCourantSelectionne; }
+            get { return _regroupementCourantItemSelectionne; }
             set
             {
-                _itemRegroupementCourantSelectionne = value;
-                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteItemRegroupementCourantSelectionne));
+                _regroupementCourantItemSelectionne = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantItemSelectionne));
             }
         }
 
-        public IEnumerable<IInformationTacheTfs> ImputationsDuRegroupementCourant
+        public IEnumerable<IInformationImputationTfs> ImputationsDuRegroupementCourant
         {
             get { return _imputationsDuRegroupementCourant; }
             set
             {
                 _imputationsDuRegroupementCourant = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteImputationsDuRegroupementCourant));
                 MettreAJourImputationRestantes();
+            }
+        }
+
+        private IEnumerable<Regroupement> _regroupements;
+
+        public IEnumerable<Regroupement> Regroupements
+        {
+            get { return _regroupements; }
+            private set
+            {
+                _regroupements = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupements));
+#warning TODO ALPHA ALPHA - mettre à jour, ...
             }
         }
 
@@ -241,8 +265,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         public void AjouterAuRegroupement(IInformationItem<IInformationTacheTfs> item)
         {
-#warning TODO ALPHA BETA point
-            throw new NotImplementedException();
+            Regroupement regroupement = RegroupementCourant;
+            regroupement.Items.Add(item);
+            RegroupementCourant = regroupement;
         }
 
         public void RetirerDuRegroupement(IInformationItem<IInformationTacheTfs> item)
@@ -278,8 +303,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private void MettreAJourImputationRestantes()
         {
-#warning TODO - point BETA ALPHA - implémenter : ImputationsPourRegroupementCourant - ImputationsDuRegroupementCourant
-            ImputationRestantes = ImputationsPourRegroupementCourant;
+            ImputationRestantes = ObtenirInformationImputationsFiltres(ImputationsPourRegroupementCourant, RegroupementCourant, false);
         }
 
         private void MettreAJourImputationPourGroupes()
@@ -304,26 +328,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private void MettreAJourImputationPourTaches()
         {
-            IEnumerable<IInformationImputationTfs> imputations;
-            EnumTypeItem typeItem = (GroupeSelectionne != null) ? GroupeSelectionne.TypeItem : EnumTypeItem.Tous;
-            switch (typeItem)
-            {
-                case EnumTypeItem.Tous:
-                    imputations = ImputationPourGroupes;
-                    break;
-
-                case EnumTypeItem.Entite:
-                    string nomGroupe = GroupeSelectionne.Entite.NomGroupement;
-                    imputations = ImputationPourGroupes
-                        .Where(i => String.Equals(i.NomGroupement, nomGroupe))
-                        .Execute();
-                    break;
-
-                default:
-                    imputations = new IInformationImputationTfs[0];
-                    break;
-            }
-            ImputationPourTaches = imputations;
+            ImputationPourTaches = ObtenirInformationImputationsFiltres(ImputationPourGroupes, GroupeSelectionne, true)
+                .Execute();
         }
 
         private void MettreAJourTaches()
@@ -343,26 +349,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private void MettreAJourImputationPourTickets()
         {
-            IEnumerable<IInformationImputationTfs> imputations;
-            EnumTypeItem typeItem = (TacheSelectionnee != null) ? TacheSelectionnee.TypeItem : EnumTypeItem.Tous;
-            switch (typeItem)
-            {
-                case EnumTypeItem.Tous:
-                    imputations = ImputationPourTaches;
-                    break;
-
-                case EnumTypeItem.Entite:
-                    int numeroTache = TacheSelectionnee.Entite.Numero;
-                    imputations = ImputationPourTaches
-                        .Where(i => String.Equals(i.Numero, numeroTache))
-                        .Execute();
-                    break;
-
-                default:
-                    imputations = new IInformationImputationTfs[0];
-                    break;
-            }
-            ImputationPourTickets = imputations;
+            ImputationPourTickets = ObtenirInformationImputationsFiltres(ImputationPourTaches, TacheSelectionnee, true)
+                .Execute();
         }
 
         private void MettreAJourTickets()
@@ -380,10 +368,15 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             TicketSelectionne = ObtenirMiseAJourSelectionItem<TicketItem, IInformationTicketTfs>(Tickets, TicketSelectionne);
         }
 
+        private void MettreAJourRegroupementCourantItemSelectionne()
+        {
+            RegroupementCourantItemSelectionne = ObtenirMiseAJourSelectionItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>(RegroupementCourant, RegroupementCourantItemSelectionne);
+        }
+
         private void MettreAJourImputationsDuRegroupementCourant()
         {
-#warning TODO ALPHA point
-            ImputationsDuRegroupementCourant = new IInformationImputationTfs[0];
+            ImputationsDuRegroupementCourant = ObtenirInformationImputationsFiltres(ImputationsPourRegroupementCourant, RegroupementCourant, false)
+                .Execute();
         }
 
         private TItem ObtenirMiseAJourSelectionItem<TItem, TEntite>(IEnumerable<TItem> source, TItem ancienItem)
@@ -404,6 +397,113 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             }
 
             return nouveauItem;
+        }
+
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IInformationItem<IInformationTacheTfs>> itemFiltres, bool modeJointure)
+        {
+            IEnumerable<IInformationImputationTfs> imputations = source;
+            itemFiltres = itemFiltres ?? new IInformationItem<IInformationTacheTfs>[0];
+
+            foreach (var itemFiltre in itemFiltres)
+            {
+                imputations = ObtenirInformationImputationsFiltres(imputations, itemFiltre, modeJointure);
+            }
+
+            return imputations;
+        }
+
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IInformationItem<IInformationTacheTfs> itemFiltre, bool modeJointure)
+        {
+            if (itemFiltre == null)
+                return modeJointure ? new IInformationImputationTfs[0] : source;
+            if (itemFiltre.TypeItem == EnumTypeItem.Tous)
+                return modeJointure ? source : new IInformationImputationTfs[0];
+
+            switch (itemFiltre.TypeInformation)
+            {
+                case EnumTypeInformation.Groupe:
+                    return ObtenirInformationImputationsFiltres(source, (GroupeItem)itemFiltre, modeJointure);
+                case EnumTypeInformation.Tache:
+                    return ObtenirInformationImputationsFiltres(source, (TacheItem)itemFiltre, modeJointure);
+                case EnumTypeInformation.Ticket:
+                    return ObtenirInformationImputationsFiltres(source, (TicketItem)itemFiltre, modeJointure);
+                case EnumTypeInformation.Aucun:
+                default:
+                    Debug.Fail("Cas non prévus");
+                    return source;
+            }
+        }
+
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, GroupeItem groupeItemFiltre, bool modeJointure)
+        {
+            IEnumerable<IInformationImputationTfs> imputations;
+            EnumTypeItem typeItem = (groupeItemFiltre != null) ? groupeItemFiltre.TypeItem : EnumTypeItem.Tous;
+            switch (typeItem)
+            {
+                case EnumTypeItem.Tous:
+                    imputations = modeJointure ? source : new IInformationImputationTfs[0];
+                    break;
+
+                case EnumTypeItem.Entite:
+                    string nomGroupe = groupeItemFiltre.Entite.NomGroupement;
+                    imputations = source
+                        .Where(i => modeJointure == String.Equals(i.NomGroupement, nomGroupe));
+                    break;
+
+                default:
+                    imputations = modeJointure ? new IInformationImputationTfs[0] : source;
+                    break;
+            }
+
+            return imputations;
+        }
+
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, TacheItem tacheItemFiltre, bool modeJointure)
+        {
+            IEnumerable<IInformationImputationTfs> imputations;
+            EnumTypeItem typeItem = (tacheItemFiltre != null) ? tacheItemFiltre.TypeItem : EnumTypeItem.Tous;
+            switch (typeItem)
+            {
+                case EnumTypeItem.Tous:
+                    imputations = modeJointure ? source : new IInformationImputationTfs[0];
+                    break;
+
+                case EnumTypeItem.Entite:
+                    int numeroTache = tacheItemFiltre.Entite.Numero;
+                    imputations = source
+                        .Where(i => modeJointure == (i.Numero == numeroTache));
+                    break;
+
+                default:
+                    imputations = modeJointure ? new IInformationImputationTfs[0] : source;
+                    break;
+            }
+
+            return imputations;
+        }
+
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, TicketItem ticketItemFiltre, bool modeJointure)
+        {
+            IEnumerable<IInformationImputationTfs> imputations;
+            EnumTypeItem typeItem = (ticketItemFiltre != null) ? ticketItemFiltre.TypeItem : EnumTypeItem.Tous;
+            switch (typeItem)
+            {
+                case EnumTypeItem.Tous:
+                    imputations = modeJointure ? source : new IInformationImputationTfs[0];
+                    break;
+
+                case EnumTypeItem.Entite:
+                    int? numeroComplementaireTache = ticketItemFiltre.Entite.NumeroComplementaire;
+                    imputations = source
+                        .Where(i => modeJointure == (i.NumeroComplementaire == numeroComplementaireTache));
+                    break;
+
+                default:
+                    imputations = modeJointure ? new IInformationImputationTfs[0] : source;
+                    break;
+            }
+
+            return imputations;
         }
 
         #endregion Mise à jour de propriétés

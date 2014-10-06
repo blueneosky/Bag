@@ -39,12 +39,13 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         TicketItem TicketSelectionne { get; set; }
 
-        IEnumerable<IInformationItem<IInformationTacheTfs>> ItemsRegroupementCourant { get; }
+        Regroupement RegroupementCourant { get; }
 
-        IInformationItem<IInformationTacheTfs> ItemRegroupementCourantSelectionne { get; set; }
+        IInformationItem<IInformationTacheTfs> RegroupementCourantItemSelectionne { get; set; }
 
-        IEnumerable<IInformationTacheTfs> ImputationsDuRegroupementCourant { get; }
+        IEnumerable<IInformationImputationTfs> ImputationsDuRegroupementCourant { get; }
 
+        IEnumerable<Regroupement> Regroupements { get; }
         //------------------
 
         void AjouterAuRegroupement(IInformationItem<IInformationTacheTfs> item);

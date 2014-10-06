@@ -10,7 +10,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
     {
         #region Membres
 
-        private readonly T _entite;
+        private T _entite;
         private readonly EnumTypeItem _typeItem;
 
         #endregion Membres
@@ -41,6 +41,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         public T Entite
         {
             get { return _entite; }
+            protected set { _entite = value; }
         }
 
         public string Libelle

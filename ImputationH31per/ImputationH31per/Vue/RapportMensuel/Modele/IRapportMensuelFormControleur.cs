@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
 using ImputationH31per.Modele.Entite;
+using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele
 {
@@ -24,5 +24,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         void AjouterAuRegroupement(TicketItem ticketItem);
 
         void RetirerDuRegroupement(IInformationItem<IInformationTacheTfs> informationItem);
+
+        void DefinirRegroupementCourantItemSelectionne(IInformationItem<IInformationTacheTfs> informationItem);
     }
 }

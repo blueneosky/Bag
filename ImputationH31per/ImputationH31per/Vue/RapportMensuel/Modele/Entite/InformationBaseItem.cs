@@ -23,5 +23,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         {
             get { return Entite; }
         }
+
+        public abstract EnumTypeInformation TypeInformation { get; }
     }
 }

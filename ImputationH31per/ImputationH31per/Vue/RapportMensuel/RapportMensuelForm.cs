@@ -102,6 +102,14 @@ namespace ImputationH31per.Vue.RapportMensuel
                     RafraichirTicketSelectionne();
                     break;
 
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourant:
+                    RafraichirRegroupementCourant();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantItemSelectionne:
+                    RafraichirRegroupementCourantItemSelectionne();
+                    break;
+
                 default:
                     // non géré
                     break;
@@ -121,6 +129,8 @@ namespace ImputationH31per.Vue.RapportMensuel
             RafraichirTacheSelectionnee();
             RafraichirTickets();
             RafraichirTicketSelectionne();
+            RafraichirRegroupementCourant();
+            RafraichirRegroupementCourantItemSelectionne();
         }
 
         private void RafraichirMoisAnnee()
@@ -186,6 +196,27 @@ namespace ImputationH31per.Vue.RapportMensuel
             CommencerMiseAJour();
 
             RafraichirSelectionListBox<TicketItem, IInformationTicketTfs>(_ticketsListBox, _modele.TicketSelectionne);
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirRegroupementCourant()
+        {
+            CommencerMiseAJour();
+
+            IEnumerable<IInformationItem<IInformationTacheTfs>> items = _modele.RegroupementCourant;
+            items = items ?? new IInformationItem<IInformationTacheTfs>[0];
+            RafraichirListBox<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>(_regroupementListBox, items);
+            RafraichirTicketSelectionne();
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirRegroupementCourantItemSelectionne()
+        {
+            CommencerMiseAJour();
+
+            RafraichirSelectionListBox<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>(_regroupementListBox, _modele.RegroupementCourantItemSelectionne);
 
             TerminerMiseAJour();
         }
@@ -320,7 +351,18 @@ namespace ImputationH31per.Vue.RapportMensuel
             ListBoxItem<TicketItem, IInformationTicketTfs> lbItem = _ticketsListBox.SelectedItem as ListBoxItem<TicketItem, IInformationTicketTfs>;
             _controleur.AjouterAuRegroupement(lbItem != null ? lbItem.Item : null);
         }
+    private    void _regroupementListBox_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
 
+            if (EstMiseAJourEnCours) return;
+            ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs> lbItem = _groupesListBox.SelectedItem as ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>;
+            _controleur.DefinirRegroupementCourantItemSelectionne(lbItem != null ? lbItem.Item : null);
+
+
+
+
+
+        }
         private void _regroupementListBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (EstMiseAJourEnCours) return;
@@ -371,5 +413,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         }
 
         #endregion ElementListViewItem
+
+     
     }
 }

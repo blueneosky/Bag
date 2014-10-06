@@ -10,5 +10,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         where TInformationTacheTfs : IInformationTacheTfs
     {
         TInformationTacheTfs Information { get; }
+
+        EnumTypeInformation TypeInformation { get; }
     }
 }

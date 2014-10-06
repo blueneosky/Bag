@@ -172,6 +172,7 @@
             this._regroupementListBox.Name = "_regroupementListBox";
             this._regroupementListBox.Size = new System.Drawing.Size(271, 180);
             this._regroupementListBox.TabIndex = 2;
+            this._regroupementListBox.SelectedIndexChanged += new System.EventHandler(_regroupementListBox_SelectedIndexChanged);
             this._regroupementListBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this._regroupementListBox_KeyUp);
             // 
             // _regroupementPanel

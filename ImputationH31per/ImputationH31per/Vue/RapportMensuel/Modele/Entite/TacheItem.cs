@@ -28,6 +28,11 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
             return Entite.Numero == entite.Numero;
         }
 
+        public override EnumTypeInformation TypeInformation
+        {
+            get { return EnumTypeInformation.Tache; }
+        }
+
         public static readonly TacheItem Tous = new TacheItem(EnumTypeItem.Tous);
     }
 }
