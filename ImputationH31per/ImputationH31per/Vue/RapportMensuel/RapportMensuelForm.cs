@@ -137,7 +137,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         {
             CommencerMiseAJour();
 
-            RafraichirListBox<GroupeItem, string>(_groupesListBox, _modele.Groupes);
+            RafraichirListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.Groupes);
             RafraichirGroupeSelectionne();
 
             TerminerMiseAJour();
@@ -147,7 +147,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         {
             CommencerMiseAJour();
 
-            RafraichirSelectionListBox<GroupeItem, string>(_groupesListBox, _modele.GroupeSelectionne);
+            RafraichirSelectionListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.GroupeSelectionne);
 
             TerminerMiseAJour();
         }
@@ -282,7 +282,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         private void _groupesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (EstMiseAJourEnCours) return;
-            ListBoxItem<GroupeItem, string> lbItem = _groupesListBox.SelectedItem as ListBoxItem<GroupeItem, string>;
+            ListBoxItem<GroupeItem, IInformationTacheTfs> lbItem = _groupesListBox.SelectedItem as ListBoxItem<GroupeItem, IInformationTacheTfs>;
             _controleur.DefinirGroupeSelectionne(lbItem != null ? lbItem.Item : null);
         }
 
@@ -298,6 +298,37 @@ namespace ImputationH31per.Vue.RapportMensuel
             if (EstMiseAJourEnCours) return;
             ListBoxItem<TicketItem, IInformationTicketTfs> lbItem = _ticketsListBox.SelectedItem as ListBoxItem<TicketItem, IInformationTicketTfs>;
             _controleur.DefinirTicketSelectionne(lbItem != null ? lbItem.Item : null);
+        }
+
+        private void _groupesListBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (EstMiseAJourEnCours) return;
+            ListBoxItem<GroupeItem, IInformationTacheTfs> lbItem = _groupesListBox.SelectedItem as ListBoxItem<GroupeItem, IInformationTacheTfs>;
+            _controleur.AjouterAuRegroupement(lbItem != null ? lbItem.Item : null);
+        }
+
+        private void _tachesListBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (EstMiseAJourEnCours) return;
+            ListBoxItem<TacheItem, IInformationTacheTfs> lbItem = _tachesListBox.SelectedItem as ListBoxItem<TacheItem, IInformationTacheTfs>;
+            _controleur.AjouterAuRegroupement(lbItem != null ? lbItem.Item : null);
+        }
+
+        private void _ticketsListBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (EstMiseAJourEnCours) return;
+            ListBoxItem<TicketItem, IInformationTicketTfs> lbItem = _ticketsListBox.SelectedItem as ListBoxItem<TicketItem, IInformationTicketTfs>;
+            _controleur.AjouterAuRegroupement(lbItem != null ? lbItem.Item : null);
+        }
+
+        private void _regroupementListBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (EstMiseAJourEnCours) return;
+            if (e.KeyCode == Keys.Delete)
+            {
+                ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs> lbItem = _regroupementListBox.SelectedItem as ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>;
+                _controleur.RetirerDuRegroupement(lbItem != null ? lbItem.Item : null);
+            }
         }
 
         #endregion Actions utilisateur

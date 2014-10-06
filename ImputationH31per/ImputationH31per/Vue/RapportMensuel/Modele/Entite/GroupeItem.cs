@@ -2,29 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ImputationH31per.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
-    public class GroupeItem : BaseItem<string>
+    public class GroupeItem : InformationBaseItem<IInformationTacheTfs>
     {
         public GroupeItem(EnumTypeItem typeItem)
             : base(typeItem)
         {
         }
 
-        public GroupeItem(string groupe)
-            : base(groupe)
+        public GroupeItem(IInformationTacheTfs information)
+            : base(information)
         {
         }
 
         protected override string ObtenirLibelleEntite()
         {
-            return Entite;
+            return Entite.NomGroupement;
         }
 
-        protected override bool EntiteEgale(string entite)
+        protected override bool EntiteEgale(IInformationTacheTfs entite)
         {
-            return String.Equals(Entite, entite);
+            return String.Equals(Entite.NomGroupement, entite.NomGroupement);
         }
 
         public static readonly GroupeItem Tous = new GroupeItem(EnumTypeItem.Tous);

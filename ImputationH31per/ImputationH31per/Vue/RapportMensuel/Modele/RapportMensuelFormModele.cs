@@ -24,6 +24,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private DateTimeOffset _dateMoisAnnee;
         private IEnumerable<IInformationImputationTfs> _imputationsDuMois;
+        private IEnumerable<IInformationImputationTfs> _imputationsPourRegroupementCourant;
         private IEnumerable<IInformationImputationTfs> _imputationRestantes;
         private IEnumerable<IInformationImputationTfs> _imputationPourGroupes;
         private IEnumerable<GroupeItem> _groupes;
@@ -34,6 +35,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private IEnumerable<IInformationImputationTfs> _imputationPourTickets;
         private IEnumerable<TicketItem> _tickets;
         private TicketItem _ticketSelectionne;
+        private IEnumerable<IInformationItem<IInformationTacheTfs>> _itemsRegroupementCourant;
+        private IInformationItem<IInformationTacheTfs> _itemRegroupementCourantSelectionne;
+        private IEnumerable<IInformationTacheTfs> _imputationsDuRegroupementCourant;
 
         #endregion Membres
 
@@ -75,6 +79,17 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 _imputationsDuMois = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteImputationsDuMois));
+                MettreAJourImputationsPourRegroupementCourant();
+            }
+        }
+
+        public IEnumerable<IInformationImputationTfs> ImputationsPourRegroupementCourant
+        {
+            get { return _imputationsPourRegroupementCourant; }
+            private set
+            {
+                _imputationsPourRegroupementCourant = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteImputationsPourRegroupementCourant));
                 MettreAJourImputationRestantes();
             }
         }
@@ -189,7 +204,54 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             }
         }
 
+        public IEnumerable<IInformationItem<IInformationTacheTfs>> ItemsRegroupementCourant
+        {
+            get { return _itemsRegroupementCourant; }
+            private set
+            {
+                _itemsRegroupementCourant = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteItemsRegroupementCourant));
+                MettreAJourImputationsDuRegroupementCourant();
+            }
+        }
+
+        public IInformationItem<IInformationTacheTfs> ItemRegroupementCourantSelectionne
+        {
+            get { return _itemRegroupementCourantSelectionne; }
+            set
+            {
+                _itemRegroupementCourantSelectionne = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteItemRegroupementCourantSelectionne));
+            }
+        }
+
+        public IEnumerable<IInformationTacheTfs> ImputationsDuRegroupementCourant
+        {
+            get { return _imputationsDuRegroupementCourant; }
+            set
+            {
+                _imputationsDuRegroupementCourant = value;
+                MettreAJourImputationRestantes();
+            }
+        }
+
         #endregion Propriétés
+
+        #region Methodes
+
+        public void AjouterAuRegroupement(IInformationItem<IInformationTacheTfs> item)
+        {
+#warning TODO ALPHA BETA point
+            throw new NotImplementedException();
+        }
+
+        public void RetirerDuRegroupement(IInformationItem<IInformationTacheTfs> item)
+        {
+#warning TODO ALPHA BETA point
+            throw new NotImplementedException();
+        }
+
+        #endregion Methodes
 
         #region Mise à jour de propriétés
 
@@ -208,10 +270,16 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 .Execute();
         }
 
+        private void MettreAJourImputationsPourRegroupementCourant()
+        {
+#warning TODO - point BETA ALPHA - implémenter : ImputationsDuMois - ImputationsRegroupements
+            ImputationsPourRegroupementCourant = ImputationsDuMois;
+        }
+
         private void MettreAJourImputationRestantes()
         {
-#warning TODO - point BETA ALPHA - implémenter !
-            ImputationRestantes = ImputationsDuMois;
+#warning TODO - point BETA ALPHA - implémenter : ImputationsPourRegroupementCourant - ImputationsDuRegroupementCourant
+            ImputationRestantes = ImputationsPourRegroupementCourant;
         }
 
         private void MettreAJourImputationPourGroupes()
@@ -223,7 +291,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         {
             List<GroupeItem> groupes = ImputationPourGroupes
                 .GroupBy(i => i.NomGroupement)
-                .Select(grp => new GroupeItem(grp.Key))
+                .Select(grp => new GroupeItem(grp.First()))
                 .ToList();
             groupes.Add(GroupeItem.Tous);
             Groupes = groupes;
@@ -231,7 +299,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private void MettreAJourGroupeSelectionne()
         {
-            GroupeSelectionne = ObtenirMiseAJourSelectionItem<GroupeItem, string>(Groupes, GroupeSelectionne);
+            GroupeSelectionne = ObtenirMiseAJourSelectionItem<GroupeItem, IInformationTacheTfs>(Groupes, GroupeSelectionne);
         }
 
         private void MettreAJourImputationPourTaches()
@@ -245,7 +313,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                     break;
 
                 case EnumTypeItem.Entite:
-                    string nomGroupe = GroupeSelectionne.Entite;
+                    string nomGroupe = GroupeSelectionne.Entite.NomGroupement;
                     imputations = ImputationPourGroupes
                         .Where(i => String.Equals(i.NomGroupement, nomGroupe))
                         .Execute();
@@ -312,9 +380,10 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             TicketSelectionne = ObtenirMiseAJourSelectionItem<TicketItem, IInformationTicketTfs>(Tickets, TicketSelectionne);
         }
 
-        private void MettreAJourGroupement()
+        private void MettreAJourImputationsDuRegroupementCourant()
         {
-#warning TODO - point ALPHA - implémenter !
+#warning TODO ALPHA point
+            ImputationsDuRegroupementCourant = new IInformationImputationTfs[0];
         }
 
         private TItem ObtenirMiseAJourSelectionItem<TItem, TEntite>(IEnumerable<TItem> source, TItem ancienItem)

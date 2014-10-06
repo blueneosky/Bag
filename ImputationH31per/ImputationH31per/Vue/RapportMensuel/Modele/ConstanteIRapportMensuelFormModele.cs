@@ -16,6 +16,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         // ConstanteProprieteDateMoisAnnee
         // ConstanteProprieteImputationsDuMois
         // ConstanteProprieteImputationRestantes
+        // ConstanteProprieteImputationsPourRegroupementCourant
         // ConstanteProprieteImputationPourGroupes
         // ConstanteProprieteGroupes
         // ConstanteProprieteGroupeSelectionne
@@ -25,10 +26,14 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         // ConstanteProprieteImputationPourTickets
         // ConstanteProprieteTickets
         // ConstanteProprieteTicketSelectionne
+        // ConstanteProprieteItemsRegroupementCourant
+        // ConstanteProprieteItemRegroupementCourantselectionne
+        // ConstanteProprieteImputationsDuRegroupementCourant
 
         public const string ConstanteProprieteDateMoisAnnee = "DateMoisAnnee";
         public const string ConstanteProprieteImputationsDuMois = "ImputationsDuMois";
         public const string ConstanteProprieteImputationRestantes = "ImputationRestantes";
+        public const string ConstanteProprieteImputationsPourRegroupementCourant = "ImputationsPourRegroupementCourant";
         public const string ConstanteProprieteImputationPourGroupes = "ImputationPourGroupes";
         public const string ConstanteProprieteGroupes = "Groupes";
         public const string ConstanteProprieteGroupeSelectionne = "GroupeSelectionne";
@@ -38,5 +43,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         public const string ConstanteProprieteTacheSelectionnee = "TacheSelectionnee";
         public const string ConstanteProprieteTickets = "Tickets";
         public const string ConstanteProprieteTicketSelectionne = "TicketSelectionne";
+        public const string ConstanteProprieteItemsRegroupementCourant = "ItemsRegroupementCourant";
+        public const string ConstanteProprieteItemRegroupementCourantSelectionne = "ItemRegroupementCourantSelectionne";
+        public const string ConstanteProprieteImputationsDuRegroupementCourant = "ImputationsDuRegroupementCourant";
     }
 }

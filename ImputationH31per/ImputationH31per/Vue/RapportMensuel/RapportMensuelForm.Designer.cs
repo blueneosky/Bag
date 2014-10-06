@@ -125,6 +125,7 @@
             this._groupesListBox.Size = new System.Drawing.Size(271, 252);
             this._groupesListBox.TabIndex = 0;
             this._groupesListBox.SelectedIndexChanged += new System.EventHandler(this._groupesListBox_SelectedIndexChanged);
+            this._groupesListBox.DoubleClick += new System.EventHandler(this._groupesListBox_DoubleClick);
             // 
             // _dateGroupBox
             // 
@@ -171,6 +172,7 @@
             this._regroupementListBox.Name = "_regroupementListBox";
             this._regroupementListBox.Size = new System.Drawing.Size(271, 180);
             this._regroupementListBox.TabIndex = 2;
+            this._regroupementListBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this._regroupementListBox_KeyUp);
             // 
             // _regroupementPanel
             // 
@@ -248,6 +250,7 @@
             this._tachesListBox.Size = new System.Drawing.Size(271, 306);
             this._tachesListBox.TabIndex = 2;
             this._tachesListBox.SelectedIndexChanged += new System.EventHandler(this._tachesListBox_SelectedIndexChanged);
+            this._tachesListBox.DoubleClick += new System.EventHandler(this._tachesListBox_DoubleClick);
             // 
             // _ticketsGroupBox
             // 
@@ -272,6 +275,7 @@
             this._ticketsListBox.Size = new System.Drawing.Size(227, 306);
             this._ticketsListBox.TabIndex = 1;
             this._ticketsListBox.SelectedIndexChanged += new System.EventHandler(this._ticketsListBox_SelectedIndexChanged);
+            this._ticketsListBox.DoubleClick += new System.EventHandler(this._ticketsListBox_DoubleClick);
             // 
             // _resultatGroupBox
             // 

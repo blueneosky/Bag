@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
+using ImputationH31per.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele
 {
@@ -45,7 +46,31 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             _modele.TicketSelectionne = ticket;
         }
 
-        #endregion
 
+        public void AjouterAuRegroupement(GroupeItem groupeItem)
+        {
+            if (groupeItem == null) return;
+            _modele.AjouterAuRegroupement(groupeItem);
+        }
+
+        public void AjouterAuRegroupement(TacheItem tacheItem)
+        {
+            if (tacheItem == null) return;
+            _modele.AjouterAuRegroupement(tacheItem);
+        }
+
+        public void AjouterAuRegroupement(TicketItem ticketItem)
+        {
+            if (ticketItem == null) return;
+            _modele.AjouterAuRegroupement(ticketItem);
+        }
+
+        public void RetirerDuRegroupement(IInformationItem<IInformationTacheTfs> informationItem)
+        {
+            if (informationItem == null) return;
+            _modele.RetirerDuRegroupement(informationItem);
+        }
+
+        #endregion
     }
 }
