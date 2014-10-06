@@ -26,5 +26,13 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         void RetirerDuRegroupement(IInformationItem<IInformationTacheTfs> informationItem);
 
         void DefinirRegroupementCourantItemSelectionne(IInformationItem<IInformationTacheTfs> informationItem);
+
+        void DefinirNomRegroupementCourant(string p);
+
+        void RegroupementsItemSelectionne(Regroupement regroupement);
+
+        void AjouterRegroupementCourant();
+
+        void RetirerDeRegroupements(Regroupement regroupement);
     }
 }

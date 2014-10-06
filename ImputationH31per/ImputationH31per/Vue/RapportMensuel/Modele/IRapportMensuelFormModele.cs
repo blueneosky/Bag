@@ -41,15 +41,26 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         Regroupement RegroupementCourant { get; }
 
+        string RegroupementCourantNom { get; set; }
+
         IInformationItem<IInformationTacheTfs> RegroupementCourantItemSelectionne { get; set; }
 
         IEnumerable<IInformationImputationTfs> ImputationsDuRegroupementCourant { get; }
 
+        int RegroupementCourantTotalHeure { get; }
+
         IEnumerable<Regroupement> Regroupements { get; }
+
+        Regroupement RegroupementsItemSelectionne { get; set; }
+
         //------------------
 
         void AjouterAuRegroupement(IInformationItem<IInformationTacheTfs> item);
 
         void RetirerDuRegroupement(IInformationItem<IInformationTacheTfs> item);
+
+        void AjouterRegroupementCourant();
+
+        void RetirerDeRegroupements(Regroupement regroupement);
     }
 }

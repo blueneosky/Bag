@@ -76,9 +76,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 
         public override bool Equals(object obj)
         {
-            if (obj == null) return false;
             if (Object.ReferenceEquals(this, obj)) return true;
             IItem<T> item = obj as IItem<T>;
+            if (item == null) return false;
             bool resultat = (this.TypeItem == item.TypeItem)
                 && (this.TypeItem != EnumTypeItem.Entite || EntiteEgale(item.Entite));
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ImputationH31per.Modele.Entite;
+using ImputationH31per.Util;
 using ImputationH31per.Vue.RapportMensuel.Modele.Entite;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele
@@ -87,6 +88,27 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         public void DefinirRegroupementCourantItemSelectionne(IInformationItem<IInformationTacheTfs> informationItem)
         {
             _modele.RegroupementCourantItemSelectionne = informationItem;
+        }
+
+        public void DefinirNomRegroupementCourant(string nom)
+        {
+            _modele.RegroupementCourantNom = _modele.Regroupements.Select(r => r.Nom).NomUnique(nom);
+        }
+
+        public void RegroupementsItemSelectionne(Regroupement regroupement)
+        {
+            _modele.RegroupementsItemSelectionne = regroupement;
+        }
+
+        public void AjouterRegroupementCourant()
+        {
+            _modele.AjouterRegroupementCourant();
+        }
+
+        public void RetirerDeRegroupements(Regroupement regroupement)
+        {
+            if (regroupement == null) return;
+            _modele.RetirerDeRegroupements(regroupement);
         }
 
         #endregion IRapportMensuelFormControleur Membres

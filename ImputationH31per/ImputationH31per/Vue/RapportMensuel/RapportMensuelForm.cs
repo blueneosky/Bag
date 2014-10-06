@@ -104,10 +104,27 @@ namespace ImputationH31per.Vue.RapportMensuel
 
                 case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourant:
                     RafraichirRegroupementCourant();
+                    RafraichirRegroupementCourantPeutAjouter();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantNom:
+                    RafraichirRegroupementCourantNom();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantTotalHeure:
+                    RafraichirRegroupementCourantTotalHeure();
                     break;
 
                 case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantItemSelectionne:
                     RafraichirRegroupementCourantItemSelectionne();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupements:
+                    RafraichirRegroupements();
+                    break;
+
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementsItemSelectionne:
+                    RafraichirRegroupementsItemSelectionne();
                     break;
 
                 default:
@@ -130,7 +147,12 @@ namespace ImputationH31per.Vue.RapportMensuel
             RafraichirTickets();
             RafraichirTicketSelectionne();
             RafraichirRegroupementCourant();
+            RafraichirRegroupementCourantNom();
+            RafraichirRegroupementCourantPeutAjouter();
+            RafraichirRegroupementCourantTotalHeure();
             RafraichirRegroupementCourantItemSelectionne();
+            RafraichirRegroupements();
+            RafraichirRegroupementsItemSelectionne();
         }
 
         private void RafraichirMoisAnnee()
@@ -212,6 +234,16 @@ namespace ImputationH31per.Vue.RapportMensuel
             TerminerMiseAJour();
         }
 
+        private void RafraichirRegroupementCourantPeutAjouter()
+        {
+            CommencerMiseAJour();
+
+            IEnumerable<IInformationItem<IInformationTacheTfs>> items = _modele.RegroupementCourant;
+            _ajouterGroupementButton.Enabled = items.Any();
+
+            TerminerMiseAJour();
+        }
+
         private void RafraichirRegroupementCourantItemSelectionne()
         {
             CommencerMiseAJour();
@@ -220,6 +252,47 @@ namespace ImputationH31per.Vue.RapportMensuel
 
             TerminerMiseAJour();
         }
+
+        private void RafraichirRegroupementCourantTotalHeure()
+        {
+            CommencerMiseAJour();
+
+            const string constFormat = "Total heures : {0}";
+            _totalHeureRegroupementLabel.Text = String.Format(constFormat, _modele.RegroupementCourantTotalHeure);
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirRegroupementCourantNom()
+        {
+            CommencerMiseAJour();
+
+            string nom = _modele.RegroupementCourant.Nom;
+            if (false == String.Equals(nom, _nomGroupementTextBox.Text))
+                _nomGroupementTextBox.Text = nom;
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirRegroupements()
+        {
+            CommencerMiseAJour();
+
+            RafraichirListBox<Regroupement, string>(_regroupementsListBox, _modele.Regroupements);
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirRegroupementsItemSelectionne()
+        {
+            CommencerMiseAJour();
+
+            RafraichirSelectionListBox<Regroupement, string>(_regroupementsListBox, _modele.RegroupementsItemSelectionne);
+
+            TerminerMiseAJour();
+        }
+
+        #region Utilitaire
 
         private void RafraichirListBox<TItem, T>(ListBox listBox, IEnumerable<TItem> items)
             where TItem : class, IItem<T>
@@ -300,6 +373,8 @@ namespace ImputationH31per.Vue.RapportMensuel
             listBox.EndUpdate();
         }
 
+        #endregion Utilitaire
+
         #endregion Mise à jour interface depuis modele
 
         #region Actions utilisateur
@@ -351,18 +426,14 @@ namespace ImputationH31per.Vue.RapportMensuel
             ListBoxItem<TicketItem, IInformationTicketTfs> lbItem = _ticketsListBox.SelectedItem as ListBoxItem<TicketItem, IInformationTicketTfs>;
             _controleur.AjouterAuRegroupement(lbItem != null ? lbItem.Item : null);
         }
-    private    void _regroupementListBox_SelectedIndexChanged(object sender, System.EventArgs e)
+
+        private void _regroupementListBox_SelectedIndexChanged(object sender, System.EventArgs e)
         {
-
             if (EstMiseAJourEnCours) return;
-            ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs> lbItem = _groupesListBox.SelectedItem as ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>;
+            ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs> lbItem = _regroupementListBox.SelectedItem as ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>;
             _controleur.DefinirRegroupementCourantItemSelectionne(lbItem != null ? lbItem.Item : null);
-
-
-
-
-
         }
+
         private void _regroupementListBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (EstMiseAJourEnCours) return;
@@ -371,6 +442,35 @@ namespace ImputationH31per.Vue.RapportMensuel
                 ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs> lbItem = _regroupementListBox.SelectedItem as ListBoxItem<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>;
                 _controleur.RetirerDuRegroupement(lbItem != null ? lbItem.Item : null);
             }
+        }
+
+        private void _regroupementsListBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (EstMiseAJourEnCours) return;
+            if (e.KeyCode == Keys.Delete)
+            {
+                ListBoxItem<Regroupement, string> lbItem = _regroupementsListBox.SelectedItem as ListBoxItem<Regroupement, string>;
+                _controleur.RetirerDeRegroupements(lbItem != null ? lbItem.Item : null);
+            }
+        }
+
+        private void _nomGroupementTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (EstMiseAJourEnCours) return;
+            _controleur.DefinirNomRegroupementCourant(_nomGroupementTextBox.Text);
+        }
+
+        private void _ajouterGroupementButton_Click(object sender, EventArgs e)
+        {
+            if (EstMiseAJourEnCours) return;
+            _controleur.AjouterRegroupementCourant();
+        }
+
+        private void _regroupementsListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (EstMiseAJourEnCours) return;
+            ListBoxItem<Regroupement, string> lbItem = _regroupementsListBox.SelectedItem as ListBoxItem<Regroupement, string>;
+            _controleur.RegroupementsItemSelectionne(lbItem != null ? lbItem.Item : null);
         }
 
         #endregion Actions utilisateur
@@ -413,7 +513,5 @@ namespace ImputationH31per.Vue.RapportMensuel
         }
 
         #endregion ElementListViewItem
-
-     
     }
 }

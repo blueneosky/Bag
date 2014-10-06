@@ -39,6 +39,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private Regroupement _regroupementCourant;
         private IInformationItem<IInformationTacheTfs> _regroupementCourantItemSelectionne;
         private IEnumerable<IInformationImputationTfs> _imputationsDuRegroupementCourant;
+        private int _regroupementCourantTotalHeure;
+        private IEnumerable<Regroupement> _regroupements;
+        private Regroupement _regroupementsItemSelectionne;
 
         #endregion Membres
 
@@ -68,11 +71,11 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 if ((_dateMoisAnnee.Month == value.Month) && (_dateMoisAnnee.Year == value.Year))
                     return;
-                Regroupements = new Regroupement[0];
-                RegroupementCourant = null;
                 _dateMoisAnnee = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteDateMoisAnnee));
                 MettreAJourImputationDuMois();
+                Regroupements = new Regroupement[0];
+                RegroupementCourant = null;
             }
         }
 
@@ -213,7 +216,10 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             get
             {
                 if (_regroupementCourant == null)
+                {
                     _regroupementCourant = new Regroupement(Regroupements.Select(r => r.Nom).NomUnique("nouveau"));
+                    NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantNom));
+                }
                 return _regroupementCourant;
             }
             private set
@@ -221,7 +227,18 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 _regroupementCourant = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourant));
                 MettreAJourRegroupementCourantItemSelectionne();
+                MettreAJourImputationRestantes();
                 MettreAJourImputationsDuRegroupementCourant();
+            }
+        }
+
+        public string RegroupementCourantNom
+        {
+            get { return RegroupementCourant.Nom; }
+            set
+            {
+                RegroupementCourant.Nom = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantNom));
             }
         }
 
@@ -242,11 +259,19 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 _imputationsDuRegroupementCourant = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteImputationsDuRegroupementCourant));
-                MettreAJourImputationRestantes();
+                MettreAJourRegroupementCourantTotalHeure();
             }
         }
 
-        private IEnumerable<Regroupement> _regroupements;
+        public int RegroupementCourantTotalHeure
+        {
+            get { return _regroupementCourantTotalHeure; }
+            private set
+            {
+                _regroupementCourantTotalHeure = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantTotalHeure));
+            }
+        }
 
         public IEnumerable<Regroupement> Regroupements
         {
@@ -255,7 +280,18 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 _regroupements = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupements));
-#warning TODO ALPHA ALPHA - mettre à jour, ...
+                MettreAJourRegroupementsItemSelectionne();
+                MettreAJourImputationsPourRegroupementCourant();
+            }
+        }
+
+        public Regroupement RegroupementsItemSelectionne
+        {
+            get { return _regroupementsItemSelectionne; }
+            set
+            {
+                _regroupementsItemSelectionne = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementsItemSelectionne));
             }
         }
 
@@ -272,8 +308,31 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         public void RetirerDuRegroupement(IInformationItem<IInformationTacheTfs> item)
         {
-#warning TODO ALPHA BETA point
-            throw new NotImplementedException();
+            Regroupement regroupement = RegroupementCourant;
+            int index = regroupement.Items.FindIndex(r => r.Equals(item));
+            if (index < 0)
+                return;
+
+            regroupement.Items.RemoveAt(index);
+            RegroupementCourant = regroupement;
+        }
+
+        public void RetirerDeRegroupements(Regroupement regroupement)
+        {
+            Regroupements = Regroupements
+                .Where(r => false == r.Equals(regroupement))
+                .Execute();
+        }
+
+        public void AjouterRegroupementCourant()
+        {
+            if (RegroupementCourant.Items.Count == 0)
+                return;
+
+            List<Regroupement> regroupements = Regroupements.ToList();
+            regroupements.Add(RegroupementCourant);
+            Regroupements = regroupements;
+            RegroupementCourant = null;
         }
 
         #endregion Methodes
@@ -297,8 +356,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private void MettreAJourImputationsPourRegroupementCourant()
         {
-#warning TODO - point BETA ALPHA - implémenter : ImputationsDuMois - ImputationsRegroupements
-            ImputationsPourRegroupementCourant = ImputationsDuMois;
+            ImputationsPourRegroupementCourant = ObtenirInformationImputationsFiltres(ImputationsDuMois, Regroupements, false);
         }
 
         private void MettreAJourImputationRestantes()
@@ -379,8 +437,20 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 .Execute();
         }
 
+        private void MettreAJourRegroupementCourantTotalHeure()
+        {
+#warning TODO ALPHA ALPHA point - add times
+        }
+
+        private void MettreAJourRegroupementsItemSelectionne()
+        {
+            RegroupementsItemSelectionne = ObtenirMiseAJourSelectionItem<Regroupement, string>(Regroupements, RegroupementsItemSelectionne);
+        }
+
+        #region Outils
+
         private TItem ObtenirMiseAJourSelectionItem<TItem, TEntite>(IEnumerable<TItem> source, TItem ancienItem)
-         where TItem : class, IItem<TEntite>
+            where TItem : class, IItem<TEntite>
         {
             TItem nouveauItem = null;
             if ((ancienItem != null) && (ancienItem.TypeItem == EnumTypeItem.Entite))
@@ -397,6 +467,21 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             }
 
             return nouveauItem;
+        }
+
+        #region ObtenirInformationImputationsFiltres
+
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>> itemFiltres, bool modeJointure)
+        {
+            IEnumerable<IInformationImputationTfs> imputations = source;
+            itemFiltres = itemFiltres ?? new IEnumerable<IInformationItem<IInformationTacheTfs>>[0];
+
+            foreach (var itemFiltre in itemFiltres)
+            {
+                imputations = ObtenirInformationImputationsFiltres(imputations, itemFiltre, modeJointure);
+            }
+
+            return imputations;
         }
 
         private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IInformationItem<IInformationTacheTfs>> itemFiltres, bool modeJointure)
@@ -505,6 +590,10 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
             return imputations;
         }
+
+        #endregion ObtenirInformationImputationsFiltres
+
+        #endregion Outils
 
         #endregion Mise à jour de propriétés
 

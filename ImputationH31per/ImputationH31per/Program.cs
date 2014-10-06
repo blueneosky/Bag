@@ -76,7 +76,6 @@ namespace ImputationH31per
                 _globalTraceListener.Flush();
                 _globalTraceLog.Flush();
                 _globalTraceLog.Close();
-
             }
             catch (Exception)
             {
