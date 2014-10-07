@@ -312,28 +312,48 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         public void RetirerDeRegroupements(Regroupement regroupement)
         {
-            Regroupements = Regroupements
+            IEnumerable<Regroupement> regroupements = Regroupements
                 .Where(r => false == r.Equals(regroupement))
                 .Execute();
+            Regroupements = new Regroupement[0];
+            // boucle pour mettre à jour
+            foreach (var regrouement in regroupements)
+            {
+                AjouterRegroupement(regrouement);
+            }
         }
 
         public void AjouterRegroupementCourant()
         {
-            Regroupement regroupement = RegroupementCourant;
+            AjouterRegroupement(RegroupementCourant);
+            CreerNouveauRegroupemet();
+        }
+
+        private void AjouterRegroupement(Regroupement regroupement)
+        {
             if (regroupement.Items.Count == 0)
                 return;
 
             List<Regroupement> regroupements = Regroupements.ToList();
-            regroupement.TotalHeure = RegroupementCourantTotalHeure;    // normalement à jour
+            IEnumerable<IInformationImputationTfs> imputations = ImputationsDuMois;
+            imputations = ObtenirInformationImputationsFiltres(imputations, regroupements, false);
+            imputations = ObtenirInformationImputationsFiltres(imputations, regroupement, true);
+            int totalHeure = (int)ObtenirTotalHeure(imputations);
+            regroupement.TotalHeure = totalHeure;
             regroupements.Add(regroupement);
             Regroupements = regroupements;
-            CreerNouveauRegroupemet();
         }
 
         private void CreerNouveauRegroupemet()
         {
             RegroupementCourant = new Regroupement(String.Empty);
             RegroupementCourant.Nom = Regroupements.Select(r => r.Nom).NomUnique("nouveau");    // pour notification
+        }
+
+        private double ObtenirTotalHeure(IEnumerable<IInformationImputationTfs> imputations)
+        {
+            return imputations
+                .Sum(i => _imputationH31perModele.ObtenirDifferenceConsommee(i) ?? 0);
         }
 
         #endregion Methodes
@@ -440,8 +460,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private void MettreAJourRegroupementCourantTotalHeure()
         {
-            double total = ImputationsDuRegroupementCourant
-                .Sum(i => _imputationH31perModele.ObtenirDifferenceConsommee(i) ?? 0);
+            double total = ObtenirTotalHeure(ImputationsDuRegroupementCourant);
             RegroupementCourantTotalHeure = (int)total;
         }
 
@@ -473,6 +492,19 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         }
 
         #region ObtenirInformationImputationsFiltres
+
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>>> itemFiltres, bool modeJointure)
+        {
+            IEnumerable<IInformationImputationTfs> imputations = source;
+            itemFiltres = itemFiltres ?? new IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>>[0];
+
+            foreach (var itemFiltre in itemFiltres)
+            {
+                imputations = ObtenirInformationImputationsFiltres(imputations, itemFiltre, modeJointure);
+            }
+
+            return imputations;
+        }
 
         private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>> itemFiltres, bool modeJointure)
         {

@@ -9,7 +9,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
     public class Regroupement : BaseItem<string>, IEnumerable<IInformationItem<IInformationTacheTfs>>
     {
-        private List<IInformationItem<IInformationTacheTfs>> _items;
+        private readonly List<IInformationItem<IInformationTacheTfs>> _items;
+        private int? _totalHeure;
 
         public Regroupement(string nom)
             : base(nom)
@@ -27,7 +28,30 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
             }
         }
 
-        public int? TotalHeure { get; set; }
+        public int? TotalHeure
+        {
+            get { return _totalHeure; }
+            set
+            {
+                _totalHeure = value;
+                if (_totalHeure.HasValue)
+                {
+                    const int constCentre = 1;
+                    int totalCentre = (_totalHeure ?? 0) + constCentre;
+                    TotalDemiJournee = (int)(totalCentre / 4);
+                    ExcedantDemiJournee = (totalCentre % 4) - constCentre;
+                }
+                else
+                {
+                    TotalDemiJournee = 0;
+                    ExcedantDemiJournee = 0;
+                }
+            }
+        }
+
+        public int TotalDemiJournee { get; private set; }
+
+        public int ExcedantDemiJournee { get; private set; }
 
         public event EventHandler<EventArgs> NomModifie;
 
@@ -45,7 +69,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         {
             string resultat = Nom;
             if (TotalHeure.HasValue)
-                resultat += " (" + TotalHeure + "h)";
+                resultat += " (" + (TotalDemiJournee / 2.0) + " jours " + (ExcedantDemiJournee > 0 ? "+" : "") + ExcedantDemiJournee + " h)";
             return resultat;
         }
 
