@@ -356,6 +356,75 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 .Sum(i => _imputationH31perModele.ObtenirDifferenceConsommee(i) ?? 0);
         }
 
+        private static IEnumerable<Regroupement> ObtenirRegroupementVentilles(IEnumerable<Regroupement> regroupements)
+        {
+            regroupements = regroupements.Execute();
+
+            List<Tuple<Regroupement, int>> regroupementEtExcedants = regroupements
+                .OrderBy(r => r.TotalHeure % 4)
+                .ThenBy(r => r.TotalHeure)
+                .Select(r => Tuple.Create(r, (r.TotalHeure ?? 0) % 4))
+                .ToList();
+            List<Regroupement> resultat = new List<Regroupement>(regroupements.Count());
+
+            while (regroupementEtExcedants.Sum(t => t.Item2) > 3)
+            {
+                List<Tuple<Regroupement, int>> source = regroupementEtExcedants.ToList();
+                IEnumerable<Tuple<Regroupement, int>> resultatRegroupement = Regrouper(source, null, true, 0);
+                if (resultatRegroupement != null)
+                {
+                    foreach (var tuple in resultatRegroupement)
+                    {
+                        if (tuple.Item1 == null)
+                            continue;   // élément découpé
+
+
+#warning TODO ALPHA ALPHA point
+                    }
+                }
+                else
+                {
+#warning TODO ALPHA ALPHA point
+                }
+            }
+#warning TODO ALPHA BETA point
+
+            resultat = regroupements
+                .Join(resultat, r => r.Nom, r => r.Nom, (outer, inner) => inner)       // conserve l'ordre de 'regroupements' avec les instances de 'resultat'
+                .ToList();
+
+            return resultat;
+        }
+
+        private static IEnumerable<Tuple<Regroupement, int>> Regrouper(List<Tuple<Regroupement, int>> source, List<Tuple<Regroupement, int>> sac, bool prendreAGauche, int somme)
+        {
+            if (sac == null)
+                sac = new List<Tuple<Regroupement, int>> { };  // premiere récursion
+
+            int index = prendreAGauche ? 0 : source.Count - 1;
+            var tuple = source[index];
+            sac.Add(tuple);
+            source.RemoveAt(index);
+
+            somme += tuple.Item2;
+            Debug.Assert(sac.Sum(t => t.Item2) == somme);
+
+            if (somme < 4)
+                return Regrouper(source, sac, !prendreAGauche, somme);
+
+            if (somme > 4)
+                return null;
+
+            return sac;
+        }
+
+        private static void Separer<T>(IEnumerable<T> source, Func<T, bool> predicat, out List<T> resultatPredicat, out List<T> resultatInverse)
+        {
+            source = source.Execute();
+            resultatPredicat = source.Where(predicat).ToList();
+            resultatInverse = source.Where(e => false == predicat(e)).ToList();
+        }
+
         #endregion Methodes
 
         #region Mise à jour de propriétés

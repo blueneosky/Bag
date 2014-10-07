@@ -37,9 +37,11 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
                 if (_totalHeure.HasValue)
                 {
                     const int constCentre = 1;
-                    int totalCentre = (_totalHeure ?? 0) + constCentre;
-                    TotalDemiJournee = (int)(totalCentre / 4);
-                    ExcedantDemiJournee = (totalCentre % 4) - constCentre;
+                    int totalDemiJournee;
+                    int excedantDemiJournee;
+                    ObtenirTotalDemiJourneeAvecExcedant(_totalHeure ?? 0, constCentre, out totalDemiJournee, out excedantDemiJournee);
+                    TotalDemiJournee = totalDemiJournee;
+                    ExcedantDemiJournee = excedantDemiJournee;
                 }
                 else
                 {
@@ -65,17 +67,46 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
             return String.Equals(Entite, entite);
         }
 
+        private static void ObtenirTotalDemiJourneeAvecExcedant(int total, int centre, out int demiJournee, out int excedantDemiJournee)
+        {
+            int totalCentre = total + centre;
+            demiJournee = (int)(totalCentre / 4);
+            excedantDemiJournee = (totalCentre % 4) - centre;
+        }
+
         protected override string ObtenirLibelleEntite()
         {
-            string resultat = Nom;
+            StringBuilder resultat = new StringBuilder(Nom);
             if (TotalHeure.HasValue)
-                resultat += " (" + (TotalDemiJournee / 2.0) + " jours " + (ExcedantDemiJournee > 0 ? "+" : "") + ExcedantDemiJournee + " h)";
-            return resultat;
+            {
+                int totalDemiJournee = TotalDemiJournee;
+                int excedantDemiJournee = ExcedantDemiJournee;
+
+                resultat
+                    .Append(" (")
+                    .AppendFormat("{0} jours", (totalDemiJournee / 2.0));
+                if (excedantDemiJournee != 0)
+                {
+                    resultat.AppendFormat(" {0}{1} h", (excedantDemiJournee > 0 ? "+" : ""), excedantDemiJournee);
+                }
+                resultat.Append(")");
+            }
+            return resultat.ToString();
         }
 
         public List<IInformationItem<IInformationTacheTfs>> Items
         {
             get { return _items; }
+        }
+
+        internal Regroupement Clone()
+        {
+            Regroupement resultat = new Regroupement(this.Nom)
+            {
+                TotalHeure = this.TotalHeure,
+            };
+
+            return resultat;
         }
 
         #region IEnumerable<IInformationItem<IInformationImputationTfs>> Membres
