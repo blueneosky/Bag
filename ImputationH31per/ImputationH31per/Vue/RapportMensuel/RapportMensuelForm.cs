@@ -454,7 +454,7 @@ namespace ImputationH31per.Vue.RapportMensuel
             }
         }
 
-        private void _nomGroupementTextBox_TextChanged(object sender, EventArgs e)
+        private void _nomGroupementTextBox_Validated(object sender, EventArgs e)
         {
             if (EstMiseAJourEnCours) return;
             _controleur.DefinirNomRegroupementCourant(_nomGroupementTextBox.Text);

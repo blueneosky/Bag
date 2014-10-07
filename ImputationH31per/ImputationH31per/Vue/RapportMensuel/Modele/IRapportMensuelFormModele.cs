@@ -41,8 +41,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         Regroupement RegroupementCourant { get; }
 
-        string RegroupementCourantNom { get; set; }
-
         IInformationItem<IInformationTacheTfs> RegroupementCourantItemSelectionne { get; set; }
 
         IEnumerable<IInformationImputationTfs> ImputationsDuRegroupementCourant { get; }

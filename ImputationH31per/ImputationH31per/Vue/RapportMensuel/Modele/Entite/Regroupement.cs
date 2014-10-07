@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ImputationH31per.Modele.Entite;
+using ImputationH31per.Util;
 
 namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 {
@@ -19,7 +20,20 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
         public string Nom
         {
             get { return base.Entite; }
-            set { base.Entite = value; }
+            set
+            {
+                base.Entite = value;
+                NotifierNomModifie(this, EventArgs.Empty);
+            }
+        }
+
+        public int? TotalHeure { get; set; }
+
+        public event EventHandler<EventArgs> NomModifie;
+
+        protected virtual void NotifierNomModifie(object sender, EventArgs e)
+        {
+            NomModifie.Notifier(sender, e);
         }
 
         protected override bool EntiteEgale(string entite)
@@ -29,7 +43,10 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 
         protected override string ObtenirLibelleEntite()
         {
-            return Nom;
+            string resultat = Nom;
+            if (TotalHeure.HasValue)
+                resultat += " (" + TotalHeure + "h)";
+            return resultat;
         }
 
         public List<IInformationItem<IInformationTacheTfs>> Items

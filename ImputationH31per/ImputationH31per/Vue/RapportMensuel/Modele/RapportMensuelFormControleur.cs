@@ -92,7 +92,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         public void DefinirNomRegroupementCourant(string nom)
         {
-            _modele.RegroupementCourantNom = _modele.Regroupements.Select(r => r.Nom).NomUnique(nom);
+            nom = _modele.Regroupements.Select(r => r.Nom).NomUnique(nom);
+            _modele.RegroupementCourant.Nom = nom;
         }
 
         public void RegroupementsItemSelectionne(Regroupement regroupement)

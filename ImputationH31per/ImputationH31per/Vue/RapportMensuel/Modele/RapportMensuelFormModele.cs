@@ -52,7 +52,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             this._imputationH31perModele = imputationH31perModele;
 
             _regroupements = new Regroupement[0];   // pour ne pas impacter de rafraichissement en cascade
+            _regroupementCourant = new Regroupement(String.Empty);    // regroupement recréé et finalisé après la date
             this.DateMoisAnnee = DateTime.Now;  // déclenche la mise à jour en cascadde du modèle
+            CreerNouveauRegroupemet();          // important de faire l'assignation à ce moment (sinon le modèle n'est pas initialisé dans son intégralité)
         }
 
         #endregion ctor
@@ -75,7 +77,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteDateMoisAnnee));
                 MettreAJourImputationDuMois();
                 Regroupements = new Regroupement[0];
-                RegroupementCourant = null;
+                CreerNouveauRegroupemet();
             }
         }
 
@@ -213,18 +215,14 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         public Regroupement RegroupementCourant
         {
-            get
-            {
-                if (_regroupementCourant == null)
-                {
-                    _regroupementCourant = new Regroupement(Regroupements.Select(r => r.Nom).NomUnique("nouveau"));
-                    NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantNom));
-                }
-                return _regroupementCourant;
-            }
+            get { return _regroupementCourant; }
             private set
             {
+                if (_regroupementCourant != null)
+                    _regroupementCourant.NomModifie -= _regroupementCourant_NomModifie;
                 _regroupementCourant = value;
+                if (_regroupementCourant != null)
+                    _regroupementCourant.NomModifie += _regroupementCourant_NomModifie;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourant));
                 MettreAJourRegroupementCourantItemSelectionne();
                 MettreAJourImputationRestantes();
@@ -232,14 +230,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             }
         }
 
-        public string RegroupementCourantNom
+        private void _regroupementCourant_NomModifie(object sender, EventArgs e)
         {
-            get { return RegroupementCourant.Nom; }
-            set
-            {
-                RegroupementCourant.Nom = value;
-                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantNom));
-            }
+            NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementCourantNom));
         }
 
         public IInformationItem<IInformationTacheTfs> RegroupementCourantItemSelectionne
@@ -326,13 +319,21 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         public void AjouterRegroupementCourant()
         {
-            if (RegroupementCourant.Items.Count == 0)
+            Regroupement regroupement = RegroupementCourant;
+            if (regroupement.Items.Count == 0)
                 return;
 
             List<Regroupement> regroupements = Regroupements.ToList();
-            regroupements.Add(RegroupementCourant);
+            regroupement.TotalHeure = RegroupementCourantTotalHeure;    // normalement à jour
+            regroupements.Add(regroupement);
             Regroupements = regroupements;
-            RegroupementCourant = null;
+            CreerNouveauRegroupemet();
+        }
+
+        private void CreerNouveauRegroupemet()
+        {
+            RegroupementCourant = new Regroupement(String.Empty);
+            RegroupementCourant.Nom = Regroupements.Select(r => r.Nom).NomUnique("nouveau");    // pour notification
         }
 
         #endregion Methodes
@@ -433,13 +434,15 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         private void MettreAJourImputationsDuRegroupementCourant()
         {
-            ImputationsDuRegroupementCourant = ObtenirInformationImputationsFiltres(ImputationsPourRegroupementCourant, RegroupementCourant, false)
+            ImputationsDuRegroupementCourant = ObtenirInformationImputationsFiltres(ImputationsPourRegroupementCourant, RegroupementCourant, true)
                 .Execute();
         }
 
         private void MettreAJourRegroupementCourantTotalHeure()
         {
-#warning TODO ALPHA ALPHA point - add times
+            double total = ImputationsDuRegroupementCourant
+                .Sum(i => _imputationH31perModele.ObtenirDifferenceConsommee(i) ?? 0);
+            RegroupementCourantTotalHeure = (int)total;
         }
 
         private void MettreAJourRegroupementsItemSelectionne()
@@ -488,6 +491,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         {
             IEnumerable<IInformationImputationTfs> imputations = source;
             itemFiltres = itemFiltres ?? new IInformationItem<IInformationTacheTfs>[0];
+            if (false == itemFiltres.Any())
+                return modeJointure ? new IInformationImputationTfs[0] : source;
 
             foreach (var itemFiltre in itemFiltres)
             {

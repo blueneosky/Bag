@@ -206,12 +206,11 @@
             this._nomGroupementTextBox.Name = "_nomGroupementTextBox";
             this._nomGroupementTextBox.Size = new System.Drawing.Size(216, 20);
             this._nomGroupementTextBox.TabIndex = 1;
-            this._nomGroupementTextBox.TextChanged += new System.EventHandler(this._nomGroupementTextBox_TextChanged);
+            this._nomGroupementTextBox.Validated += new System.EventHandler(this._nomGroupementTextBox_Validated);
             // 
             // _ajouterGroupementButton
             // 
-            this._ajouterGroupementButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._ajouterGroupementButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this._ajouterGroupementButton.Location = new System.Drawing.Point(225, 18);
             this._ajouterGroupementButton.Name = "_ajouterGroupementButton";
             this._ajouterGroupementButton.Size = new System.Drawing.Size(43, 23);
