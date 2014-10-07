@@ -361,22 +361,22 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             regroupements = regroupements.Execute();
 
             List<Tuple<Regroupement, int>> regroupementEtExcedants = regroupements
-                .OrderBy(r => r.TotalHeure % 4)
-                .ThenBy(r => r.TotalHeure)
+                .OrderByDescending(r => r.TotalHeure % 4)
+                .ThenByDescending(r => r.TotalHeure)
                 .Select(r => Tuple.Create(r, (r.TotalHeure ?? 0) % 4))
                 .ToList();
             List<Regroupement> resultat = new List<Regroupement>(regroupements.Count());
+            List<Tuple<Regroupement, int>> source = regroupementEtExcedants.ToList();
 
             while (regroupementEtExcedants.Sum(t => t.Item2) > 3)
             {
-                List<Tuple<Regroupement, int>> source = regroupementEtExcedants.ToList();
-                IEnumerable<Tuple<Regroupement, int>> resultatRegroupement = Regrouper(source, null, true, 0);
+                IEnumerable<Tuple<Regroupement, int>> resultatRegroupement = Regrouper(source);
                 if (resultatRegroupement != null)
                 {
-                    foreach (var tuple in resultatRegroupement)
+#warning TODO ALPHA ALPHA ALPHA - regarder comment oganiser les élement découpé : null ou pas pour les uatre, non null en premier ou en dernier ?
+                    var premierTuple = resultatRegroupement.First();
+                    foreach (var tuple in resultatRegroupement.Skip(1))
                     {
-                        if (tuple.Item1 == null)
-                            continue;   // élément découpé
 
 
 #warning TODO ALPHA ALPHA point
@@ -396,26 +396,35 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             return resultat;
         }
 
-        private static IEnumerable<Tuple<Regroupement, int>> Regrouper(List<Tuple<Regroupement, int>> source, List<Tuple<Regroupement, int>> sac, bool prendreAGauche, int somme)
+        private static IEnumerable<Tuple<Regroupement, int>> Regrouper(List<Tuple<Regroupement, int>> source)
         {
-            if (sac == null)
-                sac = new List<Tuple<Regroupement, int>> { };  // premiere récursion
+            HashSet<int> indexes = new HashSet<int> { 0 };
+            int somme = source[0].Item2;
 
-            int index = prendreAGauche ? 0 : source.Count - 1;
-            var tuple = source[index];
-            sac.Add(tuple);
-            source.RemoveAt(index);
+            int index = 1;
+            while ((index < source.Count) && (somme < 4))
+            {
+                int excedant = source[index].Item2;
+                if ((somme + excedant) <= 4)
+                {
+                    indexes.Add(index);
+                    somme += excedant;
+                }
+            }
 
-            somme += tuple.Item2;
-            Debug.Assert(sac.Sum(t => t.Item2) == somme);
+            if (somme != 4)
+                return null;    // pas de regroupement complet des excedants
 
-            if (somme < 4)
-                return Regrouper(source, sac, !prendreAGauche, somme);
+            // création du résultat
+            IEnumerable<Tuple<Regroupement, int>> resultat = source.Where((t, i) => indexes.Contains(i)).ToArray(); // le résultat respecte le même ordre que la source
 
-            if (somme > 4)
-                return null;
+            // mise à jour de la source
+            foreach (int i in indexes.OrderByDescending(i=>i))
+            {
+                source.RemoveAt(i);
+            }
 
-            return sac;
+            return resultat;
         }
 
         private static void Separer<T>(IEnumerable<T> source, Func<T, bool> predicat, out List<T> resultatPredicat, out List<T> resultatInverse)
