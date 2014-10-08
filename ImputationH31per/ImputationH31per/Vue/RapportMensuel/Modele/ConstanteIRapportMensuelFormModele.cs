@@ -33,6 +33,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         // ConstanteProprieteRegroupementCourantTotalHeure
         // ConstanteProprieteRegroupements
         // ConstanteProprieteRegroupementsItemSelectionne
+        // ConstanteProprieteRegroupementRapports
 
         public const string ConstanteProprieteDateMoisAnnee = "DateMoisAnnee";
         public const string ConstanteProprieteImputationsDuMois = "ImputationsDuMois";
@@ -54,5 +55,6 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         public const string ConstanteProprieteRegroupementCourantTotalHeure = "RegroupementCourantTotalHeure";
         public const string ConstanteProprieteRegroupements = "Regroupements";
         public const string ConstanteProprieteRegroupementsItemSelectionne = "RegroupementsItemSelectionne";
+        public const string ConstanteProprieteRegroupementRapports = "RegroupementRapports";
     }
 }

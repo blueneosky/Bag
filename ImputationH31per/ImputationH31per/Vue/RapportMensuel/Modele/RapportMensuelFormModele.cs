@@ -42,6 +42,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private int _regroupementCourantTotalHeure;
         private IEnumerable<Regroupement> _regroupements;
         private Regroupement _regroupementsItemSelectionne;
+        private IEnumerable<Regroupement> _regroupementRapports;
 
         #endregion Membres
 
@@ -275,6 +276,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupements));
                 MettreAJourRegroupementsItemSelectionne();
                 MettreAJourImputationsPourRegroupementCourant();
+                MettreAJourRegroupementRapports();
             }
         }
 
@@ -285,6 +287,16 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             {
                 _regroupementsItemSelectionne = value;
                 NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementsItemSelectionne));
+            }
+        }
+
+        public IEnumerable<Regroupement> RegroupementRapports
+        {
+            get { return _regroupementRapports; }
+            set
+            {
+                _regroupementRapports = value;
+                NotifierPropertyChanged(this, new PropertyChangedEventArgs(ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementRapports));
             }
         }
 
@@ -360,38 +372,34 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         {
             regroupements = regroupements.Execute();
 
-            List<Tuple<Regroupement, int>> regroupementEtExcedants = regroupements
+            List<Regroupement> resultat = regroupements
+                .Select(r => r.Clone())
+                .ToList();
+            List<Tuple<Regroupement, int>> regroupementEtExcedantRestants = resultat
                 .OrderByDescending(r => r.TotalHeure % 4)
                 .ThenByDescending(r => r.TotalHeure)
                 .Select(r => Tuple.Create(r, (r.TotalHeure ?? 0) % 4))
                 .ToList();
-            List<Regroupement> resultat = new List<Regroupement>(regroupements.Count());
-            List<Tuple<Regroupement, int>> source = regroupementEtExcedants.ToList();
 
-            while (regroupementEtExcedants.Sum(t => t.Item2) > 3)
+            while (regroupementEtExcedantRestants.Sum(t => t.Item2) >= 4)
             {
-                IEnumerable<Tuple<Regroupement, int>> resultatRegroupement = Regrouper(source);
-                if (resultatRegroupement != null)
+                IEnumerable<Tuple<Regroupement, int>> resultatRegroupement = Regrouper(regroupementEtExcedantRestants);
+                Debug.Assert(resultatRegroupement != null);
+                var premierTuple = resultatRegroupement.First();
+                int sommeExcedant = 0;
+                foreach (var tuple in resultatRegroupement.Skip(1))
                 {
-#warning TODO ALPHA ALPHA ALPHA - regarder comment oganiser les élement découpé : null ou pas pour les uatre, non null en premier ou en dernier ?
-                    var premierTuple = resultatRegroupement.First();
-                    foreach (var tuple in resultatRegroupement.Skip(1))
-                    {
-
-
-#warning TODO ALPHA ALPHA point
-                    }
+                    int excedant = tuple.Item2;
+                    sommeExcedant += excedant;
+                    tuple.Item1.TotalHeure -= excedant;
                 }
-                else
-                {
-#warning TODO ALPHA ALPHA point
-                }
+                premierTuple.Item1.TotalHeure += sommeExcedant;
             }
-#warning TODO ALPHA BETA point
 
-            resultat = regroupements
-                .Join(resultat, r => r.Nom, r => r.Nom, (outer, inner) => inner)       // conserve l'ordre de 'regroupements' avec les instances de 'resultat'
-                .ToList();
+            // Normalement pas nécessaire
+            //resultat = regroupements
+            //    .Join(resultat, r => r.Nom, r => r.Nom, (outer, inner) => inner)       // conserve l'ordre de 'regroupements' avec les instances de 'resultat'
+            //    .ToList();
 
             return resultat;
         }
@@ -399,27 +407,43 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private static IEnumerable<Tuple<Regroupement, int>> Regrouper(List<Tuple<Regroupement, int>> source)
         {
             HashSet<int> indexes = new HashSet<int> { 0 };
-            int somme = source[0].Item2;
+            int somme = 0;
 
-            int index = 1;
-            while ((index < source.Count) && (somme < 4))
+            Debug.Assert(source.Sum(t => t.Item2) >= 4);
+            while (somme != 4)
             {
-                int excedant = source[index].Item2;
-                if ((somme + excedant) <= 4)
+                somme = source[0].Item2;
+
+                int index = 1;
+                while ((index < source.Count) && (somme < 4))
                 {
-                    indexes.Add(index);
-                    somme += excedant;
+                    int excedant = source[index].Item2;
+                    if ((somme + excedant) <= 4)
+                    {
+                        indexes.Add(index);
+                        somme += excedant;
+                    }
+                }
+
+                if (somme != 4)
+                {
+                    // pas de regroupement complet des excedants
+                    // découpage du dernier pour obtenir 1 unité + (n-1)
+                    index = source.Count - 1;
+                    var tuple = source[index];
+                    source.RemoveAt(index);
+                    var tuple1 = Tuple.Create(tuple.Item1, tuple.Item2 - 1);
+                    var tuple2 = Tuple.Create(tuple.Item1, 1);
+                    source.Add(tuple1);
+                    source.Add(tuple2);
                 }
             }
-
-            if (somme != 4)
-                return null;    // pas de regroupement complet des excedants
 
             // création du résultat
             IEnumerable<Tuple<Regroupement, int>> resultat = source.Where((t, i) => indexes.Contains(i)).ToArray(); // le résultat respecte le même ordre que la source
 
             // mise à jour de la source
-            foreach (int i in indexes.OrderByDescending(i=>i))
+            foreach (int i in indexes.OrderByDescending(i => i))
             {
                 source.RemoveAt(i);
             }
@@ -545,6 +569,11 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         private void MettreAJourRegroupementsItemSelectionne()
         {
             RegroupementsItemSelectionne = ObtenirMiseAJourSelectionItem<Regroupement, string>(Regroupements, RegroupementsItemSelectionne);
+        }
+
+        private void MettreAJourRegroupementRapports()
+        {
+            RegroupementRapports = ObtenirRegroupementVentilles(Regroupements);
         }
 
         #region Outils

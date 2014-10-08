@@ -101,10 +101,9 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele.Entite
 
         internal Regroupement Clone()
         {
-            Regroupement resultat = new Regroupement(this.Nom)
-            {
-                TotalHeure = this.TotalHeure,
-            };
+            Regroupement resultat = new Regroupement(this.Nom);
+            resultat.TotalHeure = this.TotalHeure;
+            resultat.Items.AddRange(this.Items);
 
             return resultat;
         }

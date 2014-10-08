@@ -325,7 +325,7 @@
             this._textBox.Multiline = true;
             this._textBox.Name = "_textBox";
             this._textBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this._textBox.Size = new System.Drawing.Size(382, 492);
+            this._textBox.Size = new System.Drawing.Size(382, 511);
             this._textBox.TabIndex = 0;
             this._textBox.WordWrap = false;
             // 

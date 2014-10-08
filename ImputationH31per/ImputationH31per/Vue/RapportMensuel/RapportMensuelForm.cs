@@ -127,6 +127,10 @@ namespace ImputationH31per.Vue.RapportMensuel
                     RafraichirRegroupementsItemSelectionne();
                     break;
 
+                case ConstanteIRapportMensuelFormModele.ConstanteProprieteRegroupementRapports:
+                    RafraichirRegroupementRapports();
+                    break;
+
                 default:
                     // non géré
                     break;
@@ -153,6 +157,7 @@ namespace ImputationH31per.Vue.RapportMensuel
             RafraichirRegroupementCourantItemSelectionne();
             RafraichirRegroupements();
             RafraichirRegroupementsItemSelectionne();
+            RafraichirRegroupementRapports();
         }
 
         private void RafraichirMoisAnnee()
@@ -288,6 +293,28 @@ namespace ImputationH31per.Vue.RapportMensuel
             CommencerMiseAJour();
 
             RafraichirSelectionListBox<Regroupement, string>(_regroupementsListBox, _modele.RegroupementsItemSelectionne);
+
+            TerminerMiseAJour();
+        }
+
+        private void RafraichirRegroupementRapports()
+        {
+            CommencerMiseAJour();
+
+            IEnumerable<Regroupement> regroupements = _modele.RegroupementRapports;
+            StringBuilder sb = new StringBuilder();
+            foreach (var regroupement in regroupements)
+            {
+                sb.AppendLine(regroupement.Libelle);
+                foreach (var item in regroupement.Items)
+                {
+                    sb
+                        .Append("  - ")
+                        .AppendLine(item.Libelle);
+                }
+#warning TODO ALPHA ALPHA
+            }
+            _textBox.Text = sb.ToString();
 
             TerminerMiseAJour();
         }

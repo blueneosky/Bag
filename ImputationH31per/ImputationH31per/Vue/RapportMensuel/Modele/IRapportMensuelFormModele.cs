@@ -51,6 +51,8 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         Regroupement RegroupementsItemSelectionne { get; set; }
 
+        IEnumerable<Regroupement> RegroupementRapports { get; }
+
         //------------------
 
         void AjouterAuRegroupement(IInformationItem<IInformationTacheTfs> item);
