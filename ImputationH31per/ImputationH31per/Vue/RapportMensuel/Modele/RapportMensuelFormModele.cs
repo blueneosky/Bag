@@ -423,13 +423,14 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                         indexes.Add(index);
                         somme += excedant;
                     }
+                    index++;
                 }
 
                 if (somme != 4)
                 {
                     // pas de regroupement complet des excedants
                     // découpage du dernier pour obtenir 1 unité + (n-1)
-                    index = source.Count - 1;
+                    index = source.TakeWhile(t => t.Item2 > 1).Count() - 1;
                     var tuple = source[index];
                     source.RemoveAt(index);
                     var tuple1 = Tuple.Create(tuple.Item1, tuple.Item2 - 1);
@@ -600,62 +601,48 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
 
         #region ObtenirInformationImputationsFiltres
 
-        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>>> itemFiltres, bool modeJointure)
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>>> itemFiltres, bool modeInclusion)
         {
-            IEnumerable<IInformationImputationTfs> imputations = source;
-            itemFiltres = itemFiltres ?? new IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>>[0];
-
-            foreach (var itemFiltre in itemFiltres)
-            {
-                imputations = ObtenirInformationImputationsFiltres(imputations, itemFiltre, modeJointure);
-            }
-
-            return imputations;
+            return ObtenirInformationImputationsFiltresGenerique(source, itemFiltres, modeInclusion, ObtenirInformationImputationsFiltres);
         }
 
-        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>> itemFiltres, bool modeJointure)
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IEnumerable<IInformationItem<IInformationTacheTfs>>> itemFiltres, bool modeInclusion)
         {
-            IEnumerable<IInformationImputationTfs> imputations = source;
-            itemFiltres = itemFiltres ?? new IEnumerable<IInformationItem<IInformationTacheTfs>>[0];
-
-            foreach (var itemFiltre in itemFiltres)
-            {
-                imputations = ObtenirInformationImputationsFiltres(imputations, itemFiltre, modeJointure);
-            }
-
-            return imputations;
+            return ObtenirInformationImputationsFiltresGenerique(source, itemFiltres, modeInclusion, ObtenirInformationImputationsFiltres);
         }
 
-        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IInformationItem<IInformationTacheTfs>> itemFiltres, bool modeJointure)
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IEnumerable<IInformationItem<IInformationTacheTfs>> itemFiltres, bool modeInclusion)
         {
-            IEnumerable<IInformationImputationTfs> imputations = source;
+            //IEnumerable<IInformationImputationTfs> imputations = source;
             itemFiltres = itemFiltres ?? new IInformationItem<IInformationTacheTfs>[0];
             if (false == itemFiltres.Any())
-                return modeJointure ? new IInformationImputationTfs[0] : source;
+                return modeInclusion ? new IInformationImputationTfs[0] : source;
 
-            foreach (var itemFiltre in itemFiltres)
-            {
-                imputations = ObtenirInformationImputationsFiltres(imputations, itemFiltre, modeJointure);
-            }
+            return ObtenirInformationImputationsFiltresGenerique(source, itemFiltres, modeInclusion, ObtenirInformationImputationsFiltres);
 
-            return imputations;
+            //foreach (var itemFiltre in itemFiltres)
+            //{
+            //    imputations = ObtenirInformationImputationsFiltres(imputations, itemFiltre, modeInclusion);
+            //}
+
+            //return imputations;
         }
 
-        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IInformationItem<IInformationTacheTfs> itemFiltre, bool modeJointure)
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, IInformationItem<IInformationTacheTfs> itemFiltre, bool modeInclusion)
         {
             if (itemFiltre == null)
-                return modeJointure ? new IInformationImputationTfs[0] : source;
+                return modeInclusion ? new IInformationImputationTfs[0] : source;
             if (itemFiltre.TypeItem == EnumTypeItem.Tous)
-                return modeJointure ? source : new IInformationImputationTfs[0];
+                return modeInclusion ? source : new IInformationImputationTfs[0];
 
             switch (itemFiltre.TypeInformation)
             {
                 case EnumTypeInformation.Groupe:
-                    return ObtenirInformationImputationsFiltres(source, (GroupeItem)itemFiltre, modeJointure);
+                    return ObtenirInformationImputationsFiltres(source, (GroupeItem)itemFiltre, modeInclusion);
                 case EnumTypeInformation.Tache:
-                    return ObtenirInformationImputationsFiltres(source, (TacheItem)itemFiltre, modeJointure);
+                    return ObtenirInformationImputationsFiltres(source, (TacheItem)itemFiltre, modeInclusion);
                 case EnumTypeInformation.Ticket:
-                    return ObtenirInformationImputationsFiltres(source, (TicketItem)itemFiltre, modeJointure);
+                    return ObtenirInformationImputationsFiltres(source, (TicketItem)itemFiltre, modeInclusion);
                 case EnumTypeInformation.Aucun:
                 default:
                     Debug.Fail("Cas non prévus");
@@ -663,76 +650,106 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             }
         }
 
-        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, GroupeItem groupeItemFiltre, bool modeJointure)
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, GroupeItem groupeItemFiltre, bool modeInclusion)
         {
             IEnumerable<IInformationImputationTfs> imputations;
             EnumTypeItem typeItem = (groupeItemFiltre != null) ? groupeItemFiltre.TypeItem : EnumTypeItem.Tous;
             switch (typeItem)
             {
                 case EnumTypeItem.Tous:
-                    imputations = modeJointure ? source : new IInformationImputationTfs[0];
+                    imputations = modeInclusion ? source : new IInformationImputationTfs[0];
                     break;
 
                 case EnumTypeItem.Entite:
                     string nomGroupe = groupeItemFiltre.Entite.NomGroupement;
                     imputations = source
-                        .Where(i => modeJointure == String.Equals(i.NomGroupement, nomGroupe));
+                        .Where(i => modeInclusion == String.Equals(i.NomGroupement, nomGroupe));
                     break;
 
                 default:
-                    imputations = modeJointure ? new IInformationImputationTfs[0] : source;
+                    imputations = modeInclusion ? new IInformationImputationTfs[0] : source;
                     break;
             }
 
             return imputations;
         }
 
-        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, TacheItem tacheItemFiltre, bool modeJointure)
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, TacheItem tacheItemFiltre, bool modeInclusion)
         {
             IEnumerable<IInformationImputationTfs> imputations;
             EnumTypeItem typeItem = (tacheItemFiltre != null) ? tacheItemFiltre.TypeItem : EnumTypeItem.Tous;
             switch (typeItem)
             {
                 case EnumTypeItem.Tous:
-                    imputations = modeJointure ? source : new IInformationImputationTfs[0];
+                    imputations = modeInclusion ? source : new IInformationImputationTfs[0];
                     break;
 
                 case EnumTypeItem.Entite:
                     int numeroTache = tacheItemFiltre.Entite.Numero;
                     imputations = source
-                        .Where(i => modeJointure == (i.Numero == numeroTache));
+                        .Where(i => modeInclusion == (i.Numero == numeroTache));
                     break;
 
                 default:
-                    imputations = modeJointure ? new IInformationImputationTfs[0] : source;
+                    imputations = modeInclusion ? new IInformationImputationTfs[0] : source;
                     break;
             }
 
             return imputations;
         }
 
-        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, TicketItem ticketItemFiltre, bool modeJointure)
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltres(IEnumerable<IInformationImputationTfs> source, TicketItem ticketItemFiltre, bool modeInclusion)
         {
             IEnumerable<IInformationImputationTfs> imputations;
             EnumTypeItem typeItem = (ticketItemFiltre != null) ? ticketItemFiltre.TypeItem : EnumTypeItem.Tous;
             switch (typeItem)
             {
                 case EnumTypeItem.Tous:
-                    imputations = modeJointure ? source : new IInformationImputationTfs[0];
+                    imputations = modeInclusion ? source : new IInformationImputationTfs[0];
                     break;
 
                 case EnumTypeItem.Entite:
                     int? numeroComplementaireTache = ticketItemFiltre.Entite.NumeroComplementaire;
                     imputations = source
-                        .Where(i => modeJointure == (i.NumeroComplementaire == numeroComplementaireTache));
+                        .Where(i => modeInclusion == (i.NumeroComplementaire == numeroComplementaireTache));
                     break;
 
                 default:
-                    imputations = modeJointure ? new IInformationImputationTfs[0] : source;
+                    imputations = modeInclusion ? new IInformationImputationTfs[0] : source;
                     break;
             }
 
             return imputations;
+        }
+
+        private static IEnumerable<IInformationImputationTfs> ObtenirInformationImputationsFiltresGenerique<T>(IEnumerable<IInformationImputationTfs> source, IEnumerable<T> itemFiltres, bool modeInclusion, Func<IEnumerable<IInformationImputationTfs>, T, bool, IEnumerable<IInformationImputationTfs>> filtre)
+        {
+            source = source.Execute();  // énuméré plus d'une fois
+            itemFiltres = itemFiltres ?? new T[0];
+            IEnumerable<IInformationImputationTfs> resultat;
+
+            if (modeInclusion)
+            {
+                resultat = new IInformationImputationTfs[0];
+                foreach (var itemFiltre in itemFiltres)
+                {
+                    IEnumerable<IInformationImputationTfs> resultatFiltre = filtre(source, itemFiltre, modeInclusion);
+                    resultat = resultat.Concat(resultatFiltre);
+                }
+                resultat = source
+                    .Join(resultat.GroupBy(r => r.DateHorodatage).Select(grp => grp.Key), s => s.DateHorodatage, d => d, (outer, inner) => outer);
+            }
+            else
+            {
+                resultat = source;
+                foreach (var itemFiltre in itemFiltres)
+                {
+                    IEnumerable<IInformationImputationTfs> resultatFiltre = filtre(resultat, itemFiltre, modeInclusion);
+                    resultat = resultatFiltre;
+                }
+            }
+
+            return resultat;
         }
 
         #endregion ObtenirInformationImputationsFiltres

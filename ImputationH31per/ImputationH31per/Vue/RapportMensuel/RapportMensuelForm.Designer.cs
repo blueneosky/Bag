@@ -78,15 +78,15 @@
             // 
             this._splitContainer.Panel2.Controls.Add(this._resultatGroupBox);
             this._splitContainer.Size = new System.Drawing.Size(1209, 565);
-            this._splitContainer.SplitterDistance = 805;
+            this._splitContainer.SplitterDistance = 811;
             this._splitContainer.TabIndex = 0;
             // 
             // _tableLayoutPanel
             // 
             this._tableLayoutPanel.ColumnCount = 3;
-            this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 239F));
+            this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
+            this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this._tableLayoutPanel.Controls.Add(this._groupesGroupBox, 0, 1);
             this._tableLayoutPanel.Controls.Add(this._dateGroupBox, 0, 0);
             this._tableLayoutPanel.Controls.Add(this._regroupementGroupBox, 0, 2);
@@ -100,8 +100,7 @@
             this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 54F));
             this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50.09785F));
             this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 49.90215F));
-            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this._tableLayoutPanel.Size = new System.Drawing.Size(805, 565);
+            this._tableLayoutPanel.Size = new System.Drawing.Size(811, 565);
             this._tableLayoutPanel.TabIndex = 0;
             // 
             // _groupesGroupBox
@@ -112,7 +111,7 @@
             this._groupesGroupBox.Controls.Add(this._groupesListBox);
             this._groupesGroupBox.Location = new System.Drawing.Point(3, 57);
             this._groupesGroupBox.Name = "_groupesGroupBox";
-            this._groupesGroupBox.Size = new System.Drawing.Size(277, 250);
+            this._groupesGroupBox.Size = new System.Drawing.Size(232, 250);
             this._groupesGroupBox.TabIndex = 2;
             this._groupesGroupBox.TabStop = false;
             this._groupesGroupBox.Text = "Groupes";
@@ -123,7 +122,7 @@
             this._groupesListBox.FormattingEnabled = true;
             this._groupesListBox.Location = new System.Drawing.Point(3, 16);
             this._groupesListBox.Name = "_groupesListBox";
-            this._groupesListBox.Size = new System.Drawing.Size(271, 231);
+            this._groupesListBox.Size = new System.Drawing.Size(226, 231);
             this._groupesListBox.TabIndex = 0;
             this._groupesListBox.SelectedIndexChanged += new System.EventHandler(this._groupesListBox_SelectedIndexChanged);
             this._groupesListBox.DoubleClick += new System.EventHandler(this._groupesListBox_DoubleClick);
@@ -136,7 +135,7 @@
             this._dateGroupBox.Controls.Add(this._moisAnneeDateTimePicker);
             this._dateGroupBox.Location = new System.Drawing.Point(3, 3);
             this._dateGroupBox.Name = "_dateGroupBox";
-            this._dateGroupBox.Size = new System.Drawing.Size(277, 48);
+            this._dateGroupBox.Size = new System.Drawing.Size(232, 48);
             this._dateGroupBox.TabIndex = 4;
             this._dateGroupBox.TabStop = false;
             this._dateGroupBox.Text = "Date";
@@ -160,7 +159,7 @@
             this._regroupementGroupBox.Controls.Add(this._regroupementPanel);
             this._regroupementGroupBox.Location = new System.Drawing.Point(3, 313);
             this._regroupementGroupBox.Name = "_regroupementGroupBox";
-            this._regroupementGroupBox.Size = new System.Drawing.Size(277, 249);
+            this._regroupementGroupBox.Size = new System.Drawing.Size(232, 249);
             this._regroupementGroupBox.TabIndex = 5;
             this._regroupementGroupBox.TabStop = false;
             this._regroupementGroupBox.Text = "Regroupement";
@@ -171,7 +170,7 @@
             this._regroupementListBox.FormattingEnabled = true;
             this._regroupementListBox.Location = new System.Drawing.Point(3, 16);
             this._regroupementListBox.Name = "_regroupementListBox";
-            this._regroupementListBox.Size = new System.Drawing.Size(271, 186);
+            this._regroupementListBox.Size = new System.Drawing.Size(226, 186);
             this._regroupementListBox.TabIndex = 2;
             this._regroupementListBox.SelectedIndexChanged += new System.EventHandler(this._regroupementListBox_SelectedIndexChanged);
             this._regroupementListBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this._regroupementListBox_KeyUp);
@@ -184,7 +183,7 @@
             this._regroupementPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._regroupementPanel.Location = new System.Drawing.Point(3, 202);
             this._regroupementPanel.Name = "_regroupementPanel";
-            this._regroupementPanel.Size = new System.Drawing.Size(271, 44);
+            this._regroupementPanel.Size = new System.Drawing.Size(226, 44);
             this._regroupementPanel.TabIndex = 3;
             // 
             // _totalHeureRegroupementLabel
@@ -193,7 +192,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._totalHeureRegroupementLabel.Location = new System.Drawing.Point(3, 4);
             this._totalHeureRegroupementLabel.Name = "_totalHeureRegroupementLabel";
-            this._totalHeureRegroupementLabel.Size = new System.Drawing.Size(216, 13);
+            this._totalHeureRegroupementLabel.Size = new System.Drawing.Size(171, 13);
             this._totalHeureRegroupementLabel.TabIndex = 2;
             this._totalHeureRegroupementLabel.Text = "Total heures : --";
             this._totalHeureRegroupementLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -204,14 +203,14 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._nomGroupementTextBox.Location = new System.Drawing.Point(3, 20);
             this._nomGroupementTextBox.Name = "_nomGroupementTextBox";
-            this._nomGroupementTextBox.Size = new System.Drawing.Size(216, 20);
+            this._nomGroupementTextBox.Size = new System.Drawing.Size(171, 20);
             this._nomGroupementTextBox.TabIndex = 1;
             this._nomGroupementTextBox.Validated += new System.EventHandler(this._nomGroupementTextBox_Validated);
             // 
             // _ajouterGroupementButton
             // 
             this._ajouterGroupementButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._ajouterGroupementButton.Location = new System.Drawing.Point(225, 18);
+            this._ajouterGroupementButton.Location = new System.Drawing.Point(180, 18);
             this._ajouterGroupementButton.Name = "_ajouterGroupementButton";
             this._ajouterGroupementButton.Size = new System.Drawing.Size(43, 23);
             this._ajouterGroupementButton.TabIndex = 0;
@@ -226,9 +225,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._tableLayoutPanel.SetColumnSpan(this._regroupementsGroupBox, 2);
             this._regroupementsGroupBox.Controls.Add(this._regroupementsListBox);
-            this._regroupementsGroupBox.Location = new System.Drawing.Point(286, 313);
+            this._regroupementsGroupBox.Location = new System.Drawing.Point(241, 313);
             this._regroupementsGroupBox.Name = "_regroupementsGroupBox";
-            this._regroupementsGroupBox.Size = new System.Drawing.Size(516, 249);
+            this._regroupementsGroupBox.Size = new System.Drawing.Size(567, 249);
             this._regroupementsGroupBox.TabIndex = 6;
             this._regroupementsGroupBox.TabStop = false;
             this._regroupementsGroupBox.Text = "Regroupements";
@@ -239,7 +238,7 @@
             this._regroupementsListBox.FormattingEnabled = true;
             this._regroupementsListBox.Location = new System.Drawing.Point(3, 16);
             this._regroupementsListBox.Name = "_regroupementsListBox";
-            this._regroupementsListBox.Size = new System.Drawing.Size(510, 230);
+            this._regroupementsListBox.Size = new System.Drawing.Size(561, 230);
             this._regroupementsListBox.TabIndex = 3;
             this._regroupementsListBox.SelectedIndexChanged += new System.EventHandler(this._regroupementsListBox_SelectedIndexChanged);
             this._regroupementsListBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this._regroupementsListBox_KeyUp);
@@ -250,10 +249,10 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._tachesGroupBox.Controls.Add(this._tachesListBox);
-            this._tachesGroupBox.Location = new System.Drawing.Point(286, 3);
+            this._tachesGroupBox.Location = new System.Drawing.Point(241, 3);
             this._tachesGroupBox.Name = "_tachesGroupBox";
             this._tableLayoutPanel.SetRowSpan(this._tachesGroupBox, 2);
-            this._tachesGroupBox.Size = new System.Drawing.Size(277, 304);
+            this._tachesGroupBox.Size = new System.Drawing.Size(223, 304);
             this._tachesGroupBox.TabIndex = 1;
             this._tachesGroupBox.TabStop = false;
             this._tachesGroupBox.Text = "Tâches";
@@ -264,7 +263,7 @@
             this._tachesListBox.FormattingEnabled = true;
             this._tachesListBox.Location = new System.Drawing.Point(3, 16);
             this._tachesListBox.Name = "_tachesListBox";
-            this._tachesListBox.Size = new System.Drawing.Size(271, 285);
+            this._tachesListBox.Size = new System.Drawing.Size(217, 285);
             this._tachesListBox.TabIndex = 2;
             this._tachesListBox.SelectedIndexChanged += new System.EventHandler(this._tachesListBox_SelectedIndexChanged);
             this._tachesListBox.DoubleClick += new System.EventHandler(this._tachesListBox_DoubleClick);
@@ -275,10 +274,10 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this._ticketsGroupBox.Controls.Add(this._ticketsListBox);
-            this._ticketsGroupBox.Location = new System.Drawing.Point(569, 3);
+            this._ticketsGroupBox.Location = new System.Drawing.Point(470, 3);
             this._ticketsGroupBox.Name = "_ticketsGroupBox";
             this._tableLayoutPanel.SetRowSpan(this._ticketsGroupBox, 2);
-            this._ticketsGroupBox.Size = new System.Drawing.Size(233, 304);
+            this._ticketsGroupBox.Size = new System.Drawing.Size(338, 304);
             this._ticketsGroupBox.TabIndex = 3;
             this._ticketsGroupBox.TabStop = false;
             this._ticketsGroupBox.Text = "Tickets";
@@ -289,7 +288,7 @@
             this._ticketsListBox.FormattingEnabled = true;
             this._ticketsListBox.Location = new System.Drawing.Point(3, 16);
             this._ticketsListBox.Name = "_ticketsListBox";
-            this._ticketsListBox.Size = new System.Drawing.Size(227, 285);
+            this._ticketsListBox.Size = new System.Drawing.Size(332, 285);
             this._ticketsListBox.TabIndex = 1;
             this._ticketsListBox.SelectedIndexChanged += new System.EventHandler(this._ticketsListBox_SelectedIndexChanged);
             this._ticketsListBox.DoubleClick += new System.EventHandler(this._ticketsListBox_DoubleClick);
@@ -301,7 +300,7 @@
             this._resultatGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this._resultatGroupBox.Location = new System.Drawing.Point(0, 0);
             this._resultatGroupBox.Name = "_resultatGroupBox";
-            this._resultatGroupBox.Size = new System.Drawing.Size(400, 565);
+            this._resultatGroupBox.Size = new System.Drawing.Size(394, 565);
             this._resultatGroupBox.TabIndex = 0;
             this._resultatGroupBox.TabStop = false;
             this._resultatGroupBox.Text = "Résultat";
@@ -309,7 +308,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(322, 536);
+            this.button1.Location = new System.Drawing.Point(316, 536);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -325,7 +324,7 @@
             this._textBox.Multiline = true;
             this._textBox.Name = "_textBox";
             this._textBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this._textBox.Size = new System.Drawing.Size(382, 511);
+            this._textBox.Size = new System.Drawing.Size(376, 511);
             this._textBox.TabIndex = 0;
             this._textBox.WordWrap = false;
             // 

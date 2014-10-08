@@ -50,7 +50,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
         public void AjouterAuRegroupement(GroupeItem groupeItem)
         {
             if (groupeItem == null) return;
-            _modele.AjouterAuRegroupement(groupeItem);
+            AjouterAuRegroupementCeur(groupeItem);
         }
 
         public void AjouterAuRegroupement(TacheItem tacheItem)
@@ -62,7 +62,7 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             }
             else
             {
-                _modele.AjouterAuRegroupement(tacheItem);
+                AjouterAuRegroupementCeur(tacheItem);
             }
         }
 
@@ -75,7 +75,17 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
             }
             else
             {
-                _modele.AjouterAuRegroupement(ticketItem);
+                AjouterAuRegroupementCeur(ticketItem);
+            }
+        }
+
+        private void AjouterAuRegroupementCeur(IInformationItem<IInformationTacheTfs> informationItem)
+        {
+            _modele.AjouterAuRegroupement(informationItem);
+            if (_modele.RegroupementCourant.Count() == 1)
+            {
+                // premier item -> nommage auto
+                DefinirNomRegroupementCourant(informationItem.Libelle);
             }
         }
 

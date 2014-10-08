@@ -174,7 +174,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         {
             CommencerMiseAJour();
 
-            RafraichirListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.Groupes);
+            RafraichirListBox<GroupeItem, IInformationTacheTfs>(_groupesListBox, _modele.Groupes, true);
             RafraichirGroupeSelectionne();
 
             TerminerMiseAJour();
@@ -193,7 +193,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         {
             CommencerMiseAJour();
 
-            RafraichirListBox<TacheItem, IInformationTacheTfs>(_tachesListBox, _modele.Taches);
+            RafraichirListBox<TacheItem, IInformationTacheTfs>(_tachesListBox, _modele.Taches, true);
             RafraichirTacheSelectionnee();
 
             TerminerMiseAJour();
@@ -212,7 +212,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         {
             CommencerMiseAJour();
 
-            RafraichirListBox<TicketItem, IInformationTicketTfs>(_ticketsListBox, _modele.Tickets);
+            RafraichirListBox<TicketItem, IInformationTicketTfs>(_ticketsListBox, _modele.Tickets, true);
             RafraichirTicketSelectionne();
 
             TerminerMiseAJour();
@@ -233,7 +233,7 @@ namespace ImputationH31per.Vue.RapportMensuel
 
             IEnumerable<IInformationItem<IInformationTacheTfs>> items = _modele.RegroupementCourant;
             items = items ?? new IInformationItem<IInformationTacheTfs>[0];
-            RafraichirListBox<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>(_regroupementListBox, items);
+            RafraichirListBox<IInformationItem<IInformationTacheTfs>, IInformationTacheTfs>(_regroupementListBox, items, false);
             RafraichirTicketSelectionne();
 
             TerminerMiseAJour();
@@ -283,7 +283,7 @@ namespace ImputationH31per.Vue.RapportMensuel
         {
             CommencerMiseAJour();
 
-            RafraichirListBox<Regroupement, string>(_regroupementsListBox, _modele.Regroupements);
+            RafraichirListBox<Regroupement, string>(_regroupementsListBox, _modele.Regroupements, false);
 
             TerminerMiseAJour();
         }
@@ -312,7 +312,7 @@ namespace ImputationH31per.Vue.RapportMensuel
                         .Append("  - ")
                         .AppendLine(item.Libelle);
                 }
-#warning TODO ALPHA ALPHA
+                sb.AppendLine(String.Empty);
             }
             _textBox.Text = sb.ToString();
 
@@ -321,14 +321,14 @@ namespace ImputationH31per.Vue.RapportMensuel
 
         #region Utilitaire
 
-        private void RafraichirListBox<TItem, T>(ListBox listBox, IEnumerable<TItem> items)
+        private void RafraichirListBox<TItem, T>(ListBox listBox, IEnumerable<TItem> items, bool estTrier)
             where TItem : class, IItem<T>
         {
             listBox.BeginUpdate();
 
             ListBox.ObjectCollection listBoxCollection = listBox.Items;
             TItem[] nouveauItems = items
-                .OrderBy(i => i.Libelle)
+                .OrderBy(i => estTrier ? i.Libelle : String.Empty)
                 .ToArray();
 
             int ancienIndexItem = 0;
