@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Deploy|x86'">
-    <OutputPath>bin\x86\Deploy\</OutputPath>
+    <OutputPath>bin\Deploy\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -57,6 +57,7 @@
     <Reference Include="Microsoft.TeamFoundation.VersionControl.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,14 +71,20 @@
     <Compile Include="Engine\Env.cs" />
     <Compile Include="Engine\Help.cs" />
     <Compile Include="Engine\Pull.cs" />
-    <Compile Include="Output.cs" />
+    <Compile Include="Util\ActiveDirectoryHelper.cs" />
+    <Compile Include="Util\GitHelper.cs" />
+    <Compile Include="Util\GitLock.cs" />
+    <Compile Include="Util\Output.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\ProcessHelper.cs" />
+    <Compile Include="Util\UserDomainInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="postbuild.bat" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>call "$(ProjectDir)postbuild.bat" "$(ConfigurationName)" "$(TargetPath)"</PostBuildEvent>
