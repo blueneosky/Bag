@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Gitfs")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hager Group")]
+[assembly: AssemblyCompany("NouNours")]
 [assembly: AssemblyProduct("Gitfs")]
-[assembly: AssemblyCopyright("Copyright © Hager Group 2014")]
+[assembly: AssemblyCopyright("Public domain <http://unlicense.org>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

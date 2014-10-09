@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("FastBuildGen")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hager Group")]
+[assembly: AssemblyCompany("NouNours")]
 [assembly: AssemblyProduct("FastBuildGen")]
-[assembly: AssemblyCopyright("Copyright © Hager Group 2013")]
+[assembly: AssemblyCopyright("Public domain <http://unlicense.org>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
