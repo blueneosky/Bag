@@ -49,19 +49,42 @@
     <Compile Include="Common\Extension\ExtensionEnumerable.cs" />
     <Compile Include="Common\Extension\ExtensionEventHandler.cs" />
     <Compile Include="Common\Extension\ExtensionIDictionary.cs" />
+    <Compile Include="Controls\Board\BoardUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Board\BoardUserControl.Designer.cs">
+      <DependentUpon>BoardUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Board\Model\BoardUserControlController.cs" />
+    <Compile Include="Controls\Board\Model\IBoardUserControlModel.cs" />
+    <Compile Include="Controls\Board\Model\ConstIBoardUserControlModel.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Model\ConstMainFormModel.cs" />
+    <Compile Include="Forms\Model\MainFormBoardUserControlModel.cs" />
     <Compile Include="Forms\Model\MainFormController.cs" />
     <Compile Include="Forms\Model\MainFormModel.cs" />
     <Compile Include="Model\BoardModel.cs" />
+    <Compile Include="Model\CellChangedEventArgs.cs" />
+    <Compile Include="Model\DashCell.cs" />
+    <Compile Include="Model\DotCell.cs" />
+    <Compile Include="Model\EnumDash.cs" />
     <Compile Include="Model\IBoardModel.cs" />
+    <Compile Include="Model\ICell.cs" />
+    <Compile Include="Model\NumberCell.cs" />
     <Compile Include="Model\VirtualBoardModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\Board\BoardUserControl.resx">
+      <DependentUpon>BoardUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

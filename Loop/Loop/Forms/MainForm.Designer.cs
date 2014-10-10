@@ -28,12 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this._boardUserControl = new Loop.Controls.Board.BoardUserControl();
+            this.SuspendLayout();
+            // 
+            // _boardUserControl
+            // 
+            this._boardUserControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._boardUserControl.BoardModel = null;
+            this._boardUserControl.Location = new System.Drawing.Point(12, 12);
+            this._boardUserControl.Name = "_boardUserControl";
+            this._boardUserControl.Size = new System.Drawing.Size(521, 515);
+            this._boardUserControl.TabIndex = 0;
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1059, 539);
+            this.Controls.Add(this._boardUserControl);
+            this.Name = "MainForm";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private Controls.Board.BoardUserControl _boardUserControl;
     }
 }
 

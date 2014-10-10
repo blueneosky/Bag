@@ -10,23 +10,25 @@ namespace Loop.Forms.Model
 {
     internal class MainFormModel : INotifyPropertyChanged
     {
+        #region Members
+
         private IBoardModel _boardModel;
+
+        #endregion Members
+
+        #region ctor
 
         public IBoardModel BoardModel
         {
             get { return _boardModel; }
             set
             {
-                if (_boardModel != null) _boardModel.PropertyChanged -= _boardModel_PropertyChanged;
                 _boardModel = value;
-                if (_boardModel != null) _boardModel.PropertyChanged += _boardModel_PropertyChanged;
+                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstMainFormModel.ConstPropertyBoardModel));
             }
         }
 
-        private void _boardModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
+        #endregion ctor
 
         #region INotifyPropertyChanged Membres
 
