@@ -7,6 +7,6 @@ namespace Loop.Model
 {
     public interface ICell
     {
-        int Value { get; }
+        int? Value { get; }
     }
 }

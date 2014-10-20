@@ -9,9 +9,9 @@ namespace Loop.Model
     {
         #region ICell Membres
 
-        public int Value
+        public int? Value
         {
-            get { return 0; }
+            get { return null; }
         }
 
         #endregion ICell Membres

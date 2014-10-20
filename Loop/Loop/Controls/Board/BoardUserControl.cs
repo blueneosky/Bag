@@ -179,7 +179,9 @@ namespace Loop.Controls.Board
             Rectangle bounds = new Rectangle(x, y, ConstNumberZoneSize, ConstNumberZoneSize);
 
             g.FillRectangle(ConstBackgroundBrush, bounds);
-            g.DrawString("" + cell.Value, this.Font, ConstNumberBrush, bounds, ConstNumberStringFormat);
+            int? number = cell.Value;
+            if (number.HasValue)
+                g.DrawString("" + cell.Value, this.Font, ConstNumberBrush, bounds, ConstNumberStringFormat);
         }
 
         private void DrawDashCell(Graphics g, int line, int column, ICell cell)
@@ -207,7 +209,7 @@ namespace Loop.Controls.Board
 
             Rectangle bounds = new Rectangle(x, y, width, height);
 
-            if (cell.Value == 0)
+            if ((cell.Value ?? 0) == 0)
             {
                 // clear
                 g.FillRectangle(ConstBackgroundBrush, bounds);

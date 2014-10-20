@@ -72,7 +72,6 @@
     <Compile Include="Model\CellChangedEventArgs.cs" />
     <Compile Include="Model\DashCell.cs" />
     <Compile Include="Model\DotCell.cs" />
-    <Compile Include="Model\EnumDash.cs" />
     <Compile Include="Model\IBoardModel.cs" />
     <Compile Include="Model\ICell.cs" />
     <Compile Include="Model\NumberCell.cs" />

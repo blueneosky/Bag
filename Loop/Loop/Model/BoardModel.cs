@@ -50,11 +50,11 @@ namespace Loop.Model
                     }
                     else if (dotDashI || dotDashJ)
                     {
-                        cell = new DashCell(EnumDash.Empty);
+                        cell = new DashCell(0);
                     }
                     else
                     {
-                        cell = new NumberCell(0);
+                        cell = new NumberCell(null);
                     }
                     _cells[i, j] = cell;
                 }

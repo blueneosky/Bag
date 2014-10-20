@@ -9,13 +9,13 @@ namespace Loop.Model
     {
         #region Members
 
-        private int _value;
+        private int? _value;
 
         #endregion Members
 
         #region ctor
 
-        public NumberCell(int value)
+        public NumberCell(int? value)
         {
             _value = value;
         }
@@ -24,7 +24,7 @@ namespace Loop.Model
 
         #region ICell Membres
 
-        public int Value
+        public int? Value
         {
             get { return _value; }
             set { _value = value; }
