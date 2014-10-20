@@ -28,7 +28,7 @@ namespace Loop.Model
             {
                 message = "VirtualBoardModel has no proper size !";
             }
-            if (((nbLines % 2) == 1) || ((nbColumns % 2) == 1))
+            if (((nbLines % 2) == 0) || ((nbColumns % 2) == 0))
             {
                 message = "VirtualBoardModel has no proper size !";
             }

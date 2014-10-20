@@ -23,7 +23,7 @@ namespace Loop.Model
         {
             // Test of validity
             string message = null;
-            if (((nbLines % 2) == 1) || ((nbColumns % 2) == 1))
+            if (((nbLines % 2) == 0) || ((nbColumns % 2) == 0))
             {
                 message = "VirtualBoardModel has no proper size !";
             }
@@ -39,16 +39,16 @@ namespace Loop.Model
             _cells = new ICell[_nbLines, _nbColumns];
             for (int i = 0; i < _nbLines; i++)
             {
-                bool dotDashI = (i % 2) == 1;
+                bool dotDashI = (i % 2) == 0;
                 for (int j = 0; j < _nbColumns; j++)
                 {
-                    bool dotDashJ = (j % 2) == 1;
+                    bool dotDashJ = (j % 2) == 0;
                     ICell cell;
                     if (dotDashI && dotDashJ)
                     {
                         cell = new DotCell();
                     }
-                    else if (dotDashI | dotDashJ)
+                    else if (dotDashI || dotDashJ)
                     {
                         cell = new DashCell(EnumDash.Empty);
                     }

@@ -28,18 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this._pictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
             this.SuspendLayout();
+            // 
+            // _pictureBox
+            // 
+            this._pictureBox.Location = new System.Drawing.Point(0, 0);
+            this._pictureBox.Name = "_pictureBox";
+            this._pictureBox.Size = new System.Drawing.Size(160, 175);
+            this._pictureBox.TabIndex = 0;
+            this._pictureBox.TabStop = false;
             // 
             // BoardUserControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._pictureBox);
+            this.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "BoardUserControl";
-            this.Size = new System.Drawing.Size(217, 215);
+            this.Size = new System.Drawing.Size(253, 248);
+            ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox _pictureBox;
     }
 }

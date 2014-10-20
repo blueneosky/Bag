@@ -39,7 +39,7 @@
             this._boardUserControl.BoardModel = null;
             this._boardUserControl.Location = new System.Drawing.Point(12, 12);
             this._boardUserControl.Name = "_boardUserControl";
-            this._boardUserControl.Size = new System.Drawing.Size(521, 515);
+            this._boardUserControl.Size = new System.Drawing.Size(1035, 515);
             this._boardUserControl.TabIndex = 0;
             // 
             // MainForm
