@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Loop.Common.Extension;
 using Loop.Controls.Board.Model;
 using Loop.Model;
 
@@ -14,9 +15,7 @@ namespace Loop.Controls.Board
     {
         #region Constante
 
-        private const int ConstDashSize = 2;
-        private const int ConstDotSize = 6;
-        private const int ConstDashDotZoneSize = 10;
+        private const int ConstDotZoneSize = 10;
         private const int ConstNumberZoneSize = 14;
         private const int ConstBoardMargin = 10;
 
@@ -27,10 +26,12 @@ namespace Loop.Controls.Board
         };
 
         private static readonly Brush ConstBackgroundBrush = Brushes.White;
+        private static readonly Pen ConstBackgroundPen = new Pen(ConstBackgroundBrush);
         private static readonly Pen ConstBorderPen = Pens.BlueViolet;
         private static readonly Brush ConstNumberBrush = Brushes.Black;
         private static readonly Brush ConstDotBrush = Brushes.Black;
         private static readonly Brush ConstDashBrush = Brushes.DarkBlue; // Brushes.Black;
+        private static readonly Pen ConstCrossPen = Pens.Red;
 
         #endregion Constante
 
@@ -174,6 +175,7 @@ namespace Loop.Controls.Board
 
         private void DrawNumberCell(Graphics g, int line, int column, ICell cell)
         {
+            return;
             int x = BoardToScreenTopLeftCellCorner(column);
             int y = BoardToScreenTopLeftCellCorner(line);
             Rectangle bounds = new Rectangle(x, y, ConstNumberZoneSize, ConstNumberZoneSize);
@@ -181,14 +183,17 @@ namespace Loop.Controls.Board
             g.FillRectangle(ConstBackgroundBrush, bounds);
             int? number = cell.Value;
             if (number.HasValue)
-                g.DrawString("" + cell.Value, this.Font, ConstNumberBrush, bounds, ConstNumberStringFormat);
+                g.DrawString("" + number, this.Font, ConstNumberBrush, bounds, ConstNumberStringFormat);
         }
 
         private void DrawDashCell(Graphics g, int line, int column, ICell cell)
         {
-            const int ConstDashDotZoneSize_2 = ConstDashDotZoneSize / 2;
-            const int ConstDashSize_2 = ConstDashSize / 2;
-            const int ConstDashDotNumberSize = ConstDashDotZoneSize + ConstNumberZoneSize;
+            const int ConstDashSize = 3;
+            const int ConstCrossSize = 7;
+            const int ConstDotZoneSize_2 = ConstDotZoneSize / 2;
+            const int ConstCrossSize_2 = ConstCrossSize / 2;
+            const int ConstDashDotNumberSize = ConstDotZoneSize + ConstNumberZoneSize;
+            const int ConstNumberZoneSize_2 = ConstNumberZoneSize / 2;
 
             // vertical or horizontal
             bool dotDashLine = (line % 2) == 0;
@@ -196,50 +201,69 @@ namespace Loop.Controls.Board
             int columnOffset = dotDashLine ? 1 : 0;
 
             // line
-            int x = BoardToScreenTopLeftCellCorner(column - columnOffset) + ConstDashDotZoneSize_2;
-            int y = BoardToScreenTopLeftCellCorner(line - lineOffset) + ConstDashDotZoneSize_2;
-            int width = columnOffset * ConstDashDotNumberSize;
-            int height = lineOffset * ConstDashDotNumberSize;
+            int centerX = BoardToScreenTopLeftCellCorner(column) + (dotDashLine ? ConstNumberZoneSize_2 : ConstDotZoneSize_2);
+            int centerY = BoardToScreenTopLeftCellCorner(line) + (dotDashLine ? ConstDotZoneSize_2 : ConstNumberZoneSize_2);
 
-            // dash (line with size greater than 1 pixel)
-            x -= lineOffset * ConstDashSize_2;
-            y -= columnOffset * ConstDashSize_2;
-            width += lineOffset * ConstDashSize;
-            height += columnOffset * ConstDashSize;
+            // always clear first
+            int dashWidth = dotDashLine ? ConstDashDotNumberSize : ConstDashSize;
+            int dashHeight = dotDashLine ? ConstDashSize : ConstDashDotNumberSize;
+            g.FillCenteredRectangle(ConstBackgroundBrush, centerX, centerY, dashWidth, dashHeight);
+            int crossX1 = centerX - ConstCrossSize_2;
+            int crossX2 = centerX + ConstCrossSize_2;
+            int crossY1 = centerY - ConstCrossSize_2;
+            int crossY2 = centerY + ConstCrossSize_2;
+            g.DrawLine(ConstBackgroundPen, crossX1, crossY1, crossX2, crossY2);
+            g.DrawLine(ConstBackgroundPen, crossX2, crossY1, crossX1, crossY2);
+            g.DrawLine(ConstBackgroundPen, crossX1, crossY1 + 1, crossX2, crossY2 + 1);
+            g.DrawLine(ConstBackgroundPen, crossX2, crossY1 + 1, crossX1, crossY2 + 1);
 
-            Rectangle bounds = new Rectangle(x, y, width, height);
-
-            if ((cell.Value ?? 0) == 0)
+            switch ((EnumDash)(cell.Value ?? 0))
             {
-                // clear
-                g.FillRectangle(ConstBackgroundBrush, bounds);
-                DrawDotCell(g, line + lineOffset, column + columnOffset);
-                DrawDotCell(g, line - lineOffset, column - columnOffset);
+                case EnumDash.Dash:
+                    // draw dash
+                    g.FillCenteredRectangle(ConstDashBrush, centerX, centerY, dashWidth, dashHeight);
+                    break;
+
+                case EnumDash.Cross:
+                    // draw cross
+                    g.DrawLine(ConstCrossPen, crossX1, crossY1, crossX2, crossY2);
+                    g.DrawLine(ConstCrossPen, crossX2, crossY1, crossX1, crossY2);
+                    g.DrawLine(ConstCrossPen, crossX1, crossY1 + 1, crossX2, crossY2 + 1);
+                    g.DrawLine(ConstCrossPen, crossX2, crossY1 + 1, crossX1, crossY2 + 1);
+
+                    break;
+
+                case EnumDash.Empty:
+                default:
+                    // clear - nothing
+                    break;
             }
-            else
-            {
-                // draw dash
-                g.FillRectangle(ConstDashBrush, bounds);
-                DrawDotCell(g, line + lineOffset, column + columnOffset);
-                DrawDotCell(g, line - lineOffset, column - columnOffset);
-            }
+
+            // always refresh corresponding dot
+            DrawDotCell(g, line + lineOffset, column + columnOffset);
+            DrawDotCell(g, line - lineOffset, column - columnOffset);
         }
 
         private void DrawDotCell(Graphics g, int line, int column)
         {
-            const int ConstDashDotZoneSize_2 = ConstDashDotZoneSize / 2;
-            const int ConstDotSize_2 = ConstDotSize / 2;
+            const int ConstDashDotZoneSize_2 = ConstDotZoneSize / 2;
 
-            int x = BoardToScreenTopLeftCellCorner(column) + ConstDashDotZoneSize_2 - ConstDotSize_2;
-            int y = BoardToScreenTopLeftCellCorner(line) + ConstDashDotZoneSize_2 - ConstDotSize_2;
-            Rectangle bounds = new Rectangle(x, y, ConstDotSize, ConstDotSize);
+            int centerX = BoardToScreenTopLeftCellCorner(column) + ConstDashDotZoneSize_2;
+            int centerY = BoardToScreenTopLeftCellCorner(line) + ConstDashDotZoneSize_2;
+            Point center = new Point(centerX, centerY);
 
-            g.FillRectangle(ConstDotBrush, bounds);
+            Size sizeV = new System.Drawing.Size(3, 7);
+            Size sizeH = new System.Drawing.Size(7, 3);
+            Size sizeC = new System.Drawing.Size(5, 5);
+
+            g.FillCenteredRectangle(ConstDotBrush, center, sizeV);
+            g.FillCenteredRectangle(ConstDotBrush, center, sizeH);
+            g.FillCenteredRectangle(ConstDotBrush, center, sizeC);
         }
 
         private static int BoardToScreenTopLeftCellCorner(int i)
         {
-            int result = ConstBoardMargin + (i / 2) * (ConstDashDotZoneSize + ConstNumberZoneSize) + (i % 2) * ConstDashDotZoneSize;
+            int result = ConstBoardMargin + (i / 2) * (ConstDotZoneSize + ConstNumberZoneSize) + (i % 2) * ConstDotZoneSize;
             return result;
         }
 

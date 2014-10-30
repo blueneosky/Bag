@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Common\Extension\ExtensionEnumerable.cs" />
     <Compile Include="Common\Extension\ExtensionEventHandler.cs" />
+    <Compile Include="Common\Extension\ExtensionGraphics.cs" />
     <Compile Include="Common\Extension\ExtensionIDictionary.cs" />
     <Compile Include="Controls\Board\BoardUserControl.cs">
       <SubType>UserControl</SubType>

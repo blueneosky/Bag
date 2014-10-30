@@ -50,7 +50,8 @@ namespace Loop.Model
                     }
                     else if (dotDashI || dotDashJ)
                     {
-                        cell = new DashCell(EnumDash.Empty);
+                        //cell = new DashCell(EnumDash.Empty);
+                        cell = new DashCell(dotDashI ? EnumDash.Dash : EnumDash.Cross);
                     }
                     else
                     {
