@@ -9,15 +9,15 @@ namespace Loop.Model
     {
         #region Members
 
-        private int _withDash;
+        private EnumDash _dash;
 
         #endregion Members
 
         #region ctor
 
-        public DashCell(int withDash)
+        public DashCell(EnumDash dash)
         {
-            _withDash = withDash;
+            _dash = dash;
         }
 
         #endregion ctor
@@ -26,7 +26,7 @@ namespace Loop.Model
 
         public int? Value
         {
-            get { return _withDash; }
+            get { return (int)_dash; }
         }
 
         #endregion ICell Membres
