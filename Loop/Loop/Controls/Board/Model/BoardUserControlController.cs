@@ -24,7 +24,10 @@ namespace Loop.Controls.Board.Model
 
         #region Methodes
 
-        // TODO
+        public void SetValue(int line, int column, int? value)
+        {
+            _model.BoardModel.SetValue(line, column, value);
+        }
 
         #endregion Methodes
     }

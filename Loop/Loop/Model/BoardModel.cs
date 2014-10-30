@@ -50,8 +50,7 @@ namespace Loop.Model
                     }
                     else if (dotDashI || dotDashJ)
                     {
-                        //cell = new DashCell(EnumDash.Empty);
-                        cell = new DashCell(dotDashI ? EnumDash.Dash : EnumDash.Cross);
+                        cell = new DashCell(EnumDash.Empty);
                     }
                     else
                     {
@@ -98,5 +97,29 @@ namespace Loop.Model
         }
 
         #endregion Events
+
+        #region Methods
+
+        public void SetValue(int line, int column, int? value)
+        {
+            bool dotDashLine = (line % 2) == 0;
+            bool dotDashColumn = (column % 2) == 0;
+            ICell cell;
+            if (dotDashLine && dotDashColumn)
+            {
+                cell = new DotCell();
+            }
+            else if (dotDashLine || dotDashColumn)
+            {
+                cell = new DashCell((EnumDash)value);
+            }
+            else
+            {
+                cell = new NumberCell(value);
+            }
+            this[line, column] = cell;
+        }
+
+        #endregion Methods
     }
 }

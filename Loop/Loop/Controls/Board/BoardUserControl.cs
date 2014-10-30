@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Loop.Common.Extension;
 using Loop.Controls.Board.Model;
 using Loop.Model;
+using System.Diagnostics;
 
 namespace Loop.Controls.Board
 {
@@ -55,7 +56,7 @@ namespace Loop.Controls.Board
             _controller = controller;
 
             Disposed += BoardUserControl_Disposed;
-
+            _pictureBox.MouseClick += _pictureBox_MouseClick;
             _model.PropertyChanged += _model_PropertyChanged;
 
             RefreshModel();
@@ -77,13 +78,53 @@ namespace Loop.Controls.Board
             get { return _boardModel; }
             set
             {
-                if (_boardModel != null) _boardModel.CellChanged += _boardModel_CellChanged;
-                _boardModel = value;
                 if (_boardModel != null) _boardModel.CellChanged -= _boardModel_CellChanged;
+                _boardModel = value;
+                if (_boardModel != null) _boardModel.CellChanged += _boardModel_CellChanged;
             }
         }
 
         #endregion Properties
+
+        #region UI Events
+
+
+        void _pictureBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            int? column = ScreenToBoard(e.X);
+            int? line = ScreenToBoard(e.Y);
+            if (column == null || line == null)
+                return;
+
+            if (line >= BoardModel.NbLines || column >= BoardModel.NbColumns)
+                return; // out of the board
+
+            bool dotDashLine = (line % 2) == 0;
+            bool dotDashColumn = (column % 2) == 0;
+            if (dotDashLine == dotDashColumn)
+                return; // not a dash/cross index
+
+            switch (e.Button)
+            {
+                case MouseButtons.Left:
+                    _controller.SetValue(line.Value, column.Value, (int?)(((EnumDash)(BoardModel[line.Value, column.Value].Value)) == EnumDash.Dash ? EnumDash.Empty : EnumDash.Dash));
+                    break;
+
+                case MouseButtons.Right:
+                    _controller.SetValue(line.Value, column.Value, (int?)(((EnumDash)(BoardModel[line.Value, column.Value].Value)) == EnumDash.Cross ? EnumDash.Empty : EnumDash.Cross));
+                    break;
+
+                case MouseButtons.Middle:
+                case MouseButtons.None:
+                case MouseButtons.XButton1:
+                case MouseButtons.XButton2:
+                default:
+                    break;
+            }
+        }
+
+
+        #endregion Overrides
 
         #region Model events
 
@@ -261,12 +302,35 @@ namespace Loop.Controls.Board
             g.FillCenteredRectangle(ConstDotBrush, center, sizeC);
         }
 
+
+
+        #endregion Refreshes
+
+        #region Utilities
+
         private static int BoardToScreenTopLeftCellCorner(int i)
         {
-            int result = ConstBoardMargin + (i / 2) * (ConstDotZoneSize + ConstNumberZoneSize) + (i % 2) * ConstDotZoneSize;
+            const int ConstDashDotNumberSize = ConstDotZoneSize + ConstNumberZoneSize;
+
+            int result = ConstBoardMargin + (i / 2) * (ConstDashDotNumberSize) + (i % 2) * ConstDotZoneSize;
+
             return result;
         }
 
-        #endregion Refreshes
+        private int? ScreenToBoard(int pos)
+        {
+            const int ConstDashDotNumberSize = ConstDotZoneSize + ConstNumberZoneSize;
+
+            if (BoardModel == null)
+                return null;
+
+            pos -= ConstBoardMargin;
+            int iDotNumber = pos / ConstDashDotNumberSize;
+            int offsetI = (pos % ConstDashDotNumberSize) > ConstDotZoneSize ? 1 : 0;
+            int result = iDotNumber * 2 + offsetI;
+
+            return result;
+        }
+        #endregion
     }
 }

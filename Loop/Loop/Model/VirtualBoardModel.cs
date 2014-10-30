@@ -101,5 +101,16 @@ namespace Loop.Model
         }
 
         #endregion Events
+
+        #region Methods
+
+        public void SetValue(int line, int column, int? value)
+        {
+            int sLine = VirtualToSourceLine(line);
+            int sColumn = VirtualToSourceColumn(column);
+            _source.SetValue(sLine, sColumn, value);
+        }
+
+        #endregion Methods
     }
 }

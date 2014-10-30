@@ -14,5 +14,7 @@ namespace Loop.Model
         int NbColumns { get; }
 
         event EventHandler<CellChangedEventArgs> CellChanged;
+
+        void SetValue(int line, int column, int? value);
     }
 }
