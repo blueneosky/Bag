@@ -8,7 +8,6 @@ using System.Windows.Forms;
 using Loop.Common.Extension;
 using Loop.Controls.Board.Model;
 using Loop.Model;
-using System.Diagnostics;
 
 namespace Loop.Controls.Board
 {
@@ -41,6 +40,9 @@ namespace Loop.Controls.Board
         private IBoardUserControlModel _model;
         private BoardUserControlController _controller;
 
+        private IBoardModel _boardModel;
+        private bool _readOnly;
+
         #endregion Members
 
         #region ctor
@@ -56,7 +58,9 @@ namespace Loop.Controls.Board
             _controller = controller;
 
             Disposed += BoardUserControl_Disposed;
-            _pictureBox.MouseClick += _pictureBox_MouseClick;
+            _pictureBox.MouseDown += _pictureBox_MouseDown;
+            _pictureBox.MouseUp += _pictureBox_MouseUp;
+            _pictureBox.MouseMove += _pictureBox_MouseMove;
             _model.PropertyChanged += _model_PropertyChanged;
 
             RefreshModel();
@@ -71,8 +75,6 @@ namespace Loop.Controls.Board
 
         #region Properties
 
-        private IBoardModel _boardModel;
-
         public IBoardModel BoardModel
         {
             get { return _boardModel; }
@@ -84,37 +86,39 @@ namespace Loop.Controls.Board
             }
         }
 
+        public bool ReadOnly
+        {
+            get { return _readOnly; }
+            set { _readOnly = value; }
+        }
+
         #endregion Properties
 
         #region UI Events
 
-
-        void _pictureBox_MouseClick(object sender, MouseEventArgs e)
+        private void _pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            int? column = ScreenToBoard(e.X);
-            int? line = ScreenToBoard(e.Y);
-            if (column == null || line == null)
+            if (ReadOnly)
                 return;
 
-            if (line >= BoardModel.NbLines || column >= BoardModel.NbColumns)
-                return; // out of the board
-
-            bool dotDashLine = (line % 2) == 0;
-            bool dotDashColumn = (column % 2) == 0;
-            if (dotDashLine == dotDashColumn)
-                return; // not a dash/cross index
+            int line, column;
+            if (false == ScreenToBoard(e.X, e.Y, out line, out column))
+                return;
 
             switch (e.Button)
             {
                 case MouseButtons.Left:
-                    _controller.SetValue(line.Value, column.Value, (int?)(((EnumDash)(BoardModel[line.Value, column.Value].Value)) == EnumDash.Dash ? EnumDash.Empty : EnumDash.Dash));
+                    _controller.BeginSetOrInvertDashDot(line, column, EnumDash.Dash);
                     break;
 
                 case MouseButtons.Right:
-                    _controller.SetValue(line.Value, column.Value, (int?)(((EnumDash)(BoardModel[line.Value, column.Value].Value)) == EnumDash.Cross ? EnumDash.Empty : EnumDash.Cross));
+                    _controller.BeginSetOrInvertDashDot(line, column, EnumDash.Cross);
                     break;
 
                 case MouseButtons.Middle:
+                    _controller.BeginSetOrInvertDashDot(line, column, EnumDash.Empty);
+                    break;
+
                 case MouseButtons.None:
                 case MouseButtons.XButton1:
                 case MouseButtons.XButton2:
@@ -123,8 +127,27 @@ namespace Loop.Controls.Board
             }
         }
 
+        private void _pictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (ReadOnly)
+                return;
 
-        #endregion Overrides
+            _controller.EndSetOrInvertDashDot();
+        }
+
+        private void _pictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (ReadOnly)
+                return;
+
+            int line, column;
+            if (false == ScreenToBoard(e.X, e.Y, out line, out column))
+                return;
+
+            _controller.UpdateSetOrInvertDashDot(line, column);
+        }
+
+        #endregion UI Events
 
         #region Model events
 
@@ -302,8 +325,6 @@ namespace Loop.Controls.Board
             g.FillCenteredRectangle(ConstDotBrush, center, sizeC);
         }
 
-
-
         #endregion Refreshes
 
         #region Utilities
@@ -317,12 +338,9 @@ namespace Loop.Controls.Board
             return result;
         }
 
-        private int? ScreenToBoard(int pos)
+        private static int? ScreenToBoard(int pos)
         {
             const int ConstDashDotNumberSize = ConstDotZoneSize + ConstNumberZoneSize;
-
-            if (BoardModel == null)
-                return null;
 
             pos -= ConstBoardMargin;
             int iDotNumber = pos / ConstDashDotNumberSize;
@@ -331,6 +349,32 @@ namespace Loop.Controls.Board
 
             return result;
         }
-        #endregion
+
+        private bool ScreenToBoard(int x, int y, out int line, out int column)
+        {
+            line = -1;
+            column = -1;
+
+            if (BoardModel == null)
+                return false;
+
+            int? stbLine = ScreenToBoard(y);
+            if (stbLine == null
+                || stbLine < 0
+                || stbLine >= BoardModel.NbLines)
+                return false;
+            line = stbLine.Value;
+
+            int? stbColumn = ScreenToBoard(x);
+            if (stbColumn == null
+                || stbColumn < 0
+                || stbColumn >= _boardModel.NbColumns)
+                return false;
+            column = stbColumn.Value;
+
+            return true;
+        }
+
+        #endregion Utilities
     }
 }
