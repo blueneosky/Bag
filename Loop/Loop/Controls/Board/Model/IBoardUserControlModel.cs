@@ -10,5 +10,7 @@ namespace Loop.Controls.Board.Model
     public interface IBoardUserControlModel : INotifyPropertyChanged
     {
         IBoardModel BoardModel { get; }
+
+        bool ReadOnly { get; }
     }
 }

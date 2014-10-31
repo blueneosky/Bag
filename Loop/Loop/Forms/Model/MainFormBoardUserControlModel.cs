@@ -15,6 +15,8 @@ namespace Loop.Forms.Model
 
         private readonly MainFormModel _model;
 
+        private bool _readOnly;
+
         #endregion Members
 
         #region ctor
@@ -55,6 +57,12 @@ namespace Loop.Forms.Model
         public IBoardModel BoardModel
         {
             get { return _model.BoardModel; }
+        }
+
+        public bool ReadOnly
+        {
+            get { return _readOnly; }
+            set { _readOnly = value; }
         }
 
         #endregion IBoardUserControlModel Membres

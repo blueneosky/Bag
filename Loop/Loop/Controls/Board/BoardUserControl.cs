@@ -41,7 +41,6 @@ namespace Loop.Controls.Board
         private BoardUserControlController _controller;
 
         private IBoardModel _boardModel;
-        private bool _readOnly;
 
         #endregion Members
 
@@ -86,11 +85,7 @@ namespace Loop.Controls.Board
             }
         }
 
-        public bool ReadOnly
-        {
-            get { return _readOnly; }
-            set { _readOnly = value; }
-        }
+      
 
         #endregion Properties
 
@@ -98,7 +93,7 @@ namespace Loop.Controls.Board
 
         private void _pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (ReadOnly)
+            if (_model.ReadOnly)
                 return;
 
             int line, column;
@@ -129,7 +124,7 @@ namespace Loop.Controls.Board
 
         private void _pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (ReadOnly)
+            if (_model.ReadOnly)
                 return;
 
             _controller.EndSetOrInvertDashDot();
@@ -137,7 +132,7 @@ namespace Loop.Controls.Board
 
         private void _pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (ReadOnly)
+            if (_model.ReadOnly)
                 return;
 
             int line, column;
