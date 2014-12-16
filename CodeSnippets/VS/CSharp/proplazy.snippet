@@ -45,7 +45,7 @@
 				Func<$type$> valueFactory = $value$;
                 $field$ = new Lazy<$type$>(valueFactory);
             }
-            return $field$;
+            return $field$.Value;
         }
     }
     $end$]]>
