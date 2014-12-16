@@ -79,7 +79,7 @@ namespace FastBuildGen.BusinessModel
         public const string ConstValueMSBuildLogFileDefaultValue = "fastbuild.log";
         public const string ConstValuePathBinDefaultValue = @"bin\x86";
         public const string ConstValuePathMeasureBuildLogFileDefaultValue = @"measure_build.log.txt";
-        public const string ConstValueRelativePathVcvarsallBatchFileDefaultValue = @"\Microsoft Visual Studio 10.0\VC\vcvarsall.bat";
+        public const string ConstValueRelativePathVcvarsallBatchFileDefaultValue = @"\Microsoft Visual Studio 12.0\VC\vcvarsall.bat";
         public const string ConstValueSGenPlusConfigFilePathDefaultValue = "SgenPlusListeExclusion.txt";
         public const string ConstValueVersionNumberDefaultValue = "1.0";
 
