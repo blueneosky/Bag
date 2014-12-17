@@ -15,7 +15,6 @@ using BatchGen.BatchNode.Sub;
 using BatchGen.Gen;
 using FastBuildGen.BatchNode;
 using FastBuildGen.BusinessModel;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Forms
 {
@@ -158,7 +157,6 @@ namespace FastBuildGen.Forms
                 , BatchGen.BatchNode.ExternCmd.EnumPlatform.Default
                 , null
                 , null
-                , null
                 ));
             file.Add(new MSBuildCmd(literalMSBuildCli0));
             file.Add(nop);
@@ -176,7 +174,6 @@ namespace FastBuildGen.Forms
                 , FalseValueExpression.ValueExpression
                 , FalseValueExpression.ValueExpression
                 , BatchGen.BatchNode.ExternCmd.EnumPlatform.Default
-                , null
                 , null
                 , null
                 ));
@@ -200,10 +197,6 @@ namespace FastBuildGen.Forms
                     new LiteralBatch("logActivated").LiteralBoolean
                     , new ValueExpression("my_msbuild_log.txt")
                     )
-                , new Tuple<BooleanExpressionBase, BatchExpressionBase>(
-                    new LiteralBatch("logActivated").LiteralBoolean
-                    , new ValueExpression(@"c:\temp\build_path\")
-                    )
                 , new[] { new Tuple<BooleanExpressionBase, BatchExpressionBase>(new LiteralBatch("myTarget").LiteralBoolean, new ValueExpression("MyTarget")) }
                 ));
             file.Add(new MSBuildCmd(literalMSBuildCli2));
@@ -226,7 +219,6 @@ namespace FastBuildGen.Forms
                 , literalBooleanMSBuildCli
                 , BatchGen.BatchNode.ExternCmd.EnumPlatform.X86
                 , new Tuple<BooleanExpressionBase, BatchExpressionBase>(new LiteralBatch("withLog").LiteralBoolean, literalValueMSBuildCli)
-                , new Tuple<BooleanExpressionBase, BatchExpressionBase>(new LiteralBatch("withOutput").LiteralBoolean, literalValueMSBuildCli)
                 , new[] { new Tuple<BooleanExpressionBase, BatchExpressionBase>(new LiteralBatch("myTarget").LiteralBoolean, new ValueExpression("MyTarget")) }
                 ));
             file.Add(new MSBuildCmd(literalMSBuildCli3));
@@ -266,8 +258,7 @@ namespace FastBuildGen.Forms
         {
             bool withEchoOff = _withEchoOff.Checked;
 
-            FastBuildModel model = new FastBuildModel();
-            model.Initialize();
+            FBModel model = new FBModel();
 
             // configuration
             model.WithEchoOff = withEchoOff;

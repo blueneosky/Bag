@@ -8,8 +8,8 @@ namespace FastBuildGen.BusinessModel
 {
     internal class FBMacroSolutionTarget : FBTarget
     {
-        public FBMacroSolutionTarget(Guid id)
-            : base(id)
+        public FBMacroSolutionTarget(Guid id, EnumFBTargetReadonly readOnly)
+            : base(id, readOnly)
         {
             SolutionTargetIds = new ObservableCollection<Guid> { };
         }

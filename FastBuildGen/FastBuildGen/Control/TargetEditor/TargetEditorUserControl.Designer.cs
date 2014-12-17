@@ -3,14 +3,14 @@
     partial class TargetEditorUserControl
     {
         /// <summary> 
-        /// Variable nécessaire au concepteur.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary> 
-        /// Nettoyage des ressources utilisées.
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true si les ressources managées doivent être supprimées ; sinon, false.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,150 +20,198 @@
             base.Dispose(disposing);
         }
 
-        #region Code généré par le Concepteur de composants
+
+        #region Component Designer generated code
 
         /// <summary> 
-        /// Méthode requise pour la prise en charge du concepteur - ne modifiez pas 
-        /// le contenu de cette méthode avec l'éditeur de code.
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
-            this._splitContainer = new System.Windows.Forms.SplitContainer();
-            this._availableGroupBox = new System.Windows.Forms.GroupBox();
-            this._availablePanel = new System.Windows.Forms.Panel();
-            this._availableListBox = new System.Windows.Forms.ListBox();
-            this._modulesGroupBox = new System.Windows.Forms.GroupBox();
-            this._modulesPanel = new System.Windows.Forms.Panel();
-            this._modulesListBox = new System.Windows.Forms.ListBox();
-            this._pdEditorUserControl = new FastBuildGen.Control.PDEditor.PDEditorUserControl();
-            ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
-            this._splitContainer.Panel1.SuspendLayout();
-            this._splitContainer.Panel2.SuspendLayout();
-            this._splitContainer.SuspendLayout();
-            this._availableGroupBox.SuspendLayout();
-            this._availablePanel.SuspendLayout();
-            this._modulesGroupBox.SuspendLayout();
-            this._modulesPanel.SuspendLayout();
+            this.components = new System.ComponentModel.Container();
+            this._keywordLabel = new System.Windows.Forms.Label();
+            this._keywordTextBox = new System.Windows.Forms.TextBox();
+            this._helpTextTextBox = new System.Windows.Forms.TextBox();
+            this._switchKeywordTextBox = new System.Windows.Forms.TextBox();
+            this._paramVarNameTextBox = new System.Windows.Forms.TextBox();
+            this._varNameTextBox = new System.Windows.Forms.TextBox();
+            this._helpTextLabel = new System.Windows.Forms.Label();
+            this._switchKeywordLabel = new System.Windows.Forms.Label();
+            this._paramVarNameLabel = new System.Windows.Forms.Label();
+            this._varNameLabel = new System.Windows.Forms.Label();
+            this._tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this._errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this._tableLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
-            // _splitContainer
+            // _keywordLabel
             // 
-            this._splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._splitContainer.Location = new System.Drawing.Point(0, 186);
-            this._splitContainer.Name = "_splitContainer";
+            this._keywordLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this._keywordLabel.AutoSize = true;
+            this._keywordLabel.Location = new System.Drawing.Point(3, 7);
+            this._keywordLabel.Name = "_keywordLabel";
+            this._keywordLabel.Size = new System.Drawing.Size(48, 13);
+            this._keywordLabel.TabIndex = 0;
+            this._keywordLabel.Text = "Keyword";
             // 
-            // _splitContainer.Panel1
+            // _keywordTextBox
             // 
-            this._splitContainer.Panel1.Controls.Add(this._availableGroupBox);
-            // 
-            // _splitContainer.Panel2
-            // 
-            this._splitContainer.Panel2.Controls.Add(this._modulesGroupBox);
-            this._splitContainer.Size = new System.Drawing.Size(698, 434);
-            this._splitContainer.SplitterDistance = 344;
-            this._splitContainer.TabIndex = 1;
-            // 
-            // _availableGroupBox
-            // 
-            this._availableGroupBox.Controls.Add(this._availablePanel);
-            this._availableGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._availableGroupBox.Location = new System.Drawing.Point(0, 0);
-            this._availableGroupBox.Name = "_availableGroupBox";
-            this._availableGroupBox.Size = new System.Drawing.Size(344, 434);
-            this._availableGroupBox.TabIndex = 0;
-            this._availableGroupBox.TabStop = false;
-            this._availableGroupBox.Text = "Available modules";
-            // 
-            // _availablePanel
-            // 
-            this._availablePanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this._keywordTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this._availablePanel.Controls.Add(this._availableListBox);
-            this._availablePanel.Location = new System.Drawing.Point(6, 19);
-            this._availablePanel.Name = "_availablePanel";
-            this._availablePanel.Size = new System.Drawing.Size(332, 409);
-            this._availablePanel.TabIndex = 1;
+            this._keywordTextBox.Location = new System.Drawing.Point(103, 3);
+            this._keywordTextBox.Name = "_keywordTextBox";
+            this._keywordTextBox.Size = new System.Drawing.Size(517, 20);
+            this._keywordTextBox.TabIndex = 1;
+            this._keywordTextBox.Validating += new System.ComponentModel.CancelEventHandler(this._keywordTextBox_Validating);
             // 
-            // _availableListBox
+            // _helpTextTextBox
             // 
-            this._availableListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._availableListBox.FormattingEnabled = true;
-            this._availableListBox.Location = new System.Drawing.Point(0, 0);
-            this._availableListBox.Name = "_availableListBox";
-            this._availableListBox.Size = new System.Drawing.Size(332, 409);
-            this._availableListBox.TabIndex = 0;
-            this._availableListBox.DoubleClick += new System.EventHandler(this._availableListBox_DoubleClick);
-            // 
-            // _modulesGroupBox
-            // 
-            this._modulesGroupBox.Controls.Add(this._modulesPanel);
-            this._modulesGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._modulesGroupBox.Location = new System.Drawing.Point(0, 0);
-            this._modulesGroupBox.Name = "_modulesGroupBox";
-            this._modulesGroupBox.Size = new System.Drawing.Size(350, 434);
-            this._modulesGroupBox.TabIndex = 0;
-            this._modulesGroupBox.TabStop = false;
-            this._modulesGroupBox.Text = "Target\'s modules";
-            // 
-            // _modulesPanel
-            // 
-            this._modulesPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this._helpTextTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this._modulesPanel.Controls.Add(this._modulesListBox);
-            this._modulesPanel.Location = new System.Drawing.Point(6, 19);
-            this._modulesPanel.Name = "_modulesPanel";
-            this._modulesPanel.Size = new System.Drawing.Size(338, 409);
-            this._modulesPanel.TabIndex = 1;
+            this._helpTextTextBox.Location = new System.Drawing.Point(103, 31);
+            this._helpTextTextBox.Multiline = true;
+            this._helpTextTextBox.Name = "_helpTextTextBox";
+            this._helpTextTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this._helpTextTextBox.Size = new System.Drawing.Size(517, 36);
+            this._helpTextTextBox.TabIndex = 4;
+            this._helpTextTextBox.Validating += new System.ComponentModel.CancelEventHandler(this._helpTextTextBox_Validating);
             // 
-            // _modulesListBox
+            // _switchKeywordTextBox
             // 
-            this._modulesListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._modulesListBox.FormattingEnabled = true;
-            this._modulesListBox.Location = new System.Drawing.Point(0, 0);
-            this._modulesListBox.Name = "_modulesListBox";
-            this._modulesListBox.Size = new System.Drawing.Size(338, 409);
-            this._modulesListBox.TabIndex = 0;
-            this._modulesListBox.DoubleClick += new System.EventHandler(this._modulesListBox_DoubleClick);
+            this._switchKeywordTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._switchKeywordTextBox.Location = new System.Drawing.Point(103, 73);
+            this._switchKeywordTextBox.Name = "_switchKeywordTextBox";
+            this._switchKeywordTextBox.ReadOnly = true;
+            this._switchKeywordTextBox.Size = new System.Drawing.Size(517, 20);
+            this._switchKeywordTextBox.TabIndex = 5;
             // 
-            // _pdEditorUserControl
+            // _paramVarNameTextBox
             // 
-            this._pdEditorUserControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this._pdEditorUserControl.Location = new System.Drawing.Point(0, 0);
-            this._pdEditorUserControl.Name = "_pdEditorUserControl";
-            this._pdEditorUserControl.Size = new System.Drawing.Size(698, 186);
-            this._pdEditorUserControl.TabIndex = 0;
+            this._paramVarNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._paramVarNameTextBox.Location = new System.Drawing.Point(103, 101);
+            this._paramVarNameTextBox.Name = "_paramVarNameTextBox";
+            this._paramVarNameTextBox.ReadOnly = true;
+            this._paramVarNameTextBox.Size = new System.Drawing.Size(517, 20);
+            this._paramVarNameTextBox.TabIndex = 6;
+            // 
+            // _varNameTextBox
+            // 
+            this._varNameTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._varNameTextBox.Location = new System.Drawing.Point(103, 129);
+            this._varNameTextBox.Name = "_varNameTextBox";
+            this._varNameTextBox.ReadOnly = true;
+            this._varNameTextBox.Size = new System.Drawing.Size(517, 20);
+            this._varNameTextBox.TabIndex = 7;
+            // 
+            // _helpTextLabel
+            // 
+            this._helpTextLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this._helpTextLabel.AutoSize = true;
+            this._helpTextLabel.Location = new System.Drawing.Point(3, 42);
+            this._helpTextLabel.Name = "_helpTextLabel";
+            this._helpTextLabel.Size = new System.Drawing.Size(49, 13);
+            this._helpTextLabel.TabIndex = 8;
+            this._helpTextLabel.Text = "Help text";
+            // 
+            // _switchKeywordLabel
+            // 
+            this._switchKeywordLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this._switchKeywordLabel.AutoSize = true;
+            this._switchKeywordLabel.Location = new System.Drawing.Point(3, 77);
+            this._switchKeywordLabel.Name = "_switchKeywordLabel";
+            this._switchKeywordLabel.Size = new System.Drawing.Size(82, 13);
+            this._switchKeywordLabel.TabIndex = 9;
+            this._switchKeywordLabel.Text = "Switch keyword";
+            // 
+            // _paramVarNameLabel
+            // 
+            this._paramVarNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this._paramVarNameLabel.AutoSize = true;
+            this._paramVarNameLabel.Location = new System.Drawing.Point(3, 105);
+            this._paramVarNameLabel.Name = "_paramVarNameLabel";
+            this._paramVarNameLabel.Size = new System.Drawing.Size(84, 13);
+            this._paramVarNameLabel.TabIndex = 10;
+            this._paramVarNameLabel.Text = "Param var name";
+            // 
+            // _varNameLabel
+            // 
+            this._varNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this._varNameLabel.AutoSize = true;
+            this._varNameLabel.Location = new System.Drawing.Point(3, 133);
+            this._varNameLabel.Name = "_varNameLabel";
+            this._varNameLabel.Size = new System.Drawing.Size(52, 13);
+            this._varNameLabel.TabIndex = 11;
+            this._varNameLabel.Text = "Var name";
+            // 
+            // _tableLayoutPanel
+            // 
+            this._tableLayoutPanel.ColumnCount = 2;
+            this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this._tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._tableLayoutPanel.Controls.Add(this._keywordTextBox, 1, 0);
+            this._tableLayoutPanel.Controls.Add(this._varNameTextBox, 1, 4);
+            this._tableLayoutPanel.Controls.Add(this._varNameLabel, 0, 4);
+            this._tableLayoutPanel.Controls.Add(this._paramVarNameTextBox, 1, 3);
+            this._tableLayoutPanel.Controls.Add(this._keywordLabel, 0, 0);
+            this._tableLayoutPanel.Controls.Add(this._switchKeywordTextBox, 1, 2);
+            this._tableLayoutPanel.Controls.Add(this._paramVarNameLabel, 0, 3);
+            this._tableLayoutPanel.Controls.Add(this._switchKeywordLabel, 0, 2);
+            this._tableLayoutPanel.Controls.Add(this._helpTextLabel, 0, 1);
+            this._tableLayoutPanel.Controls.Add(this._helpTextTextBox, 1, 1);
+            this._tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this._tableLayoutPanel.Name = "_tableLayoutPanel";
+            this._tableLayoutPanel.RowCount = 6;
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 28F));
+            this._tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._tableLayoutPanel.Size = new System.Drawing.Size(623, 242);
+            this._tableLayoutPanel.TabIndex = 12;
+            // 
+            // _errorProvider
+            // 
+            this._errorProvider.ContainerControl = this;
             // 
             // TargetEditorUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this._splitContainer);
-            this.Controls.Add(this._pdEditorUserControl);
+            this.Controls.Add(this._tableLayoutPanel);
             this.Name = "TargetEditorUserControl";
-            this.Size = new System.Drawing.Size(698, 620);
-            this._splitContainer.Panel1.ResumeLayout(false);
-            this._splitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).EndInit();
-            this._splitContainer.ResumeLayout(false);
-            this._availableGroupBox.ResumeLayout(false);
-            this._availablePanel.ResumeLayout(false);
-            this._modulesGroupBox.ResumeLayout(false);
-            this._modulesPanel.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(623, 242);
+            this._tableLayoutPanel.ResumeLayout(false);
+            this._tableLayoutPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._errorProvider)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private PDEditor.PDEditorUserControl _pdEditorUserControl;
-        private System.Windows.Forms.SplitContainer _splitContainer;
-        private System.Windows.Forms.GroupBox _availableGroupBox;
-        private System.Windows.Forms.GroupBox _modulesGroupBox;
-        private System.Windows.Forms.ListBox _availableListBox;
-        private System.Windows.Forms.ListBox _modulesListBox;
-        private System.Windows.Forms.Panel _availablePanel;
-        private System.Windows.Forms.Panel _modulesPanel;
+        private System.Windows.Forms.Label _keywordLabel;
+        private System.Windows.Forms.TextBox _keywordTextBox;
+        private System.Windows.Forms.TextBox _helpTextTextBox;
+        private System.Windows.Forms.TextBox _switchKeywordTextBox;
+        private System.Windows.Forms.TextBox _paramVarNameTextBox;
+        private System.Windows.Forms.TextBox _varNameTextBox;
+        private System.Windows.Forms.Label _helpTextLabel;
+        private System.Windows.Forms.Label _switchKeywordLabel;
+        private System.Windows.Forms.Label _paramVarNameLabel;
+        private System.Windows.Forms.Label _varNameLabel;
+        private System.Windows.Forms.TableLayoutPanel _tableLayoutPanel;
+        private System.Windows.Forms.ErrorProvider _errorProvider;
     }
 }

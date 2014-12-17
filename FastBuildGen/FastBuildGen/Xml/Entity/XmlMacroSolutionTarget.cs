@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml.Serialization;
 using FastBuildGen.BusinessModel;
+using FastBuildGen.Common;
 
 namespace FastBuildGen.Xml.Entity
 {
@@ -26,12 +27,9 @@ namespace FastBuildGen.Xml.Entity
 
         internal FBMacroSolutionTarget Deserialize()
         {
-            FBMacroSolutionTarget result = new FBMacroSolutionTarget(this.Xml01Id);
+            FBMacroSolutionTarget result = new FBMacroSolutionTarget(this.Xml01Id, EnumFBTargetReadonly.None);
             base.Deserialize(result);
-            foreach (Guid solutionTargetId in this.Xml05SolutionTargetIds)
-            {
-                result.SolutionTargetIds.Add(solutionTargetId);
-            }
+            result.SolutionTargetIds.AddRange(this.Xml05SolutionTargetIds ?? new Guid[0]);
 
             return result;
         }

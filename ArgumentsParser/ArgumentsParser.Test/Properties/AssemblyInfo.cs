@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ArgumentsParser.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hager Group")]
+[assembly: AssemblyCompany("NouNours")]
 [assembly: AssemblyProduct("ArgumentsParser.Test")]
-[assembly: AssemblyCopyright("Copyright © Hager Group 2013")]
+[assembly: AssemblyCopyright("Public domain <http://unlicense.org>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

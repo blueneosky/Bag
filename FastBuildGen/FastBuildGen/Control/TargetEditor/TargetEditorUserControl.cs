@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows.Forms;
 using FastBuildGen.BusinessModel;
 using FastBuildGen.Common.Control;
-using FastBuildGen.Control.PDEditor;
-using FastBuildGen.BusinessModel.Old;
 
 namespace FastBuildGen.Control.TargetEditor
 {
@@ -18,7 +16,7 @@ namespace FastBuildGen.Control.TargetEditor
         private TargetEditorController _controller;
         private TargetEditorModel _model;
 
-        private IParamDescriptionHeoTarget _target;
+        private FBTarget _target;
 
         #endregion Members
 
@@ -31,15 +29,6 @@ namespace FastBuildGen.Control.TargetEditor
 
         public void Initialize(TargetEditorModel model, TargetEditorController controller)
         {
-            PDEditorModel pdEditorModel = new PDEditorModelWrapper(model);
-            PDEditorController pdEditorController = new PDEditorController(pdEditorModel);
-
-            Initialize(model, controller, pdEditorModel, pdEditorController);
-        }
-
-        public void Initialize(TargetEditorModel model, TargetEditorController controller
-            , PDEditorModel pdEditorModel, PDEditorController pdEditorController)
-        {
             Debug.Assert(_model == null);
             Debug.Assert(_controller == null);
 
@@ -47,17 +36,15 @@ namespace FastBuildGen.Control.TargetEditor
             _controller = controller;
 
             _model.PropertyChanged += _model_PropertyChanged;
-            _pdEditorUserControl.Initialize(pdEditorModel, pdEditorController);
 
-            UpdateTarget();
-            RefreshAvailableModules();
+            UpdateParamDescription();
         }
 
         #endregion ctor
 
         #region Properties
 
-        private IParamDescriptionHeoTarget Target
+        private FBTarget Target
         {
             get { return _target; }
             set
@@ -67,13 +54,11 @@ namespace FastBuildGen.Control.TargetEditor
                 if (_target != null)
                 {
                     _target.PropertyChanged -= _target_PropertyChanged;
-                    _target.DependenciesChanged -= _target_DependenciesChanged;
                 }
                 _target = value;
                 if (_target != null)
                 {
                     _target.PropertyChanged += _target_PropertyChanged;
-                    _target.DependenciesChanged += _target_DependenciesChanged;
                 }
             }
         }
@@ -101,11 +86,7 @@ namespace FastBuildGen.Control.TargetEditor
             switch (e.PropertyName)
             {
                 case ConstTargetEditorModelEvent.ConstTarget:
-                    UpdateTarget();
-                    break;
-
-                case ConstTargetEditorModelEvent.ConstAvailableModules:
-                    RefreshAvailableModules();
+                    UpdateParamDescription();
                     break;
 
                 default:
@@ -114,16 +95,30 @@ namespace FastBuildGen.Control.TargetEditor
             }
         }
 
-        private void _target_DependenciesChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            // for any new state
-            RefreshDependecies();
-        }
-
         private void _target_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
+                case ConstFBEvent.ConstFBTargetKeyword:
+                    RefreshKeyword();
+                    break;
+
+                case ConstFBEvent.ConstFBTargetHelpText:
+                    RefreshHelpText();
+                    break;
+
+                case ConstFBEvent.ConstFBTargetSwitchKeyword:
+                    RefreshSwitchKeyboard();
+                    break;
+
+                case ConstFBEvent.ConstFBTargetParamVarName:
+                    RefreshParamVarName();
+                    break;
+
+                case ConstFBEvent.ConstFBTargetVarName:
+                    RefreshVarName();
+                    break;
+
                 default:
                     // nothing - non managed case
                     break;
@@ -132,64 +127,78 @@ namespace FastBuildGen.Control.TargetEditor
 
         #endregion Model events
 
-        #region Modele Update
+        #region Model Update
 
-        private void UpdateTarget()
+        private void UpdateParamDescription()
         {
             Target = _model.Target;
 
-            RefreshModule();
+            RefreshTarget();
         }
 
-        #endregion Modele Update
+        #endregion Model Update
 
         #region UI Update
 
-        private void RefreshAvailableModules()
+        private void RefreshHelpText()
         {
             BeginUpdate();
-            _availableListBox.BeginUpdate();
-
-            IEnumerable<IParamDescriptionHeoModule> availableModules = _model.AvailableModules;
-
-            _availableListBox.Items.Clear();
-            object[] items = availableModules
-                .Select(m => new ModuleItem(m))
-                .OrderBy(m => m.ToString())
-                .ToArray();
-            _availableListBox.Items.AddRange(items);
-
-            _availableListBox.EndUpdate();
+            bool withTarget = (Target != null);
+            bool isReadOnly = withTarget ? Target.ReadOnly.HasFlag(EnumFBTargetReadonly.HelpText) : true;
+            string text = (Target != null) ? Target.HelpText : String.Empty;
+            _helpTextTextBox.Text = text;
+            _helpTextTextBox.ReadOnly = isReadOnly;
             EndUpdate();
         }
 
-        private void RefreshDependecies()
+        private void RefreshKeyword()
         {
             BeginUpdate();
-            _modulesListBox.BeginUpdate();
-
-            IEnumerable<IParamDescriptionHeoModule> modules = (Target != null) ? Target.Dependencies : new IParamDescriptionHeoModule[0];
-
-            _modulesListBox.Items.Clear();
-            object[] items = modules
-                .Select(m => new ModuleItem(m))
-                .OrderBy(m => m.ToString())
-                .ToArray();
-            _modulesListBox.Items.AddRange(items);
-
-            _modulesListBox.EndUpdate();
+            bool withTarget = (Target != null);
+            bool isReadOnly = withTarget ? Target.ReadOnly.HasFlag(EnumFBTargetReadonly.Keyword) : true;
+            string text = (Target != null) ? Target.Keyword : String.Empty;
+            _keywordTextBox.Text = text;
+            _keywordTextBox.ReadOnly = isReadOnly;
             EndUpdate();
         }
 
-        private void RefreshModule()
+        private void RefreshTarget()
         {
             BeginUpdate();
 
             bool withTarget = (Target != null);
             this.Enabled = withTarget;
 
-            RefreshDependecies();
+            RefreshKeyword();
+            RefreshHelpText();
+            RefreshSwitchKeyboard();
+            RefreshParamVarName();
+            RefreshVarName();
 
+            EndUpdate();
+        }
+
+        private void RefreshParamVarName()
+        {
+            BeginUpdate();
+            string text = (Target != null) ? Target.ParamVarName : String.Empty;
+            _paramVarNameTextBox.Text = text;
+            EndUpdate();
+        }
+
+        private void RefreshSwitchKeyboard()
+        {
+            BeginUpdate();
+            string text = (Target != null) ? Target.SwitchKeyword : String.Empty;
+            _switchKeywordTextBox.Text = text;
+            EndUpdate();
+        }
+
+        private void RefreshVarName()
+        {
+            BeginUpdate();
+            string text = (Target != null) ? Target.VarName : String.Empty;
+            _varNameTextBox.Text = text;
             EndUpdate();
         }
 
@@ -197,32 +206,22 @@ namespace FastBuildGen.Control.TargetEditor
 
         #region User Inputs
 
-        private void _availableListBox_DoubleClick(object sender, EventArgs e)
+        private void _helpTextTextBox_Validating(object sender, CancelEventArgs e)
         {
             if (IsUpdating)
                 return;
 
-            ModuleItem item = _availableListBox.SelectedItem as ModuleItem;
-            if (item == null)
-                return;
-            IParamDescriptionHeoModule module = item.Value;
-            Debug.Assert(module != null);
-
-            _controller.AddDependency(module);
+            Action action = delegate { _controller.SetHelpText(_helpTextTextBox.Text); };
+            ValidationWithErrorProvider(action, _helpTextTextBox, _errorProvider, e, ErrorIconAlignment.MiddleLeft);
         }
 
-        private void _modulesListBox_DoubleClick(object sender, EventArgs e)
+        private void _keywordTextBox_Validating(object sender, CancelEventArgs e)
         {
             if (IsUpdating)
                 return;
 
-            ModuleItem item = _modulesListBox.SelectedItem as ModuleItem;
-            if (item == null)
-                return;
-            IParamDescriptionHeoModule module = item.Value;
-            Debug.Assert(module != null);
-
-            _controller.RemoveDependency(module);
+            Action action = delegate { _controller.SetKeyword(_keywordTextBox.Text, true); };
+            ValidationWithErrorProvider(action, _keywordTextBox, _errorProvider, e, ErrorIconAlignment.MiddleLeft);
         }
 
         #endregion User Inputs
