@@ -11,7 +11,7 @@ using ImputationH31per.Vue.RapportMail.Modele;
 
 namespace ImputationH31per.Vue.RapportMail
 {
-#warning TODO - point ALPHA - remplacer la ListBox par le controle dédié au ImputationTfs et activer Checbox (faire implémentation)
+#warning TODO - point BETA - remplacer la ListBox par le controle dédié au ImputationTfs et activer Checbox (faire implémentation)
 
     public partial class RapportMailForm : IHForm
     {

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ProgressLib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("NouNours")]
 [assembly: AssemblyProduct("ProgressLib")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Public domain <http://unlicense.org>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
