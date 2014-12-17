@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("ProgressLib")]
+[assembly: AssemblyTitle("BuildLogAnalyse")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NouNours")]
-[assembly: AssemblyProduct("ProgressLib")]
+[assembly: AssemblyProduct("BuildLogAnalyse")]
 [assembly: AssemblyCopyright("Public domain <http://unlicense.org>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid("f22396a0-e6e9-480b-88b3-b5511bf60f81")]
+[assembly: Guid("76796b3a-113b-4cd2-ab1a-b877d7fbad55")]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //

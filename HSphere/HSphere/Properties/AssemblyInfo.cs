@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("HSphere")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hager Group")]
+[assembly: AssemblyCompany("NouNours")]
 [assembly: AssemblyProduct("HSphere")]
-[assembly: AssemblyCopyright("Copyright © Hager Group 2014")]
+[assembly: AssemblyCopyright("Public domain <http://unlicense.org>")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
