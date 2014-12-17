@@ -709,8 +709,10 @@ namespace ImputationH31per.Vue.RapportMensuel.Modele
                     break;
 
                 case EnumTypeItem.Entite:
+                    int numeroTache = ticketItemFiltre.Entite.Numero;
                     int? numeroComplementaireTache = ticketItemFiltre.Entite.NumeroComplementaire;
                     imputations = source
+                        .Where(i => modeInclusion == (i.Numero == numeroTache))
                         .Where(i => modeInclusion == (i.NumeroComplementaire == numeroComplementaireTache));
                     break;
 
