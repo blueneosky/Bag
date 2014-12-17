@@ -20,7 +20,7 @@ namespace ImputationH31per.Vue.RapportMail.Modele
 
         #region Membres
 
-        private readonly IImputationH31perModele _ImputationH31perModele;
+        private readonly IImputationH31perModele _imputationH31perModele;
 
         private IEnumerable<IInformationImputationTfs> _imputationTfsDisponibles;
         private IEnumerable<IInformationImputationTfs> _imputationTfsSelectionnees;
@@ -35,9 +35,9 @@ namespace ImputationH31per.Vue.RapportMail.Modele
 
         public RapportMailFormModele(IImputationH31perModele ImputationH31perModele)
         {
-            _ImputationH31perModele = ImputationH31perModele;
+            _imputationH31perModele = ImputationH31perModele;
 
-            _ImputationH31perModele.ImputationTfssAChange += _ImputationH31perModele_ImputationTfssAChange;
+            _imputationH31perModele.ImputationTfssAChange += _ImputationH31perModele_ImputationTfssAChange;
 
             DefinirTempsDebutEtFin(DateTimeOffset.UtcNow, DateTimeOffset.UtcNow);
             //MiseAJourModele(_ImputationH31perModele); // fait depuis DefinirTempsDebutEtFin(...)
@@ -136,7 +136,7 @@ namespace ImputationH31per.Vue.RapportMail.Modele
 
         private void _ImputationH31perModele_ImputationTfssAChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            MiseAJourModele(_ImputationH31perModele);
+            MiseAJourModele(_imputationH31perModele);
         }
 
         #endregion Abonnement
@@ -148,7 +148,7 @@ namespace ImputationH31per.Vue.RapportMail.Modele
             DateTimeOffset dateMin = _tempsDebut.Date;
             DateTimeOffset dateMax = _tempsFin.AddDays(1).Date;
 
-            ImputationTfsDisponibles = _ImputationH31perModele.ImputationTfss
+            ImputationTfsDisponibles = _imputationH31perModele.ImputationTfss
                 .Where(i => { DateTimeOffset date = i.DateImputationPlusRecente(); return date.EstComprisEntre(dateMin, dateMax); })
                 .Reverse()  // optimisation
                 .OrderBy(i => i, ConstanteOrdreAffichageImputationTfs)
@@ -176,7 +176,7 @@ namespace ImputationH31per.Vue.RapportMail.Modele
                 .Aggregate((acc, l) => acc + Environment.NewLine + l);
 
             TexteRapport = texte;
-            SommeDifferenceHeureConsommee = (int)(imputations.Sum(i => _ImputationH31perModele.ObtenirDifferenceConsommee(i) ?? 0));
+            SommeDifferenceHeureConsommee = (int)(imputations.Sum(i => _imputationH31perModele.ObtenirDifferenceConsommee(i) ?? 0));
         }
 
         private void MiseAJourTexteRapport()
@@ -198,7 +198,7 @@ namespace ImputationH31per.Vue.RapportMail.Modele
             string texte = builder.ToString();
 
             TexteRapport = texte;
-            SommeDifferenceHeureConsommee = (int)(imputations.Sum(i => _ImputationH31perModele.ObtenirDifferenceConsommee(i) ?? 0));
+            SommeDifferenceHeureConsommee = (int)(imputations.Sum(i => _imputationH31perModele.ObtenirDifferenceConsommee(i) ?? 0));
         }
 
 
@@ -211,7 +211,7 @@ namespace ImputationH31per.Vue.RapportMail.Modele
             bool estConsommeDefinie = imputationTfs.EstConsommeDefinie();
 
             string texteDiff = String.Empty;
-            double? diff = _ImputationH31perModele.ObtenirDifferenceConsommee(imputationTfs);
+            double? diff = _imputationH31perModele.ObtenirDifferenceConsommee(imputationTfs);
             if (diff.HasValue)
             {
                 bool estDiffPositive = diff > 0;
@@ -244,7 +244,7 @@ namespace ImputationH31per.Vue.RapportMail.Modele
             bool estConsommeDefinie = imputationTfs.EstConsommeDefinie();
 
             string texteDiff = String.Empty;
-            double? diff = _ImputationH31perModele.ObtenirDifferenceConsommee(imputationTfs);
+            double? diff = _imputationH31perModele.ObtenirDifferenceConsommee(imputationTfs);
             if (diff.HasValue)
             {
                 bool estDiffPositive = diff > 0;

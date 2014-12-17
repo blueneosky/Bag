@@ -29,7 +29,7 @@ namespace FastBuildGen.Xml.Entity
 
         internal FBSolutionTarget Deserialize()
         {
-            FBSolutionTarget result = new FBSolutionTarget(this.Xml01Id);
+            FBSolutionTarget result = new FBSolutionTarget(this.Xml01Id, EnumFBTargetReadonly.None);
             base.Deserialize(result);
             result.MSBuildTarget = this.Xml05MSBuildTarget;
             result.Enabled = Xml06Enabled;

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>proprowrap</Title>
+			<Shortcut>proprowrap</Shortcut>
+			<Description>Extrait de code pour encapsuler un accès en lecture</Description>
+			<Author>Jean-Marie PRIOUL</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>type</ID>
+					<ToolTip>Type de propriété</ToolTip>
+					<Default>int</Default>
+				</Literal>
+				<Literal>
+					<ID>property</ID>
+					<ToolTip>Nom de la propriété</ToolTip>
+					<Default>MyProperty</Default>
+				</Literal>
+				<Object>
+					<ID>value</ID>
+					<ToolTip>Accès encapsulé</ToolTip>
+					<Type>int</Type>
+					<Default>0</Default>
+				</Object>
+			</Declarations>
+			<Code Language="csharp"><![CDATA[public $type$ $property$ { get { return $value$; } }
+    $end$]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>

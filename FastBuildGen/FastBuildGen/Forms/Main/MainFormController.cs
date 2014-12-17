@@ -1,230 +1,261 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using BatchGen.Gen;
-using FastBuildGen.BatchNode;
 using FastBuildGen.BusinessModel;
-using FastBuildGen.BusinessModel.Old;
+using FastBuildGen.Common;
+using FastBuildGen.File;
+using FastBuildGen.VisualStudio;
 
 namespace FastBuildGen.Forms.Main
 {
     internal class MainFormController
     {
-        private const string ConstDialogFilter = "FastBuild config file (*.fbconf)|*.fbconf";
+        private const string ConstDialogFilterFBFileExt = "FastBuild file (*.bat)|*.bat";
+        private const string ConstDialogFilterVSSolutionFileExt = "Visual Studio Solution file (*.sln)|*.sln";
 
-        private readonly IFastBuildController _fastBuildController;
-        private readonly IFastBuildModel _fastBuildModel;
         private readonly MainFormModel _model;
 
         public MainFormController(MainFormModel model)
         {
             _model = model;
-
-            _fastBuildModel = _model.FastBuildModel;
-            _fastBuildController = new FastBuildController(_fastBuildModel);
         }
 
-#warning TODO - re-use it for save
-
-        internal void Deploy()
+        internal void Open()
         {
-            return;
+            if (false == SaveFBModelBeforeClosing())
+                return;
+
+            OpenCore();
+        }
+
+        internal void Save()
+        {
+            if ((_model.FBModel == null) || (_model.FastBuildDataChanged == false))
+                return;
+
+            SaveFBModelCore();
+        }
+
+        internal bool SaveAs()
+        {
+            if (_model.FBModel == null)
+                return false;
+
+            return SaveAsFBModelCore();
+        }
+
+        internal bool NewWithSln()
+        {
+            return NewOrMergeConfigFileCore(false);
+        }
+
+        internal bool MergeWithSln()
+        {
+            return NewOrMergeConfigFileCore(true);
+        }
+
+        internal bool SaveFBModelBeforeClosing()
+        {
+            // no change
+            if (_model.FBModel == null)
+                return true;
+
+            if (false == _model.FastBuildDataChanged)
+                return true;
+
+            DialogResult dialogResult = MessageBox.Show(
+                "Do you want save your work ?"
+                , "FastBuild Generator"
+                , MessageBoxButtons.YesNoCancel
+                , MessageBoxIcon.Question
+                , MessageBoxDefaultButton.Button1);
+
+            if (dialogResult == DialogResult.Cancel)
+                return false;
+
+            if (dialogResult == DialogResult.No)
+                return true;
+
+            return SaveFBModelCore();
+        }
+
+        #region Private
+
+        private bool NewOrMergeConfigFileCore(bool withMerge)
+        {
+            bool success = false;
+
+            if ((_model.FBModel != null) && _model.FastBuildDataChanged)
+            {
+                DialogResult dialogResult = MessageBox.Show(
+                    "Do you want save before " + (withMerge ? "merge" : "create new file") + " ?"
+                    , (withMerge ? "Merge" : "New")
+                    , MessageBoxButtons.YesNoCancel
+                    , MessageBoxIcon.Question
+                    , MessageBoxDefaultButton.Button1);
+
+                if (dialogResult == DialogResult.Cancel)
+                    return false;
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    success = SaveAs();
+                    if (false == success)
+                        return false;
+                }
+            }
+
+            using (OpenFileDialog dialog = new OpenFileDialog())
+            {
+                dialog.Filter = ConstDialogFilterVSSolutionFileExt;
+                DialogResult dialogResult = dialog.ShowDialog();
+                if (dialogResult != DialogResult.Cancel)
+                {
+                    string solutionFilePath = dialog.FileName;
+                    if (withMerge)
+                    {
+                        success = MergeWithSlnFileCore(solutionFilePath);
+                    }
+                    else
+                    {
+                        success = NewWithSlnFileCore(solutionFilePath);
+                    }
+                }
+            }
+
+            return success;
+        }
+
+        private bool NewWithSlnFileCore(string solutionFilePath)
+        {
+            FBModel fbModel = new FBModel();
+            _model.ApplicationModel.FBModel = fbModel;
+            _model.FilePath = null;
+            _model.ApplicationModel.DataChanged = false;    // any at this time
+
+            return MergeWithSlnFileCore(solutionFilePath);
+        }
+
+        private bool MergeWithSlnFileCore(string solutionFilePath)
+        {
+            VSSolution solution = new VSSolution(solutionFilePath);
+            FBModel fbModel = _model.FBModel;
+            foreach (VSProject project in solution.MSBuildCompatibleProjects)
+            {
+                Guid id = project.ProjectGuid;
+                string uniqueProjectName = project.UniqueProjectName;
+                string projectName = uniqueProjectName.Split('\\', '/').LastOrDefault();
+                FBSolutionTarget solutionTarget = fbModel.SolutionTargets.FirstOrDefault(st => st.Id == id);
+                if (solutionTarget != null)
+                {
+                    // update target
+                    solutionTarget.MSBuildTarget = uniqueProjectName;
+                }
+                else
+                {
+                    if (null != fbModel.AllTargets.FirstOrDefault(st => st.Id == id))
+                        throw new FastBuildGenException("VSProject Guid used by something else - try create a new project.");
+
+                    // create new target
+                    solutionTarget = new FBSolutionTarget(id, EnumFBTargetReadonly.None)
+                    {
+                        Keyword = projectName,
+                        MSBuildTarget = uniqueProjectName,
+                        HelpText = projectName,
+                        Enabled = false,
+                    };
+                    fbModel.SolutionTargets.Add(solutionTarget);
+                }
+            }
+
+            return true;
+        }
+
+        private bool SaveFBModelCore()
+        {
             try
             {
-                string filePath = null;
-                //string filePath = _fastBuildModel.PreferenceModel.DeployFilePath;
-
-                FastBuildBatchFile file = new FastBuildBatchFile(_fastBuildModel);
-                string text = BatchGenerator.GetText(file);
-                using (StreamWriter writer = new StreamWriter(filePath))
+                string filePath = _model.FilePath;
+                if (filePath == null)
                 {
-                    writer.Write(text);
+                    using (SaveFileDialog dialog = new SaveFileDialog())
+                    {
+                        dialog.Filter = ConstDialogFilterFBFileExt;
+                        DialogResult dresult = dialog.ShowDialog();
+                        if (dresult != DialogResult.OK)
+                            return false;
+                        filePath = dialog.FileName;
+                        _model.FilePath = filePath;
+                    }
                 }
-
-                MessageBox.Show("Generated at" + Environment.NewLine + filePath);
+                FBFile.Write(filePath, _model.FBModel);
+                _model.ApplicationModel.DataChanged = false;    // it's ok, it's save ^^
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
+
+            return true;
         }
 
-        internal bool SaveAsConfigFile()
+        private bool SaveAsFBModelCore()
         {
-#warning TODO - check if modele get new file name or not ...
-            bool success = false;
-            using (SaveFileDialog dialog = new SaveFileDialog())
+            try
             {
-                dialog.Filter = ConstDialogFilter;
-                DialogResult dialogResult = dialog.ShowDialog();
-                if (dialogResult != DialogResult.Cancel)
+                using (SaveFileDialog dialog = new SaveFileDialog())
                 {
+                    dialog.Filter = ConstDialogFilterFBFileExt;
+                    DialogResult dresult = dialog.ShowDialog();
+                    if (dresult != DialogResult.OK)
+                        return false;
+
                     string filePath = dialog.FileName;
-                    success = ExportConfigFileCore(filePath);
-                }
-            }
-
-            return success;
-        }
-
-        internal bool ImportConfigFile()
-        {
-            return ImportOrMergeConfigFileCore(false);
-        }
-
-        internal bool MergeConfigFile()
-        {
-            return ImportOrMergeConfigFileCore(true);
-        }
-
-        internal void SaveFastBuildData()
-        {
-            SaveFastBuildDataCore();
-        }
-
-        internal bool SaveFastBuildDataBeforeClosing()
-        {
-            // no change
-            if (false == _fastBuildModel.DataChanged)
-                return true;
-
-            DialogResult dialogResult = MessageBox.Show(
-                "Save your current configuration before quit ?"
-                , "Closing"
-                , MessageBoxButtons.YesNoCancel
-                , MessageBoxIcon.Question
-                , MessageBoxDefaultButton.Button1);
-
-            if (dialogResult == DialogResult.Cancel)
-                return false;
-
-            if (dialogResult == DialogResult.Yes)
-            {
-                SaveFastBuildDataCore();
-            }
-
-            return true;
-        }
-
-        internal bool SelectInternalVarsEditor()
-        {
-            _model.ActivePanel = MainFormModel.ConstActivePanelInternalVarsEditor;
-
-            return true;
-        }
-
-        internal bool SelectModulesEditor()
-        {
-            _model.ActivePanel = MainFormModel.ConstActivePanelModulesEditor;
-
-            return true;
-        }
-
-        internal bool SelectTargetsEditor()
-        {
-            _model.ActivePanel = MainFormModel.ConstActivePanelTargetsEditor;
-
-            return true;
-        }
-
-        #region Private
-
-        private bool ExportConfigFileCore(string configFilePath)
-        {
-            bool success = false;
-
-            try
-            {
-                _fastBuildController.SaveFastBuildConfig(configFilePath);
-                success = true;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show("Error :" + Environment.NewLine + e.Message);
-            }
-
-            return success;
-        }
-
-        private bool ImportConfigFileCore(string configFilePath)
-        {
-            bool success = false;
-
-            try
-            {
-                success = _fastBuildController.LoadFastBuildConfig(configFilePath);
-                if (false == success)
-                {
-                    MessageBox.Show("Import failed.");
+                    FBFile.Write(filePath, _model.FBModel);
+                    _model.FilePath = filePath;
+                    _model.ApplicationModel.DataChanged = false;
                 }
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error :" + Environment.NewLine + e.Message);
+                MessageBox.Show(e.Message);
             }
 
-            return success;
+            return true;
         }
 
-        private bool ImportOrMergeConfigFileCore(bool withMerge)
+        private void OpenCore()
         {
-            bool success = false;
-
-            DialogResult dialogResult = MessageBox.Show(
-                "Export your current configuration before " + (withMerge ? "merge" : "import") + " ?"
-                , (withMerge ? "Merge" : "Import") + " process"
-                , MessageBoxButtons.YesNoCancel
-                , MessageBoxIcon.Question
-                , MessageBoxDefaultButton.Button1);
-
-            if (dialogResult == DialogResult.Cancel)
-                return false;
-
-            if (dialogResult == DialogResult.Yes)
+            try
             {
-                success = SaveAsConfigFile();
-                if (false == success)
-                    return false;
-            }
-
-            using (OpenFileDialog dialog = new OpenFileDialog())
-            {
-                dialog.Filter = ConstDialogFilter;
-                dialogResult = dialog.ShowDialog();
-                if (dialogResult != DialogResult.Cancel)
+                using (OpenFileDialog dialog = new OpenFileDialog())
                 {
+                    dialog.Filter = ConstDialogFilterFBFileExt;
+                    DialogResult dresult = dialog.ShowDialog();
+                    if (dresult != DialogResult.OK)
+                        return;
+
                     string filePath = dialog.FileName;
-                    if (withMerge)
+                    FBModel fbModel;
+                    using (FBFile fbFile = FBFile.Read(filePath))
                     {
-                        success = MergeConfigFileCore(filePath);
+                        fbModel = fbFile.XmlConfig.Deserializase();
                     }
-                    else
-                    {
-                        success = ImportConfigFileCore(filePath);
-                    }
+                    _model.ApplicationModel.FBModel = fbModel;
+                    _model.FilePath = filePath;
+                    _model.ApplicationModel.DataChanged = false;
                 }
             }
-
-            return success;
-        }
-
-        private bool MergeConfigFileCore(string configFilePath)
-        {
-            bool success = new FastBuildImportMergeController(_fastBuildModel).ImportWithMerge(configFilePath);
-
-            return success;
-        }
-
-        private void SaveFastBuildDataCore()
-        {
-            if (false == _model.FastBuildDataChanged)
-                return;
-
-#warning TODO - correct this
-            //_fastBuildController.SaveDefaultFastBuildConfig();
+            catch (FBFileException)
+            {
+                MessageBox.Show("Corrupted file or not a FastBuild file");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         #endregion Private

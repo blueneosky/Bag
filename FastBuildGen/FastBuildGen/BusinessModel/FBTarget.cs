@@ -7,15 +7,20 @@ namespace FastBuildGen.BusinessModel
     internal class FBTarget : INotifyPropertyChanged
     {
         private readonly Guid _id;
+        private readonly EnumFBTargetReadonly _readOnly;
         private string _helpText;
         private string _keyword;
 
-        public FBTarget(Guid id)
+        public FBTarget(Guid id, EnumFBTargetReadonly readOnly)
         {
             _id = id;
+            _readOnly = readOnly;
         }
 
-        #region IFBTarget Membres
+        public EnumFBTargetReadonly ReadOnly
+        {
+            get { return _readOnly; }
+        }
 
         public string HelpText
         {
@@ -37,19 +42,6 @@ namespace FastBuildGen.BusinessModel
                 _keyword = value;
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetKeyword));
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetSwitchKeyword));
-            }
-        }
-
-        private string _name;
-
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (_name == value) return;
-                _name = value;
-                OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetName));
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetParamVarName));
                 OnPropertyChanged(this, new PropertyChangedEventArgs(ConstFBEvent.ConstFBTargetVarName));
             }
@@ -62,7 +54,7 @@ namespace FastBuildGen.BusinessModel
 
         public string ParamVarName
         {
-            get { return ConstFBModel.ConstParamVarNamePrefix + _name.Replace("?", "help"); }
+            get { return ConstFBModel.ConstParamVarNamePrefix + _keyword.Replace("?", "help"); }
         }
 
         public string SwitchKeyword
@@ -72,10 +64,22 @@ namespace FastBuildGen.BusinessModel
 
         public string VarName
         {
-            get { return ConstFBModel.ConstMSBuildTargetVarNamePrefix + _name.Replace("?", "help"); }
+            get { return ConstFBModel.ConstMSBuildTargetVarNamePrefix + _keyword.Replace("?", "help"); }
         }
 
-        #endregion IFBTarget Membres
+        public bool SameAs(object obj)
+        {
+            if (Object.ReferenceEquals(this, obj))
+                return true;
+
+            FBTarget target = obj as FBTarget;
+            if (target == null)
+                return false;
+
+            bool areSame = Id == target.Id;
+
+            return areSame;
+        }
 
         #region INotifyPropertyChanged Membres
 

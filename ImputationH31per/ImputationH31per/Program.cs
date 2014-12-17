@@ -76,7 +76,6 @@ namespace ImputationH31per
                 _globalTraceListener.Flush();
                 _globalTraceLog.Flush();
                 _globalTraceLog.Close();
-
             }
             catch (Exception)
             {
@@ -101,20 +100,6 @@ namespace ImputationH31per
             Debug.WriteLine("Avec log [Debug]");
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-
-#warning TODO - point ZETA - incorporer un système qui enregistre chaque modif / à coupler avec undo/redo
-            /*
-             * un pool de donnée intermédiaire appeler ActionCache
-             * trouver un meilleur nom pour ActionCache
-             * chaque sauvegarde ré-inialise l'ActionCache
-             * chaque action sur ImputationH31per ou une entité stocké dans ImputationH31per est placé dans ActionCache
-             * idée pour la sauvegarde : ActionCache est un fichier avec les données placé en Append (Action : data)
-             * à la fermeture/clache, l'état du logicielle est constitué de la dernière sauvegarde et des actions dans ActionCache
-             * à l'ouverture du logicielle, il y a chargement de la dernière sauvegarde + des donnée de l'ActionCache
-             * revoir l'implémentation des intefaces IInfomartionTache, IInformationTicket et IInformationImputation pour ne pas avoir de Set sur les prop (gérés depuis ImputationH31per)
-             */
-
-#warning TODO - point YOTA - inclure un système d'undo/redo
 
 #warning TODO - point DELTA - faire sauvegarde périodique
 
