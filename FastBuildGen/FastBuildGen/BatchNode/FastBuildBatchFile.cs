@@ -944,7 +944,7 @@ namespace FastBuildGen.BatchNode
 
                 // rem System 32 bit
                 // echo vcvarsall %ProgramFiles%
-                // call "%ProgramFiles%\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"
+                // call "%ProgramFiles%\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"
                 macroThenVcvarsallX32X64.Add(new RemBatch("System 32 bit"));
                 macroThenVcvarsallX32X64.Add(new EchoCmd(new ComposedExpression(baseLabelTitleVcvarsall, EnvSystemLiteral.ProgramFiles)));
                 BatchExpressionBase vcvarsallBatchFileX32 = new ComposedExpression(
@@ -955,7 +955,7 @@ namespace FastBuildGen.BatchNode
 
                 // rem System 64 bit
                 // echo vcvarsall %ProgramFiles(x86)%
-                // call "%ProgramFiles(x86)%\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"
+                // call "%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\VC\vcvarsall.bat"
                 macroElseVcvarsallX32X64.Add(new RemBatch("System 64 bit"));
                 macroElseVcvarsallX32X64.Add(new EchoCmd(new ComposedExpression(baseLabelTitleVcvarsall, EnvSystemLiteral.ProgramFilesX86)));
                 BatchExpressionBase vcvarsallBatchFileX64 = new ComposedExpression(
