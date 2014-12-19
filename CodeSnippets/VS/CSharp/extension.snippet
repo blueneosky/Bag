@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CodeSnippets  xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+	<CodeSnippet Format="1.0.0">
+		<Header>
+			<Title>extension</Title>
+			<Shortcut>extension</Shortcut>
+			<Description>Code snippet for 'extension' method</Description>
+			<Author>Jean-Marie PRIOUL</Author>
+			<SnippetTypes>
+				<SnippetType>Expansion</SnippetType>
+			</SnippetTypes>
+		</Header>
+		<Snippet>
+			<Declarations>
+				<Literal>
+					<ID>type</ID>
+					<ToolTip>return type</ToolTip>
+					<Default>object</Default>
+				</Literal>
+				<Literal>
+					<ID>name</ID>
+					<ToolTip>name of extension method</ToolTip>
+					<Default>ExtensionMethod</Default>
+				</Literal>
+				<Literal>
+					<ID>sourceType</ID>
+					<ToolTip>Type of the source to evaluate</ToolTip>
+					<Default>sourceType</Default>
+				</Literal>
+				<Literal>
+					<ID>source</ID>
+					<ToolTip>source to evaluate</ToolTip>
+					<Default>source</Default>
+				</Literal>
+			</Declarations>
+			<Code Language="csharp">
+				<![CDATA[public static $type$ $name$(this $sourceType$ $source$)
+{
+    if ($source$ == null) throw new ArgumentNullException("$source$");
+	
+	return $end$;
+}]]>
+			</Code>
+		</Snippet>
+	</CodeSnippet>
+</CodeSnippets>
