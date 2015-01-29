@@ -66,10 +66,13 @@ namespace Encodeamon
 
 #if DEBUG
                 Console.WriteLine("Convert file : {0} ({1})", text, encoding.EncodingName);
+#else
+                Console.Write(".");
 #endif
             }
             catch (Exception e)
             {
+                Console.WriteLine("");
                 Console.WriteLine("Error while converting file : {0}", e.Message);
             }
         }

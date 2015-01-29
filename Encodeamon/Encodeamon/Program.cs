@@ -43,6 +43,10 @@ namespace Encodeamon
             if (args.Any(arg => arg == "-l"))
                 ShowEncodingsThenExit();
 
+            // show encoding file
+            if (args.Any(arg => arg == "-s"))
+                ShowEncodingThenExit(args.Where(arg => arg != "-s"));
+
             //*** test input ***
             if (args.Count() > 3)//4)
                 ShowHelpThenExit("Too many argumets");
@@ -59,7 +63,7 @@ namespace Encodeamon
                 ShowHelpThenExit(String.Format("Input file '{0}' do not exist", fileIn));
 
             //Encoding encodingIn = TryGetEncoding(encodingNameIn);
-            Encoding encodingOut = TryGetEncoding(encodingNameOut);
+            Encoding encodingOut = TryGetEncodingByEncodingName(encodingNameOut);
             //if (encodingIn == null)
             //    ShowHelpThenExit(String.Format("Input encoding '{0}' is not a valid encoding", encodingNameIn));
             if (encodingOut == null)
@@ -67,10 +71,37 @@ namespace Encodeamon
 
             Deamon deamon = new Deamon(/*encodingIn,*/ encodingOut, fileIn, fileOut);
             deamon.Start();
-
         }
 
-        private static Encoding TryGetEncoding(string encodingName)
+        private static void ShowEncodingThenExit(System.Collections.Generic.IEnumerable<string> argsWithoutFlag)
+        {
+            string fileName = argsWithoutFlag.FirstOrDefault();
+            if (false == File.Exists(fileName))
+                ShowHelpThenExit(String.Format("File '{0}' is not valide", fileName));
+
+            Encoding encoding = TryGetEncodingFromFileName(fileName);
+            if (encoding == null)
+            {
+                Console.WriteLine("Invalide or unrecognised encoding.");
+            }
+            else
+            {
+                ShowEncoding(encoding);
+            }
+            throw new ExitException("(encoding)");
+        }
+
+        private static void ShowEncoding(EncodingInfo encodingInfo)
+        {
+            ShowEncoding(encodingInfo.GetEncoding());
+        }
+
+        private static void ShowEncoding(Encoding encoding)
+        {
+            Console.WriteLine("{0} [{1}]", encoding.WebName, encoding.EncodingName);
+        }
+
+        private static Encoding TryGetEncodingByEncodingName(string encodingName)
         {
             try
             {
@@ -82,12 +113,32 @@ namespace Encodeamon
             }
         }
 
+        private static Encoding TryGetEncodingFromFileName(string fileName)
+        {
+            Encoding encoding;
+
+            try
+            {
+                using (StreamReader streamReader = new StreamReader(fileName, true))
+                {
+                    streamReader.ReadToEnd();
+                    encoding = streamReader.CurrentEncoding;
+                }
+            }
+            catch (Exception)
+            {
+                encoding = null;
+            }
+
+            return encoding;
+        }
+
         private static void ShowEncodingsThenExit()
         {
-            var encodings = Encoding.GetEncodings();
-            foreach (var encoding in encodings)
+            var encodingInfos = Encoding.GetEncodings();
+            foreach (var encodingInfo in encodingInfos)
             {
-                Console.WriteLine("{0} : {1}", encoding.Name, encoding.DisplayName);
+                ShowEncoding(encodingInfo);
             }
             throw new ExitException("(encodings)");
         }
@@ -103,14 +154,13 @@ namespace Encodeamon
 
             string name = Assembly.GetExecutingAssembly().GetName().Name;
             Console.WriteLine("Copy content of file into an other file with specific encoding.");
-            //Console.WriteLine("Get content file from specific encoding and write into an other file encoding.");
             Console.WriteLine("Usage :");
-            //Console.WriteLine("  {0} <encoding_in> <encoding_out> <file_in> <file_out>", name);
             Console.WriteLine("  {0} <encoding_out> <file_in> <file_out>", name);
             Console.WriteLine("  {0} -l", name);
+            Console.WriteLine("  {0} -s <file>", name);
             Console.WriteLine("  {0} -h -help", name);
-            //Console.WriteLine("    <encoding_in>  : one of the available encoding");
             Console.WriteLine("    <encoding_out> : one of the available encoding");
+            Console.WriteLine("    <file>         : file to examine");
             Console.WriteLine("    <file_in>      : file monitored and re-encode");
             Console.WriteLine("    <file_out>     : file with result");
             Console.WriteLine("    -l --list      : list available encoding");
