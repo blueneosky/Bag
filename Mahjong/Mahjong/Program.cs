@@ -14,9 +14,11 @@ namespace Mahjong
         [STAThread]
         static void Main()
         {
+            MainFormModel modele = new MainFormModel();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new MainForm(modele));
         }
     }
 }

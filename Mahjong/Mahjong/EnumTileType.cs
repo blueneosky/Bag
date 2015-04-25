@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mahjong
 {
-    enum EnumTileType : uint
+    public enum EnumTileType : uint
     {
         None = 0,
 
