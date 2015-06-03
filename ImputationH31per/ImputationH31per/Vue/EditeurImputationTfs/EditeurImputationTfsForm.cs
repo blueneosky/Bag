@@ -583,9 +583,6 @@ namespace ImputationH31per.Vue.EditeurImputationTfs
             if (EstMiseAJourEnCours)
                 return;
 
-            // masquer/afficher pour forcer la reconnaissance de la saisie
-            _dateConsommeeDateTimePicker.Visible = false;
-            _dateConsommeeDateTimePicker.Visible = true;
             DateTimeOffset dateSommeConsommee = _dateConsommeeDateTimePicker.Value.ToDateTimeOffset();
             Action action = () => _controleur.DefinirDateSommeConsommee(dateSommeConsommee);
             ValidationAvecErrorProvider(action, _dateConsommeeDateTimePicker, _errorProvider, e);
@@ -596,9 +593,6 @@ namespace ImputationH31per.Vue.EditeurImputationTfs
             if (EstMiseAJourEnCours)
                 return;
 
-            // masquer/afficher pour forcer la reconnaissance de la saisie
-            _dateEstimationDateTimePicker.Visible = false;
-            _dateEstimationDateTimePicker.Visible = true;
             DateTimeOffset dateEstimCourant = _dateEstimationDateTimePicker.Value.ToDateTimeOffset();
             Action action = () => _controleur.DefinirDateEstimCourant(dateEstimCourant);
             ValidationAvecErrorProvider(action, _dateEstimationDateTimePicker, _errorProvider, e);

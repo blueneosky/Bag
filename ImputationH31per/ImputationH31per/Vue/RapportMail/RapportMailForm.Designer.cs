@@ -34,8 +34,8 @@
             this._copierEtFermerButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this._listBox = new System.Windows.Forms.ListBox();
-            this._dateDebutDateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this._dateFinDateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this._dateDebutDateTimePicker = new System.Windows.Forms.DateTimePickerValidatingFixed();
+            this._dateFinDateTimePicker = new System.Windows.Forms.DateTimePickerValidatingFixed();
             this._dateFinLabel = new System.Windows.Forms.Label();
             this._rapportLabel = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
@@ -177,8 +177,8 @@
         private System.Windows.Forms.TextBox _rapportTextBox;
         private System.Windows.Forms.Button _copierEtFermerButton;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DateTimePicker _dateDebutDateTimePicker;
-        private System.Windows.Forms.DateTimePicker _dateFinDateTimePicker;
+        private System.Windows.Forms.DateTimePickerValidatingFixed _dateDebutDateTimePicker;
+        private System.Windows.Forms.DateTimePickerValidatingFixed _dateFinDateTimePicker;
         private System.Windows.Forms.Label _dateFinLabel;
         private System.Windows.Forms.ListBox _listBox;
         private System.Windows.Forms.Label _rapportLabel;

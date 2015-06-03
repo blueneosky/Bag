@@ -80,6 +80,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controle\DateTimePickerValidatingFixed.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Data\Entite\DatData.cs" />
     <Compile Include="Data\Entite\DatIHFormParametre.cs" />
     <Compile Include="Data\Entite\DatImputationTfs.cs" />

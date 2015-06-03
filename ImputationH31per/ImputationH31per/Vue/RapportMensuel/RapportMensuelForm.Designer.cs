@@ -33,7 +33,7 @@
             this._groupesGroupBox = new System.Windows.Forms.GroupBox();
             this._groupesListBox = new System.Windows.Forms.ListBox();
             this._dateGroupBox = new System.Windows.Forms.GroupBox();
-            this._moisAnneeDateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this._moisAnneeDateTimePicker = new System.Windows.Forms.DateTimePickerValidatingFixed();
             this._regroupementGroupBox = new System.Windows.Forms.GroupBox();
             this._regroupementListBox = new System.Windows.Forms.ListBox();
             this._regroupementPanel = new System.Windows.Forms.Panel();
@@ -371,7 +371,7 @@
         private System.Windows.Forms.ListBox _tachesListBox;
         private System.Windows.Forms.ListBox _ticketsListBox;
         private System.Windows.Forms.ListBox _groupesListBox;
-        private System.Windows.Forms.DateTimePicker _moisAnneeDateTimePicker;
+        private System.Windows.Forms.DateTimePickerValidatingFixed _moisAnneeDateTimePicker;
         private System.Windows.Forms.ListBox _regroupementListBox;
         private System.Windows.Forms.GroupBox _regroupementsGroupBox;
         private System.Windows.Forms.ListBox _regroupementsListBox;
