@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Microsoft.TeamFoundation.Client;
+using Gitfs.Util;
 using Microsoft.TeamFoundation.VersionControl.Client;
 
 namespace Gitfs.Engine
@@ -12,8 +12,8 @@ namespace Gitfs.Engine
     internal class Clone : Command
     {
 
+        public string _directory = null;
 
-        private List<int> _changesetIds;
 
         private bool VerboseMode { get { return Env.VerboseMode; } }
 
@@ -45,124 +45,44 @@ namespace Gitfs.Engine
 
         private bool Proceed()
         {
-            GetAllChangesets();
-
-            if (false == VerboseMode)
-            {
-                Output.InitiateCursorPosition("Checkout from " + Env.VirtualServerPath + ": ");
-                Output.WriteAtCursor("0%");
-            }
-
+            // connection test
+            Output.WriteLine("Get info from " + Env.VirtualServerPath);
             VersionControlServer server = Env.VersionControlServer;
+            Output.WriteLine("Ok");  // it's ok (otherwize something throw an exception)
 
-            HashSet<ChangeType> changeTypes = new HashSet<ChangeType> { };
-
-            int percent = 0;
-            for (int i = 0; i < _changesetIds.Count; i++)
+            // init git repository
+            bool succes = GitHelper.GitInit(_directory);
+            if (false == succes)
             {
-                int changesetId = _changesetIds[i];
-                Changeset changeset = server.GetChangeset(changesetId, true, true);
-                string commiter = changeset.Committer;
-                DateTime date = changeset.CreationDate;
-                string comment = changeset.Comment;
-
-                if (VerboseMode)
-                {
-                    Output.WriteLine(changesetId + " (" + commiter + ") " + date + " " + comment);
-                }
-                else
-                {
-                    int newPercent = i * 100 / _changesetIds.Count;
-                    if (newPercent > percent)
-                    {
-                        percent = newPercent;
-                        Output.WriteAtCursor(percent + "%");
-                    }
-                }
-
-                Change[] changes = changeset.Changes;
-                foreach (Change change in changes)
-                {
-                    //change.ChangeType== ChangeType.
-                    changeTypes.Add(change.ChangeType);
-                }
+                Output.WriteLine("Failed to init git repo...");
+                Output.WriteLine(GitHelper.LastOutput);
+                return false;
             }
+            if (VerboseMode)
+                Output.WriteLine(GitHelper.LastOutput);
 
-            if (false == VerboseMode)
-            {
-                Output.LastWriteAtCursor("Done");
-                Output.WriteLine("");
-            }
+            Directory.SetCurrentDirectory(_directory);   // must be set before local tfs config writting
 
-//Add, Encoding
-//Add, Edit, Encoding
-//Edit
-//Delete
-//Rename
-//Edit, Rename
-//Rename, Delete
-//Edit, Merge
-//Merge
-//Encoding, Branch
-//Edit, Rename, Merge
-//Encoding, Branch, Merge
-//Delete, Merge
-//Rename, Merge
-//Edit, Encoding, Branch, Merge
-//Undelete
-//Undelete, Merge
-//Edit, Undelete, Merge
-//Edit, Undelete
-//Rename, Delete, Merge
+            // write local tfs config
+            GitHelper.ConfigSetProjectCollection(Env.Projectcollection);
+            GitHelper.ConfigSetServerPath(Env.Serverpath);
+            GitHelper.ConfigSetTagChangeset(Env.WithTag);
+            GitHelper.ConfigSetDeepMode(Env.DeepMode);
 
-            foreach (ChangeType changeType in changeTypes)
-            {
-                Output.WriteLine(changeType.ToString());
-            }
+            Pull pullCommand = Commands.Pull;
+            Debug.Assert(pullCommand != null);
 
-#warning TODO ALPHA point
-            return true;
-        }
-
-        private void GetAllChangesets()
-        {
-            Output.InitiateCursorPosition("Get changesets from " + Env.VirtualServerPath + ": ");
-            Output.WriteAtCursor("0%");
-
-            VersionControlServer server = Env.VersionControlServer;
-
-            _changesetIds = new List<int> { };
-            IEnumerable<Changeset> query = server.QueryHistory(Env.Serverpath, VersionSpec.Latest, 0, RecursionType.Full, null, null, null, Int32.MaxValue, false, true)
-                .OfType<Changeset>();
-            int? lastChangesetId = null;
-            int percent = 0;
-            foreach (Changeset changeset in query)
-            {
-                int changesetId = changeset.ChangesetId;
-                if (lastChangesetId == null)
-                    lastChangesetId = changesetId;
-                int newPercent = (lastChangesetId.Value - changesetId) * 100 / lastChangesetId.Value;
-                if (newPercent > percent)
-                {
-                    percent = newPercent;
-                    Output.WriteAtCursor(percent + "%");
-                }
-
-                _changesetIds.Add(changesetId);
-            }
-            _changesetIds.Reverse();
-            Output.LastWriteAtCursor("Done");
-            Output.WriteLine("");
+            return pullCommand.Proceed();
         }
 
         private bool ExtractArgs(ref string[] args)
         {
-            bool? _verboseMode = null;
-            bool? _deepMode = null;
-            bool? _withTag = null;
-            string _projectcollection = null;
-            string _serverpath = null;
-            string _directory = null;
+            bool? verboseMode = null;
+            bool? deepMode = null;
+            bool? withTag = null;
+            string projectcollection = null;
+            string serverpath = null;
+            string directory = null;
 
             int targetCount = 0;
             while (args.Any())
@@ -174,23 +94,23 @@ namespace Gitfs.Engine
                     {
                         case "-v":
                         case "--verbose":
-                            _verboseMode = _verboseMode ?? true;
+                            verboseMode = verboseMode ?? true;
                             break;
 
                         case "--deep":
-                            _deepMode = _deepMode ?? true;
+                            deepMode = deepMode ?? true;
                             break;
 
                         case "--shallow":
-                            _deepMode = _deepMode ?? false;
+                            deepMode = deepMode ?? false;
                             break;
 
                         case "--tag":
-                            _withTag = _withTag ?? true;
+                            withTag = withTag ?? true;
                             break;
 
                         case "--no-tag":
-                            _withTag = _withTag ?? false;
+                            withTag = withTag ?? false;
                             break;
 
                         default:
@@ -202,15 +122,15 @@ namespace Gitfs.Engine
                     switch (targetCount)
                     {
                         case 0:
-                            _projectcollection = arg;
+                            projectcollection = arg;
                             break;
 
                         case 1:
-                            _serverpath = arg;
+                            serverpath = arg;
                             break;
 
                         case 2:
-                            _directory = arg;
+                            directory = arg;
                             break;
 
                         default:
@@ -221,20 +141,20 @@ namespace Gitfs.Engine
                 args = args.Skip(1).ToArray();
             }
 
-            if (String.IsNullOrEmpty(_projectcollection)
-                || String.IsNullOrEmpty(_serverpath))
+            if (String.IsNullOrEmpty(projectcollection)
+                || String.IsNullOrEmpty(serverpath))
             {
                 return false;
             }
 
-            _directory = _directory ?? "./" + _serverpath.Split('/', '\\').LastOrDefault();
+            directory = directory ?? "./" + serverpath.Split('/', '\\').LastOrDefault();
 
-            Env.VerboseMode = _verboseMode ?? false;   // default value
-            Env.DeepMode = _deepMode ?? true;          // default value
-            Env.WithTag = _withTag ?? true;            // default value
-            Env.Projectcollection = _projectcollection;
-            Env.Serverpath = _serverpath;
-            Env.Directory = Path.GetFullPath(_directory);
+            Env.VerboseMode = verboseMode ?? false;   // default value
+            Env.DeepMode = deepMode ?? true;          // default value
+            Env.WithTag = withTag ?? true;            // default value
+            Env.Projectcollection = projectcollection;
+            Env.Serverpath = serverpath;
+            _directory = Path.GetFullPath(directory);
 
             return true;
         }
@@ -242,7 +162,7 @@ namespace Gitfs.Engine
         public override void ShowHelp()
         {
             StringBuilder sb = new StringBuilder()
-                .AppendLine("usage: git-tfs clone [--deep|--shallow] <projectcollection> <serverpath> [<directory>]")
+                .AppendLine("usage: git-tfs clone [--verbose|-v] [--deep|--shallow] <projectcollection> <serverpath> [<directory>]")
                 .AppendLine("")
                 .AppendLine("Arguments:")
                 .AppendLine("    --verbose, -v         Verbose mode (default: none)")

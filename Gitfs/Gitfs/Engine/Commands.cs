@@ -24,7 +24,7 @@ namespace Gitfs.Engine
 
         public static Command ObtenirCommand(string command)
         {
-            command = command.ToLowerInvariant();
+            command = (command ?? String.Empty).ToLowerInvariant();
             Command result;
             if (_commandByTexts.TryGetValue(command, out result))
                 return result;

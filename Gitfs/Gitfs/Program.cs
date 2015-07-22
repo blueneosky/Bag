@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Gitfs.Engine;
+using Gitfs.Util;
 
 namespace Gitfs
 {
@@ -11,9 +12,15 @@ namespace Gitfs
         static int Main(string[] args)
         {
 #if DEBUG
-            args = "clone http://obestfsp01:8080/ $/HEO F:/HEO"
+            //Console.ReadLine();
+            Env.Projectcollection = "http://obestfsp01:8080/";
+            Env.Serverpath = "$/HEO/V1/Developpement/Systeme/Heo.Systeme.Service";
+            Env.VerboseMode = true;
+            Env.DryRunMode = true;
+
             //args = "clone -v http://obestfsp01:8080/ $/HEO F:/HEO"
-                .Split(' ');
+            //.Split(' ');
+            return Commands.Pull.Proceed() ? 0 : -1;
 #endif
             return Proceed(args) ? 0 : -1;
         }
@@ -28,6 +35,6 @@ namespace Gitfs
             return Commands.Help.Proceed(args);
         }
 
-        
+
     }
 }
