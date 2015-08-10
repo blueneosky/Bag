@@ -455,7 +455,7 @@ namespace SkyrimUserSwitch.Model
                 string skyrimUserFolder = Path.Combine(myDocumentsFolder, skyrimUserRelativePath);
                 skyrimUserFolder = Path.GetFullPath(skyrimUserFolder);
 
-                string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.CommonProgramFilesX86);
+                string programFilesX86Folder = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
                 string skyrimRelativePath = Resources.DefaultSkyrimRelativePath;
                 string skyrimFolder = Path.Combine(programFilesX86Folder, skyrimRelativePath);
                 skyrimFolder = Path.GetFullPath(skyrimFolder);
