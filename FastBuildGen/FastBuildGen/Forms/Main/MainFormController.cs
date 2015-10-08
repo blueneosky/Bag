@@ -142,7 +142,8 @@ namespace FastBuildGen.Forms.Main
         {
             VSSolution solution = new VSSolution(solutionFilePath);
             FBModel fbModel = _model.FBModel;
-            foreach (VSProject project in solution.MSBuildCompatibleProjects)
+            IEnumerable<VSProject> projets = solution.MSBuildCompatibleProjects.Execute();
+            foreach (VSProject project in projets)
             {
                 Guid id = project.ProjectGuid;
                 string uniqueProjectName = project.UniqueProjectName;
@@ -169,6 +170,12 @@ namespace FastBuildGen.Forms.Main
                     fbModel.SolutionTargets.Add(solutionTarget);
                 }
             }
+
+            // remove FBSolutionTargets that no longer exist in Sln
+            IEnumerable<FBSolutionTarget> targetsToRemove = fbModel.SolutionTargets
+                .Where(st => projets.All(p => p.ProjectGuid != st.Id))
+                .Execute(); // must be execute before remove
+            fbModel.SolutionTargets.RemoveRange(targetsToRemove);
 
             return true;
         }
