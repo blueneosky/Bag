@@ -39,8 +39,8 @@
             this._consommeeCouranteTextBox = new System.Windows.Forms.TextBox();
             this._okButton = new System.Windows.Forms.Button();
             this._cancelButton = new System.Windows.Forms.Button();
-            this._dateEstimationDateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this._dateConsommeeDateTimePicker = new System.Windows.Forms.DateTimePicker();
+            this._dateEstimationDateTimePicker = new System.Windows.Forms.DateTimePickerValidatingFixed();
+            this._dateConsommeeDateTimePicker = new System.Windows.Forms.DateTimePickerValidatingFixed();
             this._avecEstimationCheckBox = new System.Windows.Forms.CheckBox();
             this._errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this._nomComplementaireTextBox = new System.Windows.Forms.TextBox();
@@ -365,8 +365,8 @@
         private System.Windows.Forms.TextBox _consommeeCouranteTextBox;
         private System.Windows.Forms.Button _okButton;
         private System.Windows.Forms.Button _cancelButton;
-        private System.Windows.Forms.DateTimePicker _dateEstimationDateTimePicker;
-        private System.Windows.Forms.DateTimePicker _dateConsommeeDateTimePicker;
+        private System.Windows.Forms.DateTimePickerValidatingFixed _dateEstimationDateTimePicker;
+        private System.Windows.Forms.DateTimePickerValidatingFixed _dateConsommeeDateTimePicker;
         private System.Windows.Forms.CheckBox _avecEstimationCheckBox;
         private System.Windows.Forms.ErrorProvider _errorProvider;
         private System.Windows.Forms.TextBox _nomComplementaireTextBox;

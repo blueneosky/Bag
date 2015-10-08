@@ -598,16 +598,6 @@ namespace ImputationH31per.Vue.EditeurImputationTfs
             ValidationAvecErrorProvider(action, _dateEstimationDateTimePicker, _errorProvider, e);
         }
 
-        //private void _estimationCouranteTextBox_TextChanged(object sender, EventArgs e)
-        //{
-        //    if (EstMiseAJourDepuisModeleEnCours)
-        //        return;
-
-        //    string estimCourant = _estimationCouranteTextBox.Text;
-        //    Action action = () => _controleur.DefinirEstimCourant(estimCourant);
-        //    ValidationAvecErrorProvider(action, _estimationCouranteTextBox, _errorProvider, null);
-        //}
-
         private void _estimationCouranteTextBox_TextChanged(object sender, EventArgs e)
         {
             MiseAJourEtatModificationDateEstimCourant(_imputationTfs.EstDateEstimCourantModifiable);
