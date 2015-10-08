@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Gitfs
+namespace Gitfs.Util
 {
     internal static class Output
     {
