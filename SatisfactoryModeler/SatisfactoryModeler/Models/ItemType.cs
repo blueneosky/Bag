@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SatisfactoryModeler.Models
 {
-    public enum ItemTypes
+    public enum ItemType
     {
         // Ore
         IronOre,

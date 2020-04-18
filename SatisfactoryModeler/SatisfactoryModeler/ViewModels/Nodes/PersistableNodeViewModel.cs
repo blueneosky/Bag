@@ -51,7 +51,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
         }
 
         protected static void SetupDynamicOutput<TOutput>(PersistableValueNodeOutputViewModel<TOutput> outputViewModel,
-            Func<TOutput, ItemTypes?> currentItemTypeExtractor,
+            Func<TOutput, ItemType?> currentItemTypeExtractor,
             Func<TOutput, double?> currentItemRateExtractor,
             string format, string fallback)
         {

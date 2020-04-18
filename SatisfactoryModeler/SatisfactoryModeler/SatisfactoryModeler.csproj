@@ -139,8 +139,8 @@
     </ApplicationDefinition>
     <Compile Include="Assets\IconsManager.cs" />
     <Compile Include="Assets\SomeExtensions.cs" />
-    <Compile Include="Models\ItemRate.cs" />
-    <Compile Include="Models\ItemTypes.cs" />
+    <Compile Include="Models\Flow.cs" />
+    <Compile Include="Models\ItemType.cs" />
     <Compile Include="Models\MinerLevel.cs" />
     <Compile Include="Models\ResourceNodePurity.cs" />
     <Compile Include="Models\ResourceNodeType.cs" />

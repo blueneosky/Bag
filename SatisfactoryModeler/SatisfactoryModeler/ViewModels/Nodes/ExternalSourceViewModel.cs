@@ -23,7 +23,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
         public PersistableValueNodeInputViewModel<object> Type { get; }
         public PersistableValueNodeInputViewModel<double?> Rate { get; }
 
-        public PersistableValueNodeOutputViewModel<ItemRate?> Output { get; }
+        public PersistableValueNodeOutputViewModel<Flow?> Output { get; }
 
         public ExternalSourceViewModel() : this(null) { }
 
@@ -35,7 +35,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Tag.Name = "Tag";
             Tag.Port.IsVisible = false;
 
-            Type = CreateInput<object>("ItemType", source, new EnumEditorViewModel(typeof(ItemTypes)));
+            Type = CreateInput<object>("ItemType", source, new EnumEditorViewModel(typeof(ItemType)));
             Type.Name = "Item";
             Type.Port.IsVisible = false;
 
@@ -43,11 +43,11 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Rate.Name = "Rate";
             Rate.Port.IsVisible = false;
 
-            Output = CreateOutput<ItemRate?>("Output", source, null);
+            Output = CreateOutput<Flow?>("Output", source, null);
             Output.Name = "output";
 
             var delivery = this.WhenAnyValue(vm => vm.Type.Value, vm => vm.Rate.Value)
-               .Select(_ => ItemRate.From((ItemTypes?)this.Type.Value, this.Rate.Value));
+               .Select(_ => Flow.From((ItemType?)this.Type.Value, this.Rate.Value));
             Output.Value = delivery;
 
             SetupDynamicOutput(Output, v => v?.Type, v => v?.Rate, "{0}\n{1}/min", "ouput");

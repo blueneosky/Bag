@@ -43,8 +43,8 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             NodeType.Port.IsVisible = false;
 
             var production = this.WhenAnyValue(vm => vm.MinerLevel.Value, vm => vm.NodeType.Value, vm => vm.NodePurity.Value, vm => vm.Override.Value)
-               .Select(_ => ItemRate.From(
-                   (ItemTypes?)(ResourceNodeType?)this.NodeType.Value,
+               .Select(_ => Flow.From(
+                   (ItemType?)(ResourceNodeType?)this.NodeType.Value,
                    60.0 * (MinerLevel.Value as MinerLevel?)?.ToFactor() * (NodePurity.Value as ResourceNodePurity?)?.ToFactor() * (Override.Value / 100.0)));
             Output.Value = production;
 
