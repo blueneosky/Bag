@@ -71,28 +71,29 @@ namespace SatisfactoryModeler.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;Configuration&gt;
+        ///  &lt;ItemTypes&gt;
+        ///    &lt;ItemType SS=&quot;100&quot; SV=&quot;8&quot;     Id=&quot;Bauxite&quot;          Lbl=&quot;Bauxite&quot;       /&gt;
+        ///    &lt;ItemType SS=&quot;100&quot; SV=&quot;7&quot;     Id=&quot;CateriumOre&quot;      Lbl=&quot;Caterium Ore&quot;  /&gt;
+        ///    &lt;ItemType SS=&quot;100&quot; SV=&quot;3&quot;     Id=&quot;Coal&quot;             Lbl=&quot;Coal&quot;          /&gt;
+        ///    &lt;ItemType SS=&quot;100&quot; SV=&quot;3&quot;     Id=&quot;CopperOre&quot;        Lbl=&quot;Copper Ore&quot;    /&gt;
+        ///    &lt;ItemType SS=&quot;100&quot; SV=&quot;1&quot;     Id=&quot;IronOre&quot;          Lbl=&quot;Iron Ore&quot;      /&gt;
+        ///    &lt;ItemType SS=&quot;100&quot; SV=&quot;2&quot;     Id=&quot;L [le reste de la chaîne a été tronqué]&quot;;.
+        /// </summary>
+        internal static string Configuration {
+            get {
+                return ResourceManager.GetString("Configuration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Miner_Mk_3 {
             get {
                 object obj = ResourceManager.GetObject("Miner_Mk_3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;Rules&gt;
-        ///  &lt;ItemTypes&gt;
-        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;8&apos;     Id=&apos;Bauxite&apos;          Lbl=&apos;Bauxite&apos;       /&gt;
-        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;7&apos;     Id=&apos;CateriumOre&apos;      Lbl=&apos;Caterium Ore&apos;  /&gt;
-        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;3&apos;     Id=&apos;Coal&apos;             Lbl=&apos;Coal&apos;          /&gt;
-        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;3&apos;     Id=&apos;CopperOre&apos;        Lbl=&apos;Copper Ore&apos;    /&gt;
-        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;1&apos;     Id=&apos;IronOre&apos;          Lbl=&apos;Iron O [le reste de la chaîne a été tronqué]&quot;;.
-        /// </summary>
-        internal static string Rules {
-            get {
-                return ResourceManager.GetString("Rules", resourceCulture);
             }
         }
     }
