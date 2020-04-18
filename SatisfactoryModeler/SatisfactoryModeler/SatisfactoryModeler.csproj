@@ -139,12 +139,15 @@
     </ApplicationDefinition>
     <Compile Include="Assets\IconsManager.cs" />
     <Compile Include="Assets\SomeExtensions.cs" />
-    <Compile Include="Models\Flow.cs" />
+    <Compile Include="Models\FluideFlow.cs" />
+    <Compile Include="Models\FluideType.cs" />
+    <Compile Include="Models\ItemFlow.cs" />
     <Compile Include="Models\ItemType.cs" />
     <Compile Include="Models\MinerLevel.cs" />
     <Compile Include="Models\ResourceNodePurity.cs" />
     <Compile Include="Models\ResourceNodeType.cs" />
     <Compile Include="Persistance\IPersistanceEngine.cs" />
+    <Compile Include="Persistance\XmlPersistanceEngine.cs" />
     <Compile Include="Persistance\JsonPersistanceEngine.cs" />
     <Compile Include="Persistance\Networks\BaseNode.cs" />
     <Compile Include="Persistance\Networks\Connection.cs" />
@@ -160,6 +163,7 @@
     <Compile Include="Persistance\Networks\ProducerNode.cs" />
     <Compile Include="Persistance\PersistanceEngineExtensions.cs" />
     <Compile Include="Persistance\PersistanceFactory.cs" />
+    <Compile Include="Persistance\Rules.cs" />
     <Compile Include="ViewModels\Editors\ComboEditorViewModel.cs" />
     <Compile Include="ViewModels\Editors\EnumEditorViewModel.cs" />
     <Compile Include="ViewModels\Editors\FloatEditorViewModel.cs" />
@@ -245,7 +249,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Assets\Rules.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -259,6 +262,8 @@
     <Resource Include="Assets\Icons\20px-Miner_Mk.1.png" />
     <Resource Include="Assets\Icons\Miner_Mk.3.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\Rules.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

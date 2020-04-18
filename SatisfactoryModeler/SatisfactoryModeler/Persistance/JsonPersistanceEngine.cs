@@ -1,12 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SatisfactoryModeler.Persistance
 {
@@ -34,26 +29,12 @@ namespace SatisfactoryModeler.Persistance
             }
         }
 
-        public Stream Store(T root)
+        public void Store(Stream stream, T o)
         {
-            var stream = new MemoryStream();
-            using (var writer = new StreamWriter(stream, new UTF8Encoding(false), 1024, true))
+            using (var writer = new JsonTextWriter(new StreamWriter(stream)))
             {
-                Store(root, writer);
-            }
-            stream.Position = 0;
-
-            return stream;
-        }
-
-        private void Store(T root, TextWriter textWriter)
-        {
-            using (JsonTextWriter writer = new JsonTextWriter(textWriter))
-            {
-                DefaultSerializer.Serialize(writer, root, typeof(T));
+                DefaultSerializer.Serialize(writer, o, typeof(T));
             }
         }
-
-        public void StoreTo(T root, string filePath) => Store(root, File.CreateText(filePath));
     }
 }

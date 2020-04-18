@@ -10,6 +10,7 @@ using NodeNetwork;
 using NodeNetwork.Toolkit.NodeList;
 using NodeNetwork.ViewModels;
 using ReactiveUI;
+using SatisfactoryModeler.Models;
 using SatisfactoryModeler.Persistance;
 using SatisfactoryModeler.Persistance.Networks;
 using SatisfactoryModeler.ViewModels.Nodes;
@@ -123,7 +124,7 @@ namespace SatisfactoryModeler.ViewModels
                 };
 
                 var engine = PersistanceFactory.Instance.GetDefault<NodesNetwork>();
-                engine.StoreTo(nodesNetwork, SessionFilePath);
+                engine.StoreTo(SessionFilePath, nodesNetwork);
             });
         }
 

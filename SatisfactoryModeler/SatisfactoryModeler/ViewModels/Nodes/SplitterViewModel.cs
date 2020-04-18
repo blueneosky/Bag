@@ -19,14 +19,14 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             PersistableViewModelFactory.Instance.Register<Splitter, SplitterViewModel>(m => new SplitterViewModel(m));
         }
 
-        public PersistableValueNodeInputViewModel<Flow?> Input { get; }
+        public PersistableValueNodeInputViewModel<ItemFlow?> Input { get; }
         public PersistableValueNodeInputViewModel<int?> LeftRate { get; }
         public PersistableValueNodeInputViewModel<int?> CenterRate { get; }
         public PersistableValueNodeInputViewModel<int?> RightRate { get; }
 
-        public PersistableValueNodeOutputViewModel<Flow?> Left { get; }
-        public PersistableValueNodeOutputViewModel<Flow?> Center { get; }
-        public PersistableValueNodeOutputViewModel<Flow?> Right { get; }
+        public PersistableValueNodeOutputViewModel<ItemFlow?> Left { get; }
+        public PersistableValueNodeOutputViewModel<ItemFlow?> Center { get; }
+        public PersistableValueNodeOutputViewModel<ItemFlow?> Right { get; }
 
         public SplitterViewModel() : this(null) { }
 
@@ -35,7 +35,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Name = "Splitter";
             //HeaderIcon = IconsManager.Current.Splitter;
             
-            Input = CreateInput<Flow?>("Input", source, null);
+            Input = CreateInput<ItemFlow?>("Input", source, null);
             Input.Name = "Input";
 
             LeftRate = CreateInput<int?>("RightRate", source, new IntegerValueEditorViewModel(33, 0, 100));
@@ -50,25 +50,25 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             RightRate.Name = "Right rate (%)";
             RightRate.Port.IsVisible = false;
 
-            Left = CreateOutput<Flow?>("Left", source, null);
+            Left = CreateOutput<ItemFlow?>("Left", source, null);
             Left.Name = "Left";
 
-            Center = CreateOutput<Flow?>("Center", source, null);
+            Center = CreateOutput<ItemFlow?>("Center", source, null);
             Center.Name = "Center";
 
-            Right = CreateOutput<Flow?>("Right", source, null);
+            Right = CreateOutput<ItemFlow?>("Right", source, null);
             Right.Name = "Right";
 
             Left.Value = this.WhenAnyValue(vm => vm.Input.Value, vm => vm.LeftRate.Value)
-                .Select(_ => Flow.From(
+                .Select(_ => ItemFlow.From(
                  this.Input.Value?.Type,
                  this.Input.Value?.Rate * this.LeftRate.Value / 100.0));
             Center.Value = this.WhenAnyValue(vm => vm.Input.Value, vm => vm.CenterRate.Value)
-                .Select(_ => Flow.From(
+                .Select(_ => ItemFlow.From(
                  this.Input.Value?.Type,
                  this.Input.Value?.Rate * this.CenterRate.Value / 100.0));
             Right.Value = this.WhenAnyValue(vm => vm.Input.Value, vm => vm.RightRate.Value)
-                .Select(_ => Flow.From(
+                .Select(_ => ItemFlow.From(
                  this.Input.Value?.Type,
                  this.Input.Value?.Rate * this.RightRate.Value / 100.0));
 

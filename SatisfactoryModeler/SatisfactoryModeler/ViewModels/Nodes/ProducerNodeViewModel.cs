@@ -9,7 +9,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
     {
         public PersistableValueNodeInputViewModel<int?> Override { get; }
 
-        public PersistableValueNodeOutputViewModel<Flow?> Output { get; }
+        public PersistableValueNodeOutputViewModel<ItemFlow?> Output { get; }
 
         protected ProducerNodeViewModel(TProducerNode source) : base(source)
         {
@@ -17,7 +17,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Override.Name = "Override (%)";
             Override.Port.IsVisible = false;
 
-            Output = CreateOutput<Flow?>("Output", source, null);
+            Output = CreateOutput<ItemFlow?>("Output", source, null);
             Output.Name = "output";
         }
     }

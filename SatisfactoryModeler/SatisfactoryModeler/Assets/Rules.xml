@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Rules>
+  <ItemTypes>
+    <ItemType SS="100" SV="8"     Id="Bauxite"          Lbl="Bauxite"       />
+    <ItemType SS="100" SV="7"     Id="CateriumOre"      Lbl="Caterium Ore"  />
+    <ItemType SS="100" SV="3"     Id="Coal"             Lbl="Coal"          />
+    <ItemType SS="100" SV="3"     Id="CopperOre"        Lbl="Copper Ore"    />
+    <ItemType SS="100" SV="1"     Id="IronOre"          Lbl="Iron Ore"      />
+    <ItemType SS="100" SV="2"     Id="Limestone"        Lbl="Limestone"     />
+    <ItemType SS="100" SV="15"    Id="RawQuartz"        Lbl="RawQuartz"     />
+    <ItemType SS="50"  SV="0"     Id="SAMOre"           Lbl="S.A.M Ore"     />
+    <ItemType SS="100" SV="11"    Id="Sulfure"          Lbl="Sulfure"       />
+    <ItemType SS="100" SV="35"    Id="Uranium"          Lbl="Uranium"       />
+
+    <ItemType SS="100" SV="180"   Id="CrudeOilPkg"      Lbl="Crude Oil (Packaged)"  />
+    <ItemType SS="100" SV="130"   Id="WaterPkg"         Lbl="Water (Packaged)"      />
+	
+    <ItemType SS="50"  SV="0"     Id="AlienCarapace"    Lbl="Alien Carapace"     />
+    <ItemType SS="50"  SV="0"     Id="AlienOrgans"      Lbl="Alien Organs"       />
+    <ItemType SS="500" SV="10"    Id="FlowerPetals"     Lbl="Flower Petals"      />
+    <ItemType SS="500" SV="3"     Id="Leaves"           Lbl="Leaves"             />
+    <ItemType SS="200" SV="10"    Id="Mycelia"          Lbl="Mycelia"            />
+    <ItemType SS="50"  SV="0"     Id="PowSlugG"         Lbl="Power Slug Green"   />
+    <ItemType SS="50"  SV="0"     Id="PowSlugY"         Lbl="Power Slug Yellow"  />
+    <ItemType SS="50"  SV="0"     Id="PowSlugP"         Lbl="Power Slug Purple"  />
+    <ItemType SS="100" SV="30"    Id="Wood"             Lbl="Wood"               />
+
+    <ItemType SS="50"  SV="0"     Id="BaconAgaric"      Lbl="Bacon Agaric"       />
+    <ItemType SS="100" SV="0"     Id="BerylNut"         Lbl="Beryl Nut"          />
+    <ItemType SS="50"  SV="0"     Id="Paleberry"        Lbl="Paleberry"          />
+    <ItemType SS="50"  SV="67"    Id="MedicInhaler"     Lbl="Medicinal Inhaler"  />
+
+    <ItemType SS="200" SV="12"    Id="Biomass"          Lbl="Biomass"       />
+    <ItemType SS="100" SV="24"    Id="Cable"            Lbl="Cable"         />
+    <ItemType SS="100" SV="12"    Id="Concrete"         Lbl="Concrete"      />
+    <ItemType SS="100" SV="6"     Id="CopperIngot"      Lbl="Copper Ingot"  />
+    <ItemType SS="100" SV="2"     Id="IronIngot"        Lbl="Iron Ingot"    />
+    <ItemType SS="100" SV="6"     Id="IronPlate"        Lbl="Iron Plate"    />
+    <ItemType SS="100" SV="4"     Id="IronRod"          Lbl="Iron Rod"      />
+    <ItemType SS="100" SV="120"   Id="ReinfIronPlate"   Lbl="Reinforced Iron Plate" />
+    <ItemType SS="500" SV="2"     Id="Screw"            Lbl="Screw"         />
+    <ItemType SS="500" SV="6"     Id="Wire"             Lbl="Wire"          />
+    <ItemType SS="100" SV="24"    Id="CopperSheet"      Lbl="Copper Sheet"  />
+    <ItemType SS="200" SV="48"    Id="SolidBiofuel"     Lbl="Solid Biofuel" />
+    <ItemType SS="50"  SV="408"   Id="ModularFrame"     Lbl="Modular Frame" />
+    <ItemType SS="100" SV="140"   Id="Rotor"            Lbl="Rotor"         />
+    <ItemType SS="50"  SV="520"   Id="SmartPlating"     Lbl="Smart Plating" />
+
+    <ItemType SS="100" SV="64"    Id="SteelBeam"        Lbl="Steel Beam"    />
+    <ItemType SS="100" SV="8"     Id="SteelIngot"       Lbl="Steel Ingot"   />
+    <ItemType SS="100" SV="24"    Id="SteelPipe"        Lbl="Steel Pipe"    />
+    <ItemType SS="50"  SV="1176"  Id="VersatileFwk"     Lbl="Versatile Framework"     />
+    <ItemType SS="50"  SV="1440"  Id="AutoWiring"       Lbl="Automated Wiring"        />
+    <ItemType SS="100" SV="632"   Id="EncIndusBeam"     Lbl="Encased Industrial Beam" />
+    <ItemType SS="50"  SV="11520" Id="HeavyModFrame"    Lbl="Heavy Modular Frame"     />
+    <ItemType SS="50"  SV="1520"  Id="Motor"            Lbl="Motor"     />
+    <ItemType SS="100" SV="240"   Id="Stator"           Lbl="Stator"    />
+
+	<!-- Missing Comps Tier 5, 7 -->
+    <!--<ItemType SS="" SV=""  Id=""          Lbl=""         />-->
+    <!--<ItemType SS="" SV=""  Id=""          Lbl=""         />-->
+    <!--<ItemType SS="" SV=""  Id=""          Lbl=""         />-->
+
+    <ItemType SS="100" SV="920"   Id="AILimiter"        Lbl="A.I. Limiter"          />
+    <ItemType SS="100" SV="50"    Id="BlackPowder"      Lbl="Black Powder"          />
+    <ItemType SS="100" SV="42"    Id="CateriumIngot"    Lbl="Caterium Ingot"        />
+    <ItemType SS="100" SV="28"    Id="CompactedCoal"    Lbl="Compacted Coal"        />
+    <ItemType SS="100" SV="140"   Id="Fabric"           Lbl="Fabric"                />
+    <ItemType SS="100" SV="3776"  Id="HSConnector"      Lbl="High-Speed Connector"  />
+    <ItemType SS="500" SV="17"    Id="Quickwire"        Lbl="Quickwire"             />
+    <ItemType SS="100" SV="0"     Id="PowerShard"       Lbl="Power Shard"           />
+    <ItemType SS="100" SV="50"    Id="QuartzCrystal"    Lbl="Quartz Crystal"        />
+    <ItemType SS="100" SV="20"    Id="Silica"           Lbl="Silica"                />
+    <ItemType SS="100" SV="3072"  Id="CrystOscil"       Lbl="Crystal Oscillator"    />
+    <ItemType SS="90"  SV="98250" Id="RCUnit"           Lbl="Radio Control Unit"    />
+    <ItemType SS="50"  SV="99576" Id="Supercomputer"    Lbl="Supercomputer"         />
+    <ItemType SS="100" SV="570"   Id="TurbofuelPkg"     Lbl="Turbofuel (Packaged)"  />
+  </ItemTypes>
+  
+  <FluideTypes>
+    <FluideType Id="CrudeOil"    Lbl="Crude Oil" />
+    <FluideType Id="Water"       Lbl="Water"     />
+    <FluideType Id="Turbofuel"   Lbl="Turbofuel" />
+  </FluideTypes>
+
+</Rules>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

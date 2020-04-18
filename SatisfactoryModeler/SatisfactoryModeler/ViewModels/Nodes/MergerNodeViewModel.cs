@@ -23,11 +23,11 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Splat.Locator.CurrentMutable.Register(() => new NodeView(), typeof(IViewFor<MergerNodeViewModel>));
             PersistableViewModelFactory.Instance.Register<Merger, MergerNodeViewModel>(m => new MergerNodeViewModel(m));
         }
-        public PersistableValueNodeInputViewModel<Flow?> Left { get; }
-        public PersistableValueNodeInputViewModel<Flow?> Center { get; }
-        public PersistableValueNodeInputViewModel<Flow?> Right { get; }
+        public PersistableValueNodeInputViewModel<ItemFlow?> Left { get; }
+        public PersistableValueNodeInputViewModel<ItemFlow?> Center { get; }
+        public PersistableValueNodeInputViewModel<ItemFlow?> Right { get; }
 
-        public PersistableValueNodeOutputViewModel<Flow?> Output { get; }
+        public PersistableValueNodeOutputViewModel<ItemFlow?> Output { get; }
 
         public MergerNodeViewModel() : this(null) { }
 
@@ -36,20 +36,20 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Name = "Merger";
             //HeaderIcon = IconsManager.Current.Merger;
 
-            Left = CreateInput<Flow?>("Left", source, null);
+            Left = CreateInput<ItemFlow?>("Left", source, null);
             Left.Name = "Left";
 
-            Center = CreateInput<Flow?>("Center", source, null);
+            Center = CreateInput<ItemFlow?>("Center", source, null);
             Center.Name = "Center";
 
-            Right = CreateInput<Flow?>("Right", source, null);
+            Right = CreateInput<ItemFlow?>("Right", source, null);
             Right.Name = "Right";
 
-            Output = CreateOutput<Flow?>("Output", source, null);
+            Output = CreateOutput<ItemFlow?>("Output", source, null);
             Output.Name = "Output";
 
             Output.Value = this.WhenAnyValue(vm => vm.Left.Value, vm => vm.Center.Value, vm => vm.Right.Value)
-                 .Select(_ => Flow.From(
+                 .Select(_ => ItemFlow.From(
                   (this.Left.Value ?? this.Center.Value ?? this.Right.Value)?.Type,
                   (this.Left.Value?.Rate ?? 0.0) + (this.Center.Value?.Rate ?? 0.0) + (this.Right.Value?.Rate ?? 0.0)));
 

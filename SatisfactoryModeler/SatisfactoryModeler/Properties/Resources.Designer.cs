@@ -79,5 +79,21 @@ namespace SatisfactoryModeler.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;Rules&gt;
+        ///  &lt;ItemTypes&gt;
+        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;8&apos;     Id=&apos;Bauxite&apos;          Lbl=&apos;Bauxite&apos;       /&gt;
+        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;7&apos;     Id=&apos;CateriumOre&apos;      Lbl=&apos;Caterium Ore&apos;  /&gt;
+        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;3&apos;     Id=&apos;Coal&apos;             Lbl=&apos;Coal&apos;          /&gt;
+        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;3&apos;     Id=&apos;CopperOre&apos;        Lbl=&apos;Copper Ore&apos;    /&gt;
+        ///    &lt;ItemType Cat=&apos;Ores&apos;  SS=&apos;100&apos; SV=&apos;1&apos;     Id=&apos;IronOre&apos;          Lbl=&apos;Iron O [le reste de la chaîne a été tronqué]&quot;;.
+        /// </summary>
+        internal static string Rules {
+            get {
+                return ResourceManager.GetString("Rules", resourceCulture);
+            }
+        }
     }
 }

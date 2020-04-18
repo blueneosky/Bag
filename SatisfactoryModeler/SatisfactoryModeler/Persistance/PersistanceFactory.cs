@@ -18,6 +18,7 @@ namespace SatisfactoryModeler.Persistance
             switch (engine.ToLowerInvariant())
             {
                 case "json": return new JsonPersistanceEngine<TRoot>();
+                case "xml": return new XmlPersistaanceEngine<TRoot>();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(engine), $"Unsupported engine {engine}");
             }

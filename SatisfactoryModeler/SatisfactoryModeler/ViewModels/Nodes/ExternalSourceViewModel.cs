@@ -23,7 +23,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
         public PersistableValueNodeInputViewModel<object> Type { get; }
         public PersistableValueNodeInputViewModel<double?> Rate { get; }
 
-        public PersistableValueNodeOutputViewModel<Flow?> Output { get; }
+        public PersistableValueNodeOutputViewModel<ItemFlow?> Output { get; }
 
         public ExternalSourceViewModel() : this(null) { }
 
@@ -43,11 +43,11 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Rate.Name = "Rate";
             Rate.Port.IsVisible = false;
 
-            Output = CreateOutput<Flow?>("Output", source, null);
+            Output = CreateOutput<ItemFlow?>("Output", source, null);
             Output.Name = "output";
 
             var delivery = this.WhenAnyValue(vm => vm.Type.Value, vm => vm.Rate.Value)
-               .Select(_ => Flow.From((ItemType?)this.Type.Value, this.Rate.Value));
+               .Select(_ => ItemFlow.From((ItemType?)this.Type.Value, this.Rate.Value));
             Output.Value = delivery;
 
             SetupDynamicOutput(Output, v => v?.Type, v => v?.Rate, "{0}\n{1}/min", "ouput");

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace SatisfactoryModeler.Persistance
 {
     public interface IPersistanceEngine<T>
     {
-        Stream Store(T root);
+        void Store(Stream stream, T o);
         T Restore(Stream src);
     }
 }
