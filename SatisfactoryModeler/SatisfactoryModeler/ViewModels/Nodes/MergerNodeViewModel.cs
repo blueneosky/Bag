@@ -1,16 +1,9 @@
 ﻿using DynamicData;
-using Newtonsoft.Json.Linq;
-using NodeNetwork.Toolkit.ValueNode;
-using NodeNetwork.ViewModels;
 using NodeNetwork.Views;
 using ReactiveUI;
-using SatisfactoryModeler.Assets;
 using SatisfactoryModeler.Models;
 using SatisfactoryModeler.Persistance.Networks;
-using SatisfactoryModeler.Persistance.Objects;
-using SatisfactoryModeler.ViewModels.Editors;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 
@@ -51,7 +44,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Output.Value = this.WhenAnyValue(vm => vm.Left.Value, vm => vm.Center.Value, vm => vm.Right.Value)
                  .Select(_ => ItemFlow.From(
                   (this.Left.Value ?? this.Center.Value ?? this.Right.Value)?.Type,
-                  (this.Left.Value?.Rate ?? 0.0) + (this.Center.Value?.Rate ?? 0.0) + (this.Right.Value?.Rate ?? 0.0)));
+                  (double?)((this.Left.Value?.Rate ?? 0.0) + (this.Center.Value?.Rate ?? 0.0) + (this.Right.Value?.Rate ?? 0.0))));
 
             SetupDynamicOutput(Output, v => v?.Type, v => v?.Rate, "{0}\n{1}/min", "output");
 

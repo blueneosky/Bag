@@ -38,13 +38,13 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             NodePurity.Name = "Purity";
             NodePurity.Port.IsVisible = false;
 
-            NodeType = CreateInput<object>("NodeType", source, new EnumEditorViewModel(typeof(ResourceNodeType)));
+            NodeType = CreateInput<object>("NodeType", source, new ComboEditorViewModel(MiningOreType.All));
             NodeType.Name = "Resource";
             NodeType.Port.IsVisible = false;
 
             var production = this.WhenAnyValue(vm => vm.MinerLevel.Value, vm => vm.NodeType.Value, vm => vm.NodePurity.Value, vm => vm.Override.Value)
                .Select(_ => ItemFlow.From(
-                   (ItemType?)(ResourceNodeType?)this.NodeType.Value,
+                   (ItemType)(MiningOreType)this.NodeType.Value,
                    60.0 * (MinerLevel.Value as MinerLevel?)?.ToFactor() * (NodePurity.Value as ResourceNodePurity?)?.ToFactor() * (Override.Value / 100.0)));
             Output.Value = production;
 

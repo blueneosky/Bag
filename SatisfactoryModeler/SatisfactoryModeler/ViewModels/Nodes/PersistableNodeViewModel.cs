@@ -7,7 +7,7 @@ using System.Reactive.Linq;
 
 namespace SatisfactoryModeler.ViewModels.Nodes
 {
-    public abstract class PersistableNodeViewModel<TBaseNode> : NodeViewModel, IPersistable<TBaseNode>
+    public abstract class PersistableNodeViewModel<TBaseNode> : NodeViewModel, IPersistableNodeViewModel<TBaseNode>
         where TBaseNode : BaseNode
     {
         public Guid Id { get; }
@@ -21,21 +21,21 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             this.IsCollapsed = source.IsCollapsed;
         }
 
-        object IPersistable.Persist(object instance)
-            => Persist((TBaseNode)instance);
+        object IPersistableNodeViewModel.Persist()
+            => Persist();
 
-        public virtual TBaseNode Persist(TBaseNode baseNode)
+        public virtual TBaseNode Persist()
         {
-            baseNode = baseNode ?? Activator.CreateInstance<TBaseNode>();
+            var result = Activator.CreateInstance<TBaseNode>();
 
-            baseNode.Id = this.Id;
-            baseNode.Position = this.Position;
-            baseNode.IsCollapsed = this.IsCollapsed;
+            result.Id = this.Id;
+            result.Position = this.Position;
+            result.IsCollapsed = this.IsCollapsed;
+            
+            result.Inputs = this.Inputs.Persist().ToArray();
+            result.Outputs = this.Outputs.Persist().ToArray();
 
-            baseNode.Inputs = this.Inputs.Items.OfType<IPersistable>().Persist<InputPort>().ToArray();
-            baseNode.Outputs = this.Outputs.Items.OfType<IPersistable>().Persist<OutputPort>().ToArray();
-
-            return baseNode;
+            return result;
         }
 
         protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource, NodeEndpointEditorViewModel editor)
@@ -51,7 +51,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
         }
 
         protected static void SetupDynamicOutput<TOutput>(PersistableValueNodeOutputViewModel<TOutput> outputViewModel,
-            Func<TOutput, ItemType?> currentItemTypeExtractor,
+            Func<TOutput, ItemType> currentItemTypeExtractor,
             Func<TOutput, double?> currentItemRateExtractor,
             string format, string fallback)
         {

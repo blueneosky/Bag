@@ -1,4 +1,7 @@
-﻿using SatisfactoryModeler.Properties;
+﻿using SatisfactoryModeler.Models;
+using SatisfactoryModeler.Properties;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -10,14 +13,24 @@ namespace SatisfactoryModeler.Persistance.Configurations
 
         public CfgConfiguration Configuration { get; }
 
+        private readonly Lazy<FluideType> _oilExtractingFluideTypeCache;
+        private readonly Lazy<FluideType> _waterExtractingFluideTypeCache;
+
         private Rules()
         {
             // extract configuration
             this.Configuration = PersistanceFactory.Instance.Get<CfgConfiguration>("XML")
-                .Restore(new MemoryStream(Encoding.UTF8.GetBytes(Resources.Configuration))); ;
+                .Restore(new MemoryStream(Encoding.UTF8.GetBytes(Resources.Configuration)));
+
+            // some cache value (or post loaded)
+            this._oilExtractingFluideTypeCache = new Lazy<FluideType>(() => FluideType.ById(this.Configuration.OilExtractingFluideType));
+            this._waterExtractingFluideTypeCache = new Lazy<FluideType>(() => FluideType.ById(this.Configuration.WaterExtractingFluideType));
         }
 
-        public CfgItemType[] ItemTypes => Configuration.ItemTypes;
-        public CfgFluideType[] FluideTypes => Configuration.FluideTypes;
+        public IEnumerable<ItemType> ItemTypes => ItemType.All;
+        public IEnumerable<FluideType> FluideTypes => FluideType.All;
+        public IEnumerable<MiningOreType> MiningOreTypes => MiningOreType.All;
+        public FluideType OilExtractingFluideType => _oilExtractingFluideTypeCache.Value;
+        public FluideType WaterExtractingFluideType => _waterExtractingFluideTypeCache.Value;
     }
 }

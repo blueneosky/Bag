@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reactive.Linq;
 using NodeNetwork.Toolkit.ValueNode;
 using ReactiveUI;
@@ -26,19 +28,35 @@ namespace SatisfactoryModeler.ViewModels.Editors
         }
         #endregion
 
-        public ComboEditorViewModel(object[] options)
-            : this(options, options.Select(o => o.ToString()).ToArray())
+        public ComboEditorViewModel(IEnumerable<object> options)
+            : this(options, options.Select(o => o.ToString()))
         {
         }
 
-        public ComboEditorViewModel(object[] options, string[] labels)
+        public ComboEditorViewModel(IEnumerable<object> options, IEnumerable<string> labels)
         {
-            this.Options = options;
-            this.OptionLabels = labels;
+            this.Options = options.ToArray();
+            this.OptionLabels = labels.ToArray();
+            Debug.Assert(this.Options.Length == this.OptionLabels.Length);
 
             this.WhenAnyValue(vm => vm.SelectedOptionIndex)
                .Select(i => i == -1 ? null : Options[i])
                .BindTo(this, vm => vm.Value);
         }
+
+        //object IModifiableValueEditorViewModel.Value
+        //{
+        //    get => Value;
+        //    set
+        //    {
+        //        if (value == null) return;
+        //        var val = Enum.Parse(this.enumType, Convert.ToString(value));
+        //        var index = Options.Select((v, i) => (v, i))
+        //            .Where(t => val.Equals(t.v))
+        //            .Select(t => t.i)
+        //            .FirstOrDefault();
+        //        this.SelectedOptionIndex = index;
+        //    }
+        //}
     }
 }

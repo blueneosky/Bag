@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace SatisfactoryModeler.ViewModels.Nodes
 {
-    public class PersistableValueNodeInputViewModel<T> : ValueNodeInputViewModel<T>, IPersistablePort<InputPort>
+    public class PersistableValueNodeInputViewModel<T> : ValueNodeInputViewModel<T>, IPersistablePortViewModel<InputPort>
     {
         static PersistableValueNodeInputViewModel()
         {
@@ -19,7 +19,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
         public Guid Id { get; }
         public string PortName { get; }
 
-        IPersistable IPersistablePort.Parent => (IPersistable) this.Parent;
+        IPersistableNodeViewModel IPersistablePortViewModel.Parent => (IPersistableNodeViewModel) this.Parent;
 
         public PersistableValueNodeInputViewModel(string portName, InputPort source, NodeEndpointEditorViewModel editor)
         {
@@ -34,18 +34,17 @@ namespace SatisfactoryModeler.ViewModels.Nodes
                 this.SetValue(source.Value);
         }
 
-        object IPersistable.Persist(object port) => Persist((InputPort)port);
+        object IPersistablePortViewModel.Persist() => this.Persist();
 
-        public virtual InputPort Persist(InputPort port)
+        public virtual InputPort Persist()
         {
-            Debug.Assert(port == null);
-
             var withValue = !(Value is IObservable<T>);
+            // TODO ALPHA persiste with convertion
 
             return new InputPort
             {
                 Id = this.Id,
-                ParentId = this.Parent.CastTo<IPersistable>().Id,
+                ParentId = this.Parent.CastTo<IPersistableNodeViewModel>().Id,
                 Name = this.PortName,
                 WithValue = withValue,
                 Value = withValue ? this.Value : default,

@@ -57,6 +57,5 @@ namespace SatisfactoryModeler.ViewModels.Editors
                 this.SelectedOptionIndex = index;
             }
         }
-
     }
 }

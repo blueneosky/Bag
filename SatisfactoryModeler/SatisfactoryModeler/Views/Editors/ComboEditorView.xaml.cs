@@ -9,7 +9,7 @@ namespace SatisfactoryModeler.Views.Editors
     {
         #region ViewModel
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(nameof(ViewModel),
-            typeof(EnumEditorViewModel), typeof(EnumEditorView), new PropertyMetadata(null));
+            typeof(ComboEditorViewModel), typeof(ComboEditorView), new PropertyMetadata(null));
 
         public ComboEditorViewModel ViewModel
         {

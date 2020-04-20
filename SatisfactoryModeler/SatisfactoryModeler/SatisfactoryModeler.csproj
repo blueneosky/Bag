@@ -149,10 +149,11 @@
     <Compile Include="Models\ItemType.cs" />
     <Compile Include="Models\MinerLevel.cs" />
     <Compile Include="Models\ResourceNodePurity.cs" />
-    <Compile Include="Models\ResourceNodeType.cs" />
+    <Compile Include="Models\MiningOreType.cs" />
     <Compile Include="Persistance\Configurations\CfgConfiguration.cs" />
     <Compile Include="Persistance\Configurations\CfgFluideType.cs" />
     <Compile Include="Persistance\Configurations\CfgItemType.cs" />
+    <Compile Include="Persistance\IPersistanceConvertible.cs" />
     <Compile Include="Persistance\IPersistanceEngine.cs" />
     <Compile Include="Persistance\XmlPersistanceEngine.cs" />
     <Compile Include="Persistance\JsonPersistanceEngine.cs" />
@@ -178,9 +179,9 @@
     <Compile Include="ViewModels\Editors\IModifiableValueEditorViewModel.cs" />
     <Compile Include="ViewModels\Editors\StringValueEditorViewModel.cs" />
     <Compile Include="ViewModels\Nodes\ExternalSourceViewModel.cs" />
-    <Compile Include="ViewModels\Nodes\IPersistable.cs" />
+    <Compile Include="ViewModels\Nodes\IPersistableNodeViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Nodes\IPersistablePort.cs" />
+    <Compile Include="ViewModels\Nodes\IPersistablePortViewModel.cs" />
     <Compile Include="ViewModels\Nodes\MergerNodeViewModel.cs" />
     <Compile Include="ViewModels\Nodes\MinerViewModel.cs" />
     <Page Include="Views\Editors\ComboEditorView.xaml">

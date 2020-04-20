@@ -35,7 +35,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Tag.Name = "Tag";
             Tag.Port.IsVisible = false;
 
-            Type = CreateInput<object>("ItemType", source, new EnumEditorViewModel(typeof(ItemType)));
+            Type = CreateInput<object>("ItemType", source, new ComboEditorViewModel(ItemType.All));
             Type.Name = "Item";
             Type.Port.IsVisible = false;
 
@@ -47,7 +47,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Output.Name = "output";
 
             var delivery = this.WhenAnyValue(vm => vm.Type.Value, vm => vm.Rate.Value)
-               .Select(_ => ItemFlow.From((ItemType?)this.Type.Value, this.Rate.Value));
+               .Select(_ => ItemFlow.From((ItemType)this.Type.Value, this.Rate.Value));
             Output.Value = delivery;
 
             SetupDynamicOutput(Output, v => v?.Type, v => v?.Rate, "{0}\n{1}/min", "ouput");
