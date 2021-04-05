@@ -1,0 +1,7 @@
+# -------------------------------------------------------------------------
+# phone numbers here while not be blocked, other will receive fax response
+# this list is read after black list
+# -------------------------------------------------------------------------
+# add phone numbers like +55 5 54644(645)
+# note : all these characters will be ignored: _-.()[] and space
+
