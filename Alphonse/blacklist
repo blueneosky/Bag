@@ -1,0 +1,7 @@
+# ------------------------------------------------------------------------------
+# phone numbers here while be blocked by pick-up, then hang-up one second after
+# this list is read before white list
+# ------------------------------------------------------------------------------
+# add phone numbers like +55 5 54644(645)
+# note : all these characters will be ignored: _-.()[] and space
+
