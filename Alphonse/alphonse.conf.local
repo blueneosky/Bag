@@ -1,0 +1,21 @@
+#======================================
+# use for debug purpose
+# this file will not be install
+#======================================
+[SERVICE]
+
+# modem device - adapt to your need
+MODEM_DEVICE=/dev/ttyACM0
+
+BLACKLIST_FILE=./blacklist
+WHITELIST_FILE=./whitelist
+
+
+[LOG]
+
+# log path
+LOG_FILE=/var/log/alphonse
+
+#advance logging
+WITH_DEBUG=yes
+WITH_TRACE=yes
