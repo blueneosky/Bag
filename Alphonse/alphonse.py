@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+import daemon
+import getopt
+import sys
 import signal
 import time
 import traceback
-from configparser import ConfigParser
 import serial
 import pathlib
+import threading
+from configparser import ConfigParser
 from datetime import datetime, timedelta
 from typing import List
 
@@ -13,7 +17,7 @@ from typing import List
 
 
 DEBUG_CONFIG_PATH = "./alphonse.conf.local"
-CONFIG_PATH = "/etc/alphonse.config"
+CONFIG_PATH = "/etc/alphonse.conf"
 CONF_SERVICE_SECTION_NAME = "SERVICE"
 CONF_SERVICE_MODEM_DEVICE = "MODEM_DEVICE"
 CONF_SERVICE_WHITELIST_FILE = "WHITELIST_FILE"
@@ -23,7 +27,6 @@ CONF_LOG_FILE_NAME = "LOG_FILE"
 CONF_LOG_WITH_DEBUG = "WITH_DEBUG"
 CONF_LOG_WITH_TRACE = "WITH_TRACE"
 
-MODEM_DEVICE = "/dev/ttyACM0"   # TODO remove it
 MODEM_RESET = [b"ATZ"]  # reset
 MODEM_INIT = [b"ATE0", b"AT+VCID=1"]  # no echo, activate call id printing
 MODEM_PICKUP = [b"ATA"]  # will provide a nice variations of modem strident sound
@@ -70,6 +73,53 @@ class Logger:
     def trace(self, msg: str):
         if self._with_trace:
             self._msg("TRACE> " + msg)
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+class AlphonseConfig:
+
+    def __init__(self, log: Logger, parser: ConfigParser):
+        self._log = log
+        self._parser = parser
+        self._modem_device = None
+        self._blacklist_file = None
+        self._whitelist_file = None
+
+    @property
+    def modem_device(self): return self._modem_device
+    @property
+    def blacklist_file(self): return self._blacklist_file
+    @property
+    def whitelist_file(self): return self._whitelist_file
+
+    def _config_check_modem_device(self, section: str, option: str) -> str:
+        modem_device = self._parser.get(section, option)
+        if modem_device is not None and len(modem_device) > 0:
+            return modem_device
+
+        raise Exception("no fall back for now - need some impl")
+        # TODO try something around that
+        # ports = []
+        # for n, (port, desc, hwid) in enumerate(sorted(comports()), 1):
+        #     sys.stderr.write('--- {:2}: {:20} {!r}\n'.format(n, port, desc))
+        #     ports.append(port)
+
+        return ""
+
+    def _config_check_path_exists(self, section: str, option: str) -> str:
+        file_path = self._parser.get(section, option)
+        if file_path is None or len(file_path) == 0:
+            raise Exception(f"Configuration: {section}#{option} was not defined")
+        if not pathlib.Path(file_path).is_file():
+            raise Exception(f"Configuration: file not found for {section}#{option} (was {file_path})")
+
+        return file_path
+
+    def load(self):
+        self._modem_device = self._config_check_modem_device(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_MODEM_DEVICE)
+        self._blacklist_file = self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_BLACKLIST_FILE)
+        self._whitelist_file = self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_WHITELIST_FILE)
+        pass
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -189,9 +239,9 @@ class PickUpHangUpBaseHandler:
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 class BlacklistHandler(PickUpHangUpBaseHandler):
 
-    def __init__(self, modem: Modem, log: Logger, config: ConfigParser):
+    def __init__(self, modem: Modem, log: Logger, config: AlphonseConfig):
         super().__init__(modem, log)
-        file_path = config.get(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_BLACKLIST_FILE)
+        file_path = config.blacklist_file
         self._phone_number_extractor = PhoneNumberFileExtractor(file_path)
 
     def process(self, context: PhoneNumberHandlerContext):
@@ -208,9 +258,9 @@ class BlacklistHandler(PickUpHangUpBaseHandler):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 class WhitelistHandler(PickUpHangUpBaseHandler):
 
-    def __init__(self, modem: Modem, log: Logger, config: ConfigParser):
+    def __init__(self, modem: Modem, log: Logger, config: AlphonseConfig):
         super().__init__(modem, log)
-        file_path = config.get(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_WHITELIST_FILE)
+        file_path = config.whitelist_file
         self._phone_number_extractor = PhoneNumberFileExtractor(file_path)
 
     def process(self, context: PhoneNumberHandlerContext):
@@ -227,7 +277,7 @@ class WhitelistHandler(PickUpHangUpBaseHandler):
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 class Alphonse:
 
-    def __init__(self, log: Logger, config: ConfigParser):
+    def __init__(self, log: Logger, config: AlphonseConfig):
         self._log = log
         self._config = config
         self._halt_requested = False
@@ -274,7 +324,7 @@ class Alphonse:
 
         # open com
         self._log.trace("Open modem...")
-        modem = Modem(MODEM_DEVICE, 9600, timeout=1.0)  # not in try/except : need to crash quick without repeat
+        modem = Modem(self._config.modem_device, 9600, timeout=1.0)  # not in try/except : crash quick without repeat
 
         try:
             self._listening(modem)
@@ -285,103 +335,123 @@ class Alphonse:
             if modem is not None:
                 modem.close()
 
-    def signal_handler(self, signum):
+    def signal_handler(self, signum, frame):
         self._log.info(f"SIGNAL receive: {signal.strsignal(signum)}")
-        self._log.info("[goodbye cruel world]")
-        self._halt_requested = True
-        self._cancellation_requested = True
-
-    def reset_handler(self):
-        self._log.info("Reset signal received")
-        self._reset_requested = True
+        if signum == signal.SIGUSR1:
+            self._log.info("Reset signal received")
+            self._reset_requested = True
+        else:
+            self._log.info("[goodbye cruel world]")
+            self._halt_requested = True
         self._cancellation_requested = True
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-def config_check_modem_device(config: ConfigParser, section: str, option: str):
-    modem_device = config.get(section, option)
-    if modem_device is not None and len(modem_device) > 0:
-        return
+class SignalDispatcher:
 
-    raise Exception("no fall back for now - need some impl")
-    # TODO try something around that
-    # ports = []
-    # for n, (port, desc, hwid) in enumerate(sorted(comports()), 1):
-    #     sys.stderr.write('--- {:2}: {:20} {!r}\n'.format(n, port, desc))
-    #     ports.append(port)
+    def __init__(self):
+        self._lock = threading.RLock()
+        self._handlers = []
+
+    def subscribe(self, handler):
+        """
+        expect that handler have a method like this signal_handler(signum, frame)
+        """
+        with self._lock:
+            self._handlers.append(handler)
+
+    def unsubscribe(self, handler):
+        with self._lock:
+            self._handlers.remove(handler)
+
+    def __iadd__(self, other):
+        self.subscribe(other)
+        return self
+
+    def __isub__(self, other):
+        self.subscribe(other)
+        return self
+
+    def clear(self):
+        with self._lock:
+            self._handlers.clear()
+
+    def dispatch(self, signum, frame):
+        with self._lock:
+            handlers = self._handlers.copy()
+        for handler in handlers:
+            handler.signal_handler(signum, frame)
 
 
-def config_check_path_exists(config: ConfigParser, section: str, option: str):
-    file_path = config.get(section, option)
-    if file_path is None or len(file_path) == 0:
-        raise Exception(f"Configuration: {section}#{option} was not defined")
-    if not pathlib.Path(file_path).is_file():
-        raise Exception(f"Configuration: file not found for {section}#{option} (was {file_path})")
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+_signal_dispatcher = SignalDispatcher()
+
+
+def signal_handler(signum, frame):
+    _signal_dispatcher.dispatch(signum, frame)
+
+
+def alphonse_main(signal_dispatcher: SignalDispatcher):
+    log = Logger()
+    config = None
+    try:
+        _config_path = None
+        if pathlib.Path(DEBUG_CONFIG_PATH).is_file():
+            _config_path = DEBUG_CONFIG_PATH
+        elif pathlib.Path(CONFIG_PATH).is_file():
+            _config_path = CONFIG_PATH
+        else:
+            log.error(f"No config file found at {CONFIG_PATH}")
+            exit(-1)
+
+        config_parser = ConfigParser()
+        config_parser.read_file(open(_config_path))
+
+        # --- log initialisation ---
+        _log_file_name = config_parser.get(CONF_LOG_SECTION_NAME, CONF_LOG_FILE_NAME)
+        _log_with_debug = config_parser.getboolean(CONF_LOG_SECTION_NAME, CONF_LOG_WITH_DEBUG)
+        _log_with_trace = config_parser.getboolean(CONF_LOG_SECTION_NAME, CONF_LOG_WITH_TRACE)
+        log = Logger(_log_file_name, _log_with_debug, _log_with_trace)
+
+        log.info("Starting...")
+        log.debug(f"Usage of config file from {_config_path}")
+
+        # some configuration check
+        config = AlphonseConfig(log, config_parser)
+        config.load()
+    except Exception as _err:
+        log.err(f"Fail to read configuration point: {_err}")
+        log.debug(traceback.format_exc())
+        exit(-2)
+
+    # signal registration
+    signal.signal(signal.SIGINT, signal_handler)    # ctrl+c, for logging
+    signal.signal(signal.SIGTERM, signal_handler)   # kill, for logging
+    signal.signal(signal.SIGUSR1, signal_handler)   # reset on SIGUSR1
+
+    alphonse = None
+    while alphonse is None or not alphonse.halt_requested:
+        alphonse = Alphonse(log, config)
+        signal_dispatcher += alphonse
+        alphonse.listening()
+        signal_dispatcher.clear()
+
+        if alphonse.halt_requested:
+            break
+        if alphonse.reset_requested:
+            log.info("Reset in progress...")
+        else:
+            # something went wrong and we need to restart the listening
+            log.info("Restarting...")
 
     return
 
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-alphonse = None
-
-
-def signal_handler(signum, frame):
-    if alphonse:
-        alphonse.signal_handler(signum)
-
-
-def reset_handler(signum, frame):
-    if alphonse:
-        alphonse.reset_handler()
-
-
-# ----- start point ------
-_log = Logger()
-_config = None
-try:
-    _config_path = None
-    if pathlib.Path(DEBUG_CONFIG_PATH).is_file():
-        _config_path = DEBUG_CONFIG_PATH
-    elif pathlib.Path(CONFIG_PATH).is_file():
-        _config_path = CONFIG_PATH
-    else:
-        _log.error(f"No config file found at {CONFIG_PATH}")
-        exit(-1)
-
-    _config = ConfigParser()
-    _config.read_file(open(_config_path))
-
-    # --- log initialisation ---
-    _log_file_name = _config.get(CONF_LOG_SECTION_NAME, CONF_LOG_FILE_NAME)
-    _log_with_debug = _config.getboolean(CONF_LOG_SECTION_NAME, CONF_LOG_WITH_DEBUG)
-    _log_with_trace = _config.getboolean(CONF_LOG_SECTION_NAME, CONF_LOG_WITH_TRACE)
-    _log = Logger(_log_file_name, _log_with_debug, _log_with_trace)
-
-    _log.info("Starting...")
-    _log.debug(f"Usage of config file from {_config_path}")
-
-    # some configuration check
-    config_check_modem_device(_config, CONF_SERVICE_SECTION_NAME, CONF_SERVICE_MODEM_DEVICE)
-    config_check_path_exists(_config, CONF_SERVICE_SECTION_NAME, CONF_SERVICE_BLACKLIST_FILE)
-    config_check_path_exists(_config, CONF_SERVICE_SECTION_NAME, CONF_SERVICE_WHITELIST_FILE)
-except Exception as _err:
-    _log.err(f"Fail to read configuration point: {_err}")
-    _log.debug(traceback.format_exc())
-    exit(-2)
-
-# signal registration
-signal.signal(signal.SIGINT, signal_handler)    # ctrl+c, for logging
-signal.signal(signal.SIGTERM, signal_handler)   # kill, for logging
-signal.signal(signal.SIGUSR1, reset_handler)    # reset on SIGUSR1
-
-alphonse = Alphonse(_log, _config)
-
-while not alphonse.halt_requested:
-    alphonse.listening()
-    if alphonse.halt_requested:
-        break
-    if alphonse.reset_requested:
-        _log.info("Reset in progress...")
-    else:
-        # something went wrong and we need to restart the listening
-        _log.info("Restarting...")
+# - - - - - start point - - - - - -
+if __name__ == "__main__":
+    try:
+        alphonse_main(_signal_dispatcher)
+    except Exception as err:
+        log = Logger("/var/log/alphonse")
+        log.err(f"Global fail: {err}")
+        log.debug(traceback.format_exc())
