@@ -1,0 +1,80 @@
+BIN_DIR			:=/usr/local/sbin/
+CONFIG_DIR		:=/etc/
+SERVICE_DIR		:=/etc/systemd/system/
+DATA_DIR		:=/var/lib/alphonse/
+WWW_DIR			:=/var/www/html/
+CGI_BIN_DIR		:=/usr/lib/cgi-bin/
+
+INSTALL_BIN		:=install --owner=root --group=root --mode=755
+INSTALL_FILE	:=install --owner=root --group=root --mode=711
+INSTALL_DATA	:=install --owner=root --group=root --mode=777
+INSTALL_DIR		:=install -d
+UNINSTALL		:=rm
+UNINSTALL_DIR	:=rm -rf
+
+ENABLE_SERVICE	:=systemctl enable
+DISABLE_SERVICE	:=systemctl disable
+START_SERVICE	:=systemctl start
+STOP_SERVICE	:=systemctl stop
+
+
+.PHONY: install install_service uninstall uninstall_service uninstall_full help need_root
+
+help:
+	@echo "available targets: install | uninstall | uninstall_full | install_service | uninstall_service"
+
+#install alphonse binaries and config
+install: need_root
+	@echo "Installing..."
+	@echo "  Bin into $(BIN_DIR) ..."
+	@$(INSTALL_DIR) $(BIN_DIR)
+	@$(INSTALL_BIN) alphonse.py $(BIN_DIR)
+	@echo "  Config into $(CONFIG_DIR) ..."
+	@$(INSTALL_FILE) alphonse.conf $(CONFIG_DIR)
+	@echo "  Data into $(DATA_DIR) ..."
+	@$(INSTALL_DIR) $(DATA_DIR)
+	@test -e $(DATA_DIR)/whitelist || $(INSTALL_DATA) whitelist $(DATA_DIR)
+	@test -e $(DATA_DIR)/blacklist || $(INSTALL_DATA) blacklist $(DATA_DIR)
+	@echo "Install OK"
+
+#uninstall alphonse (with service)
+uninstall: uninstall_service
+	@echo "Uninstalling..."
+	@echo "  Remove bin from $(BIN_DIR) ..."
+	@$(UNINSTALL) $(BIN_DIR)/alphonse.py || echo "  [!] Fail to remove bin"
+	@echo "  Remove config from $(CONFIG_DIR) ..."
+	@$(UNINSTALL) $(CONFIG_DIR)/alphonse.conf || echo "  [!] Fail to remove config"
+	@echo "Uninstall OK"
+
+install_service: install
+	@echo "Installing service..."
+	@echo "  Copy into $(SERVICE_DIR) ..."
+	@$(INSTALL_BIN) alphonse.service $(SERVICE_DIR)
+	@echo "  Activation on boot..."
+	@$(ENABLE_SERVICE) alphonse
+	@echo "  Starting..."
+	@$(START_SERVICE) alphonse
+	@echo "Install service OK"
+
+uninstall_service:
+	@echo '$(SERVICE_DIR)/alphonse.service'
+	@echo  "$(wildcard $(SERVICE_DIR)/alphonse.service)"
+ifneq ("$(wildcard $(SERVICE_DIR)/alphonse.service)","")
+	@echo "Uninstalling service..."
+	@echo "  Stopping..."
+	-@$(STOP_SERVICE) alphonse
+	@echo "  Deactivation..."
+	-@$(DISABLE_SERVICE) alphonse
+	@echo "  Removing from into $(SERVICE_DIR) ..."
+	@$(UNINSTALL) $(SERVICE_DIR)/alphonse.service || echo "  [!] Removing failed"
+	@echo "Uninstall service OK"
+endif
+
+uninstall_full: uninstall
+	@echo "Removing config and data..."
+	@$(UNINSTALL_DIR) $(DATA_DIR) || echo "[!] Remove failed ($(DATA_DIR))"
+	@echo "Remove OK"
+
+need_root:
+	@test `whoami` = root
+
