@@ -1,0 +1,16 @@
+#!/bin/bash
+
+ALPHONSE_SERVICE=no
+ALPHONSE_WEB=no
+source ./config
+
+#TODO remove that echos
+echo "$ALPHONSE_BIN_DIR"
+echo "$ALPHONSE_DATA_DIR"
+echo "$ALPHONSE_SERVICE"
+echo "$ALPHONSE_SERVICE_DIR"
+echo "$ALPHONSE_WEB"
+echo "$ALPHONSE_WWW_DIR"
+echo "$ALPHONSE_CGI_BIN_DIR"
+
+cp Makefile.in Makefile

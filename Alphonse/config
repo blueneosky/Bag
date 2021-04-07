@@ -1,0 +1,25 @@
+#!/bin/bash
+###################################
+# configuration file for deployment
+###################################
+
+# where 'alphonse' will be deployed
+ALPHONSE_BIN_DIR=/usr/local/sbin/
+
+# where 'alphonse' data will be store (phone books, whitelist, blacklist, ...)
+ALPHONSE_DATA_DIR=/var/lib/alphonse/
+
+#==================================
+# systemd service
+#==================================
+# do you want 'alphonse' in systemd ? 'yes' or 'no'
+ALPHONSE_SERVICE=yes
+ALPHONSE_SERVICE_DIR=/etc/systemd/system/
+
+#==================================
+# web ihm
+#==================================
+# do you want 'alphonse' web ihm ? 'yes' or 'no'
+ALPHONSE_WEB=yes
+ALPHONSE_WWW_DIR=/var/www/html/
+ALPHONSE_CGI_BIN_DIR=/usr/lib/cgi-bin/

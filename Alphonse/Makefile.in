@@ -1,9 +1,9 @@
 BIN_DIR			:=/usr/local/sbin/
-CONFIG_DIR		:=/etc/
-SERVICE_DIR		:=/etc/systemd/system/
 DATA_DIR		:=/var/lib/alphonse/
+SERVICE_DIR		:=/etc/systemd/system/
 WWW_DIR			:=/var/www/html/
 CGI_BIN_DIR		:=/usr/lib/cgi-bin/
+CONFIG_DIR		:=/etc/
 
 INSTALL_BIN		:=install --owner=root --group=root --mode=755
 INSTALL_FILE	:=install --owner=root --group=root --mode=711
