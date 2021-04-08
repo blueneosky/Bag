@@ -9,6 +9,10 @@ ALPHONSE_BIN_DIR=/usr/local/sbin/
 # where 'alphonse' data will be store (phone books, whitelist, blacklist, ...)
 ALPHONSE_DATA_DIR=/var/lib/alphonse/
 
+
+# where 'alphonse' will log
+ALPHONSE_LOG_FILE=/var/log/alphonse
+
 #==================================
 # systemd service
 #==================================
