@@ -1,8 +1,8 @@
-BIN_DIR			:=/usr/local/sbin/
-DATA_DIR		:=/var/lib/alphonse/
-SERVICE_DIR		:=/etc/systemd/system/
-WWW_DIR			:=/var/www/html/
-CGI_BIN_DIR		:=/usr/lib/cgi-bin/
+BIN_DIR			:={{ALPHONSE_BIN_DIR}}
+DATA_DIR		:={{ALPHONSE_DATA_DIR}}
+[@1]SERVICE_DIR		:={{ALPHONSE_SERVICE_DIR}}
+[@2]WWW_DIR			:={{ALPHONSE_WWW_DIR}}
+[@2]CGI_BIN_DIR		:={{ALPHONSE_CGI_BIN_DIR}}
 CONFIG_DIR		:=/etc/
 
 INSTALL_BIN		:=install --owner=root --group=root --mode=755
@@ -12,16 +12,20 @@ INSTALL_DIR		:=install -d
 UNINSTALL		:=rm
 UNINSTALL_DIR	:=rm -rf
 
-ENABLE_SERVICE	:=systemctl enable
-DISABLE_SERVICE	:=systemctl disable
-START_SERVICE	:=systemctl start
-STOP_SERVICE	:=systemctl stop
+[@1]ENABLE_SERVICE	:=systemctl enable
+[@1]DISABLE_SERVICE	:=systemctl disable
+[@1]START_SERVICE	:=systemctl start
+[@1]STOP_SERVICE	:=systemctl stop
 
 
-.PHONY: install install_service uninstall uninstall_service uninstall_full help need_root
+.PHONY: install uninstall uninstall_full help need_root
+
+build:
+    @echo "Building..."
+    @echo "Build OK "
 
 help:
-	@echo "available targets: install | uninstall | uninstall_full | install_service | uninstall_service"
+	@echo "available targets: install | uninstall | uninstall_full"
 
 #install alphonse binaries and config
 install: need_root
@@ -36,39 +40,37 @@ install: need_root
 	@test -e $(DATA_DIR)/whitelist || $(INSTALL_DATA) whitelist $(DATA_DIR)
 	@test -e $(DATA_DIR)/blacklist || $(INSTALL_DATA) blacklist $(DATA_DIR)
 	@echo "Install OK"
+[@2]	@echo "Installing web interface..."
+[@2]	@echo "Install web interface OK"
+[@1]	@echo "Installing service..."
+[@1]	@echo "  Copy into $(SERVICE_DIR) ..."
+[@1]	@$(INSTALL_BIN) alphonse.service $(SERVICE_DIR)
+[@1]	@echo "  Activation on boot..."
+[@1]	@$(ENABLE_SERVICE) alphonse
+[@1]	@echo "  Starting..."
+[@1]	@$(START_SERVICE) alphonse
+[@1]	@echo "Install service OK"
 
 #uninstall alphonse (with service)
-uninstall: uninstall_service
+uninstall:
+[@1]ifneq ("$(wildcard $(SERVICE_DIR)/alphonse.service)","")
+[@1]	@echo "Uninstalling service..."
+[@1]	@echo "  Stopping..."
+[@1]	-@$(STOP_SERVICE) alphonse
+[@1]	@echo "  Deactivation..."
+[@1]	-@$(DISABLE_SERVICE) alphonse
+[@1]	@echo "  Removing from into $(SERVICE_DIR) ..."
+[@1]	@$(UNINSTALL) $(SERVICE_DIR)/alphonse.service || echo "  [!] Removing failed"
+[@1]	@echo "Uninstall service OK"
+[@1]endif
+[@2]	@echo "Uninstalling web interface..."
+[@2]	@echo "Uninstall web interface OK"
 	@echo "Uninstalling..."
 	@echo "  Remove bin from $(BIN_DIR) ..."
 	@$(UNINSTALL) $(BIN_DIR)/alphonse.py || echo "  [!] Fail to remove bin"
 	@echo "  Remove config from $(CONFIG_DIR) ..."
 	@$(UNINSTALL) $(CONFIG_DIR)/alphonse.conf || echo "  [!] Fail to remove config"
 	@echo "Uninstall OK"
-
-install_service: install
-	@echo "Installing service..."
-	@echo "  Copy into $(SERVICE_DIR) ..."
-	@$(INSTALL_BIN) alphonse.service $(SERVICE_DIR)
-	@echo "  Activation on boot..."
-	@$(ENABLE_SERVICE) alphonse
-	@echo "  Starting..."
-	@$(START_SERVICE) alphonse
-	@echo "Install service OK"
-
-uninstall_service:
-	@echo '$(SERVICE_DIR)/alphonse.service'
-	@echo  "$(wildcard $(SERVICE_DIR)/alphonse.service)"
-ifneq ("$(wildcard $(SERVICE_DIR)/alphonse.service)","")
-	@echo "Uninstalling service..."
-	@echo "  Stopping..."
-	-@$(STOP_SERVICE) alphonse
-	@echo "  Deactivation..."
-	-@$(DISABLE_SERVICE) alphonse
-	@echo "  Removing from into $(SERVICE_DIR) ..."
-	@$(UNINSTALL) $(SERVICE_DIR)/alphonse.service || echo "  [!] Removing failed"
-	@echo "Uninstall service OK"
-endif
 
 uninstall_full: uninstall
 	@echo "Removing config and data..."
