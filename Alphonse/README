@@ -1,0 +1,44 @@
+'alphonse' is a phone number listener in order to log and take care of unwanted call
+
+INSTALL
+=======
+1) read and change 'Config' file for your need (deployment config)
+> vim Condif
+
+2) prepare
+> ./configure
+
+3) install
+> make install
+
+4) configure (check configuration section bellow)
+> vim /etc/alphonse.conf
+
+5) test
+ - if you specify with service, check his status with
+	> sudo systemctl status alphonse
+ - run 'alphonse' (root access needed in order to open modem line)
+	> sudo alphonse.py
+	then ctrl+c in order to stop it
+
+
+CONFIGURATION
+=============
+edit /etc/alphonse.conf and specify MODEM_DEVICE
+edit other settings if you need it
+> vim /etc/alphonse.conf
+
+
+RUNNING
+=======
+> sudo alphonse.py
+
+you can use 'screen' in order to daemonized it
+
+properly respond to :
+	- SIGINT (ctrl+c)	: quickly stop
+	- SIGTERM			: log it and die
+	- SIGUSR1			: close and re-open modem line
+
+log everything into /var/log/alphonse
+

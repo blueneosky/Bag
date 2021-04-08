@@ -17,9 +17,9 @@ ALPHONSE_SERVICE=yes
 ALPHONSE_SERVICE_DIR=/etc/systemd/system/
 
 #==================================
-# web ihm
+# web interface
 #==================================
-# do you want 'alphonse' web ihm ? 'yes' or 'no'
-ALPHONSE_WEB=yes
+# do you want 'alphonse' web interface ? 'yes' or 'no'
+ALPHONSE_WEB=no
 ALPHONSE_WWW_DIR=/var/www/html/
 ALPHONSE_CGI_BIN_DIR=/usr/lib/cgi-bin/

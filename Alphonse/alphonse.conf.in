@@ -6,8 +6,8 @@
 # modem device - adapt to your need
 MODEM_DEVICE=
 
-BLACKLIST_FILE=/var/lib/alphonse/blacklist
-WHITELIST_FILE=/var/lib/alphonse/whitelist
+BLACKLIST_FILE={{ALPHONSE_DATA_DIR}}/blacklist
+WHITELIST_FILE={{ALPHONSE_DATA_DIR}}/whitelist
 
 
 [LOG]

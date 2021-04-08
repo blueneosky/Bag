@@ -8,8 +8,8 @@ Type=simple
 User=root
 Group=root
 
-WorkingDirectory=/var/lib/alphonse
-ExecStart=/usr/bin/python3 /usr/sbin/alphonse.py &> /dev/null
+WorkingDirectory={{ALPHONSE_DATA_DIR}}
+ExecStart=/usr/bin/python3 {{ALPHONSE_BIN_DIR}}/alphonse.py &> /dev/null
 
 Restart=on-failure
 
