@@ -1,37 +1,57 @@
 #!/bin/bash
 
+#TODO test python3
+#TODO test module needed !
+#TODO test systemctl if service activated
+#TODO test make
+#TODO ... ?
+
+normalize_path () {
+  # shellcheck disable=SC2001
+  echo "$(echo "$1" | sed 's#/*$##')/"
+}
+
+
 ALPHONSE_SERVICE=no
 ALPHONSE_WEB=no
 source ./Config
 
-#TODO remove that echos
-#echo "$ALPHONSE_BIN_DIR"
-#echo "$ALPHONSE_DATA_DIR"
-#echo "$ALPHONSE_SERVICE"
-#echo "$ALPHONSE_SERVICE_DIR"
-#echo "$ALPHONSE_WEB"
-#echo "$ALPHONSE_WWW_DIR"
-#echo "$ALPHONSE_CGI_BIN_DIR"
-
+ALPHONSE_BIN_DIR="$(normalize_path "$ALPHONSE_BIN_DIR")"
 SED_FUNC="s#{{ALPHONSE_BIN_DIR}}#$ALPHONSE_BIN_DIR#g"
-SED_FUNC="$SED_FUNC; s#{{ALPHONSE_DATA_DIR}}#$ALPHONSE_DATA_DIR#g"
-SED_FUNC="$SED_FUNC; s#{{ALPHONSE_SERVICE_DIR}}#$ALPHONSE_SERVICE_DIR#g"
-SED_FUNC="$SED_FUNC; s#{{ALPHONSE_WWW_DIR}}#$ALPHONSE_WWW_DIR#g"
-SED_FUNC="$SED_FUNC; s#{{ALPHONSE_CGI_BIN_DIR}}#$ALPHONSE_CGI_BIN_DIR#g"
+echo "With BIN_DIR=$ALPHONSE_BIN_DIR"
 
-if [ $ALPHONSE_SERVICE = "yes" ]; then
+ALPHONSE_DATA_DIR="$(normalize_path "$ALPHONSE_DATA_DIR")"
+SED_FUNC="$SED_FUNC; s#{{ALPHONSE_DATA_DIR}}#$ALPHONSE_DATA_DIR#g"
+echo "With DATA_DIR=$ALPHONSE_DATA_DIR"
+
+if [ "$ALPHONSE_SERVICE" = "yes" ]; then
+  echo "With service:"
+
+  ALPHONSE_SERVICE_DIR="$(normalize_path "$ALPHONSE_SERVICE_DIR")"
+  SED_FUNC="$SED_FUNC; s#{{ALPHONSE_SERVICE_DIR}}#$ALPHONSE_SERVICE_DIR#g"
+  echo "  With SERVICE_DIR=$ALPHONSE_SERVICE_DIR"
+
   SED_FUNC="$SED_FUNC; s#\\[@1\\]##g"
 else
   SED_FUNC="$SED_FUNC; /^\[@1\]/d"
 fi
 
-if [ $ALPHONSE_WEB = "yes" ]; then
+if [ "$ALPHONSE_WEB" = "yes" ]; then
+  echo "With Web interface:"
+  ALPHONSE_WWW_DIR="$(normalize_path "$ALPHONSE_WWW_DIR")"
+  SED_FUNC="$SED_FUNC; s#{{ALPHONSE_WWW_DIR}}#$ALPHONSE_WWW_DIR#g"
+  echo "  With WWW_DIR=$ALPHONSE_WWW_DIR"
+
+  ALPHONSE_CGI_BIN_DIR="$(normalize_path "$ALPHONSE_CGI_BIN_DIR")"
+  SED_FUNC="$SED_FUNC; s#{{ALPHONSE_CGI_BIN_DIR}}#$ALPHONSE_CGI_BIN_DIR#g"
+  echo "  With CGI_BIN_DIR=$ALPHONSE_CGI_BIN_DIR"
+
   SED_FUNC="$SED_FUNC; s#\\[@2\\]##g"
 else
   SED_FUNC="$SED_FUNC; /^\[@2\]/d"
 fi
 
-sed "$SED_FUNC" alphonse.conf.in > alphonse.conf
-sed "$SED_FUNC" alphonse.service.in > alphonse.service
-sed "$SED_FUNC" Makefile.in > Makefile
-
+for i in *.in; do
+  [ -f "$i" ] || continue
+  sed "$SED_FUNC" "$i" > "${i%.in}"
+done

@@ -9,7 +9,7 @@ User=root
 Group=root
 
 WorkingDirectory={{ALPHONSE_DATA_DIR}}
-ExecStart=/usr/bin/python3 {{ALPHONSE_BIN_DIR}}/alphonse.py &> /dev/null
+ExecStart=/usr/bin/python3 {{ALPHONSE_BIN_DIR}}alphonse.py &> /dev/null
 
 Restart=on-failure
 

@@ -21,8 +21,8 @@ UNINSTALL_DIR	:=rm -rf
 .PHONY: install uninstall uninstall_full help need_root
 
 build:
-    @echo "Building..."
-    @echo "Build OK "
+	@echo "Building..."
+	@echo "Build OK "
 
 help:
 	@echo "available targets: install | uninstall | uninstall_full"
