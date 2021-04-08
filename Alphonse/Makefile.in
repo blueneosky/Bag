@@ -12,10 +12,10 @@ INSTALL_DIR		:=install -d
 UNINSTALL		:=rm
 UNINSTALL_DIR	:=rm -rf
 
-[@1]ENABLE_SERVICE	:=systemctl enable
-[@1]DISABLE_SERVICE	:=systemctl disable
-[@1]START_SERVICE	:=systemctl start
-[@1]STOP_SERVICE	:=systemctl stop
+[@1]ENABLE_SERVICE	:={{ALPHONSE_DEP_SYSTEMCTL_BIN}} enable
+[@1]DISABLE_SERVICE	:={{ALPHONSE_DEP_SYSTEMCTL_BIN}} disable
+[@1]START_SERVICE	:={{ALPHONSE_DEP_SYSTEMCTL_BIN}} start
+[@1]STOP_SERVICE	:={{ALPHONSE_DEP_SYSTEMCTL_BIN}} stop
 
 
 .PHONY: install uninstall uninstall_full help need_root

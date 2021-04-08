@@ -13,7 +13,7 @@ WHITELIST_FILE={{ALPHONSE_DATA_DIR}}whitelist
 [LOG]
 
 # log path
-LOG_FILE=/var/log/alphonse
+LOG_FILE={{ALPHONSE_LOG_FILE}}
 
 #advance logging
 WITH_DEBUG=no
