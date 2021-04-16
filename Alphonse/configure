@@ -1,9 +1,12 @@
 #!/bin/bash
 
-PYTHON_CMD=python3
-MAKE_CMD=make
-SYSTEMCTL_CMD=systemctl
-SUDO_CMD=sudo
+PYTHON_CMD="python3"
+MAKE_CMD="make"
+SYSTEMCTL_CMD="systemctl"
+SUDO_CMD="sudo"
+
+ALPHONSE_BIN_FILE="alphonse.py"
+ALPHONSE_LIB_FILES=$(find  -name '*.py' '!' -name "$ALPHONSE_BIN_FILE" | xargs echo)
 
 normalize_path () {
   # shellcheck disable=SC2001
@@ -38,6 +41,7 @@ ALPHONSE_SERVICE=no
 ALPHONSE_WEB=no
 source ./Config
 
+
 # Where is 'python3'
 ALPHONSE_DEP_PYTHON_BIN=$(type -p "$PYTHON_CMD")
 if [ -z "$ALPHONSE_DEP_PYTHON_BIN" ]; then
@@ -63,6 +67,12 @@ fi
 #TODO test module needed !
 
 echo_ok "'alphonse' script"
+SED_FUNC="$SED_FUNC; s#{{ALPHONSE_BIN_FILE}}#$ALPHONSE_BIN_FILE#g"
+echo_with "ALPHONSE_BIN_FILE" "$ALPHONSE_BIN_FILE"
+
+SED_FUNC="$SED_FUNC; s#{{ALPHONSE_LIB_FILES}}#$ALPHONSE_LIB_FILES#g"
+echo_with "ALPHONSE_LIB_FILES" "$ALPHONSE_LIB_FILES"
+
 ALPHONSE_BIN_DIR="$(normalize_path "$ALPHONSE_BIN_DIR")"
 SED_FUNC="$SED_FUNC; s#{{ALPHONSE_BIN_DIR}}#$ALPHONSE_BIN_DIR#g"
 echo_with "BIN_DIR" "$ALPHONSE_BIN_DIR"
