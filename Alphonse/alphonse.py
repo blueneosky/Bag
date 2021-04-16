@@ -1,147 +1,20 @@
 #!/usr/bin/env python3
 import signal
-import json
 import time
 import traceback
-import serial
 import pathlib
 import threading
-from serial.tools.list_ports import comports
 from configparser import ConfigParser
-from datetime import datetime, timedelta
-from typing import List
 
-
-# don't forget, for voice mode https://en.wikipedia.org/wiki/Voice_modem_command_set
-
+from alphonse_config import AlphonseConfig, \
+    CONF_LOG_SECTION_NAME, CONF_LOG_FILE_NAME, CONF_LOG_WITH_DEBUG, CONF_LOG_WITH_TRACE
+from alphonse_logger import Logger
+from alphonse_modem import Modem, MODEM_NUMBER_TAG, MODEM_INIT, MODEM_RESET
+from alphonse_phone_handlers import PhoneNumberHandlerContext, CallHistoryHandler, \
+    BlacklistHandler, WhitelistHandler
 
 DEBUG_CONFIG_PATH = "./alphonse.conf.local"
 CONFIG_PATH = "/etc/alphonse.conf"
-CONF_SERVICE_SECTION_NAME = "SERVICE"
-CONF_SERVICE_MODEM_DEVICE = "MODEM_DEVICE"
-CONF_SERVICE_CALL_HISTORY_FILE = "CALL_HISTORY_FILE"
-CONF_SERVICE_WHITELIST_FILE = "WHITELIST_FILE"
-CONF_SERVICE_BLACKLIST_FILE = "BLACKLIST_FILE"
-CONF_SERVICE_PHONE_BOOK_FILE = "PHONE_BOOK_FILE"
-CONF_LOG_SECTION_NAME = "LOG"
-CONF_LOG_FILE_NAME = "LOG_FILE"
-CONF_LOG_WITH_DEBUG = "WITH_DEBUG"
-CONF_LOG_WITH_TRACE = "WITH_TRACE"
-
-MODEM_RESET = [b"ATZ"]  # reset
-MODEM_INIT = [b"ATE0", b"AT+VCID=1"]  # no echo, activate call id printing
-MODEM_PICKUP = [b"ATA"]  # will provide a nice variations of modem strident sound
-MODEM_HANGUP = [b"ATH"]
-MODEM_NUMBER_TAG = "NMBR = "
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class Modem(serial.Serial):
-
-    def write_command(self, commands: List[bytes]):
-        data = b''.join(map(lambda cmd: cmd + b'\r\n', commands))
-        super().write(data)
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class Logger:
-    def __init__(self, file_path: str = None, with_debug: bool = True, with_trace: bool = True):
-        self._file_path = file_path
-        self._with_debug = with_debug
-        self._with_trace = with_trace
-        self._file_logging_failed=False
-
-    def _msg(self, msg: str):
-        print(msg)
-        timestamp = datetime.now().strftime("%Y/%m/%d %H:%M:%S ")
-        if self._file_path is None:
-            return
-        if not self._file_logging_failed:
-            try:
-                with open(self._file_path, "a") as logfile:
-                    logfile.writelines([timestamp, msg, "\n"])
-            except PermissionError:
-                self._file_logging_failed = True
-
-        return
-
-    def error(self, msg: str):
-        self._msg("ERR>>> " + msg)
-
-    def err(self, msg: str):
-        self.error(msg)
-
-    def info(self, msg: str):
-        self._msg("INFO>> " + msg)
-
-    def debug(self, msg: str):
-        if self._with_debug:
-            self._msg("DEBUG>> " + msg)
-
-    def trace(self, msg: str):
-        if self._with_trace:
-            self._msg("TRACE> " + msg)
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class AlphonseConfig:
-
-    def __init__(self, log: Logger, parser: ConfigParser):
-        self._log = log
-        self._parser = parser
-        self._modem_device = None
-        self._call_history_file = None
-        self._blacklist_file = None
-        self._whitelist_file = None
-        self._phone_book_file = None
-
-    @property
-    def modem_device(self): return self._modem_device
-    @property
-    def call_history_file(self): return self._call_history_file
-    @property
-    def blacklist_file(self): return self._blacklist_file
-    @property
-    def whitelist_file(self): return self._whitelist_file
-    @property
-    def phone_book_file(self): return self._phone_book_file
-
-    def _config_check_modem_device(self, section: str, option: str) -> str:
-        modem_device = self._parser.get(section, option)
-        if modem_device is not None and len(modem_device) > 0:
-            return modem_device
-
-        self._log.info(f"Option {option} was not defined - try do detect from current environment")
-        devices = sorted(comports(), key=lambda comp: 'modem' not in comp[1].lower())
-        if len(devices) == 0:
-            self._log.error(" NO DEVICE FOUND !")
-            exit(-1)
-
-        for (port, desc, _) in devices:
-            self._log.info(f' > found {port:20} [{desc}]')
-
-        (modem_device, desc, _) = devices[0]
-        self._log.info(f"Selected device : {modem_device} [{desc}]")
-
-        return modem_device
-
-    def _config_check_path_exists(self, section: str, option: str) -> str:
-        file_path = self._parser.get(section, option)
-        if file_path is None or len(file_path) == 0:
-            raise Exception(f"Configuration: {section}#{option} was not defined")
-        if not pathlib.Path(file_path).is_file():
-            raise Exception(f"Configuration: file not found for {section}#{option} (was {file_path})")
-
-        return file_path
-
-    def load(self):
-        self._modem_device = self._config_check_modem_device(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_MODEM_DEVICE)
-        self._call_history_file =\
-            self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_CALL_HISTORY_FILE)
-        self._blacklist_file = self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_BLACKLIST_FILE)
-        self._whitelist_file = self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_WHITELIST_FILE)
-        self._phone_book_file = self._config_check_modem_device(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_PHONE_BOOK_FILE)
-        pass
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -192,123 +65,6 @@ class Decoder:
             handler.process(context)  # got do some quacks
             if context.should_stop_processing:
                 break
-
-        return
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class PhoneNumberHandlerContext:
-    def __init__(self, number: str):
-        self.number = number
-        self.was_hangup = False
-        self.should_stop_processing = False
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class PhoneNumberFileExtractor:
-
-    def __init__(self, file_path: str):
-        self._file_path = file_path
-
-    def get_numbers(self):
-        result = []
-        if not pathlib.Path(self._file_path).is_file():
-            return result
-
-        with open(self._file_path, 'r') as file:
-            lines = file.readlines()
-
-        for line in lines:
-            line = line.translate({ord(i): None for i in ' _-.()[]\r\n'})
-            if len(line) == 0:
-                continue  # empty line
-            if line.startswith("#"):
-                continue  # commented line
-
-            # add this number as is
-            result.append(line)
-
-            # try translate +33 xx... national phone number into local
-            if line.startswith('+33'):
-                result.append(line.replace("+33", "0", 1))
-
-        return result
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class CallHistoryHandler:
-
-    def __init__(self, log: Logger, conf: AlphonseConfig):
-        self._log = log
-        self._conf = conf
-
-    def process(self, context: PhoneNumberHandlerContext):
-        history = {'timestamp': datetime.now().isoformat(), 'number': context.number}
-        serial_history = json.dumps(history, ensure_ascii=False)
-        with open(self._conf.call_history_file, "a") as logfile:
-            logfile.writelines([serial_history, '\n'])
-        self._log.trace(f"Call history updated")
-
-        return
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class PickUpHangUpBaseHandler:
-
-    def __init__(self, modem: Modem, log: Logger):
-        self._modem = modem
-        self._log = log
-
-    def process_unwanted_call(self, context: PhoneNumberHandlerContext, hangup_timeout: timedelta):
-        # update context !!!
-        self._log.trace("unwanted_call: pick-up call for " + str(hangup_timeout.total_seconds()) + " seconds")
-        self._modem.write_command(MODEM_PICKUP)
-        hangup_time = datetime.now() + hangup_timeout
-        while datetime.now() < hangup_time:
-            # Note : impossible to get state of hanging up by other side
-            # TODO get case of analog line return
-            self._modem.read(self._modem.in_waiting or 1)
-            time.sleep(1)
-        self._log.trace("unwanted_call: hang-up call for " + context.number)
-        self._modem.write_command(MODEM_HANGUP)
-        self._log.trace("unwanted_call: done ")
-        context.was_hangup = True
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class BlacklistHandler(PickUpHangUpBaseHandler):
-
-    def __init__(self, modem: Modem, log: Logger, config: AlphonseConfig):
-        super().__init__(modem, log)
-        file_path = config.blacklist_file
-        self._phone_number_extractor = PhoneNumberFileExtractor(file_path)
-
-    def process(self, context: PhoneNumberHandlerContext):
-        if context.was_hangup:
-            return
-
-        whitelist = self._phone_number_extractor.get_numbers()
-        if context.number in whitelist:
-            self.process_unwanted_call(context, timedelta(seconds=1))  # immediate
-
-        return
-
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-class WhitelistHandler(PickUpHangUpBaseHandler):
-
-    def __init__(self, modem: Modem, log: Logger, config: AlphonseConfig):
-        super().__init__(modem, log)
-        file_path = config.whitelist_file
-        self._phone_number_extractor = PhoneNumberFileExtractor(file_path)
-
-    def process(self, context: PhoneNumberHandlerContext):
-        if context.was_hangup:
-            return
-
-        whitelist = self._phone_number_extractor.get_numbers()
-        if context.number not in whitelist:
-            self.process_unwanted_call(context, timedelta(seconds=13))
 
         return
 

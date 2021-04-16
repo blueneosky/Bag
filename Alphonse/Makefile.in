@@ -6,8 +6,8 @@ DATA_DIR		:={{ALPHONSE_DATA_DIR}}
 CONFIG_DIR		:=/etc/
 
 INSTALL_BIN		:=install --owner=root --group=root --mode=755
-INSTALL_FILE	:=install --owner=root --group=root --mode=711
-INSTALL_DATA	:=install --owner=root --group=root --mode=777
+INSTALL_FILE	:=install --owner=root --group=root --mode=644
+INSTALL_DATA	:=install --owner=root --group=root --mode=666
 INSTALL_DIR		:=install -d
 UNINSTALL		:=rm
 UNINSTALL_DIR	:=rm -rf
@@ -16,6 +16,9 @@ UNINSTALL_DIR	:=rm -rf
 [@1]DISABLE_SERVICE	:={{ALPHONSE_DEP_SYSTEMCTL_BIN}} disable
 [@1]START_SERVICE	:={{ALPHONSE_DEP_SYSTEMCTL_BIN}} start
 [@1]STOP_SERVICE	:={{ALPHONSE_DEP_SYSTEMCTL_BIN}} stop
+
+BIN_FILE        :={{ALPHONSE_BIN_FILE}}
+LIB_FILES       :={{ALPHONSE_LIB_FILES}}
 
 
 .PHONY: install uninstall uninstall_full help need_root
@@ -32,7 +35,8 @@ install: need_root
 	@echo "Installing..."
 	@echo "  Bin into $(BIN_DIR) ..."
 	@$(INSTALL_DIR) $(BIN_DIR)
-	@$(INSTALL_BIN) alphonse.py $(BIN_DIR)
+	@$(INSTALL_BIN) $(BIN_FILE) $(BIN_DIR)
+	@$(INSTALL_FILE) $(LIB_FILES) $(BIN_DIR)
 	@echo "  Config into $(CONFIG_DIR) ..."
 	@$(INSTALL_FILE) alphonse.conf $(CONFIG_DIR)
 	@echo "  Data into $(DATA_DIR) ..."
@@ -69,7 +73,8 @@ uninstall:
 [@2]	@echo "Uninstall web interface OK"
 	@echo "Uninstalling..."
 	@echo "  Remove bin from $(BIN_DIR) ..."
-	@$(UNINSTALL) $(BIN_DIR)/alphonse.py || echo "  [!] Fail to remove bin"
+	@$(UNINSTALL) $(BIN_DIR)/$(BIN_FILE) || echo "  [!] Fail to remove bin"
+	@echo "$(LIB_FILES)" | sed 's/ /\n/g' | sed 's#^#$(BIN_DIR)#' | xargs rm || echo "  [!] Fail to remove libs"
 	@echo "  Remove config from $(CONFIG_DIR) ..."
 	@$(UNINSTALL) $(CONFIG_DIR)/alphonse.conf || echo "  [!] Fail to remove config"
 	@echo "Uninstall OK"
