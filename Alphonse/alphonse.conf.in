@@ -6,9 +6,10 @@
 # modem device - adapt to your need
 MODEM_DEVICE=
 
-BLACKLIST_FILE={{ALPHONSE_DATA_DIR}}blacklist
-WHITELIST_FILE={{ALPHONSE_DATA_DIR}}whitelist
-
+CALL_HISTORY_FILE={{ALPHONSE_DATA_DIR}}call_history.dat
+BLACKLIST_FILE={{ALPHONSE_DATA_DIR}}blacklist.dat
+WHITELIST_FILE={{ALPHONSE_DATA_DIR}}whitelist.dat
+PHONE_BOOK_FILE={{ALPHONSE_DATA_DIR}}phone_book.dat
 
 [LOG]
 

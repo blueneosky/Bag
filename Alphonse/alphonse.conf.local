@@ -5,10 +5,12 @@
 [SERVICE]
 
 # modem device - adapt to your need
-MODEM_DEVICE=/dev/ttyACM0
+MODEM_DEVICE=
 
-BLACKLIST_FILE=./blacklist
-WHITELIST_FILE=./whitelist
+CALL_HISTORY_FILE=./call_history.dat
+BLACKLIST_FILE=./blacklist.dat
+WHITELIST_FILE=./whitelist.dat
+PHONE_BOOK_FILE=./phone_book.dat
 
 
 [LOG]

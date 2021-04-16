@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
-import daemon
-import getopt
-import sys
 import signal
+import json
 import time
 import traceback
 import serial
 import pathlib
 import threading
+from serial.tools.list_ports import comports
 from configparser import ConfigParser
 from datetime import datetime, timedelta
 from typing import List
@@ -20,8 +19,10 @@ DEBUG_CONFIG_PATH = "./alphonse.conf.local"
 CONFIG_PATH = "/etc/alphonse.conf"
 CONF_SERVICE_SECTION_NAME = "SERVICE"
 CONF_SERVICE_MODEM_DEVICE = "MODEM_DEVICE"
+CONF_SERVICE_CALL_HISTORY_FILE = "CALL_HISTORY_FILE"
 CONF_SERVICE_WHITELIST_FILE = "WHITELIST_FILE"
 CONF_SERVICE_BLACKLIST_FILE = "BLACKLIST_FILE"
+CONF_SERVICE_PHONE_BOOK_FILE = "PHONE_BOOK_FILE"
 CONF_LOG_SECTION_NAME = "LOG"
 CONF_LOG_FILE_NAME = "LOG_FILE"
 CONF_LOG_WITH_DEBUG = "WITH_DEBUG"
@@ -48,14 +49,21 @@ class Logger:
         self._file_path = file_path
         self._with_debug = with_debug
         self._with_trace = with_trace
+        self._file_logging_failed=False
 
     def _msg(self, msg: str):
         print(msg)
         timestamp = datetime.now().strftime("%Y/%m/%d %H:%M:%S ")
         if self._file_path is None:
             return
-        with open(self._file_path, "a") as logfile:
-            logfile.writelines([timestamp, msg, "\n"])
+        if not self._file_logging_failed:
+            try:
+                with open(self._file_path, "a") as logfile:
+                    logfile.writelines([timestamp, msg, "\n"])
+            except PermissionError:
+                self._file_logging_failed = True
+
+        return
 
     def error(self, msg: str):
         self._msg("ERR>>> " + msg)
@@ -82,29 +90,40 @@ class AlphonseConfig:
         self._log = log
         self._parser = parser
         self._modem_device = None
+        self._call_history_file = None
         self._blacklist_file = None
         self._whitelist_file = None
+        self._phone_book_file = None
 
     @property
     def modem_device(self): return self._modem_device
     @property
+    def call_history_file(self): return self._call_history_file
+    @property
     def blacklist_file(self): return self._blacklist_file
     @property
     def whitelist_file(self): return self._whitelist_file
+    @property
+    def phone_book_file(self): return self._phone_book_file
 
     def _config_check_modem_device(self, section: str, option: str) -> str:
         modem_device = self._parser.get(section, option)
         if modem_device is not None and len(modem_device) > 0:
             return modem_device
 
-        raise Exception("no fall back for now - need some impl")
-        # TODO try something around that
-        # ports = []
-        # for n, (port, desc, hwid) in enumerate(sorted(comports()), 1):
-        #     sys.stderr.write('--- {:2}: {:20} {!r}\n'.format(n, port, desc))
-        #     ports.append(port)
+        self._log.info(f"Option {option} was not defined - try do detect from current environment")
+        devices = sorted(comports(), key=lambda comp: 'modem' not in comp[1].lower())
+        if len(devices) == 0:
+            self._log.error(" NO DEVICE FOUND !")
+            exit(-1)
 
-        return ""
+        for (port, desc, _) in devices:
+            self._log.info(f' > found {port:20} [{desc}]')
+
+        (modem_device, desc, _) = devices[0]
+        self._log.info(f"Selected device : {modem_device} [{desc}]")
+
+        return modem_device
 
     def _config_check_path_exists(self, section: str, option: str) -> str:
         file_path = self._parser.get(section, option)
@@ -117,8 +136,11 @@ class AlphonseConfig:
 
     def load(self):
         self._modem_device = self._config_check_modem_device(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_MODEM_DEVICE)
+        self._call_history_file =\
+            self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_CALL_HISTORY_FILE)
         self._blacklist_file = self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_BLACKLIST_FILE)
         self._whitelist_file = self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_WHITELIST_FILE)
+        self._phone_book_file = self._config_check_modem_device(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_PHONE_BOOK_FILE)
         pass
 
 
@@ -214,6 +236,23 @@ class PhoneNumberFileExtractor:
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+class CallHistoryHandler:
+
+    def __init__(self, log: Logger, conf: AlphonseConfig):
+        self._log = log
+        self._conf = conf
+
+    def process(self, context: PhoneNumberHandlerContext):
+        history = {'timestamp': datetime.now().isoformat(), 'number': context.number}
+        serial_history = json.dumps(history, ensure_ascii=False)
+        with open(self._conf.call_history_file, "a") as logfile:
+            logfile.writelines([serial_history, '\n'])
+        self._log.trace(f"Call history updated")
+
+        return
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 class PickUpHangUpBaseHandler:
 
     def __init__(self, modem: Modem, log: Logger):
@@ -306,12 +345,11 @@ class Alphonse:
         modem.write_command(MODEM_INIT)
 
         # init processing
-        # TODO history phone call handler here !!
+        call_history_handler = CallHistoryHandler(self._log, self._config)
         blacklist_handler = BlacklistHandler(modem, self._log, self._config)
         whitelist_handler = WhitelistHandler(modem, self._log, self._config)
-        # TODO other handler I forget for now
 
-        decoder = Decoder(self._log, blacklist_handler, whitelist_handler)
+        decoder = Decoder(self._log, call_history_handler, blacklist_handler, whitelist_handler)
         while not self._cancellation_requested:
             data = modem.read(modem.in_waiting or 1)
             if data:
@@ -420,7 +458,7 @@ def alphonse_main(signal_dispatcher: SignalDispatcher):
         config = AlphonseConfig(log, config_parser)
         config.load()
     except Exception as _err:
-        log.err(f"Fail to read configuration point: {_err}")
+        log.err(f"Fail to read configuration: {_err}")
         log.debug(traceback.format_exc())
         exit(-2)
 
@@ -448,6 +486,7 @@ def alphonse_main(signal_dispatcher: SignalDispatcher):
 
 
 # - - - - - start point - - - - - -
+
 if __name__ == "__main__":
     try:
         alphonse_main(_signal_dispatcher)
