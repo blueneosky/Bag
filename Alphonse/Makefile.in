@@ -37,8 +37,10 @@ install: need_root
 	@$(INSTALL_FILE) alphonse.conf $(CONFIG_DIR)
 	@echo "  Data into $(DATA_DIR) ..."
 	@$(INSTALL_DIR) $(DATA_DIR)
-	@test -e $(DATA_DIR)/whitelist || $(INSTALL_DATA) whitelist $(DATA_DIR)
-	@test -e $(DATA_DIR)/blacklist || $(INSTALL_DATA) blacklist $(DATA_DIR)
+	@test -e $(DATA_DIR)/call_history.dat || $(INSTALL_DATA) call_history.dat $(DATA_DIR)
+	@test -e $(DATA_DIR)/whitelist.dat || $(INSTALL_DATA) whitelist.dat $(DATA_DIR)
+	@test -e $(DATA_DIR)/blacklist.dat || $(INSTALL_DATA) blacklist.dat $(DATA_DIR)
+	@test -e $(DATA_DIR)/phonebook.dat || $(INSTALL_DATA) phone_book.dat $(DATA_DIR)
 	@echo "Install OK"
 [@2]	@echo "Installing web interface..."
 [@2]	@echo "Install web interface OK"
