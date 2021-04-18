@@ -41,3 +41,10 @@ class Logger:
             self._msg("TRACE> " + msg)
 
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+class NullLogger(Logger):
+    def __init__(self):
+        super(NullLogger, self).__init__()
+
+    def _msg(self, msg: str):
+        pass

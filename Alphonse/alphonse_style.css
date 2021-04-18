@@ -1,0 +1,28 @@
+body {
+    background-color : #1c1c1e ;
+    color : #fefefe ;
+}
+
+a {
+    color : #5fa9ee ;
+}
+
+img {
+    filter: grayscale(20%);
+}
+
+table,
+td {
+    border: 1px solid #333;
+}
+
+td {
+    padding: 10px;
+}
+
+thead,
+tfoot {
+    background-color: darkblue;
+    color: #fff;
+}
+

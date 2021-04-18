@@ -19,7 +19,8 @@ UNINSTALL_DIR	:=rm -rf
 
 BIN_FILE        :={{ALPHONSE_BIN_FILE}}
 LIB_FILES       :={{ALPHONSE_LIB_FILES}}
-
+[@2]CGI_BIN_FILES   :={{ALPHONSE_CGI_BIN_FILES}}
+[@2]CGI_BIN_LIB_FILES   :={{ALPHONSE_CGI_BIN_LIB_FILES}}
 
 .PHONY: install uninstall uninstall_full help need_root
 
@@ -47,6 +48,12 @@ install: need_root
 	@test -e $(DATA_DIR)/phonebook.dat || $(INSTALL_DATA) phone_book.dat $(DATA_DIR)
 	@echo "Install OK"
 [@2]	@echo "Installing web interface..."
+[@2]	@echo "  Web elements into $(WWW_DIR) ..."
+[@2]	@$(INSTALL_FILE) alphonse.html $(WWW_DIR)
+[@2]	@$(INSTALL_FILE) alphonse_style.css $(WWW_DIR)
+[@2]	@echo "  CGI-BIN elements into $(CGI_BIN_DIR) ..."
+[@2]	@$(INSTALL_BIN) $(CGI_BIN_FILES) $(CGI_BIN_DIR)
+[@2]	@$(INSTALL_FILE) $(CGI_BIN_LIB_FILES) $(CGI_BIN_DIR)
 [@2]	@echo "Install web interface OK"
 [@1]	@echo "Installing service..."
 [@1]	@echo "  Copy into $(SERVICE_DIR) ..."
@@ -70,6 +77,12 @@ uninstall:
 [@1]	@echo "Uninstall service OK"
 [@1]endif
 [@2]	@echo "Uninstalling web interface..."
+[@2]	@echo "  Removing from into $(WWW_DIR) ..."
+[@2]	@$(UNINSTALL) $(WWW_DIR)/alphonse.html
+[@2]	@$(UNINSTALL) $(WWW_DIR)/alphonse_style.css
+[@2]	@echo "  Removing from into $(CGI_BIN_DIR) ..."
+[@2]	@echo "$(CGI_BIN_FILES)" | sed 's/ /\n/g' | sed 's#^#$(CGI_BIN_DIR)#' | xargs rm || echo "  [!] Fail to remove bins"
+[@2]	@echo "$(CGI_BIN_LIB_FILES)" | sed 's/ /\n/g' | sed 's#^#$(CGI_BIN_DIR)#' | xargs rm || echo "  [!] Fail to remove libs"
 [@2]	@echo "Uninstall web interface OK"
 	@echo "Uninstalling..."
 	@echo "  Remove bin from $(BIN_DIR) ..."
