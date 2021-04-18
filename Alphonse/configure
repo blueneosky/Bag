@@ -6,7 +6,9 @@ SYSTEMCTL_CMD="systemctl"
 SUDO_CMD="sudo"
 
 ALPHONSE_BIN_FILE="alphonse.py"
-ALPHONSE_LIB_FILES=$(find  -name '*.py' '!' -name "$ALPHONSE_BIN_FILE" | xargs echo)
+ALPHONSE_LIB_FILES=$(find  -name 'alphonse_*.py' '!' -name "$ALPHONSE_BIN_FILE" | xargs echo)
+ALPHONSE_CGI_BIN_FILES=$(find  -name 'web_alphonse_*.py' | xargs echo)
+ALPHONSE_CGI_BIN_LIB_FILES="alphonse_logger.py alphonse_config.py alphonse_phonenumbers.py"
 
 normalize_path () {
   # shellcheck disable=SC2001
@@ -116,6 +118,12 @@ if [ "$ALPHONSE_WEB" = "yes" ]; then
   ALPHONSE_CGI_BIN_DIR="$(normalize_path "$ALPHONSE_CGI_BIN_DIR")"
   SED_FUNC="$SED_FUNC; s#{{ALPHONSE_CGI_BIN_DIR}}#$ALPHONSE_CGI_BIN_DIR#g"
   echo_with "CGI_BIN_DIR" "$ALPHONSE_CGI_BIN_DIR"
+
+  SED_FUNC="$SED_FUNC; s#{{ALPHONSE_CGI_BIN_FILES}}#$ALPHONSE_CGI_BIN_FILES#g"
+  echo_with "CGI_BIN_FILES" "$ALPHONSE_CGI_BIN_FILES"
+
+  SED_FUNC="$SED_FUNC; s#{{ALPHONSE_CGI_BIN_LIB_FILES}}#$ALPHONSE_CGI_BIN_LIB_FILES#g"
+  echo_with "CGI_BIN_LIB_FILES" "$ALPHONSE_CGI_BIN_LIB_FILES"
 
   SED_FUNC="$SED_FUNC; s#\\[@2\\]##g"
 else

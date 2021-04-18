@@ -4,6 +4,8 @@ from configparser import ConfigParser
 
 from alphonse_logger import Logger
 
+CONFIG_PATH = "/etc/alphonse.conf"
+
 CONF_SERVICE_SECTION_NAME = "SERVICE"
 CONF_SERVICE_MODEM_DEVICE = "MODEM_DEVICE"
 CONF_SERVICE_CALL_HISTORY_FILE = "CALL_HISTORY_FILE"
@@ -67,13 +69,13 @@ class AlphonseConfig:
 
         return file_path
 
-    def load(self):
+    def load(self) -> "AlphonseConfig":
         self._modem_device = self._config_check_modem_device(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_MODEM_DEVICE)
         self._call_history_file =\
             self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_CALL_HISTORY_FILE)
         self._blacklist_file = self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_BLACKLIST_FILE)
         self._whitelist_file = self._config_check_path_exists(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_WHITELIST_FILE)
         self._phone_book_file = self._config_check_modem_device(CONF_SERVICE_SECTION_NAME, CONF_SERVICE_PHONE_BOOK_FILE)
-        pass
+        return self
 
 

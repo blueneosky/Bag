@@ -6,7 +6,7 @@ import pathlib
 import threading
 from configparser import ConfigParser
 
-from alphonse_config import AlphonseConfig, \
+from alphonse_config import AlphonseConfig, CONFIG_PATH, \
     CONF_LOG_SECTION_NAME, CONF_LOG_FILE_NAME, CONF_LOG_WITH_DEBUG, CONF_LOG_WITH_TRACE
 from alphonse_logger import Logger
 from alphonse_modem import Modem, MODEM_NUMBER_TAG, MODEM_INIT, MODEM_RESET
@@ -14,7 +14,6 @@ from alphonse_phone_handlers import PhoneNumberHandlerContext, CallHistoryHandle
     BlacklistHandler, WhitelistHandler
 
 DEBUG_CONFIG_PATH = "./alphonse.conf.local"
-CONFIG_PATH = "/etc/alphonse.conf"
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
