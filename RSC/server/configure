@@ -1,0 +1,121 @@
+#!/bin/bash
+
+MAKE_CMD="make"
+SYSTEMCTL_CMD="systemctl"
+SUDO_CMD="sudo"
+
+normalize_path () {
+  # shellcheck disable=SC2001
+  echo "$(echo "$1" | sed 's#/*$##')/"
+}
+
+echo_ok () {
+  printf "\033[32m[OK]\033[39m %s\n" "$1"
+}
+
+echo_ko () {
+  printf "\033[31m[OK]\033[39m %s\n" "$1"
+}
+
+echo_i () {
+  printf "\033[36m(i)\033[39m %s\n" "$1"
+}
+
+echo_with () {
+  printf "  \033[37mWith %s=%s\033[39m\n" "$1" "$2"
+}
+
+echo_imply () {
+  printf "  \033[33m=> %s\033[39m\n" "$1"
+}
+
+#======================================================================================
+#   CONFIGURE
+#======================================================================================
+# load Config
+source ./Config
+
+
+# Is 'make' exist
+RSC_DEP_MAKE=$(type -p "$MAKE_CMD")
+if [ -z "$RSC_DEP_MAKE" ]; then
+  echo_ko "'$MAKE_CMD' not found"
+  echo_imply "Please install it"
+  exit 1
+else
+  echo_ok "'$MAKE_CMD' found"
+fi
+
+#--- 'rsc' webapp script ---
+SED_FUNC="s#{{RSC_CGIPAGE_NAME}}#$RSC_CGIPAGE_NAME#g"
+echo_with "RSC_CGIPAGE_NAME" "$RSC_CGIPAGE_NAME"
+
+SED_FUNC="$SED_FUNC; s#{{RSC_LOG_FILE}}#$RSC_LOG_FILE#g"
+echo_with "RSC_LOG_FILE" "$RSC_LOG_FILE"
+
+RSC_CGI_DIR="$(normalize_path "$RSC_CGI_DIR")"
+SED_FUNC="$SED_FUNC; s#{{RSC_CGI_DIR}}#$RSC_CGI_DIR#g"
+echo_with "RSC_CGI_DIR" "$RSC_CGI_DIR"
+
+RSC_DATA_DIR="$(normalize_path "$RSC_DATA_DIR")"
+SED_FUNC="$SED_FUNC; s#{{RSC_DATA_DIR}}#$RSC_DATA_DIR#g"
+echo_with "RSC_DATA_DIR" "RSC_DATA_DIR"
+
+echo_ok "'rsc' webapp script"
+
+
+#--- 'rsc' www resources ---
+SED_FUNC="$SED_FUNC; s#{{RSC_HTMLPAGE_NAME}}#$RSC_HTMLPAGE_NAME#g"
+echo_with "RSC_HTMLPAGE_NAME" "$RSC_HTMLPAGE_NAME"
+
+SED_FUNC="$SED_FUNC; s#{{RSC_FAVICO_NAME}}#$RSC_FAVICO_NAME#g"
+echo_with "RSC_FAVICO_NAME" "$RSC_FAVICO_NAME"
+
+SED_FUNC="$SED_FUNC; s#{{RSC_TITLE_NAME}}#$RSC_TITLE_NAME#g"
+echo_with "RSC_TITLE_NAME" "$RSC_TITLE_NAME"
+
+SED_FUNC="$SED_FUNC; s#{{RSC_CSS_NAME}}#$RSC_CSS_NAME#g"
+echo_with "RSC_CSS_NAME" "$RSC_CSS_NAME"
+
+SED_FUNC="$SED_FUNC; s#{{RSC_AWAIT_IMG_NAME}}#$RSC_AWAIT_IMG_NAME#g"
+echo_with "RSC_AWAIT_IMG_NAME" "$RSC_AWAIT_IMG_NAME"
+
+RSC_WWW_DIR="$(normalize_path "$RSC_WWW_DIR")"
+SED_FUNC="$SED_FUNC; s#{{RSC_WWW_DIR}}#$RSC_WWW_DIR#g"
+echo_with "RSC_WWW_DIR" "$RSC_WWW_DIR"
+
+echo_ok "'rsc' www resources"
+
+#--- 'rsc' client binding ---
+if [ -z "$RSC_CLIENT_MAC" ]; then
+	echo_ko "RSC_CLIENT_MAC was not defined. Please open 'Config' file and make setup"
+	exit 1
+fi
+if [ -z "$RSC_CLIENT_PORT" ]; then
+	echo_ko "RSC_CLIENT_PORT was not defined. Please open 'Config' file and make setup"
+	exit 1
+fi
+
+SED_FUNC="$SED_FUNC; s#{{RSC_CLIENT_MAC}}#$RSC_CLIENT_MAC#g"
+echo_with "RSC_CLIENT_MAC" "$RSC_CLIENT_MAC"
+
+SED_FUNC="$SED_FUNC; s#{{RSC_CLIENT_PORT}}#$RSC_CLIENT_PORT#g"
+echo_with "RSC_CLIENT_PORT" "$RSC_CLIENT_PORT"
+
+echo_ok "'rsc' client binding"
+
+
+for i in *.in; do
+  [ -f "$i" ] || continue
+  echo_i "Writing ${i%.in} from $i"
+  sed "$SED_FUNC" "$i" > "${i%.in}"
+done
+
+echo_ok "Configuration done"
+
+if [ -z "$(type -p $SUDO_CMD)" ]; then
+  echo_imply "please execute as root user \$> make install"
+else
+  echo_imply "please execute \$> sudo make install"
+fi
+

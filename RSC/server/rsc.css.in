@@ -1,0 +1,113 @@
+body {
+    background-color : #1c1c1e ;
+    color : #fefefe ;
+	background-image: url('{{RSC_BG_NAME}}');
+	background-position: center;
+}
+
+.main_div {
+	text-align: center;
+}
+
+.actions_table {
+	margin: 0 auto;
+}
+
+.actions_table_td {
+	height: 100px;
+}
+
+.actions_table_tr {
+	text-align: center;
+}
+
+.a_as_button {
+	background: #1c1c1e;
+
+	-webkit-border-radius: 16;
+   	-moz-border-radius:    16;
+	border-radius:         16px;
+	-webkit-box-shadow: 0px 0px 12px #666666;
+	-moz-box-shadow:    0px 0px 12px #666666;
+	box-shadow:         0px 0px 12px #666666;
+	font-family: Arial;
+	color: #fafafa;
+	font-size: 27px;
+	padding: 19px;
+	text-decoration: none;
+}
+
+.login_button {
+	background: #1c1c1e;
+
+	-webkit-border-radius: 16;
+   	-moz-border-radius:    16;
+	border-radius:         16px;
+	-webkit-box-shadow: 0px 0px 12px #666666;
+	-moz-box-shadow:    0px 0px 12px #666666;
+	box-shadow:         0px 0px 12px #666666;
+	font-family: Arial;
+	color: #fafafa;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 7px 19px;
+	text-decoration: none;
+	cursor: pointer;
+	margin: 7px 0;
+}
+
+.bottom_div {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	/*margin: 0 75px;*/
+}
+
+.loading_img {
+	margin: auto auto;
+	
+}
+
+.login_form {
+	border: 3px solid #f1f1f1;
+	margin: 0 auto;
+	max-width: 250px;
+}
+
+.login_table {
+	width: 100%;
+}
+
+.login_input {
+	width: 100%;
+	box-sizing: border-box;
+	/*padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc; /**/
+	-webkit-border-radius: 16;
+   	-moz-border-radius:    16;
+	border-radius:         16px;
+	-webkit-box-shadow: 0px 0px 12px #666666;
+	-moz-box-shadow:    0px 0px 12px #666666;
+	box-shadow:         0px 0px 12px #666666;
+	padding: 7px 19px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.login_label {
+	padding: 7px 19px;
+	font-size: 14px;
+	font-weight: bold;
+	
+}
+
+.label_login_table_td {
+	text-align: left;
+}
+
+.login_table_tr {
+	height: 40px;
+}
+

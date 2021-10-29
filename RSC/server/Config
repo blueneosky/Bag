@@ -1,0 +1,40 @@
+#!/bin/bash
+###################################
+# configuration file for deployment
+###################################i
+
+# by setting different name, you can manage more than one 'rsc' instance
+RSC_FRIENDLY_NAME=rsc
+
+# remote station - EACH VAR MUST BE UNCOMMENTED AND DEFINED
+#RSC_CLIENT_MAC=TODO must be defined
+#RSC_CLIENT_PORT=TODO
+
+# whish name do you want for the page
+# /!\ this will be seen in URI of your web browser
+RSC_HTMLPAGE_NAME=$RSC_FRIENDLY_NAME.html
+RSC_CGIPAGE_NAME=$RSC_FRIENDLY_NAME.sh
+
+# web resources
+RSC_TITLE_NAME=$RSC_FRIENDLY_NAME
+RSC_CSS_NAME=$RSC_FRIENDLY_NAME.css
+RSC_FAVICO_NAME=hex_tile_64.ico
+RSC_AWAIT_IMG_NAME=transparente_spin_wait.gif
+RSC_BG_NAME=dark_hex_bg.jpg
+
+# where 'rsc' will be deployed
+RSC_WWW_DIR=/var/www/html/
+RSC_CGI_DIR=/usr/lib/cgi-bin/$RSC_FRIENDLY_NAME/
+
+# where 'rsc' data will be store (mostly session token, ...)
+RSC_DATA_DIR=/var/lib/rsc/$RSC_FRIENDLY_NAME/
+
+# where 'rsc' will log
+RSC_LOG_FILE=/var/log/rsc_$RSC_FRIENDLY_NAME.log
+
+DEV_CONFIG_FILE=Config.dev
+if [ -e $DEV_CONFIG_FILE ]; then
+	echo_i "import dev config..."
+	source $DEV_CONFIG_FILE
+fi
+

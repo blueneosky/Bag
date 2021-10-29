@@ -1,0 +1,13 @@
+#ide files
+.*.swp
+
+#dev files
+Config.dev
+
+#bin
+rsc.sh
+
+#*.in (auto conf)
+Makefile
+env.sh
+rsc.css

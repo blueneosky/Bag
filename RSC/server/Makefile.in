@@ -1,0 +1,43 @@
+DATA_DIR	:={{RSC_DATA_DIR}}
+WWW_DIR		:={{RSC_WWW_DIR}}
+CGI_DIR		:={{RSC_CGI_DIR}}
+
+INSTALL_BIN		:=install --owner=root --group=root --mode=755
+INSTALL_FILE	:=install --owner=root --group=root --mode=644
+INSTALL_DATA	:=install --owner=root --group=root --mode=666
+INSTALL_DIR		:=install -d
+UNINSTALL		:=rm
+UNINSTALL_DIR	:=rm -rf
+
+WEBAPP_FILE	:={{RSC_CGIPAGE_NAME}}
+
+
+#.PHONY: build clean rebuild install uninstall uninstall_full help need_root
+
+.PHONY: build
+build: $(WEBAPP_FILE)
+
+.PHONY: clean
+clean:
+	@echo "Cleaning..."
+	@rm ${WEBAPP_FILE}
+	@echo "Cleaning [OK]"
+
+.PHONY: rebuild
+rebuild: clean
+	@make build
+
+$(WEBAPP_FILE): env.sh log_layer.sh data_layer.sh user_authentication.sh commands.sh web_layer.sh html_main.sh html_login.sh     main.sh
+	@echo "Building..."
+	@echo "#!/bin/bash" > $@
+	@for src in $^ ; do \
+		echo "  Append $$src" ; \
+		cat $$src | grep -vE '^#!/' | grep -vE '^(source|\\.) ' | grep -vE '^#vim token' >> $@ ; \
+	done
+	@echo "Build [OK]"
+
+.PHONY: help
+help:
+	@echo "available targets: install | uninstall | uninstall_full | build | clean | rebuild"
+
+
