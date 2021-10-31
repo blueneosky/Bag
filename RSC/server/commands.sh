@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source env.sh
+
+
 send_magic_packet() {
 	wakeonlan $CLIENT_MAC 2>&1 > /dev/null 
 }

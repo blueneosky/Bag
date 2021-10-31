@@ -1,7 +1,13 @@
 #!/bin/bash
 
-#vim tokens: data_get_value data_update_value
+source env.sh
+source log_layer.sh
 source data_layer.sh
+source web_layer.sh
+#TODO this depends should disapear
+source html_common.sh
+source html_redirect.sh
+
 
 # $1 : user
 user_get_token() {
@@ -33,6 +39,8 @@ user_update_token() {
 	data_update_value "$TOKENS_FILE_PATH" "$1" "$2|$3"
 }
 
+#TODO remove/split/dispatch this code ...
+#TODO don't forget to update source *
 process_login() {
 	# extract data from post content
 	data=$(sed -e 's/%/\\x/g' -e 's/&/\n/g' <&0)
@@ -45,16 +53,16 @@ process_login() {
 	#check user
 	export LC_ALL=C
 	expect << EOF
-	log_user 0
-	spawn su $USER_NAME -c "exit" 
-	expect "Password:"
-	send "$USER_PASSWORD\r"
-	set wait_result  [wait]
-	if { [lindex \$wait_result 2] == 0 } then {
-		exit [lindex \$wait_result 3]
-	} else {
-		exit 1
-	}
+		log_user 0
+		spawn su $USER_NAME -c "exit" 
+		expect "Password:"
+		send "$USER_PASSWORD\r"
+		set wait_result  [wait]
+		if { [lindex \$wait_result 2] == 0 } then {
+			exit [lindex \$wait_result 3]
+		} else {
+			exit 1
+		}
 EOF
 	if [ $? -ne 0 ]; then
 		#nop - user not recognized or bad password (don't want to gove an hint)
@@ -62,8 +70,8 @@ EOF
 
 		local PL_SCRIPT_NAME=$(echo "$SCRIPT_NAME" | sed -e 's/\?.*$//')
 
-		print_header
-		show_redirect "${PL_SCRIPT_NAME}?nok=loginfailed"
+		http_print_header
+		html_print_redirect_page "${PL_SCRIPT_NAME}?nok=loginfailed"
 
 		exit 0
 	fi
@@ -72,10 +80,10 @@ EOF
 	log_append_login_status "OK"
 
 
-	print_header
+	http_print_header
     printf "<!DOCTYPE html>"
     printf "<html>"
-	print_html_head
+	html_print_head_content
     printf "<body>"
 #	env | sed -e 's#$#<br/>#g'
 	exit 0

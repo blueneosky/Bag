@@ -2,7 +2,6 @@
 
 source env.sh
 
-#vim tokens: log_append log_append_login_status
 
 # $1 : message
 log_append() {

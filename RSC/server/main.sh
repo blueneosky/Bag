@@ -1,34 +1,41 @@
 #!/bin/bash
 
+source html_common.sh
+source html_main.sh
+source html_login.sh
+source html_redirect.sh
 source data_layer.sh
+source commands.sh
+source user_authentication.sh
+
 
 if [ "$REQUEST_METHOD" = "POST" ]; then
 	process_login
 	exit 0
 fi
 
-local COOKIE_SESSION_ID=$(get_cookie_value "$COOKIE_SESSION_ID_NAME")
+local COOKIE_SESSION_ID=$(http_cookie_get_value "$COOKIE_SESSION_ID_NAME")
 if [ -z "$COOKIE_SESSION_ID" ]; then
-	print_header
-	show_login_page
+	http_print_header
+	html_print_login_page
 	exit 0
 fi
 
-print_header
+http_print_header
 
 
 if [ "$QUERY_STRING" = "$ACTION_WAKEUP" ]; then
 	send_magic_packet
-	show_delayed_redirect "$SCRIPT_NAME" 3
+	html_print_delayed_redirect_page "$SCRIPT_NAME" 3
 	exit 0
 fi
 
 if [ "$QUERY_STRING" = "$ACTION_LONGSLEEP" ]; then
 	send_longsleep_packet
-	show_delayed_redirect "$SCRIPT_NAME" 3
+	html_print_delayed_redirect_page "$SCRIPT_NAME" 3
 	exit 0
 fi
 
-show_main_page
+html_print_main_page
 exit 0
 

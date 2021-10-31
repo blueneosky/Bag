@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#vim tokens: data_get_value data_update_value
-
 
 # $1 : file path with concurrent access
 # $2+: command to run with args

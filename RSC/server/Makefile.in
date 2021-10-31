@@ -27,14 +27,23 @@ clean:
 rebuild: clean
 	@make build
 
-$(WEBAPP_FILE): env.sh log_layer.sh data_layer.sh user_authentication.sh commands.sh web_layer.sh html_main.sh html_login.sh     main.sh
+$(WEBAPP_FILE): env.sh data_layer.sh log_layer.sh commands.sh web_layer.sh html_common.sh html_redirect.sh html_main.sh html_login.sh user_authentication.sh main.sh
 	@echo "Building..."
 	@echo "#!/bin/bash" > $@
 	@for src in $^ ; do \
 		echo "  Append $$src" ; \
-		cat $$src | grep -vE '^#!/' | grep -vE '^(source|\\.) ' | grep -vE '^#vim token' >> $@ ; \
+		echo "############################################################" >> $@; \
+		echo "#source '$$src'" >> $@; \
+		echo "############################################################" >> $@; \
+		cat $$src | grep -vE '^#!/' | grep -vE '^(source|\\.) ' >> $@ ; \
 	done
 	@echo "Build [OK]"
+
+.PHONY: tag
+tag:
+	@echo "Tag extractions..."
+	@ctags *.sh
+	@echo "Tag extracttion [OK]"
 
 .PHONY: help
 help:

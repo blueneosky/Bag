@@ -1,9 +1,13 @@
 #!/bin/bash
 
-show_login_page() {
+source env.sh
+source html_common.sh
+
+
+html_print_login_page() {
     printf "<!DOCTYPE html>"
     printf "<html>"
-	print_html_head
+	html_print_head_content
     printf "<body>"
 	printf "<div class='main_div'>"
     printf "	<h1>NouNours Station</h1>"
@@ -37,7 +41,7 @@ show_login_page() {
 	printf "	</table>"
 	printf "</div>"
 	printf "</form>"
-	print_html_bottom_page_content
+	html_print_bottom_page_content
 	printf "</div>"
     printf "</body>"
     printf "</html>"
