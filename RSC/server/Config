@@ -17,20 +17,24 @@ RSC_CGIPAGE_NAME=$RSC_FRIENDLY_NAME.sh
 
 # web resources
 RSC_TITLE_NAME=$RSC_FRIENDLY_NAME
-RSC_CSS_NAME=$RSC_FRIENDLY_NAME.css
 RSC_FAVICO_NAME=hex_tile_64.ico
 RSC_AWAIT_IMG_NAME=transparente_spin_wait.gif
 RSC_BG_NAME=dark_hex_bg.jpg
 
 # where 'rsc' will be deployed
 RSC_WWW_DIR=/var/www/html/
-RSC_CGI_DIR=/usr/lib/cgi-bin/$RSC_FRIENDLY_NAME/
+RSC_CGI_DIR=/usr/lib/cgi-bin/
 
 # where 'rsc' data will be store (mostly session token, ...)
 RSC_DATA_DIR=/var/lib/rsc/$RSC_FRIENDLY_NAME/
 
 # where 'rsc' will log
 RSC_LOG_FILE=/var/log/rsc_$RSC_FRIENDLY_NAME.log
+
+# owner/group of installed files
+RSC_INSTALL_OWNER=www-data
+RSC_INSTALL_GROUP=www-data
+
 
 DEV_CONFIG_FILE=Config.dev
 if [ -e $DEV_CONFIG_FILE ]; then

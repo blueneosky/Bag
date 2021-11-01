@@ -59,7 +59,7 @@ echo_with "RSC_CGI_DIR" "$RSC_CGI_DIR"
 
 RSC_DATA_DIR="$(normalize_path "$RSC_DATA_DIR")"
 SED_FUNC="$SED_FUNC; s#{{RSC_DATA_DIR}}#$RSC_DATA_DIR#g"
-echo_with "RSC_DATA_DIR" "RSC_DATA_DIR"
+echo_with "RSC_DATA_DIR" "$RSC_DATA_DIR"
 
 echo_ok "'rsc' webapp script"
 
@@ -74,17 +74,35 @@ echo_with "RSC_FAVICO_NAME" "$RSC_FAVICO_NAME"
 SED_FUNC="$SED_FUNC; s#{{RSC_TITLE_NAME}}#$RSC_TITLE_NAME#g"
 echo_with "RSC_TITLE_NAME" "$RSC_TITLE_NAME"
 
-SED_FUNC="$SED_FUNC; s#{{RSC_CSS_NAME}}#$RSC_CSS_NAME#g"
-echo_with "RSC_CSS_NAME" "$RSC_CSS_NAME"
-
 SED_FUNC="$SED_FUNC; s#{{RSC_AWAIT_IMG_NAME}}#$RSC_AWAIT_IMG_NAME#g"
 echo_with "RSC_AWAIT_IMG_NAME" "$RSC_AWAIT_IMG_NAME"
+
+SED_FUNC="$SED_FUNC; s#{{RSC_BG_NAME}}#$RSC_BG_NAME#g"
+echo_with "RSC_BG_NAME" "$RSC_BG_NAME"
 
 RSC_WWW_DIR="$(normalize_path "$RSC_WWW_DIR")"
 SED_FUNC="$SED_FUNC; s#{{RSC_WWW_DIR}}#$RSC_WWW_DIR#g"
 echo_with "RSC_WWW_DIR" "$RSC_WWW_DIR"
 
 echo_ok "'rsc' www resources"
+
+if id "$RSC_INSTALL_OWNER" &>/dev/null; then
+	SED_FUNC="$SED_FUNC; s#{{RSC_INSTALL_OWNER}}#$RSC_INSTALL_OWNER#g"
+	echo_with "RSC_INSTALL_OWNER" "$RSC_INSTALL_OWNER"
+else
+	echo_ko "User not found for installation: $RSC_INSTALL_OWNER"
+	ecit 1
+fi
+
+if [ $(getent group "$RSC_INSTALL_GROUP") ]; then
+	SED_FUNC="$SED_FUNC; s#{{RSC_INSTALL_GROUP}}#$RSC_INSTALL_GROUP#g"
+	echo_with "RSC_INSTALL_GROUP" "$RSC_INSTALL_GROUP"
+else
+	echo_ko "Group not found for installation: $RSC_INSTALL_GROUP"
+	ecit 1
+fi
+
+echo_ok "'rsc' installation owner/group"
 
 #--- 'rsc' client binding ---
 if [ -z "$RSC_CLIENT_MAC" ]; then

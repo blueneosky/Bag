@@ -1,5 +1,6 @@
 #ide files
 .*.swp
+tags
 
 #dev files
 Config.dev
@@ -11,4 +12,4 @@ rsc.sh
 Makefile
 env.sh
 rsc.css
-tags
+home.html
