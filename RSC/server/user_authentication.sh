@@ -3,10 +3,6 @@
 source env.sh
 source log_layer.sh
 source data_layer.sh
-source web_layer.sh
-#TODO this depends should disapear
-source html_common.sh
-source html_redirect.sh
 
 
 # $1 : user
@@ -39,22 +35,15 @@ user_update_token() {
 	data_update_value "$TOKENS_FILE_PATH" "$1" "$2|$3"
 }
 
-#TODO remove/split/dispatch this code ...
-#TODO don't forget to update source *
-process_login() {
-	# extract data from post content
-	local post_data=$(http_get_post_data)
-	USER_NAME=$(    http_data_get_get_value "$post_data" "$LOGIN_NAME")
-	USER_PASSWORD=$(http_data_get_get_value "$post_data" "$LOGIN_PASSWORD")
-	USER_REMEMBER=$(http_data_get_get_value "$post_data" "$LOGIN_REMEMBER")
-
-	#check user
+# $1 : name
+# $2 : pass
+user_is_valid() {
 	export LC_ALL=C
 	expect << EOF
 		log_user 0
-		spawn su $USER_NAME -c "exit" 
+		spawn su $1 -c "exit" 
 		expect "Password:"
-		send "$USER_PASSWORD\r"
+		send "$2\r"
 		set wait_result  [wait]
 		if { [lindex \$wait_result 2] == 0 } then {
 			exit [lindex \$wait_result 3]
@@ -62,28 +51,5 @@ process_login() {
 			exit 1
 		}
 EOF
-	if [ $? -ne 0 ]; then
-		#nop - user not recognized or bad password (don't want to gove an hint)
-		log_append_login_status "KO"
-
-		local PL_SCRIPT_NAME=$(echo "$SCRIPT_NAME" | sed -e 's/\?.*$//')
-
-		http_print_header
-		html_print_redirect_page "${PL_SCRIPT_NAME}?nok=loginfailed"
-
-		exit 0
-	fi
-
-	#good - login success
-	log_append_login_status "OK"
-
-
-	http_print_header
-    printf "<!DOCTYPE html>"
-    printf "<html>"
-	html_print_head_content
-    printf "<body>"
-#	env | sed -e 's#$#<br/>#g'
-	exit 0
 }
 
