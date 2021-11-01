@@ -43,12 +43,10 @@ user_update_token() {
 #TODO don't forget to update source *
 process_login() {
 	# extract data from post content
-	data=$(sed -e 's/%/\\x/g' -e 's/&/\n/g' <&0)
-	data=$(echo -e "$data")
-	# extract expected values
-	USER_NAME=$(    echo "$data" | grep "^$LOGIN_NAME="     | cut '-d=' -f2)
-	USER_PASSWORD=$(echo "$data" | grep "^$LOGIN_PASSWORD=" | cut '-d=' -f2)
-	USER_REMEMBER=$(echo "$data" | grep "^$LOGIN_REMEMBER=" | cut '-d=' -f2)
+	local post_data=$(http_get_post_data)
+	USER_NAME=$(    http_data_get_get_value "$post_data" "$LOGIN_NAME")
+	USER_PASSWORD=$(http_data_get_get_value "$post_data" "$LOGIN_PASSWORD")
+	USER_REMEMBER=$(http_data_get_get_value "$post_data" "$LOGIN_REMEMBER")
 
 	#check user
 	export LC_ALL=C

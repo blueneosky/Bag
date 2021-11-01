@@ -45,6 +45,7 @@ $(WEBAPP_FILE): env.sh data_layer.sh log_layer.sh commands.sh web_layer.sh html_
 		echo "############################################################" >> $@; \
 		cat $$src | grep -vE '^#!/' | grep -vE '^(source|\\.) ' >> $@ ; \
 	done
+	@chmod +x $@
 	@echo "Build [OK]"
 
 
