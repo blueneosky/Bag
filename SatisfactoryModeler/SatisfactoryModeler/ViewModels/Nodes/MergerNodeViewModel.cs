@@ -29,16 +29,16 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Name = "Merger";
             //HeaderIcon = IconsManager.Current.Merger;
 
-            Left = CreateInput<ItemFlow?>("Left", source, null);
+            Left = CreateInput<ItemFlow?>("Left", source);
             Left.Name = "Left";
 
-            Center = CreateInput<ItemFlow?>("Center", source, null);
+            Center = CreateInput<ItemFlow?>("Center", source);
             Center.Name = "Center";
 
-            Right = CreateInput<ItemFlow?>("Right", source, null);
+            Right = CreateInput<ItemFlow?>("Right", source);
             Right.Name = "Right";
 
-            Output = CreateOutput<ItemFlow?>("Output", source, null);
+            Output = CreateOutput<ItemFlow?>("Output", source);
             Output.Name = "Output";
 
             Output.Value = this.WhenAnyValue(vm => vm.Left.Value, vm => vm.Center.Value, vm => vm.Right.Value)

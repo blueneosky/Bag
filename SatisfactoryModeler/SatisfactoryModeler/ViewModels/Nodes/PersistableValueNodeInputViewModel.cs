@@ -2,6 +2,7 @@
 using NodeNetwork.ViewModels;
 using NodeNetwork.Views;
 using ReactiveUI;
+using SatisfactoryModeler.Assets.Converters;
 using SatisfactoryModeler.Persistance.Networks;
 using System;
 using System.Diagnostics;
@@ -13,25 +14,28 @@ namespace SatisfactoryModeler.ViewModels.Nodes
         static PersistableValueNodeInputViewModel()
         {
             Splat.Locator.CurrentMutable.Register(() => new NodeInputView(), typeof(IViewFor<PersistableValueNodeInputViewModel<T>>));
-            //PersistableViewModelFactory.Instance.Register<InputPort, ???>
         }
+
+        private readonly IDataConverter _converter;
 
         public Guid Id { get; }
         public string PortName { get; }
 
-        IPersistableNodeViewModel IPersistablePortViewModel.Parent => (IPersistableNodeViewModel) this.Parent;
+        IPersistableNodeViewModel IPersistablePortViewModel.Parent => (IPersistableNodeViewModel)this.Parent;
 
-        public PersistableValueNodeInputViewModel(string portName, InputPort source, NodeEndpointEditorViewModel editor)
+        public PersistableValueNodeInputViewModel(string portName, InputPort source,
+            NodeEndpointEditorViewModel editor, IDataConverter converter)
         {
             Debug.Assert(source == null || source.Name == portName);
 
             this.PortName = portName;
             this.Id = source?.Id ?? Guid.NewGuid();
             this.Editor = editor;
+            this._converter = converter;
 
             if (source == null) return;
-            if(source.WithValue)
-                this.SetValue(source.Value);
+            if (source.WithValue)
+                this.SetValue(this._converter.Invert(source.Value));
         }
 
         object IPersistablePortViewModel.Persist() => this.Persist();
@@ -39,7 +43,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
         public virtual InputPort Persist()
         {
             var withValue = !(Value is IObservable<T>);
-            // TODO ALPHA persiste with convertion
+            var value = this._converter.Convert(withValue ? this.Value : default);
 
             return new InputPort
             {
@@ -47,7 +51,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
                 ParentId = this.Parent.CastTo<IPersistableNodeViewModel>().Id,
                 Name = this.PortName,
                 WithValue = withValue,
-                Value = withValue ? this.Value : default,
+                Value = value,
             };
         }
     }

@@ -13,6 +13,6 @@ namespace SatisfactoryModeler.ViewModels.Nodes
     public interface IPersistableNodeViewModel<out TNode> : IPersistableNodeViewModel
         where TNode : BaseNode
     {
-        TNode Persist();
+        new TNode Persist();
     }
 }

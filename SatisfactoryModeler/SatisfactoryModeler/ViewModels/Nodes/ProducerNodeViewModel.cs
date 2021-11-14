@@ -17,7 +17,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Override.Name = "Override (%)";
             Override.Port.IsVisible = false;
 
-            Output = CreateOutput<ItemFlow?>("Output", source, null);
+            Output = CreateOutput<ItemFlow?>("Output", source);
             Output.Name = "output";
         }
     }

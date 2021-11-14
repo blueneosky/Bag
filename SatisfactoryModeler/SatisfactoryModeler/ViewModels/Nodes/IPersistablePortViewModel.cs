@@ -16,6 +16,6 @@ namespace SatisfactoryModeler.ViewModels.Nodes
     public interface IPersistablePortViewModel<out TPort> : IPersistablePortViewModel
         where TPort : Port
     {
-        TPort Persist();
+        new TPort Persist();
     }
 }

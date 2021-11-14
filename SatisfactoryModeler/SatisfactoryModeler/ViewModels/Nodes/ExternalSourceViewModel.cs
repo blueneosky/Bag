@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using NodeNetwork.Views;
 using ReactiveUI;
+using SatisfactoryModeler.Assets.Converters;
 using SatisfactoryModeler.Models;
 using SatisfactoryModeler.Persistance.Networks;
 using SatisfactoryModeler.ViewModels.Editors;
@@ -35,7 +36,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Tag.Name = "Tag";
             Tag.Port.IsVisible = false;
 
-            Type = CreateInput<object>("ItemType", source, new ComboEditorViewModel(ItemType.All));
+            Type = CreateInput<object>("ItemType", source, new ComboEditorViewModel(ItemType.All), ItemTypeToIdConverter.Default);
             Type.Name = "Item";
             Type.Port.IsVisible = false;
 
@@ -43,7 +44,7 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Rate.Name = "Rate";
             Rate.Port.IsVisible = false;
 
-            Output = CreateOutput<ItemFlow?>("Output", source, null);
+            Output = CreateOutput<ItemFlow?>("Output", source);
             Output.Name = "output";
 
             var delivery = this.WhenAnyValue(vm => vm.Type.Value, vm => vm.Rate.Value)

@@ -141,7 +141,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Assets\Converters\DefaultDataConverter.cs" />
+    <Compile Include="Assets\Converters\EnumToStringConverter.cs" />
+    <Compile Include="Assets\Converters\NEnumToStringConverter.cs" />
+    <Compile Include="Assets\Converters\FluideTypeToIdConverter.cs" />
+    <Compile Include="Assets\Converters\ItemTypeToIdConverter.cs" />
+    <Compile Include="Assets\Converters\MiningOreTypeToIdConverter.cs" />
     <Compile Include="Assets\IconsManager.cs" />
+    <Compile Include="Assets\Converters\IDataConverter.cs" />
     <Compile Include="Assets\SomeExtensions.cs" />
     <Compile Include="Models\FluideFlow.cs" />
     <Compile Include="Models\FluideType.cs" />
@@ -153,7 +160,6 @@
     <Compile Include="Persistance\Configurations\CfgConfiguration.cs" />
     <Compile Include="Persistance\Configurations\CfgFluideType.cs" />
     <Compile Include="Persistance\Configurations\CfgItemType.cs" />
-    <Compile Include="Persistance\IPersistanceConvertible.cs" />
     <Compile Include="Persistance\IPersistanceEngine.cs" />
     <Compile Include="Persistance\XmlPersistanceEngine.cs" />
     <Compile Include="Persistance\JsonPersistanceEngine.cs" />
@@ -174,7 +180,7 @@
     <Compile Include="Models\Rules.cs" />
     <Compile Include="ViewModels\Editors\ComboEditorViewModel.cs" />
     <Compile Include="ViewModels\Editors\EnumEditorViewModel.cs" />
-    <Compile Include="ViewModels\Editors\FloatEditorViewModel.cs" />
+    <Compile Include="ViewModels\Editors\DoubleEditorViewModel.cs" />
     <Compile Include="ViewModels\Editors\IntegerValueEditorViewModel.cs" />
     <Compile Include="ViewModels\Editors\IModifiableValueEditorViewModel.cs" />
     <Compile Include="ViewModels\Editors\StringValueEditorViewModel.cs" />

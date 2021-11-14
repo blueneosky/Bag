@@ -1,4 +1,5 @@
 ﻿using NodeNetwork.ViewModels;
+using SatisfactoryModeler.Assets.Converters;
 using SatisfactoryModeler.Models;
 using SatisfactoryModeler.Persistance.Networks;
 using System;
@@ -38,19 +39,32 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             return result;
         }
 
-        protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource, NodeEndpointEditorViewModel editor)
+        protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource)
+            => CreateInput<T>(portName, parentSource, null, null);
+
+        protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource,
+            NodeEndpointEditorViewModel editor)
+            => CreateInput<T>(portName, parentSource, editor, DataConverter<T, T>.Default);
+
+        protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource,
+            NodeEndpointEditorViewModel editor, IDataConverter converter)
         {
             var port = parentSource?.Inputs.FirstOrDefault(ip => ip.Name == portName);
-            return new PersistableValueNodeInputViewModel<T>(portName, port, editor);
+            return new PersistableValueNodeInputViewModel<T>(portName, port, editor, converter);
         }
 
-        protected static PersistableValueNodeOutputViewModel<T> CreateOutput<T>(string portName, BaseNode parentSource, NodeEndpointEditorViewModel editor)
+        protected static PersistableValueNodeOutputViewModel<T> CreateOutput<T>(string portName, BaseNode parentSource)
+            => CreateOutput<T, object>(portName, parentSource, null, null);
+
+        protected static PersistableValueNodeOutputViewModel<T> CreateOutput<T, TPersited>(string portName, BaseNode parentSource,
+            NodeEndpointEditorViewModel editor, IDataConverter converter)
         {
             var port = parentSource?.Outputs.FirstOrDefault(ip => ip.Name == portName);
-            return new PersistableValueNodeOutputViewModel<T>(portName, port, editor);
+            return new PersistableValueNodeOutputViewModel<T>(portName, port, editor, converter);
         }
 
-        protected static void SetupDynamicOutput<TOutput>(PersistableValueNodeOutputViewModel<TOutput> outputViewModel,
+        protected static void SetupDynamicOutput<TOutput>(
+            PersistableValueNodeOutputViewModel<TOutput> outputViewModel,
             Func<TOutput, ItemType> currentItemTypeExtractor,
             Func<TOutput, double?> currentItemRateExtractor,
             string format, string fallback)
