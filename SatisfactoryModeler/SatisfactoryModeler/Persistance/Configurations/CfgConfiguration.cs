@@ -10,5 +10,14 @@ namespace SatisfactoryModeler.Persistance.Configurations
 
         [XmlArray("FluideTypes")]
         public CfgFluideType[] FluideTypes { get; set; }
+
+        [XmlElement("MiningOreTypes")]
+        public string MiningOreTypes { get; set; }
+
+        [XmlElement("OilExtractingFluideType")]
+        public string OilExtractingFluideType { get; set; }
+
+        [XmlElement("WaterExtractingFluideType")]
+        public string WaterExtractingFluideType { get; set; }
     }
 }

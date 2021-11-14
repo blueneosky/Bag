@@ -82,6 +82,11 @@
     <FluideType Id="Water"       Lbl="Water"     />
     <FluideType Id="Turbofuel"   Lbl="Turbofuel" />
   </FluideTypes>
+  
+  <MiningOreTypes>Bauxite;CateriumOre;Coal;CopperOre;IronOre;Limestone;RawQuartz;SAMOre;Sulfure;Uranium</MiningOreTypes>
+  
+  <OilExtractingFluideType>CrudeOil</OilExtractingFluideType>
+  <WaterExtractingFluideType>Water</WaterExtractingOreType>
 
 </Configuration>
 

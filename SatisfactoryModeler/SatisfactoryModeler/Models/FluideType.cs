@@ -1,14 +1,16 @@
 ﻿using SatisfactoryModeler.Persistance.Configurations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace SatisfactoryModeler.Models
 {
+    [DebuggerDisplay("Fluide {Id}")]
     public sealed class FluideType
     {
         private static readonly Lazy<List<FluideType>> _allCache
-            = new Lazy<List<FluideType>>(() => Rules.Instance.FluideTypes.Select(Create).ToList());
+            = new Lazy<List<FluideType>>(() => Rules.Instance.Configuration.FluideTypes.Select(Create).ToList());
         private static readonly Lazy<IDictionary<string, FluideType>> _typeByIdsCache
             = new Lazy<IDictionary<string, FluideType>>(() => All.ToDictionary(ft => ft.Id));
 
@@ -26,5 +28,7 @@ namespace SatisfactoryModeler.Models
         public string Id => this.source.Id;
 
         public string Label => this.source.Label;
+
+        public override string ToString() => this.Label;
     }
 }

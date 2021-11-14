@@ -12,6 +12,12 @@ namespace System
         public static T CastTo<T>(this object src)
             => (T)src;
 
+        public static object GetValue(this Endpoint endpoint)
+            => endpoint?.Editor?.GetValue();
+
+        public static object GetValue(this NodeEndpointEditorViewModel editor)
+            => editor.CastTo<IModifiableValueEditorViewModel>().Value;
+
         public static void SetValue<T>(this Endpoint endpoint, T newValue)
             => endpoint?.Editor?.SetValue(newValue);
 
