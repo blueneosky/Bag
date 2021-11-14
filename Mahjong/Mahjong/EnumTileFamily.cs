@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Mahjong
 {
-    enum EnumTileFamily : uint
+    public enum EnumTileFamily : uint
     {
         None = 0,
 
-        Numbers = 1 * Base,
-        Dots = 2 * Base,
-        Bamboos = 3 * Base,
-        Winds = 4 * Base,
-        Dragons = 5 * Base,
+        Numbers = 2 * Base,
+        Dots = 3 * Base,
+        Bamboos = 4 * Base,
+        Winds = 5 * Base,
+        Dragons = 6 * Base,
 
         Base = 100,
     }

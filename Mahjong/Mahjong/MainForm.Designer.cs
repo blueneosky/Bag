@@ -28,74 +28,74 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this._buttonStartOrNext = new System.Windows.Forms.Button();
+            this._groupBoxTileFamily = new System.Windows.Forms.GroupBox();
+            this._pictureBoxResult = new System.Windows.Forms.PictureBox();
+            this._pictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this._pictureBoxResult)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // _buttonStartOrNext
             // 
-            this.button1.Location = new System.Drawing.Point(35, 122);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this._buttonStartOrNext.Location = new System.Drawing.Point(12, 12);
+            this._buttonStartOrNext.Name = "_buttonStartOrNext";
+            this._buttonStartOrNext.Size = new System.Drawing.Size(75, 23);
+            this._buttonStartOrNext.TabIndex = 0;
+            this._buttonStartOrNext.Text = "__";
+            this._buttonStartOrNext.UseVisualStyleBackColor = true;
+            this._buttonStartOrNext.Click += new System.EventHandler(this._buttonStartOrNext_Click);
             // 
-            // pictureBox1
+            // _groupBoxTileFamily
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(145, 39);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(492, 252);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this._groupBoxTileFamily.Location = new System.Drawing.Point(12, 178);
+            this._groupBoxTileFamily.Name = "_groupBoxTileFamily";
+            this._groupBoxTileFamily.Size = new System.Drawing.Size(144, 149);
+            this._groupBoxTileFamily.TabIndex = 2;
+            this._groupBoxTileFamily.TabStop = false;
             // 
-            // hScrollBar1
+            // _pictureBoxResult
             // 
-            this.hScrollBar1.LargeChange = 1;
-            this.hScrollBar1.Location = new System.Drawing.Point(145, 294);
-            this.hScrollBar1.Maximum = 20;
-            this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(492, 17);
-            this.hScrollBar1.TabIndex = 2;
-            this.hScrollBar1.ValueChanged += new System.EventHandler(this.hScrollBar1_ValueChanged);
+            this._pictureBoxResult.Location = new System.Drawing.Point(161, 119);
+            this._pictureBoxResult.Name = "_pictureBoxResult";
+            this._pictureBoxResult.Size = new System.Drawing.Size(53, 53);
+            this._pictureBoxResult.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this._pictureBoxResult.TabIndex = 3;
+            this._pictureBoxResult.TabStop = false;
             // 
-            // label1
+            // _pictureBox
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(142, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "label1";
+            this._pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._pictureBox.Location = new System.Drawing.Point(12, 41);
+            this._pictureBox.Name = "_pictureBox";
+            this._pictureBox.Size = new System.Drawing.Size(143, 131);
+            this._pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this._pictureBox.TabIndex = 1;
+            this._pictureBox.TabStop = false;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1081, 351);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.hScrollBar1);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(377, 460);
+            this.Controls.Add(this._pictureBoxResult);
+            this.Controls.Add(this._groupBoxTileFamily);
+            this.Controls.Add(this._pictureBox);
+            this.Controls.Add(this._buttonStartOrNext);
             this.Name = "MainForm";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._pictureBoxResult)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._pictureBox)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.HScrollBar hScrollBar1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button _buttonStartOrNext;
+        private System.Windows.Forms.PictureBox _pictureBox;
+        private System.Windows.Forms.GroupBox _groupBoxTileFamily;
+        private System.Windows.Forms.PictureBox _pictureBoxResult;
     }
 }
 
