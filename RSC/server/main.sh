@@ -22,13 +22,17 @@ process_login() {
 		local PL_SCRIPT_NAME=$(echo "$SCRIPT_NAME" | sed -e 's/\?.*$//')
 
 		http_print_header
-		html_print_redirect_pagei "${PL_SCRIPT_NAME}?nok=loginfailed"
+		html_print_redirect_page "${PL_SCRIPT_NAME}?nok=loginfailed"
 
 		exit 0
 	fi
 
 	#good - login success
 	log_append_login_status "OK"
+
+	local PL_TOKEN=$(uuidgen)
+	local PL_EXPIRATION_DATE=#TODO
+	user_update_token "$1" "$PL_TOKEN" "$PL_EXPIRATION_DATE"
 
 #TODO make a redirect with cookies
 	http_print_header
