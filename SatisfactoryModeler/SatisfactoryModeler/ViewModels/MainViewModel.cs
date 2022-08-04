@@ -10,7 +10,6 @@ using NodeNetwork;
 using NodeNetwork.Toolkit.NodeList;
 using NodeNetwork.ViewModels;
 using ReactiveUI;
-using SatisfactoryModeler.Models;
 using SatisfactoryModeler.Persistance;
 using SatisfactoryModeler.Persistance.Networks;
 using SatisfactoryModeler.ViewModels.Nodes;
@@ -87,18 +86,18 @@ namespace SatisfactoryModeler.ViewModels
             foreach (var node in nodes)
             {
                 NetworkViewModel.Nodes.Add(node);
-                nodesByIds.Add(node.CastTo<IPersistable>().Id, node);
+                nodesByIds.Add(node.CastTo<IPersistableNodeViewModel>().Id, node);
             }
 
             var connections = nodesNetwork.Connections;
             foreach (var connection in connections)
             {
                 var nodeInput = nodesByIds[connection.InputId].Inputs.Items
-                    .OfType<IPersistablePort>()
+                    .OfType<IPersistablePortViewModel>()
                     .First(p => p.PortName == connection.InputPortName)
                     .CastTo<NodeInputViewModel>();
                 var nodeOutput = nodesByIds[connection.OutputId].Outputs.Items
-                    .OfType<IPersistablePort>()
+                    .OfType<IPersistablePortViewModel>()
                     .First(p => p.PortName == connection.OutputPortName)
                     .CastTo<NodeOutputViewModel>();
                 NetworkViewModel.Connections.Add(new ConnectionViewModel(NetworkViewModel, nodeInput, nodeOutput));
@@ -109,8 +108,7 @@ namespace SatisfactoryModeler.ViewModels
         {
             Directory.CreateDirectory(Path.GetDirectoryName(SessionFilePath));
 
-            var nodes = NetworkViewModel.Nodes.Items
-                .OfType<IPersistable>().Persist<BaseNode>().ToArray();
+            var nodes = NetworkViewModel.Nodes.Persist().ToArray();
 
             var connections = NetworkViewModel.Connections.Items
                 .Select(Persist).ToArray();
@@ -130,8 +128,8 @@ namespace SatisfactoryModeler.ViewModels
 
         private static Connection Persist(ConnectionViewModel connection)
         {
-            var input = connection.Input.CastTo<IPersistablePort>();
-            var output = connection.Output.CastTo<IPersistablePort>();
+            var input = connection.Input.CastTo<IPersistablePortViewModel>();
+            var output = connection.Output.CastTo<IPersistablePortViewModel>();
             return new Connection
             {
                 InputId = input.Parent.Id,

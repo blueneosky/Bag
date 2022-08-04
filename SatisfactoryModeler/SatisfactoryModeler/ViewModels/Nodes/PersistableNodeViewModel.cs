@@ -1,4 +1,5 @@
 ﻿using NodeNetwork.ViewModels;
+using SatisfactoryModeler.Assets.Converters;
 using SatisfactoryModeler.Models;
 using SatisfactoryModeler.Persistance.Networks;
 using System;
@@ -7,7 +8,7 @@ using System.Reactive.Linq;
 
 namespace SatisfactoryModeler.ViewModels.Nodes
 {
-    public abstract class PersistableNodeViewModel<TBaseNode> : NodeViewModel, IPersistable<TBaseNode>
+    public abstract class PersistableNodeViewModel<TBaseNode> : NodeViewModel, IPersistableNodeViewModel<TBaseNode>
         where TBaseNode : BaseNode
     {
         public Guid Id { get; }
@@ -21,37 +22,50 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             this.IsCollapsed = source.IsCollapsed;
         }
 
-        object IPersistable.Persist(object instance)
-            => Persist((TBaseNode)instance);
+        object IPersistableNodeViewModel.Persist()
+            => Persist();
 
-        public virtual TBaseNode Persist(TBaseNode baseNode)
+        public virtual TBaseNode Persist()
         {
-            baseNode = baseNode ?? Activator.CreateInstance<TBaseNode>();
+            var result = Activator.CreateInstance<TBaseNode>();
 
-            baseNode.Id = this.Id;
-            baseNode.Position = this.Position;
-            baseNode.IsCollapsed = this.IsCollapsed;
+            result.Id = this.Id;
+            result.Position = this.Position;
+            result.IsCollapsed = this.IsCollapsed;
+            
+            result.Inputs = this.Inputs.Persist().ToArray();
+            result.Outputs = this.Outputs.Persist().ToArray();
 
-            baseNode.Inputs = this.Inputs.Items.OfType<IPersistable>().Persist<InputPort>().ToArray();
-            baseNode.Outputs = this.Outputs.Items.OfType<IPersistable>().Persist<OutputPort>().ToArray();
-
-            return baseNode;
+            return result;
         }
 
-        protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource, NodeEndpointEditorViewModel editor)
+        protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource)
+            => CreateInput<T>(portName, parentSource, null, null);
+
+        protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource,
+            NodeEndpointEditorViewModel editor)
+            => CreateInput<T>(portName, parentSource, editor, DataConverter<T, T>.Default);
+
+        protected static PersistableValueNodeInputViewModel<T> CreateInput<T>(string portName, BaseNode parentSource,
+            NodeEndpointEditorViewModel editor, IDataConverter converter)
         {
             var port = parentSource?.Inputs.FirstOrDefault(ip => ip.Name == portName);
-            return new PersistableValueNodeInputViewModel<T>(portName, port, editor);
+            return new PersistableValueNodeInputViewModel<T>(portName, port, editor, converter);
         }
 
-        protected static PersistableValueNodeOutputViewModel<T> CreateOutput<T>(string portName, BaseNode parentSource, NodeEndpointEditorViewModel editor)
+        protected static PersistableValueNodeOutputViewModel<T> CreateOutput<T>(string portName, BaseNode parentSource)
+            => CreateOutput<T, object>(portName, parentSource, null, null);
+
+        protected static PersistableValueNodeOutputViewModel<T> CreateOutput<T, TPersited>(string portName, BaseNode parentSource,
+            NodeEndpointEditorViewModel editor, IDataConverter converter)
         {
             var port = parentSource?.Outputs.FirstOrDefault(ip => ip.Name == portName);
-            return new PersistableValueNodeOutputViewModel<T>(portName, port, editor);
+            return new PersistableValueNodeOutputViewModel<T>(portName, port, editor, converter);
         }
 
-        protected static void SetupDynamicOutput<TOutput>(PersistableValueNodeOutputViewModel<TOutput> outputViewModel,
-            Func<TOutput, ItemType?> currentItemTypeExtractor,
+        protected static void SetupDynamicOutput<TOutput>(
+            PersistableValueNodeOutputViewModel<TOutput> outputViewModel,
+            Func<TOutput, ItemType> currentItemTypeExtractor,
             Func<TOutput, double?> currentItemRateExtractor,
             string format, string fallback)
         {

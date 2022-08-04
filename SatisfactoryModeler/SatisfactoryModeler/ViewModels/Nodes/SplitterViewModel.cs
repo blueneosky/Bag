@@ -20,9 +20,9 @@ namespace SatisfactoryModeler.ViewModels.Nodes
         }
 
         public PersistableValueNodeInputViewModel<ItemFlow?> Input { get; }
-        public PersistableValueNodeInputViewModel<int?> LeftRate { get; }
-        public PersistableValueNodeInputViewModel<int?> CenterRate { get; }
-        public PersistableValueNodeInputViewModel<int?> RightRate { get; }
+        public PersistableValueNodeInputViewModel<double?> LeftRate { get; }
+        public PersistableValueNodeInputViewModel<double?> CenterRate { get; }
+        public PersistableValueNodeInputViewModel<double?> RightRate { get; }
 
         public PersistableValueNodeOutputViewModel<ItemFlow?> Left { get; }
         public PersistableValueNodeOutputViewModel<ItemFlow?> Center { get; }
@@ -35,28 +35,28 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Name = "Splitter";
             //HeaderIcon = IconsManager.Current.Splitter;
             
-            Input = CreateInput<ItemFlow?>("Input", source, null);
+            Input = CreateInput<ItemFlow?>("Input", source);
             Input.Name = "Input";
 
-            LeftRate = CreateInput<int?>("RightRate", source, new IntegerValueEditorViewModel(33, 0, 100));
+            LeftRate = CreateInput<double?>("RightRate", source, new DoubleEditorViewModel(1/3.0, 0, 100));
             LeftRate.Name = "Right rate (%)";
             LeftRate.Port.IsVisible = false;
 
-            CenterRate = CreateInput<int?>("RightRate", source, new IntegerValueEditorViewModel(33, 0, 100));
+            CenterRate = CreateInput<double?>("RightRate", source, new DoubleEditorViewModel(1 / 3.0, 0, 100));
             CenterRate.Name = "Right rate (%)";
             CenterRate.Port.IsVisible = false;
 
-            RightRate = CreateInput<int?>("RightRate", source, new IntegerValueEditorViewModel(33, 0, 100));
+            RightRate = CreateInput<double?>("RightRate", source, new DoubleEditorViewModel(1 / 3.0, 0, 100));
             RightRate.Name = "Right rate (%)";
             RightRate.Port.IsVisible = false;
 
-            Left = CreateOutput<ItemFlow?>("Left", source, null);
+            Left = CreateOutput<ItemFlow?>("Left", source);
             Left.Name = "Left";
 
-            Center = CreateOutput<ItemFlow?>("Center", source, null);
+            Center = CreateOutput<ItemFlow?>("Center", source);
             Center.Name = "Center";
 
-            Right = CreateOutput<ItemFlow?>("Right", source, null);
+            Right = CreateOutput<ItemFlow?>("Right", source);
             Right.Name = "Right";
 
             Left.Value = this.WhenAnyValue(vm => vm.Input.Value, vm => vm.LeftRate.Value)

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace SatisfactoryModeler.Models
 {
+    [DebuggerDisplay("{ToString()}")]
     public struct ItemFlow
     {
         public ItemType Type { get; }
@@ -20,7 +17,10 @@ namespace SatisfactoryModeler.Models
         public static ItemFlow From(ItemType type, double rate)
                 => new ItemFlow(type, rate);
 
-        public static ItemFlow? From(ItemType? type, double? rate)
-            => type.HasValue & rate.HasValue ? From(type.Value, rate.Value) : (ItemFlow?)null;
+        public static ItemFlow? From(ItemType type, double? rate)
+            => type != null & rate.HasValue ? From(type, rate.Value) : (ItemFlow?)null;
+
+        public override string ToString() => ToString("[{0}] {1}/min");
+        public string ToString(string format) => string.Format(format, this.Type, this.Rate);
     }
 }

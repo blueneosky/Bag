@@ -2,6 +2,7 @@
 using NodeNetwork.Views;
 using ReactiveUI;
 using SatisfactoryModeler.Assets;
+using SatisfactoryModeler.Assets.Converters;
 using SatisfactoryModeler.Models;
 using SatisfactoryModeler.Persistance.Networks;
 using SatisfactoryModeler.ViewModels.Editors;
@@ -30,21 +31,21 @@ namespace SatisfactoryModeler.ViewModels.Nodes
             Name = "Miner";
             HeaderIcon = IconsManager.Current.Miner;
 
-            MinerLevel = CreateInput<object>("MinerLevel", source, new EnumEditorViewModel(typeof(MinerLevel)));
+            MinerLevel = CreateInput<object>("MinerLevel", source, new EnumEditorViewModel(typeof(MinerLevel)), NEnumToStringConverter<MinerLevel>.Default);
             MinerLevel.Name = "Level";
             MinerLevel.Port.IsVisible = false;
 
-            NodePurity = CreateInput<object>("NodePurity", source, new EnumEditorViewModel(typeof(ResourceNodePurity)));
+            NodePurity = CreateInput<object>("NodePurity", source, new EnumEditorViewModel(typeof(ResourceNodePurity)), NEnumToStringConverter<ResourceNodePurity>.Default);
             NodePurity.Name = "Purity";
             NodePurity.Port.IsVisible = false;
 
-            NodeType = CreateInput<object>("NodeType", source, new EnumEditorViewModel(typeof(ResourceNodeType)));
+            NodeType = CreateInput<object>("NodeType", source, new ComboEditorViewModel(MiningOreType.All), MiningOreTypeToIdConverter.Default);
             NodeType.Name = "Resource";
             NodeType.Port.IsVisible = false;
 
             var production = this.WhenAnyValue(vm => vm.MinerLevel.Value, vm => vm.NodeType.Value, vm => vm.NodePurity.Value, vm => vm.Override.Value)
                .Select(_ => ItemFlow.From(
-                   (ItemType?)(ResourceNodeType?)this.NodeType.Value,
+                   (ItemType)(MiningOreType)this.NodeType.Value,
                    60.0 * (MinerLevel.Value as MinerLevel?)?.ToFactor() * (NodePurity.Value as ResourceNodePurity?)?.ToFactor() * (Override.Value / 100.0)));
             Output.Value = production;
 
