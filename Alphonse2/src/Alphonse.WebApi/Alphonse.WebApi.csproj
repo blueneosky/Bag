@@ -24,4 +24,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="systemd/alphonse.webapi.kestrel.service" DestinationFolder="$(PublishDir)/systemd" />
+  </Target>
+
 </Project>

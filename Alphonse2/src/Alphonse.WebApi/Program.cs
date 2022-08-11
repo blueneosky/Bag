@@ -1,10 +1,15 @@
 using Alphonse.WebApi.Setup;
+using Microsoft.Extensions.Options;
 
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddOptions<AlphonseSettings>().Bind(builder.Configuration.GetSection("Alphonse"));
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions{
+    Args = args,
+    // otherwize, CurrentDirectory is used
+    ContentRootPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
+});
 
 builder.ConfigureNLog();
+
+builder.ConfigureOptions();
 
 builder.ConfigureKestrel();
 
@@ -21,15 +26,31 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.SetupAlphonseData();
+app.Logger.LogInformation("WebApp Starting...");
+
+try
+{
+	app.SetupAlphonseData();
+}
+catch (Exception ex)
+{
+	app.Logger.LogCritical(ex, "Unexpected error!");
+	throw;
+}
 
 // Configure the HTTP request pipeline.
+var settings = app.Services.GetService<IOptions<AlphonseSettings>>()!.Value;
+if(app.Environment.IsDevelopment() || settings.ForceSwagger)
+{
+    app.Logger.LogInformation("Swagger added");
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
 if (app.Environment.IsDevelopment())
 {
     //app.UseDeveloperExceptionPage();
     // app.UseExceptionHandler("/error-development");
-    app.UseSwagger();
-    app.UseSwaggerUI();
 }
 else
 {
@@ -42,4 +63,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.Logger.LogInformation("WebApp Ready");
 app.Run();
+app.Logger.LogInformation("WebApp Shutdown");

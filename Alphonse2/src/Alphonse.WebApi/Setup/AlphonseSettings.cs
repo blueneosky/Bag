@@ -6,4 +6,5 @@ public class AlphonseSettings
     public string? DataBasePath { get; set; }
     public string? DbPath { get; set; }
     public bool WithKestrelConnectionLogging { get; set; }
+    public bool ForceSwagger { get; set; }
 }
