@@ -10,17 +10,19 @@ namespace Alphonse.Listener;
 
 internal sealed class AlphonseConsoleRunner : IConsoleRunner
 {
+    private readonly ILogger _logger;
     private readonly Modem _modem;
     private readonly IModemDataDispatcher _listener;
     private readonly IOptions<AlphonseSettings> _settings;
     private readonly TimeSpan _resetTime;
 
-    public AlphonseConsoleRunner(Modem modem, IModemDataDispatcher listener, IOptions<AlphonseSettings> settings)
+    public AlphonseConsoleRunner(ILogger<AlphonseConsoleRunner> logger, Modem modem, IModemDataDispatcher listener, IOptions<AlphonseSettings> settings)
     {
+        this._logger = logger;
         this._modem = modem;
         this._listener = listener;
         this._settings = settings;
-        this._resetTime = settings.Value.ResetTime ?? DateTime.Now.TimeOfDay;
+        this._resetTime = settings.Value.AutoResetTime ?? DateTime.Now.TimeOfDay;
     }
 
     public async Task RunAsync(CancellationToken stoppingToken)
@@ -31,6 +33,7 @@ internal sealed class AlphonseConsoleRunner : IConsoleRunner
             var remainingTime = GetRemainingTimeUntilNextResetTime();
             var periodeSource = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
             periodeSource.CancelAfter(remainingTime);
+            this._logger.LogInformation("Next modem com reset setup for {Date}", DateTime.Now + remainingTime);
 
             await this.ListenAsync(periodeSource.Token).ConfigureAwait(false);
         }
@@ -61,7 +64,9 @@ internal sealed class AlphonseConsoleRunner : IConsoleRunner
         {
             this._modem.Open();
 
+            this._logger.LogDebug("Start listening...");
             await this._modem.ListenAsync(this._listener, token).ConfigureAwait(false);
+            this._logger.LogDebug("Start listening DONE");
         }
         catch (TaskCanceledException) { }
         catch (Exception ex)

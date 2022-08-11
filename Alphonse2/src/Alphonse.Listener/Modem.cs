@@ -223,6 +223,23 @@ public class Modem : IDisposable
         }
     }
 
+      public async Task PickupHangupAsync(TimeSpan hangupDelay, CancellationToken token)
+        {
+            this._logger.LogDebug("Pick up...");
+            this.WriteCommands(Modem.CONST_MODEM_PICKUP);
+            this._logger.LogDebug("Pick up DONE");
+            try
+            {
+                await Task.Delay(hangupDelay, token);
+            }
+            finally
+            {
+                this._logger.LogDebug("Hang up...");
+                this.WriteCommands(Modem.CONST_MODEM_HANGUP);
+                this._logger.LogDebug("Hang up DONE");
+            }
+        }
+
     public void Dispose()
     {
         GC.SuppressFinalize(this);

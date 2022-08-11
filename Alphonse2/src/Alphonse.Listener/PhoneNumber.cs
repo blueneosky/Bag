@@ -102,6 +102,9 @@ public class PhoneNumber : IComparable<PhoneNumber>, IEquatable<PhoneNumber>
 
     private string GetDebuggerDisplay() => this.ToString(true);
 
-    public static bool operator ==(PhoneNumber a, PhoneNumber b) => b is not null && b.Equals(a);
-    public static bool operator !=(PhoneNumber a, PhoneNumber b) => !(a == b);
+    public static bool operator ==(PhoneNumber? a, PhoneNumber? b) => b is not null && b.Equals(a);
+    public static bool operator !=(PhoneNumber? a, PhoneNumber? b) => !(a == b);
+
+    public static implicit  operator string(PhoneNumber number) => number.ToString();
+
 }
