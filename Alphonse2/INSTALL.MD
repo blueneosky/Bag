@@ -27,13 +27,13 @@ cd src/Alphonse.WebApi
 Then build/publish, deploy/install, configure
 ```bash
 declare alphonse_user="alphonse"                                            && \
-declare alphonse_webapp_path="/usr/local/lib/alphonse/Alphonse.WebApi"      && \
+declare alphonse_webapi_path="/usr/local/lib/alphonse/Alphonse.WebApi"      && \
 declare alphonse_data_path="/var/lib/alphonse"                              && \
 declare alphonse_config_path="/etc/alphonse/webapi.appsettings.json"        && \
 declare alphonse_service_name="alphonse.webapi.kestrel.service"             && \
-declare alphonse_service_path="${alphonse_webapp_path}/systemd/${alphonse_service_name}" && \
+declare alphonse_service_path="${alphonse_webapi_path}/systemd/${alphonse_service_name}" && \
 declare alphonse_service_log_path="/var/log/Alphonse.WebApi.log"            && \
-declare alphonse_publish_log="/tmp/Alphonse.WebApp.dotnet_publish.log"      && \
+declare alphonse_publish_log="/tmp/Alphonse.WebApi.dotnet_publish.log"      && \
 
 echo "[Step] dotnet publish ..."                                            && \
 dotnet publish --configuration Release | tee ${alphonse_publish_log}        && \
@@ -41,16 +41,16 @@ dotnet publish --configuration Release | tee ${alphonse_publish_log}        && \
 declare alphonse_publish_path="$(grep -e '->.*publish' ${alphonse_publish_log} | \sed -e 's#^.* -> /#/#' -e 's#/$##' )"     && \
 
 echo "[Step] stop existing service ..."                                         && \
-sudo systemctl stop alphonse.webapi.kestrel.service || echo "Service not found" && \
+sudo systemctl stop ${alphonse_service_name} || echo "Service not found"        && \
 
-echo "[Step] deploy to ${alphonse_webapp_path} under user ${alphonse_user}"     && \
-sudo mkdir -p ${alphonse_webapp_path}                                           && \
-sudo rsync -cprth --delete ${alphonse_publish_path}/ ${alphonse_webapp_path}    && \
-sudo chown -R ${alphonse_user}:${alphonse_user} ${alphonse_webapp_path}         && \
+echo "[Step] deploy to ${alphonse_webapi_path} under user ${alphonse_user}"     && \
+sudo mkdir -p ${alphonse_webapi_path}                                           && \
+sudo rsync -cprth --delete ${alphonse_publish_path}/ ${alphonse_webapi_path}    && \
+sudo chown -R ${alphonse_user}:${alphonse_user} ${alphonse_webapi_path}         && \
 
 echo "[Step] setup config file at ${alphonse_config_path}"                      && \
-sudo mkdir -p $(dirname alphonse_config_path)                                   && \
-sudo ln -sf ${alphonse_webapp_path}/appsettings.json ${alphonse_config_path}    && \
+sudo mkdir -p $(dirname {alphonse_config_path})                                 && \
+sudo ln -sf ${alphonse_webapi_path}/appsettings.json ${alphonse_config_path}    && \
 
 echo "[Step] setup data path ${alphonse_data_path}"                             && \
 sudo mkdir -p ${alphonse_data_path}                                             && \
@@ -60,6 +60,55 @@ echo "[Step] setup log file ${alphonse_service_log_path}"                       
 sudo touch ${alphonse_service_log_path}                                         && \
 sudo chown -R root:${alphonse_user} ${alphonse_service_log_path}                && \
 sudo chmod g+rw ${alphonse_service_log_path}                                    && \
+
+echo "[Step] setup service (systemd)"                                           && \
+sudo ln -sf ${alphonse_service_path} /etc/systemd/system/                       && \
+sudo systemctl enable ${alphonse_service_name}                                  && \
+sudo systemctl daemon-reload
+```
+
+Please check and update these file if you change path:
+- `${alphonse_config_path}`
+- `${alphonse_service_path}`
+
+Finaly, start de daemon :
+```bash
+sudo systemctl start ${alphonse_service_name}
+#get the status
+sudo systemctl status  ${alphonse_service_name}
+```
+
+Alphonse.Listener
+---------------
+
+Got to `src/Alphonse.Listener`
+```bash
+cd src/Alphonse.Listener
+```
+
+Then build/publish, deploy/install, configure
+```bash
+declare alphonse_listener_path="/usr/local/lib/alphonse/Alphonse.Listener"  && \
+declare alphonse_config_path="/etc/alphonse/listener.appsettings.json"      && \
+declare alphonse_service_name="alphonse.listener.service"                   && \
+declare alphonse_service_path="${alphonse_listener_path}/systemd/${alphonse_service_name}" && \
+declare alphonse_publish_log="/tmp/Alphonse.Listener.dotnet_publish.log"    && \
+
+echo "[Step] dotnet publish ..."                                            && \
+dotnet publish --configuration Release | tee ${alphonse_publish_log}        && \
+
+declare alphonse_publish_path="$(grep -e '->.*publish' ${alphonse_publish_log} | \sed -e 's#^.* -> /#/#' -e 's#/$##' )"     && \
+
+echo "[Step] stop existing service ..."                                         && \
+sudo systemctl stop ${alphonse_service_name} || echo "Service not found"        && \
+
+echo "[Step] deploy to ${alphonse_listener_path} under user root"               && \
+sudo mkdir -p ${alphonse_listener_path}                                         && \
+sudo rsync -cprth --delete ${alphonse_publish_path}/ ${alphonse_listener_path}  && \
+
+echo "[Step] setup config file at ${alphonse_config_path}"                      && \
+sudo mkdir -p $(dirname {alphonse_config_path})                                 && \
+sudo ln -sf ${alphonse_listener_path}/appsettings.json ${alphonse_config_path}  && \
 
 echo "[Step] setup service (systemd)"                                           && \
 sudo ln -sf ${alphonse_service_path} /etc/systemd/system/                       && \

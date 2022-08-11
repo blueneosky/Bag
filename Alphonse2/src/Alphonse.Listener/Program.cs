@@ -10,11 +10,13 @@ using Alphonse.Listener.PhoneNumberHandlers;
 //=== DI/IoC =========================
 
 var config = new ConfigurationBuilder()
-    .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+    .SetBasePath(AppDomain.CurrentDomain.SetupInformation.ApplicationBase)
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .Build();
 
 await Host.CreateDefaultBuilder(args)
+    .UseContentRoot(AppDomain.CurrentDomain.SetupInformation.ApplicationBase)
+    .UseSystemd()
     .ConfigureLogging((hostContext, logging) =>
     {
         // configure Logging with NLog
@@ -25,7 +27,14 @@ await Host.CreateDefaultBuilder(args)
     })
     .ConfigureServices((hostContext, services) =>
     {
-        services.AddOptions<AlphonseSettings>().Bind(hostContext.Configuration.GetSection("Alphonse"));
+        services.Configure<HostOptions>(options =>
+        {
+            // add a delay of 20sec before force shutdown
+            options.ShutdownTimeout = TimeSpan.FromSeconds(20);
+        });
+        services.AddOptions<AlphonseSettings>()
+            .Bind(hostContext.Configuration.GetSection("Alphonse"))
+            .Validate(s => !string.IsNullOrWhiteSpace(s.WebAppBaseUri), $"Missing value for {nameof(AlphonseSettings.WebAppBaseUri)}");
         services.AddSingleton<PhonebookService>();
         services.AddSingleton<IPhoneNumberHandler, HistoryPhoneNumberHandler>();
         services.AddSingleton<IPhoneNumberHandler, WhitelistHandler>();
@@ -38,5 +47,7 @@ await Host.CreateDefaultBuilder(args)
         services.AddSingleton<IConsoleRunner, AlphonseConsoleRunner>();
         services.AddHostedService<ConsoleHostedService>();
     })
-    .UseConsoleLifetime()
-    .RunConsoleAsync();
+    // .UseConsoleLifetime()
+    // .RunConsoleAsync();
+    .Build()
+    .RunAsync();

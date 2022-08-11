@@ -47,11 +47,12 @@ public class HistoryPhoneNumberHandler : IPhoneNumberHandler
                 var response = await this._restApiClient.SendJsonRequest(HttpMethod.Post, uri, callHistory);
                 response.EnsureSuccessStatusCode();
                 callHistory = await response.DeseriaseJsonResponseAsync<CallHistoryDto>();
+                this._logger.LogInformation("History updated for '{HNumber}' [{Number}] from WebApi", context.Number.ToString(true), context.Number);
             }
             catch (Exception ex)
             {
                 Debug.Fail("Check what append");
-                this._logger.LogWarning(ex, "Fail to post history for '{HNumber}' [{Number}] from WebApi", context.Number.ToString(true), context.Number);
+                this._logger.LogWarning(ex, "Fail to Oost history for '{HNumber}' [{Number}] from WebApi", context.Number.ToString(true), context.Number);
             }
         }
     }
