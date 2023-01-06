@@ -11,7 +11,7 @@ public static class OptionsSetup
     {
         builder.Services.AddOptions<AlphonseSettings>()
             .Bind(builder.Configuration.GetSection("Alphonse"))
-            .Validate(s => !string.IsNullOrWhiteSpace(s.DataBasePath), $"Missing {nameof(AlphonseSettings.DataBasePath)} in Alphonse settings")
+            .Validate(s => !string.IsNullOrWhiteSpace(s.DataDirPath), $"Missing {nameof(AlphonseSettings.DataDirPath)} in Alphonse settings")
             .Validate(s => !string.IsNullOrWhiteSpace(s.DbPath), $"Missing {nameof(AlphonseSettings.DbPath)} in Alphonse settings")
             .ValidateOnStart();
     }

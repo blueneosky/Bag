@@ -19,7 +19,8 @@ public class CallHistoryController : ControllerBase
     // GET: api/CallHistory[?after='this_date'][&before='this_date'][&pageSize=10&pageIndex=0][&reverseOrder=1]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CallHistoryDbo>>> GetCallHistories(
-        [FromQuery] DateTime? after, [FromQuery] DateTime? before,
+        [FromQuery] DateTime? after,
+        [FromQuery] DateTime? before,
         [FromQuery] int? pageSize, [FromQuery] int? pageIndex,
         [FromQuery] int? reverseOrder)
     {
@@ -48,7 +49,7 @@ public class CallHistoryController : ControllerBase
 
     // GET: api/CallHistory/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<CallHistoryDbo>> GetCallHistoryDbo(int id)
+    public async Task<ActionResult<CallHistoryDbo>> GetCallHistoryDbo([FromRoute] int id)
     {
         if (_context.CallHistories == null)
             return NotFound();
@@ -64,7 +65,8 @@ public class CallHistoryController : ControllerBase
     // POST: api/CallHistory
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<CallHistoryDbo>> PostCallHistoryDbo(CallHistoryDbo callHistoryDbo,
+    public async Task<ActionResult<CallHistoryDbo>> PostCallHistoryDbo(
+        [FromBody] CallHistoryDbo callHistoryDbo,
         [FromServices] IValidator<CallHistoryDbo> validator)
     {
         if (_context.CallHistories == null)
@@ -74,6 +76,7 @@ public class CallHistoryController : ControllerBase
         if(!validationResults.IsValid)
             return UnprocessableEntity(validationResults.ToString());
 
+        callHistoryDbo.CallHistoryId = 0;    // safety
         _context.CallHistories.Add(callHistoryDbo);
         await _context.SaveChangesAsync();
 
@@ -81,14 +84,14 @@ public class CallHistoryController : ControllerBase
     }
 
     private bool CallHistoryDboExists(int id)
-    => (_context.CallHistories?.Any(e => e.CallHistoryId == id)).GetValueOrDefault();
-
-#if DEBUG
+        => (_context.CallHistories?.Any(e => e.CallHistoryId == id)).GetValueOrDefault();
 
     // PUT: api/CallHistory/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutCallHistoryDbo(int id, CallHistoryDbo callHistoryDbo,
+    public async Task<IActionResult> PutCallHistoryDbo(
+        [FromRoute] int id,
+        [FromBody] CallHistoryDbo callHistoryDbo,
         [FromServices] IValidator<CallHistoryDbo> validator)
     {
         if (id != callHistoryDbo.CallHistoryId)
@@ -117,7 +120,7 @@ public class CallHistoryController : ControllerBase
 
     // DELETE: api/CallHistory/5
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCallHistoryDbo(int id)
+    public async Task<IActionResult> DeleteCallHistoryDbo([FromRoute] int id)
     {
         if (_context.CallHistories == null)
             return NotFound();
@@ -131,6 +134,4 @@ public class CallHistoryController : ControllerBase
 
         return NoContent();
     }
-
-#endif
 }

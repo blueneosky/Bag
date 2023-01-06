@@ -17,7 +17,7 @@ public static class DbContextSetup
 
             var dbPath = alphonseSettings.DbPath;
             if (!Path.IsPathRooted(dbPath))
-                dbPath = Path.Join(alphonseSettings.DataBasePath, dbPath);
+                dbPath = Path.Join(alphonseSettings.DataDirPath, dbPath);
 
             dbContextOptionsBuilder.UseSqlite($"Data Source={dbPath}");
         }

@@ -17,7 +17,7 @@ namespace Alphonse.WebApi.Validators
 
             void Validate(string value, ValidationContext<T> context)
             {
-                if (value is null)
+                if (value is null || value == "PRIVATE")
                     return;
 
                 if(!value.StartsWith('+'))

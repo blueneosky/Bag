@@ -21,7 +21,7 @@ public static class AlphonseDataSetup
             logger.LogInformation("[Data Setup] Starting ...");
             Setup(logger,
                 serviceProvider.GetService<IOptions<AlphonseSettings>>()?.Value,
-                serviceProvider.GetService<AlphonseDbContext>()!,
+                new Lazy<AlphonseDbContext>(() => serviceProvider.GetRequiredService<AlphonseDbContext>()),
                 new Lazy<IWebHostEnvironment>(() => serviceProvider.GetRequiredService<IWebHostEnvironment>()));
             logger.LogInformation("[Data Setup] Starting DONE");
         }
@@ -34,7 +34,7 @@ public static class AlphonseDataSetup
 
     private static void Setup(ILogger logger,
             AlphonseSettings? settings,
-            AlphonseDbContext dbContext,
+            Lazy<AlphonseDbContext> dbContext,
             Lazy<IWebHostEnvironment> environment
             )
         {
@@ -44,8 +44,8 @@ public static class AlphonseDataSetup
                 throw new InvalidOperationException("Missing Alphonse settings");
             logger.LogDebug("Alphonse Settings: {Settings}", JsonSerializer.Serialize(settings));
 
-            if (string.IsNullOrWhiteSpace(settings.DataBasePath))
-                throw new InvalidOperationException($"Missing {nameof(AlphonseSettings.DataBasePath)} in Alphonse settings");
+            if (string.IsNullOrWhiteSpace(settings.DataDirPath))
+                throw new InvalidOperationException($"Missing {nameof(AlphonseSettings.DataDirPath)} in Alphonse settings");
 
             if (string.IsNullOrWhiteSpace(settings.DbPath))
                 throw new InvalidOperationException($"Missing {nameof(AlphonseSettings.DbPath)} in Alphonse settings");
@@ -55,26 +55,25 @@ public static class AlphonseDataSetup
 
             // update settings
             logger.LogDebug("Alphonse Settings updating...");
-            if (!Path.IsPathRooted(settings.DataBasePath))
+            if (!Path.IsPathRooted(settings.DataDirPath)
+                && environment.Value.IsDevelopment())
             {
-                if (environment.Value.IsDevelopment())
-                {
-                    // re-root under binaries folder
-                    var appDir = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-                    settings.DataBasePath = Path.Join(appDir, settings.DataBasePath);
-                    logger.LogInformation($"{nameof(AlphonseSettings.DataBasePath)} update with value {{DataBasePath}}", settings.DataBasePath);
-                }
+                // re-root under binaries folder
+                var appDir = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+                settings.DataDirPath = Path.Join(appDir, settings.DataDirPath);
+                logger.LogInformation($"{nameof(AlphonseSettings.DataDirPath)} update with value {{DataDirPath}}", settings.DataDirPath);
+
+                Directory.CreateDirectory(settings.DataDirPath);
             }
-            Directory.CreateDirectory(settings.DataBasePath);
             logger.LogDebug("Alphonse Settings updating DONE");
 
 
             // auto-migrate db context
             logger.LogDebug("Alphonse DbContext checking ...");
-            if (dbContext.Database.GetPendingMigrations().Any())
+            if (dbContext.Value.Database.GetPendingMigrations().Any())
             {
                 logger.LogInformation("Migration in progress...");
-                dbContext.Database.Migrate();
+                dbContext.Value.Database.Migrate();
                 logger.LogInformation("Migration DONE");
             }
             logger.LogDebug("Alphonse DbContext checking DONE");

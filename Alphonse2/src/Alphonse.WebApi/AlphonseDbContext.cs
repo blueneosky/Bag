@@ -6,9 +6,13 @@ namespace Alphonse.WebApi;
 
 public class AlphonseDbContext : DbContext
 {
+    //**********************************************************************
     // any modifications must be followed by these commands before run
+    //
     // > dotnet ef migrations add <migrationName>
-    // //> dotnet ef database update
+    //
+    // (> dotnet ef database update) but done during initialising
+    //**************************************************************************
 
     public DbSet<CallHistoryDbo> CallHistories => Set<CallHistoryDbo>();
     public DbSet<PhoneNumberDbo> PhoneNumbers => Set<PhoneNumberDbo>();

@@ -13,4 +13,8 @@ public class CallHistoryDbo
     [Unicode(false)]
     [MaxLength(30)]
     public string UCallNumber { get; set; } = null!;
+
+    [Unicode(false)]
+    [MaxLength(12)]
+    public string? Action { get; set; }
 }
