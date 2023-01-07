@@ -11,15 +11,18 @@ public class AlphonseModemDataDispatcher : IModemDataDispatcher
 {
     private readonly ILogger<AlphonseModemDataDispatcher> _logger;
     private readonly PhonebookService _phonebookService;
+    private readonly IHistoryPhoneNumberService _historyPhoneNumberService;
     private readonly IEnumerable<IPhoneNumberHandler> _phoneNumberHandlers;
 
     public AlphonseModemDataDispatcher(
         ILogger<AlphonseModemDataDispatcher> logger,
         PhonebookService phonebookService,
+        IHistoryPhoneNumberService historyPhoneNumberService,
         IEnumerable<IPhoneNumberHandler> phoneNumberHandlers)
     {
         this._logger = logger;
         this._phonebookService = phonebookService;
+        this._historyPhoneNumberService = historyPhoneNumberService;
         this._phoneNumberHandlers = phoneNumberHandlers;
     }
 
@@ -79,18 +82,38 @@ public class AlphonseModemDataDispatcher : IModemDataDispatcher
 
     private async Task ProcessAsync(PhoneNumberHandlerContext context, CancellationToken token)
     {
+        // start registering in parallel in order to reduce latency
+        var registering = Task.Run(() => {
+            var callHistory = new CallHistoryDto
+            {
+                Timestamp = context.Timestamp.UtcDateTime,
+                UCallNumber = context.Number,
+                Action = "Incomming",
+            };
+
+            return this._historyPhoneNumberService.RegisterIncommingCallAsync(callHistory, token);
+        });
+
+        // apply handlers
         foreach (var handler in this._phoneNumberHandlers)
         {
-            await ProcessAsync(handler).ConfigureAwait(false);
-
             if (token.IsCancellationRequested)
             {
                 this._logger.LogInformation("Fast abort due to cancellation requested");
                 break;
             }
 
+            await ProcessAsync(handler).ConfigureAwait(false);
             if (context.StopProcessing)
                 break;
+        }
+
+        // re-sync with parallel registration and update with 'action'
+        var callHistory = await registering.ConfigureAwait(false);
+        if(callHistory is not null)
+        {
+            callHistory.Action = context.ActionProcessed;
+            await this._historyPhoneNumberService.UpdateHistoryCallAsync(callHistory, token);
         }
 
         //=======================================================
@@ -118,5 +141,6 @@ public class AlphonseModemDataDispatcher : IModemDataDispatcher
         public PhoneNumberDto? PhoneNumber { get; set; }
 
         public bool StopProcessing { get; set; }
+        public string? ActionProcessed { get; set; }
     }
 }

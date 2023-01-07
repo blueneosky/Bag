@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace Alphonse.Listener;
 
-public class Modem : IDisposable
+public class Modem : IModem
 {
     private static readonly string[] CONST_MODEM_RESET = new[] { "ATZ" };  // reset
     private static readonly string[] CONST_MODEM_INIT = new[] { "ATE0", "AT+VCID=1" };  // no echo, activate call id printing
@@ -209,9 +209,6 @@ public class Modem : IDisposable
         }
     }
 
-    public void WriteCommands(params string[] commands)
-        => this.WriteCommands((IEnumerable<string>)commands);
-
     public void WriteCommands(IEnumerable<string> commands)
     {
         if (this._serialPort is null)
@@ -223,22 +220,22 @@ public class Modem : IDisposable
         }
     }
 
-      public async Task PickupHangupAsync(TimeSpan hangupDelay, CancellationToken token)
+    public async Task PickupHangupAsync(TimeSpan hangupDelay, CancellationToken token)
+    {
+        this._logger.LogDebug("Pick up...");
+        this.WriteCommands(Modem.CONST_MODEM_PICKUP);
+        this._logger.LogDebug("Pick up DONE");
+        try
         {
-            this._logger.LogDebug("Pick up...");
-            this.WriteCommands(Modem.CONST_MODEM_PICKUP);
-            this._logger.LogDebug("Pick up DONE");
-            try
-            {
-                await Task.Delay(hangupDelay, token);
-            }
-            finally
-            {
-                this._logger.LogDebug("Hang up...");
-                this.WriteCommands(Modem.CONST_MODEM_HANGUP);
-                this._logger.LogDebug("Hang up DONE");
-            }
+            await Task.Delay(hangupDelay, token);
         }
+        finally
+        {
+            this._logger.LogDebug("Hang up...");
+            this.WriteCommands(Modem.CONST_MODEM_HANGUP);
+            this._logger.LogDebug("Hang up DONE");
+        }
+    }
 
     public void Dispose()
     {

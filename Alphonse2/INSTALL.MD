@@ -35,10 +35,13 @@ declare alphonse_service_path="${alphonse_webapi_path}/systemd/${alphonse_servic
 declare alphonse_service_log_path="/var/log/Alphonse.WebApi.log"            && \
 declare alphonse_publish_log="/tmp/Alphonse.WebApi.dotnet_publish.log"      && \
 
+echo "[Step] root right ..."                                                && \
+sudo echo "acquired"                                                        && \
+
 echo "[Step] dotnet publish ..."                                            && \
 dotnet publish --configuration Release | tee ${alphonse_publish_log}        && \
 
-declare alphonse_publish_path="$(grep -e '->.*publish' ${alphonse_publish_log} | \sed -e 's#^.* -> /#/#' -e 's#/$##' )"     && \
+declare alphonse_publish_path="$(grep -e '->.*publish' ${alphonse_publish_log} | sed -e 's#^.* -> /#/#' -e 's#/$##' )"     && \
 
 echo "[Step] stop existing service ..."                                         && \
 sudo systemctl stop ${alphonse_service_name} || echo "Service not found"        && \
@@ -64,7 +67,7 @@ sudo chmod g+rw ${alphonse_service_log_path}                                    
 echo "[Step] setup service (systemd)"                                           && \
 sudo ln -sf ${alphonse_service_path} /etc/systemd/system/                       && \
 sudo systemctl enable ${alphonse_service_name}                                  && \
-sudo systemctl daemon-reload
+sudo systemctl daemon-reload  && echo "[Done]"
 ```
 
 Please check and update these file if you change path:
@@ -93,6 +96,9 @@ declare alphonse_config_path="/etc/alphonse/listener.appsettings.json"      && \
 declare alphonse_service_name="alphonse.listener.service"                   && \
 declare alphonse_service_path="${alphonse_listener_path}/systemd/${alphonse_service_name}" && \
 declare alphonse_publish_log="/tmp/Alphonse.Listener.dotnet_publish.log"    && \
+
+echo "[Step] root right ..."                                                && \
+sudo echo "acquired"                                                        && \
 
 echo "[Step] dotnet publish ..."                                            && \
 dotnet publish --configuration Release | tee ${alphonse_publish_log}        && \

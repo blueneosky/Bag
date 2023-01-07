@@ -6,6 +6,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using DotNet.RestApi.Client;
 using Alphonse.Listener.PhoneNumberHandlers;
+using Alphonse.Listener.Mocks;
+using Polly.Extensions.Http;
+using Polly;
 
 //=== DI/IoC =========================
 
@@ -36,18 +39,19 @@ await Host.CreateDefaultBuilder(args)
             .Bind(hostContext.Configuration.GetSection("Alphonse"))
             .Validate(s => !string.IsNullOrWhiteSpace(s.WebAppBaseUri), $"Missing value for {nameof(AlphonseSettings.WebAppBaseUri)}");
         services.AddSingleton<PhonebookService>();
-        services.AddSingleton<IPhoneNumberHandler, HistoryPhoneNumberHandler>();
+        services.AddSingleton<IHistoryPhoneNumberService, HistoryPhoneNumberService>();
         services.AddSingleton<IPhoneNumberHandler, WhitelistHandler>();
         services.AddSingleton<IPhoneNumberHandler, BlacklistHandler>();
         services.AddSingleton<IPhoneNumberHandler, UnkownNumberHandler>();
         services.AddSingleton<IModemDataDispatcher, AlphonseModemDataDispatcher>();
-        services.AddSingleton<Modem>();
-        services.AddHttpClient<RestApiClient>();
-
+        services.AddSingleton<IModem, Modem/*Mock*/>();
+        services.AddHttpClient<RestApiClient>()
+            .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError()
+                .WaitAndRetryAsync(new double[]{1, 1, 3, 5, 10, 20, 30}.Select(TimeSpan.FromSeconds))
+            );
+        
         services.AddSingleton<IConsoleRunner, AlphonseConsoleRunner>();
         services.AddHostedService<ConsoleHostedService>();
     })
-    // .UseConsoleLifetime()
-    // .RunConsoleAsync();
     .Build()
     .RunAsync();

@@ -11,12 +11,12 @@ namespace Alphonse.Listener;
 internal sealed class AlphonseConsoleRunner : IConsoleRunner
 {
     private readonly ILogger _logger;
-    private readonly Modem _modem;
+    private readonly IModem _modem;
     private readonly IModemDataDispatcher _listener;
     private readonly IOptions<AlphonseSettings> _settings;
     private readonly TimeSpan _resetTime;
 
-    public AlphonseConsoleRunner(ILogger<AlphonseConsoleRunner> logger, Modem modem, IModemDataDispatcher listener, IOptions<AlphonseSettings> settings)
+    public AlphonseConsoleRunner(ILogger<AlphonseConsoleRunner> logger, IModem modem, IModemDataDispatcher listener, IOptions<AlphonseSettings> settings)
     {
         this._logger = logger;
         this._modem = modem;
@@ -37,6 +37,8 @@ internal sealed class AlphonseConsoleRunner : IConsoleRunner
 
             await this.ListenAsync(periodeSource.Token).ConfigureAwait(false);
         }
+
+        this._logger.LogInformation("Gracefull stop");
 
         //==================================================================
 

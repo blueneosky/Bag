@@ -8,4 +8,5 @@ public interface IPhoneNumberHandlerContext
     public PhoneNumber Number { get; }
     public PhoneNumberDto? PhoneNumber { get; }
     public bool StopProcessing { get; set; }
+    public string? ActionProcessed { get; set; }
 }

@@ -8,4 +8,6 @@ public record CallHistoryDto
     public DateTimeOffset Timestamp { get; set; }
 
     public string UCallNumber { get; set; } = null!;
+
+    public string? Action { get; set; }
 }

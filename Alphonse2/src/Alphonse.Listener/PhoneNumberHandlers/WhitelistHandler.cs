@@ -21,6 +21,7 @@ public class WhitelistHandler : IPhoneNumberHandler
 
         this._logger.LogInformation("Matched in whitelist - no modem action");
         context.StopProcessing = true;
+        context.ActionProcessed = "Accepted";
         return Task.CompletedTask;
     }
 }
