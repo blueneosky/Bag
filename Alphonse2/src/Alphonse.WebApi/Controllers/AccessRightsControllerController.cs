@@ -1,6 +1,8 @@
 using Alphonse.WebApi.Dto;
 using Alphonse.WebApi.Extensions;
+using Alphonse.WebApi.Filters;
 using Alphonse.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Alphonse.WebApi.Controllers;

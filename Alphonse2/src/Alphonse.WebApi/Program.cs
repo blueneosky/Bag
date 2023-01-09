@@ -1,7 +1,11 @@
+using System.Text;
 using Alphonse.WebApi.Setup;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
-var builder = WebApplication.CreateBuilder(new WebApplicationOptions{
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions
+{
     Args = args,
     // otherwize, CurrentDirectory is used
     ContentRootPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
@@ -19,12 +23,18 @@ builder.ConfigureServices();
 
 builder.ConfigureValidators();
 
+// Add authentication
+builder.ConfigureAuthentication();
+
 // Add services to the container.
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.ConfigureAuthentication(builder);
+});
 
 var app = builder.Build();
 
@@ -32,17 +42,17 @@ app.Logger.LogInformation("WebApp Starting...");
 
 try
 {
-	app.SetupAlphonseData();
+    app.SetupAlphonseData();
 }
 catch (Exception ex)
 {
-	app.Logger.LogCritical(ex, "Unexpected error!");
-	throw;
+    app.Logger.LogCritical(ex, "Unexpected error!");
+    throw;
 }
 
 // Configure the HTTP request pipeline.
 var settings = app.Services.GetService<IOptions<AlphonseSettings>>()!.Value;
-if(app.Environment.IsDevelopment() || settings.ForceSwagger)
+if (app.Environment.IsDevelopment() || settings.ForceSwagger)
 {
     app.Logger.LogInformation("Swagger added");
     app.UseSwagger();
@@ -51,7 +61,7 @@ if(app.Environment.IsDevelopment() || settings.ForceSwagger)
 
 if (app.Environment.IsDevelopment())
 {
-    //app.UseDeveloperExceptionPage();
+    app.UseDeveloperExceptionPage();
     // app.UseExceptionHandler("/error-development");
 }
 else
@@ -59,11 +69,16 @@ else
     // app.UseExceptionHandler("/error");
 }
 
-// app.UseHttpsRedirection();   // no http required (strictly on localhost)
+// app.UseHttpsRedirection();   // no https required (strictly on localhost - opened through reverse proxy)
 
-app.UseAuthorization();
+if (!settings.WithoutAuthorization)
+{
+    app.UseAuthentication();
+    app.UseAuthorization();
+}
 
-app.MapControllers();
+app.MapControllers()
+    .WhenFalse(settings.WithoutAuthorization, b => b.RequireAuthorization());
 
 app.Logger.LogInformation("WebApp Ready");
 app.Run();

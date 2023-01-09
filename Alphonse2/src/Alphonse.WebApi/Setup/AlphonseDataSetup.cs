@@ -88,7 +88,10 @@ public static class AlphonseDataSetup
             if (!(await userService.Value.GetAllUsersAsync(AccessRights.Admin)).Any())
             {
                 logger.LogInformation("Missing admin user, adding root/root ...");
-                await userService.Value.CreateAsync("root", "root", AccessRights.Admin);
+                await userService.Value.CreateAsync(
+                    settings.FallbackAdminUserName,
+                    settings.FallbackAdminUserPass,
+                    AccessRights.Admin);
                 logger.LogInformation("Missing admin user, adding root/root DONE");
             }
 

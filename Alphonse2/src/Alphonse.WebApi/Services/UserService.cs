@@ -56,10 +56,10 @@ public class UserService : IUserService
         await this._context.SaveChangesAsync();
     }
 
-    public async Task<(bool success, UserModel? user)> TryValidateAsync(string? name, string? pass)
+    public async Task<(bool success, UserModel user)> TryValidateAsync(string? name, string? pass)
     {
         var user = await ValidateAsync(name, pass, false);
-        return (user is not null, user);
+        return (user is not null, user!);
     }
 
     public async Task<UserModel> ValidateAsync(string? name, string? pass)

@@ -6,7 +6,7 @@ public interface IUserService
 {
     Task<UserModel> CreateAsync(string? name, string? pass, AccessRights rights);
     Task DeleteAsync(string? name);
-    Task<(bool success, UserModel? user)> TryValidateAsync(string? name, string? pass);
+    Task<(bool success, UserModel user)> TryValidateAsync(string? name, string? pass);
     Task<UserModel> ValidateAsync(string? name, string? pass);
     Task<UserModel?> GetUserAsync(int userId);
     Task<UserModel> GetRequiredUserAsync(int userId);
