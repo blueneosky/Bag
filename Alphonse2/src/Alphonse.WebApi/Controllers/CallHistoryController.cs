@@ -41,7 +41,7 @@ public class CallHistoryController : ControllerBase
                 (q, v) => q.Where(ch => ch.Timestamp < v))
             // paged result
             .WhenTrue(pageSize.HasValue && pageIndex.HasValue,
-                q => q.Skip(pageSize!.Value).Take(pageIndex!.Value))
+                q => q.Skip(pageSize!.Value * pageIndex!.Value).Take(pageSize!.Value))
             ;
 
         return await query.ToListAsync();
@@ -73,7 +73,7 @@ public class CallHistoryController : ControllerBase
             return Problem("Entity set 'AlphonseDbContext.CallHistories'  is null.");
 
         var validationResults = validator.Validate(callHistoryDbo);
-        if(!validationResults.IsValid)
+        if (!validationResults.IsValid)
             return UnprocessableEntity(validationResults.ToString());
 
         callHistoryDbo.CallHistoryId = 0;    // safety
@@ -98,7 +98,7 @@ public class CallHistoryController : ControllerBase
             return BadRequest();
 
         var validationResults = validator.Validate(callHistoryDbo);
-        if(!validationResults.IsValid)
+        if (!validationResults.IsValid)
             return UnprocessableEntity(validationResults.ToString());
 
         _context.Entry(callHistoryDbo).State = EntityState.Modified;

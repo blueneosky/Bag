@@ -134,6 +134,6 @@ fi
 sudo cp .tmp.$$.json "${webapi_config[config_path]}"
 rm -f .tmp.$$.json
 
-echo "### Configuration ###"
-echo "[STEP] File ${webapi_config[config_path]}"
+#TODO
+#echo "[STEP] File ${webapi_config[config_path]}"
 
