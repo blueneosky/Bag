@@ -80,7 +80,7 @@ public class CallHistoryController : ControllerBase
         _context.CallHistories.Add(callHistoryDbo);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetCallHistoryDbo", new { id = callHistoryDbo.CallHistoryId }, callHistoryDbo);
+        return CreatedAtAction(nameof(GetCallHistoryDbo), new { id = callHistoryDbo.CallHistoryId }, callHistoryDbo);
     }
 
     private bool CallHistoryDboExists(int id)

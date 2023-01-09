@@ -16,7 +16,7 @@ public class AlphonseDbContext : DbContext
 
     public DbSet<CallHistoryDbo> CallHistories => Set<CallHistoryDbo>();
     public DbSet<PhoneNumberDbo> PhoneNumbers => Set<PhoneNumberDbo>();
-
+    public DbSet<UserDbo> Users => Set<UserDbo>();
 
     public AlphonseDbContext(DbContextOptions<AlphonseDbContext> options)
         : base(options)

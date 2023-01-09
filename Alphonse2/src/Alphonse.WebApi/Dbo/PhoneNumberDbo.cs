@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Alphonse.WebApi.Dbo;
 
 [Index(nameof(UPhoneNumber), Name = "Unicity_" + nameof(UPhoneNumber), IsUnique = true)]
-public class PhoneNumberDbo
+public record PhoneNumberDbo
 {
     [Key]
     public int PhoneNumberId { get; set; }

@@ -15,6 +15,8 @@ builder.ConfigureKestrel();
 
 builder.ConfigureDbContext();
 
+builder.ConfigureServices();
+
 builder.ConfigureValidators();
 
 // Add services to the container.

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Alphonse.WebApi.Dbo;
 
-public class CallHistoryDbo
+public record CallHistoryDbo
 {
     [Key]
     public int CallHistoryId { get; set; }

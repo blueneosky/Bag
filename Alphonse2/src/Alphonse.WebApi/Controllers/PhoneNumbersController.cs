@@ -103,7 +103,7 @@ public class PhoneNumbersController : ControllerBase
        _context.PhoneNumbers.Add(phoneNumberDbo);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction("GetPhoneNumberDbo", new { id = phoneNumberDbo.PhoneNumberId }, phoneNumberDbo);
+        return CreatedAtAction(nameof(GetPhoneNumberDbo), new { id = phoneNumberDbo.PhoneNumberId }, phoneNumberDbo);
     }
 
     // DELETE: api/PhoneNumbers/5
