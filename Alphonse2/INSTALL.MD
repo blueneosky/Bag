@@ -39,7 +39,7 @@ sudo systemctl status  alphonse.webapi.kestrel.service
 ```
 
 Alphonse.Listener
----------------
+-----------------
 
 Got to `src/Alphonse.Listener`
 ```bash
@@ -48,35 +48,7 @@ cd src/Alphonse.Listener
 
 Then build/publish, deploy/install, configure
 ```bash
-declare alphonse_listener_path="/usr/local/lib/alphonse/Alphonse.Listener"  && \
-declare alphonse_config_path="/etc/alphonse/listener.appsettings.json"      && \
-declare alphonse_service_name="alphonse.listener.service"                   && \
-declare alphonse_service_path="${alphonse_listener_path}/systemd/${alphonse_service_name}" && \
-declare alphonse_publish_log="/tmp/Alphonse.Listener.dotnet_publish.log"    && \
-
-echo "[Step] root right ..."                                                && \
-sudo echo "acquired"                                                        && \
-
-echo "[Step] dotnet publish ..."                                            && \
-dotnet publish --configuration Release | tee ${alphonse_publish_log}        && \
-
-declare alphonse_publish_path="$(grep -e '->.*publish' ${alphonse_publish_log} | \sed -e 's#^.* -> /#/#' -e 's#/$##' )"     && \
-
-echo "[Step] stop existing service ..."                                         && \
-sudo systemctl stop ${alphonse_service_name} || echo "Service not found"        && \
-
-echo "[Step] deploy to ${alphonse_listener_path} under user root"               && \
-sudo mkdir -p ${alphonse_listener_path}                                         && \
-sudo rsync -cprth --delete ${alphonse_publish_path}/ ${alphonse_listener_path}  && \
-
-echo "[Step] setup config file at ${alphonse_config_path}"                      && \
-sudo mkdir -p $(dirname {alphonse_config_path})                                 && \
-sudo ln -sf ${alphonse_listener_path}/appsettings.json ${alphonse_config_path}  && \
-
-echo "[Step] setup service (systemd)"                                           && \
-sudo ln -sf ${alphonse_service_path} /etc/systemd/system/                       && \
-sudo systemctl enable ${alphonse_service_name}                                  && \
-sudo systemctl daemon-reload
+./install.sh
 ```
 
 Please check and update these file if you change path:

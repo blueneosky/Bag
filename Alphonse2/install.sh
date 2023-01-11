@@ -61,7 +61,7 @@ cd "${script_dir}"
 # Listener install
 echo "### Alphonse.Listener ###"
 cd "${script_dir}"
-#./src/Alphonse.Listener/install.sh   #TODO
+./src/Alphonse.Listener/install.sh
 
 #TODO other to comme
 
@@ -71,7 +71,7 @@ cd "${script_dir}"
 #adapt configuration with ${common_config_file}
 cd "${script_dir}"
 . install.webapi.config
-#. install.listener.config
+. install.listener.config
 
 file_json_set_value () {
     # $1 : src file
