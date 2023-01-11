@@ -58,6 +58,12 @@ cd "${script_dir}"
 
 
 ###################
+# nserial install (for Listener)
+echo "### nserial ###"
+cd "${script_dir}"
+./src/nserial_install.sh
+
+###################
 # Listener install
 echo "### Alphonse.Listener ###"
 cd "${script_dir}"

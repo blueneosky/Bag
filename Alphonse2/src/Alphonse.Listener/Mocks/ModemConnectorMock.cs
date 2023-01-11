@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Alphonse.Listener.Connectors;
 using Microsoft.Extensions.Logging;
 
@@ -9,10 +5,10 @@ using static MoreLinq.Extensions.ForEachExtension;
 
 namespace Alphonse.Listener.Mocks
 {
-    public class ModemMock : IModemConnector
+    public class ModemConnectorMock : IModemConnector
     {
-        private readonly ILogger<ModemMock> _logger;
-        public ModemMock(ILogger<ModemMock> logger)
+        private readonly ILogger<ModemConnectorMock> _logger;
+        public ModemConnectorMock(ILogger<ModemConnectorMock> logger)
         {
             this._logger = logger;
         }
