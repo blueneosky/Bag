@@ -1,10 +1,7 @@
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using System.IO;
 using System.IO.Ports;
 using System.Text;
-using System.Collections.Concurrent;
-using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Alphonse.Listener;
 
@@ -21,14 +18,11 @@ public class Modem : IModem
     private readonly ILogger _logger;
     private readonly string _modemPort;
 
-    private SerialPort? _serialPort;
+    private readonly AsyncAccessBox<ModemContext> _context = new(new());
 
-    private readonly AsyncLock _gate = new();
-    private CancellationToken _listenToken = CancellationToken.None;
-    private IModemDataDispatcher? _modemListener;
-    private TaskCompletionSource? _listenTaskSource;
-
-    public Modem(ILogger<Modem> logger, IOptions<AlphonseSettings> modemSettings)
+    public Modem(
+        ILogger<Modem> logger,
+        IOptions<AlphonseSettings> modemSettings)
     {
         this._logger = logger;
         this._modemPort = GetModemPort();
@@ -59,171 +53,161 @@ public class Modem : IModem
         }
     }
 
-    public void Open()
+    public void Open() => this._context.Use(context =>
     {
-        this.Close();
+        if (context.SerialPort is not null)
+            return;
 
-        _serialPort = new SerialPort(this._modemPort, 9600)
+        this._logger.LogInformation("Opening the modem on '{ModemPort}' ...", this._modemPort);
+        var serialPort = new SerialPort(this._modemPort, 9600)
         {
             NewLine = "\r\n",
             Encoding = Encoding.ASCII,
             WriteTimeout = 1000,
-            ReadTimeout = 1000,
+            ReadTimeout = 100,
         };
 
-        this._logger.LogInformation("Opening the modem on '{ModemPort}' ...", this._modemPort);
-        this._serialPort.Open();
-
-        this._logger.LogDebug("  input flushing...");
-        this._serialPort.DiscardInBuffer();
-
-        this._logger.LogDebug("  send reset...");
-        this.WriteCommands(CONST_MODEM_RESET);
-
-        this._logger.LogDebug("  modem init...");
-        this.WriteCommands(CONST_MODEM_INIT);
-
-        this._serialPort.DataReceived += DataReceived;
-        this._serialPort.ErrorReceived += ErrorReceived;
+        serialPort.Open();
         this._logger.LogInformation("Opening the modem on '{ModemPort}' DONE", this._modemPort);
+
+        context.SerialPort = serialPort;
+    });
+
+    public Task ListenAsync(IModemDataDispatcher listener, CancellationToken token)
+    {
+        // Note : listen must keep running until token expired (or any errors)
+
+        var task = Task.FromException(new InvalidOperationException("Task was not initialized"));
+
+        this._context.Use(context =>
+        {
+            this._logger.LogInformation("Listening setup ...");
+            var source = SetupListen(listener, context, token);
+            task = source?.Task;
+            this._logger.LogInformation("Listening setup DONE");
+        }, token);
+
+        return task;
     }
 
-    private void DataReceived(object sender, SerialDataReceivedEventArgs e)
+    private TaskCompletionSource? SetupListen(IModemDataDispatcher listener, ModemContext context, CancellationToken token)
     {
-        var serialPort = (SerialPort)sender;
-        Debug.Assert(serialPort == this._serialPort);
+        if (context.ListenTokenSource is not null)
+            throw new InvalidOperationException("Listener already present - please cancel the previous listening or close this instance");
 
-        this._gate.Run(Lock);
+        if (context.SerialPort is null)
+            throw new InvalidOperationException("Modem not opened or closed");
 
-        //====================================================
-        void Lock()
+        // Modem initialization for listening
+        this._logger.LogDebug("  input flushing...");
+        context.SerialPort.DiscardInBuffer();
+
+        this._logger.LogDebug("  send reset...");
+        context.SerialPort.WriteLines(CONST_MODEM_RESET);
+
+        this._logger.LogDebug("  modem init...");
+        context.SerialPort.WriteLines(CONST_MODEM_INIT);
+
+        // Listening
+        var listenTaskCompletionSource = new TaskCompletionSource();
+
+        context.ListenTokenSource = CancellationTokenSource.CreateLinkedTokenSource(token);
+        context.ListenTokenSource.Token.Register(() => StopListening(null));
+
+        this._logger.LogDebug("  modem listeners...");
+        context.SerialPort.DataReceived += OnDataReceived;
+        context.SerialPort.ErrorReceived += OnErrorReceived;
+
+        return listenTaskCompletionSource;
+
+        // =================================================================================
+
+        void OnDataReceived(object sender, SerialDataReceivedEventArgs e)
         {
+            var serialPort = (SerialPort)sender;
+            if (serialPort != context.SerialPort)
+                return;
+
+            if (e.EventType == SerialData.Eof)
+            {
+                StopListening(null);
+                return;
+            }
+
             try
             {
                 string? data = null;
                 while ((data = serialPort.ReadLine()) is not null)
                 {
                     data = data.Trim('\r', '\n');   // sometime here
-                    if(string.IsNullOrWhiteSpace(data))
+                    if (string.IsNullOrWhiteSpace(data))
                         continue;   // no need to process empty lines
 
                     this._logger.LogTrace("DataReceived: {Data}", data);
-                    if (_modemListener is null)
+                    if (listener is null)
                         continue;
 
                     this._logger.LogDebug("Dispatch data: {Data}", data);
-                    var task = Task.Run(() => this._modemListener.DispatchAsync(data, this._listenToken));
+                    var task = Task.Run(() => listener.DispatchAsync(data, token));
                     task.Wait();
                 }
 
                 // serial com was closed - stop the listening
-                this.StopListening();
+                StopListening(null);
             }
             catch (TimeoutException)
             {
                 // no more OR not enougth data
             }
         }
-    }
 
-    private void ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
-    {
-        try
+        void OnErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
-            // create a contexte
-            throw new InvalidDataException($"[SerialPort] Error received: '{e.EventType.ToString()}'");
-        }
-        catch (Exception ex)
-        {
-            // pass to the listener
-            StopListening(error: ex);
-        }
-    }
-
-    public Task ListenAsync(IModemDataDispatcher listener, CancellationToken token)
-    {
-        if (this._serialPort is null)
-            throw new ObjectDisposedException("Serial port is not open");
-
-        var completionSource = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-
-        this._gate.Run(Lock);
-
-        //====================================================
-        void Lock()
-        {
-            token.Register(() => this.StopListening(token: token));
-            this._listenToken = token;
-            this._modemListener = listener;
-            this._listenTaskSource = completionSource;
+            try
+            {
+                // create a contexte
+                throw new InvalidDataException($"[SerialPort] Error received: '{e.EventType.ToString()}'");
+            }
+            catch (Exception ex)
+            {
+                // pass to the listener
+                StopListening(error: ex);
+            }
         }
 
-        return completionSource.Task;
-    }
-
-    public void Close()
-    {
-        if (this._serialPort is null)
-            return;
-
-        this.StopListening();   // no error/cancellation
-
-        this._serialPort.ErrorReceived -= ErrorReceived;
-        this._serialPort.DataReceived -= DataReceived;
-
-        this._serialPort.Close();
-        this._serialPort = null;
-    }
-
-    private void StopListening(Exception? error = null, CancellationToken? token = null)
-    {
-        this._gate.Run(Lock);
-
-        //===============================
-
-        void Lock()
+        void StopListening(Exception? error)
         {
-            var modemListener = Interlocked.CompareExchange(ref this._modemListener, null, null);
-            if (modemListener is null)
-                return;
+            var serialPort = context.SerialPort;
+            if (serialPort is not null)
+            {
+                serialPort.DataReceived -= OnDataReceived;
+                serialPort.ErrorReceived -= OnErrorReceived;
+            }
 
-            var listenTaskSource = Interlocked.CompareExchange(ref this._listenTaskSource, null, null);
-            Debug.Assert(listenTaskSource is not null);
-            // end of ListenAsync method
             if (error is not null)
             {
-                listenTaskSource.SetException(error);
+                listenTaskCompletionSource.SetException(error);
             }
-            else if (token is not null)
+            else if (token.IsCancellationRequested)
             {
-                listenTaskSource.SetCanceled(token.Value);
+                // legit cancellation
+                listenTaskCompletionSource?.SetCanceled(token);
             }
             else
             {
-                listenTaskSource.SetResult();
+                // should come from a Close()
+                listenTaskCompletionSource?.SetResult();
             }
-
-            this._listenToken = CancellationToken.None;
-            this._modemListener = null;
-            this._listenTaskSource = null;
         }
     }
 
-    public void WriteCommands(IEnumerable<string> commands)
+    public Task PickupHangupAsync(TimeSpan hangupDelay, CancellationToken token) => this._context.UseAsync(async context =>
     {
-        if (this._serialPort is null)
+        if (context.SerialPort is null)
             throw new InvalidOperationException("Modem not opened or closed");
 
-        foreach (var command in commands)
-        {
-            this._serialPort.WriteLine(command);
-        }
-    }
-
-    public async Task PickupHangupAsync(TimeSpan hangupDelay, CancellationToken token)
-    {
         this._logger.LogDebug("Pick up...");
-        this.WriteCommands(Modem.CONST_MODEM_PICKUP);
+        context.SerialPort.WriteLines(Modem.CONST_MODEM_PICKUP);
         this._logger.LogDebug("Pick up DONE");
         try
         {
@@ -232,14 +216,35 @@ public class Modem : IModem
         finally
         {
             this._logger.LogDebug("Hang up...");
-            this.WriteCommands(Modem.CONST_MODEM_HANGUP);
+            context.SerialPort.WriteLines(Modem.CONST_MODEM_HANGUP);
             this._logger.LogDebug("Hang up DONE");
         }
+    }, token);
+
+    public void Close()
+    {
+        // try gently (only 500ms), then get and close everything
+        if (!this._context.TryRead(out var context, new CancellationTokenSource(TimeSpan.FromMilliseconds(500)).Token))
+            context = this._context.ReadNow();
+
+        // close listening, if any
+        context.ListenTokenSource?.Cancel(false);
+        context.ListenTokenSource = null;
+
+        // close serial com, if any
+        context.SerialPort?.Close();
+        context.SerialPort = null;
     }
 
     public void Dispose()
     {
         GC.SuppressFinalize(this);
         this.Close();
+    }
+
+    private record ModemContext
+    {
+        public SerialPort? SerialPort { get; set; }
+        public CancellationTokenSource? ListenTokenSource { get; set; }
     }
 }

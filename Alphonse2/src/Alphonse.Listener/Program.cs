@@ -44,14 +44,13 @@ await Host.CreateDefaultBuilder(args)
         services.AddSingleton<IPhoneNumberHandler, BlacklistHandler>();
         services.AddSingleton<IPhoneNumberHandler, UnkownNumberHandler>();
         services.AddSingleton<IModemDataDispatcher, AlphonseModemDataDispatcher>();
-        services.AddSingleton<IModem, Modem/*Mock*/>();
+        services.AddSingleton<IModem, Modem>();
         services.AddHttpClient<RestApiClient>()
             .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError()
                 .WaitAndRetryAsync(new double[]{1, 1, 3, 5, 10, 20, 30}.Select(TimeSpan.FromSeconds))
             );
         
-        services.AddSingleton<IConsoleRunner, AlphonseConsoleRunner>();
-        services.AddHostedService<ConsoleHostedService>();
+        services.AddHostedService<AlphonseConsoleRunner>();
     })
     .Build()
     .RunAsync();

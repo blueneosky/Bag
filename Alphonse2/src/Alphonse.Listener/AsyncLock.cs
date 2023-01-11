@@ -2,65 +2,54 @@ namespace Alphonse.Listener;
 
 public sealed class AsyncLock
 {
-    private readonly SemaphoreSlim _gate = new (1, 1);
+    private readonly SemaphoreSlim __gate = new(1, 1);
 
-    public void Run(Action action) => this.Run(action, CancellationToken.None);
+    private void LockWait(CancellationToken token) => this.__gate.Wait(token);
+    private Task LockWaitAsync(CancellationToken token) => this.__gate.WaitAsync(token);
+    private void LockRelease() => this.__gate.Release();
 
-    public void Run(Action action, CancellationToken token)
+    public T Run<T>(Func<T> func, CancellationToken token = default)
     {
-        this._gate.Wait(token);
-        try
-        {
-            action();
-        }
-        finally
-        {
-            this._gate.Release();
-        }
-    }
-
-    public T Run<T>(Func<T> func) => this.Run(func, CancellationToken.None);
-
-    public T Run<T>(Func<T> func, CancellationToken token)
-    {
-        this._gate.Wait(token);
+        this.LockWait(token);
         try
         {
             return func();
         }
         finally
         {
-            this._gate.Release();
+            this.LockRelease();
         }
     }
 
-    public Task RunAsync(Func<Task> task) => this.RunAsync(task, CancellationToken.None);
-
-    public async Task RunAsync(Func<Task> task, CancellationToken token)
+    public async Task RunAsync(Func<Task> task, CancellationToken token = default)
     {
-        await this._gate.WaitAsync(token).ConfigureAwait(false);
+        await this.LockWaitAsync(token).ConfigureAwait(false);
         try
         {
             await task().ConfigureAwait(false);
         }
         finally
         {
-            this._gate.Release();
+            this.LockRelease();
         }
     }
 
-    public Task<T> RunAsync<T>(Func<Task<T>> task) => this.RunAsync(task, CancellationToken.None);
-    
-    public async Task<T> RunAsync<T>(Func<Task<T>> task, CancellationToken token)
+    public async Task<T> RunAsync<T>(Func<Task<T>> task, CancellationToken token = default)
     {
-        await this._gate.WaitAsync(token).ConfigureAwait(false);
+        await this.LockWaitAsync(token).ConfigureAwait(false);
         try
         {
             return await task().ConfigureAwait(false);
         }
         finally
         {
-            this._gate.Release();
+            this.LockRelease();
         }
     }
+}
+
+public static class AsyncLockExtensions
+{
+    public static void Run(this AsyncLock asyncLock, Action action, CancellationToken token = default)
+        => asyncLock.Run(() => { action(); return default(object); }, token);
 }

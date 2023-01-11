@@ -1,14 +1,11 @@
-using System.IO;
-using System.IO.Ports;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 
 namespace Alphonse.Listener;
 
-internal sealed class AlphonseConsoleRunner : IConsoleRunner
+internal sealed class AlphonseConsoleRunner : BackgroundService
 {
     private readonly ILogger _logger;
     private readonly IModem _modem;
@@ -25,7 +22,7 @@ internal sealed class AlphonseConsoleRunner : IConsoleRunner
         this._resetTime = settings.Value.AutoResetTime ?? DateTime.Now.TimeOfDay;
     }
 
-    public async Task RunAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
@@ -60,14 +57,16 @@ internal sealed class AlphonseConsoleRunner : IConsoleRunner
         }
     }
 
-    private async Task ListenAsync(CancellationToken token)
+    private async Task ListenAsync(CancellationToken stoppingToken)
     {
         try
         {
+            this._modem.Close();
+            await Task.Delay(TimeSpan.FromMilliseconds(500));   // required some time after a close (SerialPort)
             this._modem.Open();
 
             this._logger.LogDebug("Start listening...");
-            await this._modem.ListenAsync(this._listener, token).ConfigureAwait(false);
+            await this._modem.ListenAsync(this._listener, stoppingToken).ConfigureAwait(false);
             this._logger.LogDebug("Start listening DONE");
         }
         catch (TaskCanceledException) { }
