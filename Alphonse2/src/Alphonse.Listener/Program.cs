@@ -9,6 +9,7 @@ using Alphonse.Listener.PhoneNumberHandlers;
 using Alphonse.Listener.Mocks;
 using Polly.Extensions.Http;
 using Polly;
+using Alphonse.Listener.Connectors;
 
 //=== DI/IoC =========================
 
@@ -44,7 +45,7 @@ await Host.CreateDefaultBuilder(args)
         services.AddSingleton<IPhoneNumberHandler, BlacklistHandler>();
         services.AddSingleton<IPhoneNumberHandler, UnkownNumberHandler>();
         services.AddSingleton<IModemDataDispatcher, AlphonseModemDataDispatcher>();
-        services.AddSingleton<IModem, Modem>();
+        services.AddSingleton<IModemConnector, LinuxModemConnector>();
         services.AddHttpClient<RestApiClient>()
             .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError()
                 .WaitAndRetryAsync(new double[]{1, 1, 3, 5, 10, 20, 30}.Select(TimeSpan.FromSeconds))

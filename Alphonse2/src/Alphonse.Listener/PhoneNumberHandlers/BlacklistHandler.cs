@@ -1,3 +1,4 @@
+using Alphonse.Listener.Connectors;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -6,13 +7,13 @@ namespace Alphonse.Listener.PhoneNumberHandlers;
 public class BlacklistHandler : IPhoneNumberHandler
 {
     private readonly ILogger _logger;
-    private readonly IModem _modem;
+    private readonly IModemConnector _connector;
     private readonly TimeSpan _hangupDelay;
 
-    public BlacklistHandler(ILogger<BlacklistHandler> logger, IModem modem, IOptions<AlphonseSettings> settings)
+    public BlacklistHandler(ILogger<BlacklistHandler> logger, IModemConnector connector, IOptions<AlphonseSettings> settings)
     {
         this._logger = logger;
-        this._modem = modem;
+        this._connector = connector;
         this._hangupDelay = settings.Value.BlacklistHangupDelay ?? TimeSpan.FromSeconds(1);
     }
 
@@ -28,7 +29,7 @@ public class BlacklistHandler : IPhoneNumberHandler
         context.ActionProcessed = "Blocked";
         context.StopProcessing = true;
 
-        return this._modem.PickupHangupAsync(this._hangupDelay, token);
+        return this._connector.PickupHangupAsync(this._hangupDelay, token);
     }
 
   

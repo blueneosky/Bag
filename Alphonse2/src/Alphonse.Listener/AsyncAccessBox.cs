@@ -60,7 +60,15 @@ public static class AsyncAccessBoxExtensions
     {
         try
         {
-            value = box.Read(token ?? new CancellationTokenSource(TimeSpan.FromMilliseconds(1)).Token);
+            if (token.HasValue)
+            {
+                value = box.Read(token.Value);
+            }
+            else
+            {
+                using var tokenSource = new CancellationTokenSource(TimeSpan.FromMilliseconds(1));
+                value = box.Read(tokenSource.Token);
+            }
             return true;
         }
         catch (Exception)

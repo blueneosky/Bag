@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Alphonse.Listener.Connectors;
 using Alphonse.Listener.Dto;
 using Alphonse.Listener.PhoneNumberHandlers;
 using DotNet.RestApi.Client;
@@ -26,46 +27,53 @@ public class AlphonseModemDataDispatcher : IModemDataDispatcher
         this._phoneNumberHandlers = phoneNumberHandlers;
     }
 
-    public async Task DispatchAsync(string data, CancellationToken token)
+    public Task DispatchAsync(ModemDataType dataType, string? data, CancellationToken token)
     {
         var timestamp = DateTimeOffset.UtcNow;
 
-        if (data == Modem.CONST_MODEM_OK)
+        switch (dataType)
         {
-            this._logger.LogTrace("[ignored] {Data}", data);
-            return;
+            case ModemDataType.Ok:
+                this._logger.LogTrace("[ignored] {Data}", data);
+                return Task.CompletedTask;
+
+            case ModemDataType.Ring:
+                this._logger.LogInformation("RING tone received", data);
+                return Task.CompletedTask;
+
+            case ModemDataType.PhoneNumber:
+                return HandlePhoneNumberAsync(data);
+
+            case ModemDataType.Unmanaged:
+            default:
+                this._logger.LogTrace("[ignored] {Data}", data);
+                return Task.CompletedTask;
         }
 
-        if (data == Modem.CONST_MODEM_RING)
+        //==========================================================
+        
+        async Task HandlePhoneNumberAsync(string? rawNumber)
         {
-            this._logger.LogInformation("RING tone received", data);
-            return;
+            var context = await BuildContextAsync(rawNumber).ConfigureAwait(false);
+            if (context is null)
+            {
+                this._logger.LogInformation("[ignored] Missing or invalid phone number");
+                return;
+            }
+
+            context.Timestamp = timestamp;
+
+            this._logger.LogInformation("Incoming call from '{HNumber}' [{Number}]", context.PhoneNumber?.Name ?? context.Number.ToString(true), context.Number);
+
+            await this.ProcessAsync(context, token).ConfigureAwait(false);
         }
-
-        var index = data.IndexOf(Modem.CONST_MODEM_NUMBER_TAG);
-        if (index < 0)
-        {
-            this._logger.LogTrace("[ignored] {Data}", data);
-            return;
-        }
-
-        var rawNumber = data.Substring(Modem.CONST_MODEM_NUMBER_TAG.Length);
-        var context = await BuildContextAsync(rawNumber).ConfigureAwait(false);
-        if (context is null)
-        {
-            this._logger.LogInformation("[ignored] Missing or invalid phone number");
-            return;
-        }
-
-        context.Timestamp = timestamp;
-
-        this._logger.LogInformation("Incoming call from '{HNumber}' [{Number}]", context.PhoneNumber?.Name ?? context.Number.ToString(true), context.Number);
-
-        await this.ProcessAsync(context, token).ConfigureAwait(false);
     }
 
-    private async Task<PhoneNumberHandlerContext?> BuildContextAsync(string rawNumber)
+    private async Task<PhoneNumberHandlerContext?> BuildContextAsync(string? rawNumber)
     {
+        if(rawNumber is null)
+            return null;
+
         if (!PhoneNumber.TryParse(rawNumber, out var number))
             return null;
 
@@ -83,7 +91,8 @@ public class AlphonseModemDataDispatcher : IModemDataDispatcher
     private async Task ProcessAsync(PhoneNumberHandlerContext context, CancellationToken token)
     {
         // start registering in parallel in order to reduce latency
-        var registering = Task.Run(() => {
+        var registering = Task.Run(() =>
+        {
             var callHistory = new CallHistoryDto
             {
                 Timestamp = context.Timestamp.UtcDateTime,
@@ -110,7 +119,7 @@ public class AlphonseModemDataDispatcher : IModemDataDispatcher
 
         // re-sync with parallel registration and update with 'action'
         var callHistory = await registering.ConfigureAwait(false);
-        if(callHistory is not null)
+        if (callHistory is not null)
         {
             callHistory.Action = context.ActionProcessed;
             await this._historyPhoneNumberService.UpdateHistoryCallAsync(callHistory, token);

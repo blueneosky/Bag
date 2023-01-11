@@ -1,3 +1,4 @@
+using Alphonse.Listener.Connectors;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -8,34 +9,48 @@ namespace Alphonse.Listener;
 internal sealed class AlphonseConsoleRunner : BackgroundService
 {
     private readonly ILogger _logger;
-    private readonly IModem _modem;
+    private readonly IModemConnector _modemConnector;
     private readonly IModemDataDispatcher _listener;
     private readonly IOptions<AlphonseSettings> _settings;
+    private readonly IHostApplicationLifetime _hostApplicationLifetime;
     private readonly TimeSpan _resetTime;
 
-    public AlphonseConsoleRunner(ILogger<AlphonseConsoleRunner> logger, IModem modem, IModemDataDispatcher listener, IOptions<AlphonseSettings> settings)
+    public AlphonseConsoleRunner(
+        ILogger<AlphonseConsoleRunner> logger,
+        IModemConnector modemConnector,
+        IModemDataDispatcher listener,
+        IOptions<AlphonseSettings> settings,
+        IHostApplicationLifetime hostApplicationLifetime
+        )
     {
         this._logger = logger;
-        this._modem = modem;
+        this._modemConnector = modemConnector;
         this._listener = listener;
         this._settings = settings;
+        this._hostApplicationLifetime = hostApplicationLifetime;
         this._resetTime = settings.Value.AutoResetTime ?? DateTime.Now.TimeOfDay;
     }
 
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override Task ExecuteAsync(CancellationToken stoppingToken) => Task.Run(async () =>
     {
-        while (!stoppingToken.IsCancellationRequested)
+        // aggregate signals
+        using var globalStoppingTokenSource = CancellationTokenSource.CreateLinkedTokenSource(
+            this._hostApplicationLifetime.ApplicationStopping,
+            stoppingToken);
+        var globalStoppingToken = globalStoppingTokenSource.Token;
+
+        while (!globalStoppingToken.IsCancellationRequested)
         {
             // run for an other 24h
             var remainingTime = GetRemainingTimeUntilNextResetTime();
-            var periodeSource = CancellationTokenSource.CreateLinkedTokenSource(stoppingToken);
+            using var periodeSource = CancellationTokenSource.CreateLinkedTokenSource(globalStoppingToken);
             periodeSource.CancelAfter(remainingTime);
             this._logger.LogInformation("Next modem com reset setup for {Date}", DateTime.Now + remainingTime);
 
             await this.ListenAsync(periodeSource.Token).ConfigureAwait(false);
         }
 
-        this._logger.LogInformation("Gracefull stop");
+        this._logger.LogInformation("Gracefull stopp");
 
         //==================================================================
 
@@ -55,18 +70,17 @@ internal sealed class AlphonseConsoleRunner : BackgroundService
 
             return remaining;
         }
-    }
+    }, stoppingToken);
 
     private async Task ListenAsync(CancellationToken stoppingToken)
     {
         try
         {
-            this._modem.Close();
-            await Task.Delay(TimeSpan.FromMilliseconds(500));   // required some time after a close (SerialPort)
-            this._modem.Open();
+            this._modemConnector.Close();
+            await this._modemConnector.OpenAsync().ConfigureAwait(false);
 
             this._logger.LogDebug("Start listening...");
-            await this._modem.ListenAsync(this._listener, stoppingToken).ConfigureAwait(false);
+            await this._modemConnector.ListenAsync(this._listener, stoppingToken).ConfigureAwait(false);
             this._logger.LogDebug("Start listening DONE");
         }
         catch (TaskCanceledException) { }
@@ -76,7 +90,7 @@ internal sealed class AlphonseConsoleRunner : BackgroundService
         }
         finally
         {
-            this._modem.Close();
+            this._modemConnector.Close();
         }
     }
 }

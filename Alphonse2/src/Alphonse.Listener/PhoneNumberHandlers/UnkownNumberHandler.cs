@@ -1,3 +1,4 @@
+using Alphonse.Listener.Connectors;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -6,13 +7,13 @@ namespace Alphonse.Listener.PhoneNumberHandlers;
 public class UnkownNumberHandler : IPhoneNumberHandler
 {
     private readonly ILogger _logger;
-    private readonly IModem _modem;
+    private readonly IModemConnector _connector;
     private readonly TimeSpan _hangupDelay;
 
-    public UnkownNumberHandler(ILogger<UnkownNumberHandler> logger, IModem modem, IOptions<AlphonseSettings> settings)
+    public UnkownNumberHandler(ILogger<UnkownNumberHandler> logger, IModemConnector connector, IOptions<AlphonseSettings> settings)
     {
         this._logger = logger;
-        this._modem = modem;
+        this._connector = connector;
         this._hangupDelay = settings.Value.UnknownNumberHangupDelay ?? TimeSpan.FromSeconds(13);
     }
 
@@ -22,6 +23,6 @@ public class UnkownNumberHandler : IPhoneNumberHandler
         context.ActionProcessed = "Muted";
         context.StopProcessing = true;
 
-        return this._modem.PickupHangupAsync(this._hangupDelay, token);
+        return this._connector.PickupHangupAsync(this._hangupDelay, token);
     }
 }

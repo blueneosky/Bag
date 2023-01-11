@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Alphonse.Listener.Dto;
 using DotNet.RestApi.Client;
 using Microsoft.Extensions.Logging;
@@ -28,18 +24,18 @@ public class HistoryPhoneNumberService : IHistoryPhoneNumberService
     }
 
     public Task<CallHistoryDto> RegisterIncommingCallAsync(CallHistoryDto callHistory, CancellationToken token)
-        => this.CallAsync(
+        => this.WebCallAsync(
             HttpMethod.Post, new Uri($"{this._webAppBaseUri}/CallHistory"),
             callHistory, true, token
         );
 
     public Task UpdateHistoryCallAsync(CallHistoryDto callHistory, CancellationToken token)
-        => this.CallAsync(
+        => this.WebCallAsync(
             HttpMethod.Put, new Uri($"{this._webAppBaseUri}/CallHistory/{callHistory.CallHistoryId}"),
             callHistory, false, token
         );
 
-    private async Task<CallHistoryDto> CallAsync(HttpMethod httpMethod, Uri uri, CallHistoryDto callHistory, bool readResponse, CancellationToken token)
+    private async Task<CallHistoryDto> WebCallAsync(HttpMethod httpMethod, Uri uri, CallHistoryDto callHistory, bool readResponse, CancellationToken token)
     {
         try
         {

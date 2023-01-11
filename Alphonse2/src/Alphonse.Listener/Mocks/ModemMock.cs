@@ -2,11 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Alphonse.Listener.Connectors;
 using Microsoft.Extensions.Logging;
+
+using static MoreLinq.Extensions.ForEachExtension;
 
 namespace Alphonse.Listener.Mocks
 {
-    public class ModemMock : IModem
+    public class ModemMock : IModemConnector
     {
         private readonly ILogger<ModemMock> _logger;
         public ModemMock(ILogger<ModemMock> logger)
@@ -14,9 +17,13 @@ namespace Alphonse.Listener.Mocks
             this._logger = logger;
         }
 
-        public void Open() => this._logger.LogWarning("[MOCK] MODEM - Open");
+        public Task OpenAsync()
+        {
+            this._logger.LogWarning("[MOCK] MODEM - Open");
+            return Task.CompletedTask;
+        }
 
-        public void Close()  => this._logger.LogWarning("[MOCK] MODEM - Close");
+        public void Close() => this._logger.LogWarning("[MOCK] MODEM - Close");
 
         public void Dispose()
         {
@@ -29,9 +36,9 @@ namespace Alphonse.Listener.Mocks
             this._logger.LogWarning("[MOCK] MODEM - ListenAsync : Simulation");
 
             // here is the simulation
-            await listener.DispatchAsync(Modem.CONST_MODEM_OK, token);
-            // await listener.DispatchAsync(Modem.CONST_MODEM_RING, token);
-            // await listener.DispatchAsync(Modem.CONST_MODEM_NUMBER_TAG+"P", token);
+            await listener.DispatchAsync(ModemDataType.Ok, null, token);
+            // await listener.DispatchAsync(ModemDataType.Ring, null, token);
+            // await listener.DispatchAsync(ModemDataType.PhoneNumber, "P", token);
 
             await Task.Delay(TimeSpan.FromMinutes(30), token);
         });
@@ -40,5 +47,11 @@ namespace Alphonse.Listener.Mocks
             => Task.Delay(hangupDelay, token);
 
         public void WriteCommands(IEnumerable<string> commands) { }
+
+        public Task WriteCommandsAsync(IEnumerable<string> commands, CancellationToken token)
+        {
+            commands.ForEach(c => this._logger.LogInformation("[MOCK] Send datagram to modem: {Datagram}", c));
+            return Task.CompletedTask;
+        }
     }
 }

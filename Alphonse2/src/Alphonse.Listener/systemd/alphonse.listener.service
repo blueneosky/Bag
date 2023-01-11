@@ -11,9 +11,12 @@ Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
 KillSignal=SIGINT
+#KillSignal=SIGTERM
+TimeoutStopSec=10
 SyslogIdentifier=alphonse_listener
 User=root
-Environment=ASPNETCORE_ENVIRONMENT=Production 
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 
 [Install]
 WantedBy=multi-user.target

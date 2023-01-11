@@ -17,13 +17,14 @@ public class PhonebookService
 {
     private readonly ILogger _logger;
     private readonly RestApiClient _restApiClient;
-    private readonly IHostApplicationLifetime _appLifetime;
     private readonly string _webAppBaseUri;
     private readonly TimeSpan _updateInterval;
     private readonly CancellationToken _applicationStopping;
 
     private readonly AsyncLock _cacheGate = new AsyncLock();
     private Dictionary<PhoneNumber, PhoneNumberDto> _cache = new();
+
+    private bool _phonebookUpToDate = false;    // use to reduce log
 
     public PhonebookService(
         ILogger<PhonebookService> logger,
@@ -33,7 +34,6 @@ public class PhonebookService
     {
         this._logger = logger;
         this._restApiClient = restApiClient;
-        this._appLifetime = appLifetime;
 
         this._webAppBaseUri = alphonseSettings.Value.WebAppBaseUri;
         this._updateInterval = alphonseSettings.Value.PhonebookUpdateInterval ?? TimeSpan.FromMinutes(10);
@@ -80,12 +80,14 @@ public class PhonebookService
 
     private async Task UpdateAsync()
     {
-        this._logger.LogInformation("Phonebook updating...");
+        if (!this._phonebookUpToDate)
+            this._logger.LogInformation("Phonebook updating...");
 
         var phoneNumbers = await GetPhoneNumbersAsync().ConfigureAwait(false);
         if (phoneNumbers is null)
         {
             this._logger.LogWarning("Phonebook updating FAILED");
+            this._phonebookUpToDate = false;
             return;
         }
 
@@ -94,7 +96,9 @@ public class PhonebookService
         await this._cacheGate.RunAsync(LockAsync, this._applicationStopping)
             .ConfigureAwait(false);
 
-        this._logger.LogInformation("Phonebook updating DONE");
+        if (!this._phonebookUpToDate)
+            this._logger.LogInformation("Phonebook updating DONE");
+        this._phonebookUpToDate = true;
 
         //===================================================
 
