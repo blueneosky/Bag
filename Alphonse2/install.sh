@@ -140,6 +140,12 @@ fi
 sudo cp .tmp.$$.json "${webapi_config[config_path]}"
 rm -f .tmp.$$.json
 
-#TODO
-#echo "[STEP] File ${webapi_config[config_path]}"
 
+echo "[STEP] File ${listener_config[config_path]}"
+cp "${listener_config[config_path]}" .tmp.$$.json
+
+config_set_value 'set' 'Alphonse.WebApiUserName' "${alphonse_config[listener_user_name]}"
+config_set_value 'set' 'Alphonse.WebApiUserPass' "${alphonse_config[listener_user_pass]}"
+
+sudo cp .tmp.$$.json "${listener_config[config_path]}"
+rm -f .tmp.$$.json

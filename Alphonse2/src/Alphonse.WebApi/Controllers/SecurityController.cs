@@ -26,6 +26,10 @@ public class SecurityController : ControllerBase
         this._alphonseSettings = alphonseSettings.Value;
     }
 
+    [HttpGet]
+    [Route("check")]
+    public Task<ActionResult<string>> CheckAsync() => Task.FromResult<ActionResult<string>>(this.Ok("OK"));
+
     [HttpPost]
     [Route("login")]
     [AllowAnonymous]

@@ -9,29 +9,29 @@ namespace Alphonse.Listener;
 public class HistoryPhoneNumberService : IHistoryPhoneNumberService
 {
     private readonly ILogger _logger;
-    private readonly RestApiClient _restApiClient;
-    private readonly string _webAppBaseUri;
+    private readonly ServiceFactory<RestApiClient> _restApiClient;
+    private readonly string _webApiBaseUri;
 
     public HistoryPhoneNumberService(
         ILogger<HistoryPhoneNumberService> logger,
         IOptions<AlphonseSettings> alphonseSettings,
-        RestApiClient restApiClient)
+        ServiceFactory<RestApiClient> restApiClient)
     {
         this._logger = logger;
         this._restApiClient = restApiClient;
 
-        this._webAppBaseUri = alphonseSettings.Value.WebAppBaseUri;
+        this._webApiBaseUri = alphonseSettings.Value.WebApiBaseUri;
     }
 
     public Task<CallHistoryDto> RegisterIncommingCallAsync(CallHistoryDto callHistory, CancellationToken token)
         => this.WebCallAsync(
-            HttpMethod.Post, new Uri($"{this._webAppBaseUri}/CallHistory"),
+            HttpMethod.Post, new Uri($"{this._webApiBaseUri}/CallHistory"),
             callHistory, true, token
         );
 
     public Task UpdateHistoryCallAsync(CallHistoryDto callHistory, CancellationToken token)
         => this.WebCallAsync(
-            HttpMethod.Put, new Uri($"{this._webAppBaseUri}/CallHistory/{callHistory.CallHistoryId}"),
+            HttpMethod.Put, new Uri($"{this._webApiBaseUri}/CallHistory/{callHistory.CallHistoryId}"),
             callHistory, false, token
         );
 
@@ -39,7 +39,9 @@ public class HistoryPhoneNumberService : IHistoryPhoneNumberService
     {
         try
         {
-            using var response = await this._restApiClient.SendJsonRequest(httpMethod, uri, callHistory);
+            RestApiClient client = this._restApiClient;
+            
+            using var response = await client.SendJsonRequest(httpMethod, uri, callHistory);
             if (!response.IsSuccessStatusCode)
             {
                 this._logger.LogDebug("Something went wrong when calling to [{Methode}] {Uri}\nWith Payload: {Data}", httpMethod, uri, Newtonsoft.Json.JsonConvert.SerializeObject(callHistory, Newtonsoft.Json.Formatting.Indented));

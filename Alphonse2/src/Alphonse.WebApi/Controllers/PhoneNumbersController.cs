@@ -96,11 +96,11 @@ public class PhoneNumbersController : ControllerBase
         if (_context.PhoneNumbers == null)
             return Problem("Entity set 'AlphonseDbContext.PhoneNumbers' is null.");
 
-         var validationResults = validator.Validate(phoneNumberDbo);
+        var validationResults = validator.Validate(phoneNumberDbo);
         if (!validationResults.IsValid)
             return UnprocessableEntity(validationResults.ToString());
 
-       _context.PhoneNumbers.Add(phoneNumberDbo);
+        _context.PhoneNumbers.Add(phoneNumberDbo);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetPhoneNumberDbo), new { id = phoneNumberDbo.PhoneNumberId }, phoneNumberDbo);

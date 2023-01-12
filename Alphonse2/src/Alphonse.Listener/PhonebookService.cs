@@ -16,8 +16,8 @@ namespace Alphonse.Listener;
 public class PhonebookService
 {
     private readonly ILogger _logger;
-    private readonly RestApiClient _restApiClient;
-    private readonly string _webAppBaseUri;
+    private readonly ServiceFactory<RestApiClient> _restApiClient;
+    private readonly string _webApiBaseUri;
     private readonly TimeSpan _updateInterval;
     private readonly CancellationToken _applicationStopping;
 
@@ -29,13 +29,13 @@ public class PhonebookService
     public PhonebookService(
         ILogger<PhonebookService> logger,
         IOptions<AlphonseSettings> alphonseSettings,
-        RestApiClient restApiClient,
+        ServiceFactory<RestApiClient> restApiClient,
         IHostApplicationLifetime appLifetime)
     {
         this._logger = logger;
         this._restApiClient = restApiClient;
 
-        this._webAppBaseUri = alphonseSettings.Value.WebAppBaseUri;
+        this._webApiBaseUri = alphonseSettings.Value.WebApiBaseUri;
         this._updateInterval = alphonseSettings.Value.PhonebookUpdateInterval ?? TimeSpan.FromMinutes(10);
         this._applicationStopping = appLifetime.ApplicationStopping;
 
@@ -113,8 +113,10 @@ public class PhonebookService
     {
         try
         {
-            var uri = new Uri($"{this._webAppBaseUri}/PhoneNumbers");
-            using var response = await this._restApiClient.SendJsonRequest(HttpMethod.Get, uri, null);
+            RestApiClient client = this._restApiClient;
+            
+            var uri = new Uri($"{this._webApiBaseUri}/PhoneNumbers");
+            using var response = await client.SendJsonRequest(HttpMethod.Get, uri, null);
             response.EnsureSuccessStatusCode();
             var phoneNumbers = await response.DeseriaseJsonResponseAsync<PhoneNumberDto[]>();
 
