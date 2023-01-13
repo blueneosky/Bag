@@ -83,42 +83,83 @@ public static class AlphonseDataSetup
 
         // add regular users
         logger.LogDebug("Alphonse mandatory users checking ...");
-        Task.Run(async () =>
+        Task.Run(() => SetupUsers(logger, settings, userService.Value)).Wait();
+        logger.LogDebug("Alphonse mandatory users checking DONE");
+    }
+
+    private static async Task SetupUsers(
+        ILogger logger,
+        AlphonseSettings settings,
+        IUserService userService
+        )
+    {
+        await SetupAdminUser().ConfigureAwait(false);
+        await SetupListenerServiceUSer().ConfigureAwait(false);
+
+        //======================================================
+
+        async Task SetupAdminUser()
         {
-            if (!(await userService.Value.GetAllUsersAsync(AccessRights.Admin)).Any())
+            if ((await userService.GetAllUsersAsync(AccessRoleService.ROLE_ADMIN)).Any())
+                return;
+
+            logger.LogInformation("Missing admin user, 'FallbackAdmin' user setup ...");
+
+            var currentAdminUser = await userService.GetUserAsync(settings.FallbackAdminUserName);
+            if (currentAdminUser is null)
             {
-                logger.LogInformation("Missing admin user, adding root/root ...");
-                await userService.Value.CreateAsync(
+                currentAdminUser = await userService.CreateAsync(
                     settings.FallbackAdminUserName,
                     settings.FallbackAdminUserPass,
-                    AccessRights.Admin);
-                logger.LogInformation("Missing admin user, adding root/root DONE");
+                    AccessRoleService.ROLE_ADMIN);
+                logger.LogInformation("Missing admin user, 'FallbackAdmin' CREATED");
+
+                return;
             }
 
-            var alphonseUser = await userService.Value.GetUserAsync(settings.AlphonseListenerUserName);    // note : checked at startup (see OptionsSetup)
-            const AccessRights constExpectedAlphonseRights = AccessRights.UserSelfRead | AccessRights.PhonebookRead | AccessRights.CallHistoryCreate;
-            if (alphonseUser is null)
+            // check role
+            if (currentAdminUser.AccessRole != AccessRoleService.ROLE_ADMIN)
+            {
+                logger.LogInformation("Missing 'admin' role for 'FallbackAdmin' ...");
+                currentAdminUser = await userService.UpdateRightsAsync(currentAdminUser.Name, AccessRoleService.ROLE_ADMIN);
+            }
+
+            // check pass
+            var (validated, _) = await userService.TryValidateAsync(currentAdminUser.Name, settings.FallbackAdminUserPass);
+            if (!validated)
+            {
+                logger.LogInformation("Mismatch pass for 'FallbackAdmin' ...");
+                currentAdminUser = await userService.UpdatePasswordAsync(currentAdminUser.Name, settings.FallbackAdminUserPass);
+            }
+
+            logger.LogInformation("Missing admin user, 'FallbackAdmin' UPDATED");
+        }
+
+        async Task SetupListenerServiceUSer()
+        {
+            var serviceUser = await userService.GetUserAsync(settings.AlphonseListenerUserName);    // note : checked at startup (see OptionsSetup)
+            if (serviceUser is null)
             {
                 logger.LogInformation("Missing Alphonse.Listener user, adding '{User}' ...", settings.AlphonseListenerUserName);
-                alphonseUser = await userService.Value.CreateAsync(
+                serviceUser = await userService.CreateAsync(
                     settings.AlphonseListenerUserName,
                     settings.AlphonseListenerUserPass,
-                    constExpectedAlphonseRights);
+                    AccessRoleService.ROLE_SERVICE_LISTENER);
                 logger.LogInformation("Missing Alphonse.Listener user, adding '{User}' DONE", settings.AlphonseListenerUserName);
             }
-            if (!(await userService.Value.TryValidateAsync(alphonseUser.Name, settings.AlphonseListenerUserPass)).success)
+            if (!(await userService.TryValidateAsync(serviceUser.Name, settings.AlphonseListenerUserPass)).success)
             {
                 logger.LogInformation("Updating Alphonse.Listener pass ...");
-                alphonseUser = await userService.Value.UpdatePasswordAsync(alphonseUser.Name, settings.AlphonseListenerUserPass);
+                serviceUser = await userService.UpdatePasswordAsync(serviceUser.Name, settings.AlphonseListenerUserPass);
                 logger.LogInformation("Updating Alphonse.Listener pass DONE");
             }
-            if (alphonseUser.Rights != constExpectedAlphonseRights)
+            if (serviceUser.AccessRole != AccessRoleService.ROLE_SERVICE_LISTENER)
             {
                 logger.LogInformation("Updating Alphonse.Listener access rights ...");
-                alphonseUser = await userService.Value.UpdateRightsAsync(alphonseUser.Name, constExpectedAlphonseRights);
-                logger.LogInformation("Updating Alphonse.Listener access rights ...");
+                serviceUser = await userService.UpdateRightsAsync(serviceUser.Name, AccessRoleService.ROLE_SERVICE_LISTENER);
+                logger.LogInformation("Updating Alphonse.Listener access rights DONE");
             }
-        }).Wait();
-        logger.LogDebug("Alphonse mandatory users checking DONE");
+            
+        }
     }
 }

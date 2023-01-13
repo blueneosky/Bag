@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Alphonse.WebApi.Dbo;
 using FluentValidation;
+using Alphonse.WebApi.Services;
+using Alphonse.WebApi.Authorization;
 
 namespace Alphonse.WebApi.Controllers;
 
@@ -18,6 +20,7 @@ public class CallHistoryController : ControllerBase
 
     // GET: api/CallHistory[?after='this_date'][&before='this_date'][&pageSize=10&pageIndex=0][&reverseOrder=1]
     [HttpGet]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER)]
     public async Task<ActionResult<IEnumerable<CallHistoryDbo>>> GetCallHistories(
         [FromQuery] DateTime? after,
         [FromQuery] DateTime? before,
@@ -34,10 +37,10 @@ public class CallHistoryController : ControllerBase
                 q => q.OrderByDescending(ch => ch.Timestamp),
                 q => q.OrderBy(ch => ch.Timestamp))
             // after
-            .WhenNonNull(after,
+            .WhenNotNull(after,
                 (q, v) => q.Where(ch => ch.Timestamp > v))
             // before
-            .WhenNonNull(before,
+            .WhenNotNull(before,
                 (q, v) => q.Where(ch => ch.Timestamp < v))
             // paged result
             .WhenTrue(pageSize.HasValue && pageIndex.HasValue,
@@ -49,6 +52,7 @@ public class CallHistoryController : ControllerBase
 
     // GET: api/CallHistory/5
     [HttpGet("{id}")]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER)]
     public async Task<ActionResult<CallHistoryDbo>> GetCallHistoryDbo([FromRoute] int id)
     {
         if (_context.CallHistories == null)
@@ -65,6 +69,7 @@ public class CallHistoryController : ControllerBase
     // POST: api/CallHistory
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_ADMIN, AccessRoleService.ROLE_SERVICE_LISTENER)]
     public async Task<ActionResult<CallHistoryDbo>> PostCallHistoryDbo(
         [FromBody] CallHistoryDbo callHistoryDbo,
         [FromServices] IValidator<CallHistoryDbo> validator)
@@ -89,6 +94,7 @@ public class CallHistoryController : ControllerBase
     // PUT: api/CallHistory/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_ADMIN, AccessRoleService.ROLE_SERVICE_LISTENER)]
     public async Task<IActionResult> PutCallHistoryDbo(
         [FromRoute] int id,
         [FromBody] CallHistoryDbo callHistoryDbo,
@@ -120,6 +126,7 @@ public class CallHistoryController : ControllerBase
 
     // DELETE: api/CallHistory/5
     [HttpDelete("{id}")]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_ADMIN)]
     public async Task<IActionResult> DeleteCallHistoryDbo([FromRoute] int id)
     {
         if (_context.CallHistories == null)

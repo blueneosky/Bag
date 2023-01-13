@@ -9,7 +9,6 @@ public class AlphonseSettings
     public string? JwtAudience { get; set; }
     public string? DataDirPath { get; set; }
     public string? DbPath { get; set; }
-    public string[]? AnonymousUserRights { get; set; }
     public string? FallbackAdminUserName { get; set; }
     public string? FallbackAdminUserPass { get; set; }
     public string? AlphonseListenerUserName { get; set; }

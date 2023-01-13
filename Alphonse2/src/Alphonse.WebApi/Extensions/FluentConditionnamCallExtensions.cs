@@ -28,56 +28,19 @@ public static class FluentConditionnamCallExtensions
         => src.When(condition, i => i, func);
 
 
+    public static T WhenNull<T, TValue>(this T src, Func<T, TValue?> selector, Func<T, T> whenNull)
+        where T : notnull => selector is not null
+        ? src.WhenNull(selector(src), whenNull)
+        : throw new ArgumentNullException(nameof(selector));
 
-    public static T WhenNonNull<T, TValue>(this T src, Func<T, TValue?> nullableSelector,
-        Func<T, T> whenNonNull, Func<T, T> whenNull)
-        where TValue : struct
-        => nullableSelector is not null
-            ? src.WhenNonNull(nullableSelector(src), whenNonNull, whenNull)
-            : throw new ArgumentNullException(nameof(nullableSelector));
+    public static T WhenNull<T, TValue>(this T src, TValue? value, Func<T, T> whenNull)
+        where T : notnull => src.When(value is null, whenNull, i => i);
 
-    public static T WhenNonNull<T, TValue>(this T src, TValue? nullableValue,
-        Func<T, T> whenNonNull, Func<T, T> whenNull)
-        where TValue : struct
-        => src.When(nullableValue.HasValue, whenNonNull, whenNull);
+    public static T WhenNotNull<T, TValue>(this T src, Func<T, TValue?> selector, Func<T, TValue, T> whenNotNull)
+        where T : struct => selector is not null
+        ? src.WhenNotNull(selector(src), whenNotNull)
+        : throw new ArgumentNullException(nameof(selector));
 
-    public static T WhenNonNull<T, TValue>(this T src, Func<T, TValue?> nullableSelector, Func<T, T> func)
-        where TValue : struct
-        => src.WhenNonNull(nullableSelector, func, i => i);
-
-    public static T WhenNull<T, TValue>(this T src, Func<T, TValue?> nullableSelector, Func<T, T> func)
-        where TValue : struct
-        => src.WhenNonNull(nullableSelector, i => i, func);
-
-    public static T WhenNonNull<T, TValue>(this T src, TValue? nullableValue, Func<T, T> func)
-        where TValue : struct
-        => src.WhenNonNull(nullableValue, func, i => i);
-
-    public static T WhenNull<T, TValue>(this T src, TValue? nullableValue, Func<T, T> func)
-        where TValue : struct
-        => src.WhenNonNull(nullableValue, i => i, func);
-
-
-
-    public static T WhenNonNull<T, TValue>(this T src, Func<T, TValue?> nullableSelector,
-        Func<T, TValue, T> whenNonNull, Func<T, T> whenNull)
-        where TValue : struct
-        => nullableSelector is not null
-            ? src.WhenNonNull(nullableSelector(src), whenNonNull, whenNull)
-            : throw new ArgumentNullException(nameof(nullableSelector));
-
-    public static T WhenNonNull<T, TValue>(this T src, TValue? nullableValue,
-        Func<T, TValue, T> whenNonNull, Func<T, T> whenNull)
-        where TValue : struct
-        => whenNonNull is not null
-            ? src.WhenNonNull(nullableValue, i => whenNonNull(i, nullableValue!.Value), whenNull)
-            : throw new ArgumentNullException(nameof(whenNonNull));
-
-    public static T WhenNonNull<T, TValue>(this T src, Func<T, TValue?> nullableSelector, Func<T, TValue, T> whenNonNull)
-        where TValue : struct
-        => src.WhenNonNull(nullableSelector, whenNonNull, i => i);
-
-    public static T WhenNonNull<T, TValue>(this T src, TValue? nullableValue, Func<T, TValue, T> whenNonNull)
-        where TValue : struct
-        => src.WhenNonNull(nullableValue, whenNonNull, i => i);
+    public static T WhenNotNull<T, TValue>(this T src, TValue? value, Func<T, TValue, T> whenNotNull)
+        where T : notnull => src.When(value is not null, s => whenNotNull(s, value!), i => i);
 }

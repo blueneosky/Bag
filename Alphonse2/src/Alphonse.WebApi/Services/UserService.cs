@@ -23,7 +23,7 @@ public class UserService : IUserService
         this._passwordHasher = passwordHasher;
     }
 
-    public async Task<UserModel> CreateAsync(string? name, string? pass, AccessRights rights)
+    public async Task<UserModel> CreateAsync(string? name, string? pass, string accessRole)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
@@ -38,7 +38,7 @@ public class UserService : IUserService
         var user = new UserDbo()
         {
             Name = name,
-            Rights = (long)rights,
+            AccessRole = accessRole,
             HPass = hpass,
         };
 
@@ -98,20 +98,20 @@ public class UserService : IUserService
         return user.ToModel();
     }
 
-    public async Task<IEnumerable<UserModel>> GetAllUsersAsync(AccessRights? withRights = null)
+    public async Task<IEnumerable<UserModel>> GetAllUsersAsync(string? accessRole = null)
     {
         var users = await this._context.Users
             .AsQueryable()
-            .WhenNonNull((long?)withRights, (query, right) => query.Where(u => (u.Rights & right) == right))
+            .WhenNotNull(accessRole, (query, _) => query.Where(u => u.AccessRole == accessRole))
             .ToListAsync();
 
         return users.ToModel();
     }
 
-    public async Task<UserModel> UpdateRightsAsync(string? name, AccessRights rights)
+    public async Task<UserModel> UpdateRightsAsync(string? name, string accessRole)
     {
         var user = await this.GetRequiredUserDboAsync(name);
-        user.Rights = (long)rights;
+        user.AccessRole = accessRole;
         await this._context.SaveChangesAsync();
 
         return user.ToModel();

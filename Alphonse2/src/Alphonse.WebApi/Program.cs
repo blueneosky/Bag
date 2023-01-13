@@ -25,6 +25,7 @@ builder.ConfigureValidators();
 
 // Add authentication
 builder.ConfigureAuthentication();
+builder.ConfigureAuthorization();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -74,8 +75,8 @@ else
 if (!settings.WithoutAuthorization)
 {
     app.UseAuthentication();
-    app.UseAuthorization();
 }
+app.UseAuthorization();
 
 app.MapControllers()
     .WhenFalse(settings.WithoutAuthorization, b => b.RequireAuthorization());

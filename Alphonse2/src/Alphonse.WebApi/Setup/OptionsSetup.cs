@@ -15,8 +15,6 @@ public static class OptionsSetup
             .Validate(s => !string.IsNullOrWhiteSpace(s.FallbackAdminUserPass), $"Missing {nameof(AlphonseSettings.FallbackAdminUserPass)} in Alphonse settings")
             .Validate(s => !string.IsNullOrWhiteSpace(s.AlphonseListenerUserName), $"Missing {nameof(AlphonseSettings.AlphonseListenerUserName)} in Alphonse settings")
             .Validate(s => !string.IsNullOrWhiteSpace(s.AlphonseListenerUserPass), $"Missing {nameof(AlphonseSettings.AlphonseListenerUserPass)} in Alphonse settings")
-            .Validate(s => s.AnonymousUserRights?.All(r => Enum.TryParse<AccessRights>(r, out var _)) ?? true,
-                $"Invalid value(s) in {nameof(AlphonseSettings.AnonymousUserRights)} in Alphonse setting")
             .ValidateOnStart();
     }
 }

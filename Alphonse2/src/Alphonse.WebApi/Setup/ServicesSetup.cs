@@ -12,9 +12,8 @@ public static class ServicesSetup
 {
     public static void ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IMemoryCache>(new MemoryCache(new MemoryCacheOptions { SizeLimit = 1024, }));
+        //builder.Services.AddSingleton<IMemoryCache>(new MemoryCache(new MemoryCacheOptions { SizeLimit = 1024, }));
         builder.Services.AddSingleton<IPasswordHasher<string>, PasswordHasher<string>>();
         builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<ISessionService, SessionService>();
     }
 }

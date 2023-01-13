@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Alphonse.WebApi.Authorization;
 using Alphonse.WebApi.Dto;
 using Alphonse.WebApi.Services;
 using Alphonse.WebApi.Setup;
@@ -35,7 +36,7 @@ public class SecurityController : ControllerBase
     [AllowAnonymous]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> LoginAsync([FromBody] AuthenticationInfoDto info)
+    public async Task<ActionResult> LoginAsync([FromBody] CredentialsDto info)
     {
         var (validated, user) = await this._userService.TryValidateAsync(info.UserName, info.UserPass);
         return validated ? this.Ok(GenerateToken()) : this.NotFound();
@@ -51,10 +52,10 @@ public class SecurityController : ControllerBase
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Sub, user.Name),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Name),
+                // new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                // new Claim(ClaimTypes.Role, user.AccessRole),
             };
 
             var expires = DateTime.Now.AddDays(1);

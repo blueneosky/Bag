@@ -12,7 +12,9 @@ public record UserDbo
     [StringLength(256)]
     public string Name { get; set; } = null!;
 
-    public long Rights { get; set; }
+    [Unicode(false)]
+    [StringLength(32)]
+    public string AccessRole { get; set; }= null!;
 
     [Unicode(false)]
     [StringLength(256)]

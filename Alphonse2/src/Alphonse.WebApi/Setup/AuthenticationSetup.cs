@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Alphonse.WebApi.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -15,7 +17,7 @@ public static class AuthenticationSetup
 {
     public static void ConfigureAuthentication(this WebApplicationBuilder builder)
     {
-        if(bool.TryParse(builder.Configuration["Alphonse:WithoutAuthorization"], out var withoutAuthorization) && withoutAuthorization)
+        if (bool.TryParse(builder.Configuration["Alphonse:WithoutAuthorization"], out var withoutAuthorization) && withoutAuthorization)
             return;
 
         builder.Services.AddAuthentication(options =>
@@ -49,7 +51,7 @@ public static class AuthenticationSetup
 
     public static void ConfigureAuthentication(this SwaggerGenOptions options, WebApplicationBuilder builder)
     {
-        if(bool.TryParse(builder.Configuration["Alphonse:WithoutAuthorization"], out var withoutAuthorization) && withoutAuthorization)
+        if (bool.TryParse(builder.Configuration["Alphonse:WithoutAuthorization"], out var withoutAuthorization) && withoutAuthorization)
             return;
 
         options.AddSecurityDefinition("JWT_Auth", new OpenApiSecurityScheme()
@@ -74,5 +76,11 @@ public static class AuthenticationSetup
         {
             { securityScheme, new string[] { } },
         });
+    }
+
+    public static void ConfigureAuthorization(this WebApplicationBuilder builder)
+    {
+       builder.Services.AddSingleton<IAuthorizationPolicyProvider, MinimumAccessRolePolicyProvider>();
+       builder.Services.AddScoped<IAuthorizationHandler, MinimumAccessRoleAuthorizationHandler>();
     }
 }

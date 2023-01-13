@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Alphonse.WebApi.Dbo;
 using FluentValidation;
+using Alphonse.WebApi.Authorization;
+using Alphonse.WebApi.Services;
 
 namespace Alphonse.WebApi.Controllers;
 
@@ -18,6 +20,7 @@ public class PhoneNumbersController : ControllerBase
 
     // GET: api/PhoneNumbers
     [HttpGet]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER, AccessRoleService.ROLE_SERVICE_LISTENER)]
     public async Task<ActionResult<IEnumerable<PhoneNumberDbo>>> GetPhoneNumbers()
     {
         if (_context.PhoneNumbers == null)
@@ -27,6 +30,7 @@ public class PhoneNumbersController : ControllerBase
 
     // GET: api/PhoneNumbers/5
     [HttpGet("{id}")]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER, AccessRoleService.ROLE_SERVICE_LISTENER)]
     public async Task<ActionResult<PhoneNumberDbo>> GetPhoneNumberDbo([FromRoute] int id)
     {
         if (_context.PhoneNumbers == null)
@@ -41,6 +45,7 @@ public class PhoneNumbersController : ControllerBase
 
     // GET: api/PhoneNumbers/byUPhoneNumber/+331234567
     [HttpGet("byUPhoneNumber/{uPhoneNumber}")]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER, AccessRoleService.ROLE_SERVICE_LISTENER)]
     public async Task<ActionResult<PhoneNumberDbo>> GetPhoneNumberDboByUPhoneNumber([FromRoute] string uPhoneNumber)
     {
         if (_context.PhoneNumbers == null)
@@ -57,6 +62,7 @@ public class PhoneNumbersController : ControllerBase
     // PUT: api/PhoneNumbers/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER)]
     public async Task<IActionResult> PutPhoneNumberDbo(
         [FromRoute] int id,
         [FromBody] PhoneNumberDbo phoneNumberDbo,
@@ -89,6 +95,7 @@ public class PhoneNumbersController : ControllerBase
     // POST: api/PhoneNumbers
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER)]
     public async Task<ActionResult<PhoneNumberDbo>> PostPhoneNumberDbo(
         [FromBody] PhoneNumberDbo phoneNumberDbo,
         [FromServices] IValidator<PhoneNumberDbo> validator)
@@ -108,6 +115,7 @@ public class PhoneNumbersController : ControllerBase
 
     // DELETE: api/PhoneNumbers/5
     [HttpDelete("{id}")]
+    [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER)]
     public async Task<IActionResult> DeletePhoneNumberDbo([FromRoute] int id)
     {
         if (_context.PhoneNumbers == null)
