@@ -31,6 +31,18 @@ public class SecurityController : ControllerBase
     [Route("check")]
     public Task<ActionResult<string>> CheckAsync() => Task.FromResult<ActionResult<string>>(this.Ok("OK"));
 
+
+    [HttpGet]
+    [Route("userName")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public Task<ActionResult> GetCurrentUserNameAsync()
+    {
+        var currentUser = this.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+        ActionResult result = currentUser != null ? this.Ok(currentUser) : this.Unauthorized();
+        return Task.FromResult(result);
+    }
+
     [HttpPost]
     [Route("login")]
     [AllowAnonymous]
