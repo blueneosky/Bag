@@ -10,6 +10,7 @@ import { JwtService } from './core/services/jwt.service';
 import { EMPTY } from 'rxjs';
 import { SecurityService } from './core/services/security.service';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { SharedModule } from './shared/shared.module';
 
 export function initAuth(jwtService: JwtService, securityService: SecurityService) {
   return () => (jwtService.getToken() ? securityService.getCurrentUser() : EMPTY);
@@ -23,6 +24,10 @@ export function initAuth(jwtService: JwtService, securityService: SecurityServic
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    SharedModule,
+  ],
+  exports: [
+    SharedModule,
   ],
   providers: [
     {
