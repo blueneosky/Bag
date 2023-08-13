@@ -4,6 +4,7 @@ using Alphonse.WebApi.Dbo;
 using FluentValidation;
 using Alphonse.WebApi.Services;
 using Alphonse.WebApi.Authorization;
+using System.Linq;
 
 namespace Alphonse.WebApi.Controllers;
 
@@ -21,7 +22,7 @@ public class CallHistoryController : ControllerBase
     // GET: api/CallHistory[?after='this_date'][&before='this_date'][&pageSize=10&pageIndex=0][&reverseOrder=1]
     [HttpGet]
     [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER)]
-    public async Task<ActionResult<IEnumerable<CallHistoryDbo>>> GetCallHistories(
+    public async Task<ActionResult<IPagedQueryResultContext<CallHistoryDbo>>> GetCallHistories(
         [FromQuery] DateTime? after,
         [FromQuery] DateTime? before,
         [FromQuery] int? pageSize, [FromQuery] int? pageIndex,
@@ -32,22 +33,17 @@ public class CallHistoryController : ControllerBase
 
         IQueryable<CallHistoryDbo> query = _context.CallHistories
             .AsQueryable()
-            // reverseOrder
-            .When((reverseOrder ?? 0) == 0,
-                q => q.OrderByDescending(ch => ch.Timestamp),
-                q => q.OrderBy(ch => ch.Timestamp))
             // after
             .WhenNotNull(after,
                 (q, v) => q.Where(ch => ch.Timestamp > v))
             // before
             .WhenNotNull(before,
                 (q, v) => q.Where(ch => ch.Timestamp < v))
-            // paged result
-            .WhenTrue(pageSize.HasValue && pageIndex.HasValue,
-                q => q.Skip(pageSize!.Value * pageIndex!.Value).Take(pageSize!.Value))
             ;
+        
+        var result = await query.ToPagedResultAsync(pageIndex, pageSize, ch => ch.Timestamp, reverseOrder != 0, x => x, r => r);
 
-        return await query.ToListAsync();
+        return Ok(result);
     }
 
     // GET: api/CallHistory/5

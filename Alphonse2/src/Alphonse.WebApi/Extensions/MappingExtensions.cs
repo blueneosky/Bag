@@ -5,7 +5,7 @@ using Alphonse.WebApi.Services;
 
 namespace Alphonse.WebApi.Extensions;
 
-public static class ToXxxExtensions
+public static class MappingExtensions
 {
     public static UserDto ToDto(this UserModel model) => new()
     {
