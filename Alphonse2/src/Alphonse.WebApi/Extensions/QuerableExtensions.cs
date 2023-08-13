@@ -6,16 +6,18 @@ namespace System.Linq;
 
 public static class QuerableExtensions
 {
-    public static TResult ToPagedResult<TDbo, TItem, TOrderingKey, TResultContext, TResult>(this IQueryable<TDbo> dbQuery,
-        int pageIndex, int pageSize, Expression<Func<TDbo, TOrderingKey>> orderingKeySelector,
+    public static TResult ToPagedResult<TDbo, TItem, TOrderingKey, TResult>(
+        this IQueryable<TDbo> dbQuery,
+        int? pageIndex, int? pageSize,
+        Expression<Func<TDbo, TOrderingKey>> orderingKeySelector,
+        bool? orderByDescending,
         Func<TDbo, TItem> itemMapping,
-        Func<IPagedQueryResultContext<TItem>, TResult> resultFBuilder)
-        where TResult : PagedQueryResultDtoBase<TItem>
+        Func<IPagedQueryResultContext<TItem>, TResult> resultBuilder)
     {
         _ = dbQuery ?? throw new ArgumentNullException(nameof(dbQuery));
-        // _ = orderingKeySelector ?? throw new ArgumentNullException(nameof(orderingKeySelector))
+        _ = orderingKeySelector ?? throw new ArgumentNullException(nameof(orderingKeySelector));
         _ = itemMapping ?? throw new ArgumentNullException(nameof(itemMapping));
-        _ = resultFBuilder ?? throw new ArgumentNullException(nameof(resultFBuilder));
+        _ = resultBuilder ?? throw new ArgumentNullException(nameof(resultBuilder));
 
         if (pageIndex < 0) throw new ArgumentOutOfRangeException(nameof(pageIndex));
         if (pageSize < 0) throw new ArgumentOutOfRangeException(nameof(pageSize));
@@ -24,41 +26,55 @@ public static class QuerableExtensions
         var nbTotalItems = dbQuery.Count(); // QUERY TAG
 
         //=== get paged items ====
-        if(orderingKeySelector is not null)
-            dbQuery = dbQuery.OrderBy(orderingKeySelector);
-            
-        var skippedItems = pageIndex * pageSize;
-        dbQuery = dbQuery
-            .Skip(skippedItems)
-            .Take(pageSize);
+        if (orderByDescending.HasValue)
+        {
+            dbQuery = orderByDescending.Value
+                ? dbQuery.OrderByDescending(orderingKeySelector)
+                : dbQuery.OrderBy(orderingKeySelector);
+        }
+
+        if (pageIndex.HasValue && pageSize.HasValue)
+        {
+            var skippedItems = pageIndex.Value * pageSize.Value;
+            dbQuery = dbQuery
+                .Skip(skippedItems)
+                .Take(pageSize.Value);
+        }
+        else
+        {
+            pageIndex = 0;
+            pageSize = nbTotalItems;
+        }
 
         var entities = dbQuery.ToList(); // QUERY TAG
 
-        //=== builup result ===
+        //=== buildup result ===
         var items = entities.Select(itemMapping).ToList();
         var resultContext = new PagedQueryResultContext<TItem>
         {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
+            PageIndex = pageIndex.Value,
+            PageSize = pageSize.Value,
             NbTotalItems = nbTotalItems,
             Items = items,
         };
 
-        var result = resultFBuilder(resultContext);
+        var result = resultBuilder(resultContext);
 
         return result;
     }
 
-    public static async Task<TResult> ToPagedResultAsync<TDbo, TItem, TOrderingKey, TResultContext, TResult>(this IQueryable<TDbo> dbQuery,
-        int pageIndex, int pageSize, Expression<Func<TDbo, TOrderingKey>> orderingKeySelector,
+    public static async Task<TResult> ToPagedResultAsync<TDbo, TItem, TOrderingKey, TResult>(
+        this IQueryable<TDbo> dbQuery,
+        int? pageIndex, int? pageSize,
+        Expression<Func<TDbo, TOrderingKey>> orderingKeySelector,
+        bool? orderByDescending,
         Func<TDbo, TItem> itemMapping,
-        Func<IPagedQueryResultContext<TItem>, TResult> resultFBuilder)
-        where TResult : PagedQueryResultDtoBase<TItem>
+        Func<IPagedQueryResultContext<TItem>, TResult> resultBuilder)
     {
         _ = dbQuery ?? throw new ArgumentNullException(nameof(dbQuery));
         _ = orderingKeySelector ?? throw new ArgumentNullException(nameof(orderingKeySelector));
         _ = itemMapping ?? throw new ArgumentNullException(nameof(itemMapping));
-        _ = resultFBuilder ?? throw new ArgumentNullException(nameof(resultFBuilder));
+        _ = resultBuilder ?? throw new ArgumentNullException(nameof(resultBuilder));
 
         if (pageIndex < 0) throw new ArgumentOutOfRangeException(nameof(pageIndex));
         if (pageSize < 0) throw new ArgumentOutOfRangeException(nameof(pageSize));
@@ -66,26 +82,40 @@ public static class QuerableExtensions
         //=== get total items===
         var nbTotalItems = await dbQuery.CountAsync(); // QUERY TAG
 
-        //=== get page ====
-        var skippedItems = pageIndex * pageSize;
-        dbQuery = dbQuery
-            .OrderBy(orderingKeySelector)
-            .Skip(skippedItems)
-            .Take(pageSize);
+        //=== get paged items ====
+        if (orderByDescending.HasValue)
+        {
+            dbQuery = orderByDescending.Value
+                ? dbQuery.OrderByDescending(orderingKeySelector)
+                : dbQuery.OrderBy(orderingKeySelector);
+        }
+
+        if (pageIndex.HasValue && pageSize.HasValue)
+        {
+            var skippedItems = pageIndex.Value * pageSize.Value;
+            dbQuery = dbQuery
+                .Skip(skippedItems)
+                .Take(pageSize.Value);
+        }
+        else
+        {
+            pageIndex = 0;
+            pageSize = nbTotalItems;
+        }
 
         var entities = await dbQuery.ToListAsync(); // QUERY TAG
 
-        //=== builup result ===
+        //=== buildup result ===
         var items = entities.Select(itemMapping).ToList();
         var resultContext = new PagedQueryResultContext<TItem>
         {
-            PageIndex = pageIndex,
-            PageSize = pageSize,
+            PageIndex = pageIndex.Value,
+            PageSize = pageSize.Value,
             NbTotalItems = nbTotalItems,
             Items = items,
         };
 
-        var result = resultFBuilder(resultContext);
+        var result = resultBuilder(resultContext);
 
         return result;
     }
