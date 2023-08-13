@@ -33,8 +33,9 @@ public static class QuerableExtensions
                 : dbQuery.OrderBy(orderingKeySelector);
         }
 
-        if (pageIndex.HasValue && pageSize.HasValue)
+        if (pageSize.HasValue)
         {
+            pageIndex ??= 0;
             var skippedItems = pageIndex.Value * pageSize.Value;
             dbQuery = dbQuery
                 .Skip(skippedItems)

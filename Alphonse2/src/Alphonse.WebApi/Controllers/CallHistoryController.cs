@@ -5,6 +5,7 @@ using FluentValidation;
 using Alphonse.WebApi.Services;
 using Alphonse.WebApi.Authorization;
 using System.Linq;
+using Alphonse.WebApi.Dto;
 
 namespace Alphonse.WebApi.Controllers;
 
@@ -22,7 +23,7 @@ public class CallHistoryController : ControllerBase
     // GET: api/CallHistory[?after='this_date'][&before='this_date'][&pageSize=10&pageIndex=0][&reverseOrder=1]
     [HttpGet]
     [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER)]
-    public async Task<ActionResult<IPagedQueryResultContext<CallHistoryDbo>>> GetCallHistories(
+    public async Task<ActionResult<CallHistoryPagedQueryResultDto>> GetCallHistories(
         [FromQuery] DateTime? after,
         [FromQuery] DateTime? before,
         [FromQuery] int? pageSize, [FromQuery] int? pageIndex,
@@ -41,7 +42,7 @@ public class CallHistoryController : ControllerBase
                 (q, v) => q.Where(ch => ch.Timestamp < v))
             ;
         
-        var result = await query.ToPagedResultAsync(pageIndex, pageSize, ch => ch.Timestamp, reverseOrder != 0, x => x, r => r);
+        var result = await query.ToPagedResultAsync(pageIndex, pageSize, ch => ch.Timestamp, reverseOrder != 0, x => x, r => new CallHistoryPagedQueryResultDto(r));
 
         return Ok(result);
     }

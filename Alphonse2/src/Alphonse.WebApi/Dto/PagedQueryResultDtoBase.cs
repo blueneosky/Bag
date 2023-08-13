@@ -19,5 +19,5 @@ public abstract class PagedQueryResultDtoBase<TItem>
     public int PageSize { get; set; }
     public int NbTotalPage { get; set; }
     public int NbTotalResults { get; set; }
-    public ICollection<TItem> Results { get; set; } = new TItem[0];
+    public ICollection<TItem> Results { get; set; } = Array.Empty<TItem>();
 }
