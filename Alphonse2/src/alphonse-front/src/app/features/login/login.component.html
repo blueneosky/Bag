@@ -1,0 +1,40 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="page-layout">
+        <mat-card class="login-card">
+            <mat-card-header>
+                <mat-card-title>Welcome</mat-card-title>
+                <mat-card-subtitle> Alphonse is pleased to serve you</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content class="login-card-content">
+                <mat-divider class="margin-bottom-1_5em"></mat-divider>
+                <div class="input-field-layout">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Username</mat-label>
+                        <input matInput type="text" formControlName="username" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" />
+                        <mat-icon matSuffix>person</mat-icon>
+                    </mat-form-field>
+                </div>
+                <div class="input-field-layout">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Password</mat-label>
+                        <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                            class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                        <button mat-icon-button matSuffix type="button" (click)="showPassword = !showPassword"
+                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+                            <mat-icon matSuffix>{{showPassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-content>
+            <mat-card-actions class="login-actions">
+                <button mat-raised-button color="primary" type="submit" class="login-button"
+                    [disabled]="loading">LOGIN</button>
+            </mat-card-actions>
+            <mat-card-footer>
+                <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+            </mat-card-footer>
+        </mat-card>
+    </div>
+</form>

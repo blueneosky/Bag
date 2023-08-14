@@ -1,0 +1,36 @@
+.page-layout {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-card {
+    max-width: 400px;
+}
+
+.invalid-feedback {
+    color: red;
+}
+
+.login-card-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field-layout {
+    margin: 0 2em 0 2em;
+}
+
+.form-label {
+    margin-right: 1em;
+}
+
+.login-actions {
+    justify-content: right;
+}
+
+.margin-bottom-1_5em {
+    margin-bottom: 1.5em;
+}

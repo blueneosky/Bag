@@ -8,7 +8,7 @@ export class JwtService {
 
   constructor() { }
 
-  getToken(): string {
+  getToken(): string | undefined {
     return window.localStorage[this.constJwtTokenKeyName];
   }
 

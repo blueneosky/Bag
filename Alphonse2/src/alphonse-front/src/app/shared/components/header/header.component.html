@@ -1,1 +1,10 @@
-<!-- <p>header works!</p> -->
+<mat-toolbar color="primary">
+    <button mat-icon-button [disabled]="!(isAuthenticated$ | async)">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span>Alphonse</span>
+    <div class="spacer"></div>
+    <button mat-icon-button *ngIf="isAuthenticated$ | async" (click)="logoutClick()">
+        <mat-icon>logout</mat-icon>
+    </button>
+</mat-toolbar>
