@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EMPTY } from 'rxjs';
 import { registerLocaleData } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatListModule } from '@angular/material/list';
 
 import { AuthService } from '@auth/auth.service';
 import { JwtService } from '@auth/jwt.service';
@@ -47,6 +50,9 @@ export function disableConsoleOnProduction() {
     HttpClientModule,
     SharedModule,
     FeaturesModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
   ],
   exports: [
     SharedModule,

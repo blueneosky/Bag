@@ -12,11 +12,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { PhoneBookComponent } from './phone-book/phone-book.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     LoginComponent,
+    PhoneBookComponent,
   ],
   imports: [
     SharedModule,
