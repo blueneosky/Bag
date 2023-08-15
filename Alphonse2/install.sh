@@ -7,6 +7,18 @@ script_dir=$(pwd)
 set -euo pipefail
 
 ###################
+# Read arguments
+for item in "$@"
+do
+    case "$item" in
+        "--start")
+            echo "> Post build service start requiested"
+            postbuild_start=1;;
+    esac
+done
+
+
+###################
 # Common config
 echo "### Common config ###"
 common_config_file="alphonse.config"
@@ -23,7 +35,7 @@ alphonse_config=(
 
     # admin account created when no one exist
     # please change it or remove this user as soon as possible
-    # note : this user will be add again at restart when no admin accout was found - as fallback
+    # note : this user will be add again at restart when no admin account was found - as fallback
     [webapi_admin_name]="root" 
     [webapi_admin_pass]="root"
 
@@ -39,8 +51,6 @@ alphonse_config=(
     [webapi_jwt_issuer]=""
     [webapi_jwt_audience]=""
     # [webapi_without_authorization]=1     # deactivate authorization (user auth, acces rights, ...) - please don't
-
-    # TODO other to come
 )
 EOT
     echo "[STOP] The config file ${common_config_file} was created".
@@ -69,7 +79,12 @@ echo "### Alphonse.Listener ###"
 cd "${script_dir}"
 ./src/Alphonse.Listener/install.sh
 
-#TODO other to comme
+###################
+# Front install
+echo "### alphonse-front ###"
+cd "${script_dir}"
+./src/alphonse-front/install.sh
+
 
 
 
@@ -149,3 +164,18 @@ config_set_value 'set' 'Alphonse.WebApiUserPass' "${alphonse_config[listener_use
 
 sudo cp .tmp.$$.json "${listener_config[config_path]}"
 rm -f .tmp.$$.json
+
+echo "[DONE]"
+
+
+###################
+#post build operations
+echo "### Post build ###"
+if [ -n "$postbuild_start" ]; then
+    echo "[Step] start services ${webapi_config[service_name]} ..."
+    sudo systemctl start ${webapi_config[service_name]} || echo "Service not found"
+    echo "[Step] start services ${listener_config[service_name]} ..."
+    sudo systemctl start ${listener_config[service_name]} || echo "Service not found"
+fi
+
+echo "[DONE]"
