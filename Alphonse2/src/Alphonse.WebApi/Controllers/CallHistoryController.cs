@@ -24,25 +24,47 @@ public class CallHistoryController : ControllerBase
     [HttpGet]
     [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER)]
     public async Task<ActionResult<CallHistoryPagedQueryResultDto>> GetCallHistories(
-        [FromQuery] DateTime? after,
-        [FromQuery] DateTime? before,
-        [FromQuery] int? pageSize, [FromQuery] int? pageIndex,
-        [FromQuery] int? reverseOrder)
+        [FromQuery] CallHistoryPageQueryParams pageQueryParams)
     {
         if (_context.CallHistories == null)
             return NotFound();
 
-        IQueryable<CallHistoryDbo> query = _context.CallHistories
+        IQueryable<CallHistoryDbo> baseQuery = _context.CallHistories
             .AsQueryable()
             // after
-            .WhenNotNull(after,
+            .WhenNotNull(pageQueryParams.After,
                 (q, v) => q.Where(ch => ch.Timestamp > v))
             // before
-            .WhenNotNull(before,
+            .WhenNotNull(pageQueryParams.Before,
                 (q, v) => q.Where(ch => ch.Timestamp < v))
             ;
-        
-        var result = await query.ToPagedResultAsync(pageIndex, pageSize, ch => ch.Timestamp, reverseOrder != 0, x => x, r => new CallHistoryPagedQueryResultDto(r));
+        var query = from ch in baseQuery
+                    select new
+                    {
+                        ch.CallHistoryId,
+                        ch.Timestamp,
+                        ch.UCallNumber,
+                        ch.Action,
+                        CallerName = _context.PhoneNumbers
+                           .Where(pn => ch.UCallNumber == pn.UPhoneNumber)
+                           .Select(pn => (string?)pn.Name)
+                           .FirstOrDefault()
+                    };
+
+        var pagedResult = await query.ToPagedResultAsync(
+            pageQueryParams,
+            (ch, sp) => ch.CallerName != null && ch.CallerName.Contains(sp) || ch.UCallNumber.Contains(sp),
+            i => new CallHistoryDto
+            {
+                CallHistoryId = i.CallHistoryId,
+                Timestamp = i.Timestamp,
+                UCallNumber = i.UCallNumber,
+                Action = i.Action,
+                CallerName = i.CallerName,
+            },
+            ch => ch.Timestamp);
+
+        var result = new CallHistoryPagedQueryResultDto(pagedResult);
 
         return Ok(result);
     }

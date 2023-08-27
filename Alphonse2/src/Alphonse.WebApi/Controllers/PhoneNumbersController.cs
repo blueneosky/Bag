@@ -4,6 +4,8 @@ using Alphonse.WebApi.Dbo;
 using FluentValidation;
 using Alphonse.WebApi.Authorization;
 using Alphonse.WebApi.Services;
+using Alphonse.WebApi.Dto;
+using System.Linq.Expressions;
 
 namespace Alphonse.WebApi.Controllers;
 
@@ -21,11 +23,21 @@ public class PhoneNumbersController : ControllerBase
     // GET: api/PhoneNumbers
     [HttpGet]
     [MinimumAccessRoleAuthorize(AccessRoleService.ROLE_USER, AccessRoleService.ROLE_SERVICE_LISTENER)]
-    public async Task<ActionResult<IEnumerable<PhoneNumberDbo>>> GetPhoneNumbers()
+    public async Task<ActionResult<PhoneNumberPagedQueryResultDto>> GetPhoneNumbers(
+        [FromQuery] PageQueryParams pageQueryParams)
     {
         if (_context.PhoneNumbers == null)
             return NotFound();
-        return await _context.PhoneNumbers.ToListAsync();
+
+        var pagedQuery = await _context.PhoneNumbers.ToPagedResultAsync(
+            pageQueryParams,
+            (pn, sp) => pn.Name.Contains(sp) || pn.UPhoneNumber.Contains(sp),
+            dbo => dbo,
+            pn => pn.Name, pn => pn.UPhoneNumber);
+
+        var result = new PhoneNumberPagedQueryResultDto(pagedQuery);
+
+        return Ok(result);
     }
 
     // GET: api/PhoneNumbers/5

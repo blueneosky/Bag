@@ -1,96 +1,52 @@
 using System.Linq.Expressions;
-using Alphonse.WebApi.Dto;
+using Alphonse.WebApi.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace System.Linq;
 
 public static class QuerableExtensions
 {
-    public static TResult ToPagedResult<TDbo, TItem, TOrderingKey, TResult>(
+    public static async Task<IPagedQueryResultContext<TItem>> ToPagedResultAsync<TDbo, TItem>(
         this IQueryable<TDbo> dbQuery,
-        int? pageIndex, int? pageSize,
-        Expression<Func<TDbo, TOrderingKey>> orderingKeySelector,
-        bool? orderByDescending,
+        IPageQueryParams pageQueryParams,
+        Expression<Func<TDbo, string, bool>>? searchFilterPredicate,
         Func<TDbo, TItem> itemMapping,
-        Func<IPagedQueryResultContext<TItem>, TResult> resultBuilder)
+        Expression<Func<TDbo, object>> orderByKeySelector,
+        params Expression<Func<TDbo, object>>[] thenByKeySelectors)
     {
         _ = dbQuery ?? throw new ArgumentNullException(nameof(dbQuery));
-        _ = orderingKeySelector ?? throw new ArgumentNullException(nameof(orderingKeySelector));
+        _ = orderByKeySelector ?? throw new ArgumentNullException(nameof(orderByKeySelector));
         _ = itemMapping ?? throw new ArgumentNullException(nameof(itemMapping));
-        _ = resultBuilder ?? throw new ArgumentNullException(nameof(resultBuilder));
 
-        if (pageIndex < 0) throw new ArgumentOutOfRangeException(nameof(pageIndex));
-        if (pageSize < 0) throw new ArgumentOutOfRangeException(nameof(pageSize));
+        if (pageQueryParams.PageIndex < 0) throw new ArgumentOutOfRangeException(nameof(pageQueryParams), $"{nameof(pageQueryParams.PageIndex)} must be greater or equal to 0");
+        if (pageQueryParams.PageSize < 0) throw new ArgumentOutOfRangeException(nameof(pageQueryParams), $"{nameof(pageQueryParams.PageSize)} must be greater or equal to 0");
 
-        //=== get total items===
-        var nbTotalItems = dbQuery.Count(); // QUERY TAG
-
-        //=== get paged items ====
-        if (orderByDescending.HasValue)
+        //=== apply search===
+        if (!string.IsNullOrEmpty(pageQueryParams.SearchPattern)
+            && searchFilterPredicate != null)
         {
-            dbQuery = orderByDescending.Value
-                ? dbQuery.OrderByDescending(orderingKeySelector)
-                : dbQuery.OrderBy(orderingKeySelector);
+            var wherePredicate = searchFilterPredicate.Substitute<Func<TDbo, bool>, string>(1, () => pageQueryParams.SearchPattern);
+            dbQuery = dbQuery.Where(wherePredicate);
         }
-
-        if (pageSize.HasValue)
-        {
-            pageIndex ??= 0;
-            var skippedItems = pageIndex.Value * pageSize.Value;
-            dbQuery = dbQuery
-                .Skip(skippedItems)
-                .Take(pageSize.Value);
-        }
-        else
-        {
-            pageIndex = 0;
-            pageSize = nbTotalItems;
-        }
-
-        var entities = dbQuery.ToList(); // QUERY TAG
-
-        //=== buildup result ===
-        var items = entities.Select(itemMapping).ToList();
-        var resultContext = new PagedQueryResultContext<TItem>
-        {
-            PageIndex = pageIndex.Value,
-            PageSize = pageSize.Value,
-            NbTotalItems = nbTotalItems,
-            Items = items,
-        };
-
-        var result = resultBuilder(resultContext);
-
-        return result;
-    }
-
-    public static async Task<TResult> ToPagedResultAsync<TDbo, TItem, TOrderingKey, TResult>(
-        this IQueryable<TDbo> dbQuery,
-        int? pageIndex, int? pageSize,
-        Expression<Func<TDbo, TOrderingKey>> orderingKeySelector,
-        bool? orderByDescending,
-        Func<TDbo, TItem> itemMapping,
-        Func<IPagedQueryResultContext<TItem>, TResult> resultBuilder)
-    {
-        _ = dbQuery ?? throw new ArgumentNullException(nameof(dbQuery));
-        _ = orderingKeySelector ?? throw new ArgumentNullException(nameof(orderingKeySelector));
-        _ = itemMapping ?? throw new ArgumentNullException(nameof(itemMapping));
-        _ = resultBuilder ?? throw new ArgumentNullException(nameof(resultBuilder));
-
-        if (pageIndex < 0) throw new ArgumentOutOfRangeException(nameof(pageIndex));
-        if (pageSize < 0) throw new ArgumentOutOfRangeException(nameof(pageSize));
 
         //=== get total items===
         var nbTotalItems = await dbQuery.CountAsync(); // QUERY TAG
 
         //=== get paged items ====
+        var orderByDescending = pageQueryParams.ReverseOrder.TernaryNullable(() => (bool?)null, v => v != 0);
         if (orderByDescending.HasValue)
         {
-            dbQuery = orderByDescending.Value
-                ? dbQuery.OrderByDescending(orderingKeySelector)
-                : dbQuery.OrderBy(orderingKeySelector);
+            var isAscending = !orderByDescending.Value;
+            var orderedQuery = isAscending ? dbQuery.OrderBy(orderByKeySelector) : dbQuery.OrderByDescending(orderByKeySelector);
+            dbQuery = thenByKeySelectors
+                .Where(ks => ks != null)
+                .Aggregate(
+                    orderedQuery,
+                    (oq, oks) => isAscending ? oq.ThenBy(oks) : oq.ThenByDescending(oks));
         }
 
+        var pageIndex = pageQueryParams.PageIndex;
+        var pageSize = pageQueryParams.PageSize;
         if (pageIndex.HasValue && pageSize.HasValue)
         {
             var skippedItems = pageIndex.Value * pageSize.Value;
@@ -104,19 +60,18 @@ public static class QuerableExtensions
             pageSize = nbTotalItems;
         }
 
+        //=== buildup result ===
         var entities = await dbQuery.ToListAsync(); // QUERY TAG
 
-        //=== buildup result ===
         var items = entities.Select(itemMapping).ToList();
-        var resultContext = new PagedQueryResultContext<TItem>
+        var result = new PagedQueryResultContext<TItem>
         {
             PageIndex = pageIndex.Value,
             PageSize = pageSize.Value,
             NbTotalItems = nbTotalItems,
+            SearchPattern = pageQueryParams.SearchPattern,
             Items = items,
         };
-
-        var result = resultBuilder(resultContext);
 
         return result;
     }
@@ -128,8 +83,17 @@ public static class QuerableExtensions
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
         public int NbTotalItems { get; set; }
+        public string? SearchPattern { get; set; }
         public ICollection<TItem> Items { get; set; } = null!;
     }
+}
+
+public interface IPageQueryParams
+{
+    public int? PageSize { get; }
+    public int? PageIndex { get; }
+    public int? ReverseOrder { get; }
+    public string? SearchPattern { get; }
 }
 
 public interface IPagedQueryResultContext<TItem>
@@ -137,5 +101,6 @@ public interface IPagedQueryResultContext<TItem>
     public int PageIndex { get; }
     public int PageSize { get; }
     public int NbTotalItems { get; }
+    public string? SearchPattern { get; set; }
     public ICollection<TItem> Items { get; }
 }

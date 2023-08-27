@@ -114,11 +114,12 @@ public class PhonebookService
         try
         {
             RestApiClient client = this._restApiClient;
-            
+
             var uri = new Uri($"{this._webApiBaseUri}/PhoneNumbers");
             using var response = await client.SendJsonRequest(HttpMethod.Get, uri, null);
             response.EnsureSuccessStatusCode();
-            var phoneNumbers = await response.DeseriaseJsonResponseAsync<PhoneNumberDto[]>();
+            var pageQueryResult = await response.DeseriaseJsonResponseAsync<PagedQueryResultDtoBase<PhoneNumberDto>>();
+            var phoneNumbers = pageQueryResult.Results;
 
             return phoneNumbers;
         }

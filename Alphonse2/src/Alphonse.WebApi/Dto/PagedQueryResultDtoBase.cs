@@ -9,6 +9,7 @@ public abstract class PagedQueryResultDtoBase<TItem>
         this.PageIndex = context.PageIndex;
         this.PageSize = context.PageSize;
         this.NbTotalResults = context.NbTotalItems;
+        this.SearchPattern = context.SearchPattern;
         this.Results = context.Items;
 
         // === computed ===
@@ -19,5 +20,6 @@ public abstract class PagedQueryResultDtoBase<TItem>
     public int PageSize { get; set; }
     public int NbTotalPage { get; set; }
     public int NbTotalResults { get; set; }
+    public string? SearchPattern { get; set; }
     public ICollection<TItem> Results { get; set; } = Array.Empty<TItem>();
 }

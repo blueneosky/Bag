@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Net.Mime;
-using System.Threading.Tasks;
+using Alphonse.Listener.Dto;
+using DotNet.RestApi.Client;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Polly;
 using Polly.Retry;
 
@@ -55,46 +51,47 @@ public class WebApiAuthentication
         if (string.IsNullOrWhiteSpace(_webApiUserPass) || string.IsNullOrWhiteSpace(_webApiUserPass))
             return; // no authentication info
 
-        // check if still ok
-        client.DefaultRequestHeaders.Authorization = info.Value;
-        var securityCheckUri = new Uri($"{_webApiBaseUri}/Security/check");
-        using var securityCheckResponse = await client.GetAsync(securityCheckUri);
-        if (securityCheckResponse.IsSuccessStatusCode)
+        try
         {
-            this._logger.LogDebug("auth_check: no security or still good");
-            return;
+            // check if still ok
+            client.DefaultRequestHeaders.Authorization = info.Value;
+            var securityCheckUri = new Uri($"{_webApiBaseUri}/Security/currentUser");
+            using var securityCheckResponse = await client.GetAsync(securityCheckUri);
+            if (securityCheckResponse.IsSuccessStatusCode)
+            {
+                this._logger.LogDebug("auth_check: no security or still good");
+                return;
+            }
+
+            if (securityCheckResponse.StatusCode != HttpStatusCode.Unauthorized)
+            {
+                // no error from this context, wait for a consummer to highlight this one
+                this._logger.LogWarning("auth_check: fail to contact webapi");
+                return;
+            }
+
+            // reset auth info
+            info.Value = null;
+
+            // login phase
+            var loginData = new { userName = _webApiUserName, userPass = _webApiUserPass, };
+            var securityLoginUri = new Uri($"{_webApiBaseUri}/Security/login");
+            using var securityLoginResponse = await client.PostAsync(securityLoginUri, JsonContent.Create(loginData));
+            if (!securityLoginResponse.IsSuccessStatusCode)
+            {
+                this._logger.LogWarning("auth_login: user/pass failed or refused => [{StatusCode}] {Message}",
+                    securityLoginResponse.StatusCode,
+                    await securityLoginResponse.Content.ReadAsStringAsync());
+                return;
+            }
+
+            var user = await securityLoginResponse.DeseriaseJsonResponseAsync<UserTokenDto>();
+            client.DefaultRequestHeaders.Authorization = info.Value = new AuthenticationHeaderValue("Bearer", user.Token);
         }
-
-        if (securityCheckResponse.StatusCode != HttpStatusCode.Unauthorized)
+        catch (Exception ex)
         {
-            // no error from this context, wait for a consummer to highlight this one
-            this._logger.LogWarning("auth_check: fail to contact webapi");
-            return;
+            this._logger.LogError(ex, "auth_login: unexpected error occured during authorization handshake");
         }
-
-        // reset auth info
-        info.Value = null;
-
-        // login phase
-        var loginData = new { userName = _webApiUserName, userPass = _webApiUserPass, };
-        var securityLoginUri = new Uri($"{_webApiBaseUri}/Security/login");
-        using var securityLoginResponse = await client.PostAsync(securityLoginUri, JsonContent.Create(loginData));
-        if (!securityLoginResponse.IsSuccessStatusCode)
-        {
-            this._logger.LogWarning("auth_login: user/pass failed or refused => [{StatusCode}] {Message}",
-                securityLoginResponse.StatusCode,
-                await securityLoginResponse.Content.ReadAsStringAsync());
-            return;
-        }
-
-        var mediaType = securityLoginResponse.Content.Headers.ContentType?.MediaType;
-        var token = mediaType switch
-        {
-            MediaTypeNames.Text.Plain => await securityLoginResponse.Content.ReadAsStringAsync(),
-            MediaTypeNames.Application.Json => await securityLoginResponse.Content.ReadFromJsonAsync<string>(),
-            _ => throw new InvalidDataException("Not managed"),
-        };
-        client.DefaultRequestHeaders.Authorization = info.Value = new AuthenticationHeaderValue("Bearer", token);
     }
 }
 
