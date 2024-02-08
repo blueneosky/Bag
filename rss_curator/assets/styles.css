@@ -2,7 +2,23 @@ body {
 	background-color: black;
 	color: ghostwhite;
 	font-size: x-large;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	padding: 0;
+	margin: 0;
+}
+
+#page-container {
 	padding: 1rem;
+	margin: 8px;
+}
+
+#content-footer {
+	margin-top: auto;
+
+	text-align: center;
+	font-size: small;
 }
 
 .clrInv {
@@ -17,8 +33,6 @@ body {
 
 .dspTbl {
 	display: table;
-	/* border-spacing: 0.75rem;
-    border-collapse: separate; */
 }
 
 .dspTblRow {
@@ -29,16 +43,24 @@ body {
 	display: table-cell;
 }
 
+.btnWithImg {
+	background: none;
+	border: none;
+	padding: 0;
+	vertical-align: middle;
+}
+
 .imgBtn {
-	/* width: fit-content; */
-	height: 1em;
-    vertical-align: sub;
+	height: 2rem;
+	width: 2rem;
+	vertical-align: middle;
+	/* vertical-align: sub; */
+	cursor: pointer;
 }
 
 .imgH2 {
-	/* width: fit-content; */
 	height: 1em;
-    vertical-align: sub;
+	vertical-align: sub;
 }
 
 .hztlCenter {
@@ -53,6 +75,12 @@ body {
 
 .div_channel_cell {
 	padding: 0.25rem;
+	text-transform: uppercase;
+}
+
+.div_settings_title {
+	padding-left: 0.5rem;
+	text-transform: uppercase;
 }
 
 .div_title_cell {
@@ -76,17 +104,17 @@ body {
 	display: inline-block;
 	width: 60px;
 	height: 34px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
+}
+
+/* Hide default HTML checkbox */
+.switch input {
 	opacity: 0;
 	width: 0;
 	height: 0;
-  }
-  
-  /* The slider */
-  .slider {
+}
+
+/* The slider */
+.slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -97,9 +125,9 @@ body {
 	border-radius: 34px;
 	-webkit-transition: .4s;
 	transition: .4s;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
 	position: absolute;
 	content: "";
 	height: 26px;
@@ -110,18 +138,18 @@ body {
 	border-radius: 50%;
 	-webkit-transition: .4s;
 	transition: .4s;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked+.slider {
 	background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
+}
+
+input:focus+.slider {
 	box-shadow: 0 0 5px #2196F3;
-  }
-  
-  input:checked + .slider:before {
+}
+
+input:checked+.slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
-  }
+}
