@@ -1,0 +1,127 @@
+body {
+	background-color: black;
+	color: ghostwhite;
+	font-size: x-large;
+	padding: 1rem;
+}
+
+.clrInv {
+	-webkit-filter: invert(100%);
+	filter: invert(100%);
+}
+
+.hidden {
+	visibility: collapse;
+	height: 0;
+}
+
+.dspTbl {
+	display: table;
+	/* border-spacing: 0.75rem;
+    border-collapse: separate; */
+}
+
+.dspTblRow {
+	display: table-row;
+}
+
+.dspTblCell {
+	display: table-cell;
+}
+
+.imgBtn {
+	/* width: fit-content; */
+	height: 1em;
+    vertical-align: sub;
+}
+
+.imgH2 {
+	/* width: fit-content; */
+	height: 1em;
+    vertical-align: sub;
+}
+
+.hztlCenter {
+	width: fit-content;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.div_header {
+	text-align: center;
+}
+
+.div_channel_cell {
+	padding: 0.25rem;
+}
+
+.div_title_cell {
+	padding: 0.75rem;
+}
+
+.div_switch_cell {
+	vertical-align: middle;
+}
+
+.toggle_button {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+/********** imported *************/
+/* from  https://www.w3schools.com/howto/howto_css_switch.asp */
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	border-radius: 34px;
+	-webkit-transition: .4s;
+	transition: .4s;
+  }
+  
+  .slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	border-radius: 50%;
+	-webkit-transition: .4s;
+	transition: .4s;
+  }
+  
+  input:checked + .slider {
+	background-color: #2196F3;
+  }
+  
+  input:focus + .slider {
+	box-shadow: 0 0 5px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+	-webkit-transform: translateX(26px);
+	-ms-transform: translateX(26px);
+	transform: translateX(26px);
+  }

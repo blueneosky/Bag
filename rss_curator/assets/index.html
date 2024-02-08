@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="assets/styles.css">
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>RSS Curator</title>
+</head>
+
+<body>
+	<script src="./assets/main.js"></script>
+	<div class="div_header">
+		<h1>RSS Curator</h1>
+	</div>
+	<div id="panel_channels" class="hztlCenter hidden">
+		<div id="table_channels" class="dspTbl">
+			<div id="_placeholder_text">Loading...</div>
+		</div>
+	</div>
+	<div id="panel_settings" class="hztlCenter hidden">
+		<h2>
+			<!-- <img src="assets/goback-icon.svg" class="imgH2 clrInv" /> -->
+			<a href="./index.html"><img src="assets/goback-icon.svg" class="imgBtn clrInv" /></a>
+			Crunchyroll</h2>
+		<div id="table_titles" class="dspTbl">
+			<div id="_placeholder_text">Loading...</div>
+		</div>
+	</div>
+	<div id="templates" class="hidden">
+		<div id="_template_channelrow" class="dspTblRow">
+			<div id="name_label" class="dspTblCell div_channel_cell">__name__</a></div>
+			<div class="dspTblCell div_channel_cell">
+				<a id="rss_href" href="./__name__.xml"><img src="assets/rss-icon.svg" class="imgBtn" /></a>
+			</div>
+			<div class="dspTblCell div_channel_cell">
+				<a id="cfg_href" href="./index.html?cfg=__name__"><img src="assets/settings-icon.svg"
+						class="imgBtn clrInv" /></a>
+			</div>
+		</div>
+
+		<div id="_template_titlerow" class="dspTblRow">
+			<div class="dspTblCell div_switch_cell">
+				<label class="switch">
+					<input id="switch_input" type="checkbox">
+					<span class="slider round"></span>
+				</label>
+			</div>
+			<div id="title_label" class="dspTblCell div_title_cell">__title__</div>
+		</div>
+	</div>
+</body>
+
+</html>
