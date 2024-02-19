@@ -25,7 +25,7 @@ sudo rsync -cprth --delete ${alphonse_publish_path}/ ${webapi_config[bin_path]}
 sudo chown -R ${webapi_config[bin_user]}:${webapi_config[bin_user]} ${webapi_config[bin_path]}
 
 echo "[Step] setup config file at ${webapi_config[config_path]}"
-sudo mkdir -p $(dirname {webapi_config[config_path]})
+sudo mkdir -p $(dirname ${webapi_config[config_path]})
 sudo ln -sf ${webapi_config[bin_path]}/appsettings.json ${webapi_config[config_path]}
 
 echo "[Step] setup data path ${webapi_config[data_path]}"
