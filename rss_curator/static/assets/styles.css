@@ -1,6 +1,6 @@
 body {
-	background-color: black;
-	color: ghostwhite;
+	background-color: #161b22;
+	color: #f0f6fc;
 	font-size: x-large;
 	min-height: 100vh;
 	display: flex;
@@ -12,6 +12,8 @@ body {
 #page-container {
 	padding: 1rem;
 	margin: 8px;
+	margin-top: 0;
+    padding-top: 0;
 }
 
 #content-footer {
@@ -71,6 +73,7 @@ body {
 
 .div_header {
 	text-align: center;
+	background-color: black;
 }
 
 .div_channel_cell {

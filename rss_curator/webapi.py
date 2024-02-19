@@ -1,29 +1,17 @@
 from fastapi import FastAPI, HTTPException, Response
 from fastapi.responses import FileResponse, RedirectResponse, HTMLResponse
-from assets import Assets, IndexPage
+from fastapi.staticfiles import StaticFiles
 from channels import Channel, Channels
 from feeders.feeder import Feeder
-import re
 from urllib import parse
 
-__ASSETS_VALIDATION_PATTERN = re.compile(r"^(\.?[\w\d_]+)+$")
-
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
 
 
 @app.get("/", response_class=RedirectResponse)
 async def get_root():
-    return RedirectResponse("./index.html")
-
-
-@app.get("/index.html", response_class=HTMLResponse)
-async def get_index():
-    return HTMLResponse(IndexPage.get_content())
-
-
-@app.get("/assets/{filename}", response_class=FileResponse)
-async def get_assets(filename: str):
-    return Assets.get_assets_response(filename)
+    return RedirectResponse("./static/index.html")
 
 
 @app.get("/channels")
@@ -38,7 +26,8 @@ async def get_channel(channel_id: str):
     cfg = Channels.load()
     channel = cfg.get_channel(channelname)
     if channel is None:
-        raise HTTPException(status_code=404, detail=f"Unknown channel id '{channel_id}'")
+        raise HTTPException(
+            status_code=404, detail=f"Unknown channel id '{channel_id}'")
     return __to_channel_dto(channel, withitems=True)
 
 
@@ -49,9 +38,11 @@ async def patch_channel_item(channel_id: str, title_id: str, followed: int):
     cfg = Channels.load()
     channel = cfg.get_channel(channelname)
     if channel is None:
-        raise HTTPException(status_code=404, detail=f"Unknown channel id '{channel_id}'")
+        raise HTTPException(
+            status_code=404, detail=f"Unknown channel id '{channel_id}'")
     if titlename not in channel.items:
-        raise HTTPException(status_code=404, detail=f"Unknown title id '{title_id}'")
+        raise HTTPException(
+            status_code=404, detail=f"Unknown title id '{title_id}'")
     channel.items[titlename] = followed != 0
     channel.save()
     return __to_channel_dto(channel, True)

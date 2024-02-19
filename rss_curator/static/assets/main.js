@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
-function getChannels() { return fetch('./channels').then(r => r.json()); }
-function getChannel(channelId) { return fetch(`./channels/${channelId}`).then(r => r.json()); }
+function getChannels() { return fetch('../channels').then(r => r.json()); }
+function getChannel(channelId) { return fetch(`../channels/${channelId}`).then(r => r.json()); }
 function patchChannelTitle(channelId, titleId, followed) {
     followed = followed ? 1 : 0;
-    return fetch(`./channels/${channelId}/items/${titleId}?followed=${followed}`, { method: 'PATCH' })
+    return fetch(`../channels/${channelId}/items/${titleId}?followed=${followed}`, { method: 'PATCH' })
         .then(r => r.json());
 }
 
