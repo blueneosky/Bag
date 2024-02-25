@@ -35,7 +35,7 @@ function updateChannelsTable(channels) {
         const cfgNode = node.querySelector('[id=cfg_href]');
 
         set_value(nameNode, 'innerHTML', channel.title);
-        set_value(rssNode, 'href', `${path}${channel.relativeUrl}`);
+        set_value(rssNode, 'href', `${path}../${channel.relativeUrl}`);
         set_value(cfgNode, 'href', `${pathname}?cfg=${channel.id}`);
     });
 }
