@@ -3,6 +3,7 @@ INSTALL
 
 **Tolls needed**
 ```bash
+sudo apt update
 sudo apt install -y python3 rsync python3.11-venv
 ```
 
@@ -66,7 +67,7 @@ sudo systemctl daemon-reload
 Start and check status of the service
 ```bash
 sudo systemctl start rss-curator.service
-sudo systemctl status rss-curator.service
+sudo journalctl -f -u rss-curator.service
 ```
 
 If everything is ok, activate auto start at boot
