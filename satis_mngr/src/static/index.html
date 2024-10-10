@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Satisfactory Service Manager</title>
+	<link rel="stylesheet" href="assets/styles.css">
+	<link rel="stylesheet" href="assets/switch.css">
+	<link rel="icon" type="image/svg+xml" href="./assets/helmet-cog.svg">
+	<meta charset="utf-8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<script src="./main.js" type="module"></script>
+	<div class="div_header">
+		<h1>Satisfactory Service Manager</h1>
+	</div>
+	<div id="page-container">
+		<div id="pannel_services" class="hztlCenter hidden">
+			<h2>Services</h2>
+			<table>
+				<tbody id="table_services">
+					<!-- dynamic rows-->
+					<tr>
+						<th><span>Loading...</span></th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<footer id="content-footer">
+		<p>no cookie - no tracker</p>
+	</footer>
+
+	<div id="templates" class="hidden">
+		<table>
+			<tbody>
+				<tr id="_template_services_row">
+					<th class="div_service_cell">
+						<div id="status_div" class="divStatus" data-value="UNKNOWN"></div>
+					</th>
+					<th id="name_label" class="div_service_cell">__name__</th>
+					<th class="div_service_cell">
+						<a id="start_stop_href" href="#" class="hrefBtn" data-enable="false">
+							<img id="start_stop_img" src="assets/turn-off.svg" class="imgBtn clrInv" />
+						</a>
+					</th>
+					<th class="div_service_cell">
+						<a id="restart_href" href="#" class="hrefBtn" data-enable="true">
+							<img id="restart_img" src="assets/restart.svg" class="imgBtn clrInv" />
+						</a>
+					</th>
+				</tr>
+				<tr id="_template_services_placeholder">
+					<th>No services found</th>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>
