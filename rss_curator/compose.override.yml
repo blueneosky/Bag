@@ -1,0 +1,9 @@
+services:
+  webapp:
+    image: rss-curator_webapp:dev
+    volumes:
+      - ./src:/app
+      - ./data:/data
+    environment:
+      - UVICORN_RELOAD=true
+      - ENV=dev

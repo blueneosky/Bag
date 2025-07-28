@@ -1,13 +1,20 @@
+import logging
+import importlib
 from abc import ABC, abstractmethod
 from urllib.request import urlopen
+from warnings import deprecated
+
+import requests
 from channels import Channel
 from lxml import etree
-import importlib
+from data_provider import Show
+
+logger = logging.getLogger(__name__)
 
 
 class Feeder(ABC):
     @staticmethod
-    def create(channel: Channel) -> str:
+    def create(channel: Channel) -> "Feeder":
         feeder_def = channel.feeder.split('.')
         module = importlib.import_module(f'feeders.{feeder_def[0]}')
         feeder_class = getattr(module, feeder_def[1])
@@ -19,15 +26,33 @@ class Feeder(ABC):
         pass
 
     @abstractmethod
+    def get_shows_artifacts(self) -> list[Show]:
+        pass
+
+    @deprecated("change of phylosophy - will be removed in the future")
+    @abstractmethod
     def get_data(self) -> str:
         pass
 
-    def get_xmlroot(self, url: str) -> (etree._Element, dict):
-        raw = urlopen(url).read()
-        xmlroot = etree.fromstring(raw.decode('utf-8'))
-        nsmap = xmlroot.nsmap
-        return (xmlroot, nsmap)
+    def _get_xmlroot(self, url: str) -> tuple[etree._Element, dict]:
+        logger.debug("Retriveing '%s' ...", url)
+        with requests.get(url) as response:
+            if not response.ok:
+                raise response.raise_for_status()
+            
+            body = response.text
+            xmlroot = etree.fromstring(body)
+            nsmap = xmlroot.nsmap
+            return (xmlroot, nsmap)
 
+    def _get_json(self, url: str) -> dict:
+        logger.debug("Retriveing '%s' ...", url)
+        with requests.get(url) as response:
+            if not response.ok:
+                raise response.raise_for_status()
+            return response.json()
+
+    @deprecated("think about it")
     def update_channel(self, titles: list[str]) -> None:
         was_modified = False
         items = self.channel.items

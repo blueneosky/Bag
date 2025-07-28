@@ -1,9 +1,17 @@
+import logging
+import requests
 from datetime import date, datetime, timezone
+from warnings import deprecated
 from channels import Channel
+from data_provider import Episode, Show
 from feeders.feeder import Feeder
 from lxml import etree
 from email import utils
-import requests
+from py_linq import Enumerable
+from dateutil import parser
+from utils import try_parse_int
+
+logger = logging.getLogger(__name__)
 
 
 class Adn(Feeder):
@@ -11,6 +19,62 @@ class Adn(Feeder):
         super().__init__(channel)
         pass
 
+    def get_shows_artifacts(self) -> list[Show]:
+        url = self.channel.url + f'&date={date.today().isoformat()}'
+        json = self._get_json(url)
+        items: list[dict] = json["videos"]
+
+        serie_by_titles: dict[str, Show] = {}
+
+        for item in items:
+            try:
+                self.__process_item(serie_by_titles, item)
+
+            except Exception as e:
+                logger.exception("Error processing item")
+                continue
+
+        return list(serie_by_titles.values())
+
+    def __process_item(self, serie_by_titles: dict[str, Show], video: dict) -> None:
+        if not self.__check_country_restriction(video):
+            return
+
+        show = video["show"]
+        serie_title = show["title"]
+        serie = serie_by_titles.setdefault(serie_title, Show(
+            title=serie_title,
+            feeder=self.channel.name,
+            thumbnail_url=show['image'],
+            episodes=[]))
+
+        release_date = video['releaseDate']
+        release_date = parser.parse(release_date) if release_date is not None \
+            else datetime.now(timezone.utc)
+
+        episode = Episode(
+            guid=video['embeddedUrl'],
+            title=video['name'],
+            category=Enumerable(show['genres']).first_or_default(),
+            season=try_parse_int(video['season']),
+            number=try_parse_int(video['shortNumber']),
+            thumbnail_url=video['image'],
+            releaseDate=release_date.isoformat(),
+        )
+        serie.episodes.append(episode)
+
+    def __check_country_restriction(self, item: dict) -> bool:
+        if item["show"]["title"] is None:
+            return False
+        if (languages := item['languages']) is not None:
+            if "fr" not in languages and "vostf" not in languages:
+                return False
+
+        return True
+
+    # === OLD IMPLEMENTATION =================================================
+
+    @deprecated("remove this oeverride in the future")
     def get_data(self) -> str:
         url = self.channel.url + f'&date={date.today().isoformat()}'
         json = requests.get(url).json()
@@ -103,13 +167,14 @@ class Adn(Feeder):
         if url in cache:
             (_, ctype, clen) = cache[url]
             return (url, ctype, clen)
-        
+
         (url, ctype, clen) = Adn.__get_imageinfo(url)
         if url is None:
             return (url, ctype, clen)
-        
-        date_now:date = datetime.now().date()
-        self.channel.raw["__imageinfo_cache__"] = cache = { k:v for k,v in cache.items() if date.fromisoformat(v[0]) >= date_now }
+
+        date_now: date = datetime.now().date()
+        self.channel.raw["__imageinfo_cache__"] = cache = {
+            k: v for k, v in cache.items() if date.fromisoformat(v[0]) >= date_now}
         cache[url] = (date_now.isoformat(), ctype, clen)
         self.channel.save()
         return (url, ctype, clen)

@@ -4,7 +4,6 @@ import uvicorn
 from env import AppEnv
 from webapi import app
 
-
 def main():
 
     parser = argparse.ArgumentParser(description="Web Rss curator server.")

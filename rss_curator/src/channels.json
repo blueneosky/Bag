@@ -14,7 +14,6 @@
     },
     {
         "__feeder__": "crunchyroll.Crunchyroll",
-        "items": {},
         "name": "crunchyroll",
         "url": "https://feeds.feedburner.com/crunchyroll/rss/anime?lang=frFR"
     }

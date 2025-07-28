@@ -1,7 +1,6 @@
 Requirement
 ===========
-$> python3 -m pip install fastapi uvicorn[standard]
-$> apt install python3-lxml
+$> docker
 
 
 TODO
@@ -17,7 +16,14 @@ INSTALL NOTES
 see INSTALL.MD for instructions
 
 
-DEBUG NOTES
+DEV/DEBUG NOTES
 =============
-$> uvicorn main:app --reload
+When change in docker config (yml) or python requirements
+```bash
+docker compose up --build --remove-orphans 
+```
 
+Or start
+```bash
+docker compose up
+```

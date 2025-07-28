@@ -9,4 +9,3 @@ if (!configParam) {
 } else {
     new ChannelPage(configParam).show();
 }
-

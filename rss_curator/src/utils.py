@@ -1,6 +1,13 @@
 from datetime import datetime, timedelta
 
 
+def try_parse_int(value: str) -> int | None:
+    try:
+        return int(value)
+    except (ValueError, TypeError):
+        return None
+
+
 class Stopwatch:
     @staticmethod
     def startnew() -> 'Stopwatch':

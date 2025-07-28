@@ -10,7 +10,7 @@ class Channel:
         self.name = raw["name"]
         self.feeder = raw["__feeder__"]
         self.url = raw["url"]
-        self.items: dict = raw["items"]
+        self.items: dict = None #raw["items"]
 
     def save(self) -> None:
         self.config.save()
