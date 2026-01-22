@@ -1,0 +1,8 @@
+uvicorn[standard]
+fastapi[all]
+lxml
+requests
+sqlalchemy
+pydantic
+py-linq
+python-dateutil

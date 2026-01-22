@@ -1,61 +1,27 @@
-# ================================
-# Node and build output
-# ================================
-node_modules
-dist
-out-tsc
-.angular
-.cache
-.tmp
+# Git
+**/.git
+**/.gitignore
+**/.gitattributes
 
-# ================================
-# Testing & Coverage
-# ================================
-coverage
-jest
-cypress
-cypress/screenshots
-cypress/videos
-reports
-playwright-report
-.vite
-.vitepress
 
-# ================================
-# Environment & log files
-# ================================
-*.env*
-!*.env.production
-*.log
-*.tsbuildinfo
-
-# ================================
-# IDE & OS-specific files
-# ================================
-.vscode
-.idea
-.DS_Store
-Thumbs.db
-*.swp
-
-# ================================
-# Version control & CI files
-# ================================
-.git
-.gitignore
-
-# ================================
-# Docker & local orchestration
-# ================================
-Dockerfile
-Dockerfile.*
-.dockerignore
+# Docker
 docker-compose.yml
-docker-compose*.yml
+Dockerfile
+.docker
+.dockerignore
 
-# ================================
-# Miscellaneous
-# ================================
-*.bak
-*.old
-*.tmp
+# Byte-compiled / optimized / DLL files
+**/__pycache__/
+**/*.py[cod]
+
+# Virtual environment
+**/.env
+**/.venv/
+**/venv/
+
+# Angular
+**/dist/
+**/node_modules/
+
+# VS Code
+**/.vscode/

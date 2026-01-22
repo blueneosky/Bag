@@ -1,0 +1,19 @@
+[
+    {
+        "__feeder__": "adn.Adn",
+        "__imageinfo_cache__": {},
+        "name": "adn",
+        "rssInfo": {
+            "description": "Curated ADN 'today' source",
+            "item.category": "Anime",
+            "link": "https://animationdigitalnetwork.fr/",
+            "title": "ADN"
+        },
+        "url": "https://gw.api.animationdigitalnetwork.fr/video/calendar?maxAgeCategory=18"
+    },
+    {
+        "__feeder__": "crunchyroll.Crunchyroll",
+        "name": "crunchyroll",
+        "url": "https://feeds.feedburner.com/crunchyroll/"
+    }
+]

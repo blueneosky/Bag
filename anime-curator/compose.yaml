@@ -1,21 +1,57 @@
 services:
-  angular-prod:
+  webapp:
     build:
       context: .
       dockerfile: Dockerfile
-    image: anime-curator-angular-prod
+      target: runner
+    image: anime-curator-webapp:latest
     ports:
-      - 8080:8080
+      - 8100:8080
+    restart: unless-stopped
+    volumes:
+      - /var/opt/anime-curator:/data
+    environment:
+      - UVICORN_RELOAD=true
+      - ENV=prod
+    healthcheck:
+      test: ["CMD", "/app/healthcheck.py", "http://localhost:8100/health"]
+      interval: 5m00s
+      timeout: 15s
+      retries: 3
+      start_period: 5s
 
-  angular-dev:
+  backend-dev:
     build:
       context: .
-      dockerfile: Dockerfile.dev
-    image: anime-curator-angular-dev
+      dockerfile: Dockerfile
+      target: python_dev
+    image: anime-curator-backend:dev
     ports:
-      - 4200:4200
+      - 8100:8080
+    volumes:
+      - ./backend/src:/app
+      - ./data:/data
+    environment:
+      - UVICORN_RELOAD=true
+      - ENV=dev
     develop:
       watch:
         - action: sync
-          path: .
+          path: ./backend/src
+          target: /app
+
+  frontend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: angular_dev
+    image: anime-curator-frontend:dev
+    ports:
+      - 4200:4200
+    depends_on:
+      - backend-dev
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
           target: /app
