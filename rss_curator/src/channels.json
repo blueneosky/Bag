@@ -15,6 +15,6 @@
     {
         "__feeder__": "crunchyroll.Crunchyroll",
         "name": "crunchyroll",
-        "url": "https://feeds.feedburner.com/crunchyroll/rss/anime?lang=frFR"
+        "url": "https://feeds.feedburner.com/crunchyroll/"
     }
 ]
