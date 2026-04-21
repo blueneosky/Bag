@@ -79,13 +79,6 @@ echo "### Alphonse.Listener ###"
 cd "${script_dir}"
 ./src/Alphonse.Listener/install.sh
 
-###################
-# Front install
-echo "### alphonse-front ###"
-cd "${script_dir}"
-./src/alphonse-front/install.sh
-
-
 
 
 ###################

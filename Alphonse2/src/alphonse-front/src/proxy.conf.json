@@ -1,8 +1,0 @@
-{
-    "/api/*": {
-        "target": "https://blueneosky.ddns.net/alphonse",
-        "secure": true,
-        "changeOrigin": true,
-        "logLevel": "debug"
-    }
-}
