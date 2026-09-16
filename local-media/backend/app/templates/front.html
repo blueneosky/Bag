@@ -45,6 +45,10 @@
         font-family: monospace;
       }
 
+      #current-path a {
+        color: inherit;
+      }
+
       a {
         color: #70b7ff;
       }
@@ -59,7 +63,7 @@
   <body>
     <main>
       <h1>Local Media</h1>
-      <p>Path: <span id="current-path">/</span></p>
+      <p><span id="current-path">/</span></p>
       <p id="status">Loading files...</p>
       <table>
         <thead>
@@ -78,7 +82,36 @@
       const currentPath = new URLSearchParams(window.location.search).get("path") || "";
       const frontendBaseUrl = new URL(window.location.href);
       frontendBaseUrl.pathname = `${frontendBaseUrl.pathname.replace(/\/+$/, "")}/`;
-      document.querySelector("#current-path").textContent = currentPath || "/";
+
+      function getPathUrl(path) {
+        const url = new URL(window.location.href);
+        url.search = "";
+        if (path) {
+          url.searchParams.set("path", path);
+        }
+        return url.toString();
+      }
+
+      function renderPathBreadcrumbs() {
+        const pathElement = document.querySelector("#current-path");
+        const pathParts = currentPath.split("/").filter(Boolean);
+        const rootLink = document.createElement("a");
+        rootLink.href = getPathUrl("");
+        rootLink.textContent = "Home";
+        pathElement.replaceChildren(rootLink);
+
+        let accumulatedPath = "";
+        pathParts.forEach((part) => {
+          accumulatedPath = accumulatedPath ? `${accumulatedPath}/${part}` : part;
+          pathElement.append(" / ");
+          const link = document.createElement("a");
+          link.href = getPathUrl(accumulatedPath);
+          link.textContent = part;
+          pathElement.appendChild(link);
+        });
+      }
+
+      renderPathBreadcrumbs();
 
       function getFolderUrl(folderName) {
         const nextPath = currentPath
