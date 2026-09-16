@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Local Media Player</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #171a1f;
+        color: #e8eaed;
+        font-family: sans-serif;
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        height: 100vh;
+        padding: 1.5rem 2rem 2rem;
+      }
+
+      h1 {
+        font-size: 1.25rem;
+        margin: 0;
+      }
+
+      .path {
+        color: #aeb6c2;
+        font-family: monospace;
+        margin: 0;
+        overflow-wrap: anywhere;
+      }
+
+      video {
+        background: #080a0d;
+        cursor: pointer;
+        height: 100%;
+        min-height: 0;
+        object-fit: contain;
+        width: 100%;
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p class="path">{{ path }}</p>
+      <video
+        autoplay
+        controls
+        controlslist="nodownload"
+        disablepictureinpicture
+        playsinline
+      >
+        Your browser does not support video playback.
+      </video>
+    </main>
+
+  <script>
+      const video = document.querySelector("video");
+      const videoUrl = new URL("../../api/files/{{ id }}", window.location.href);
+      video.src = videoUrl;
+
+      function getSeekZone(event) {
+        const bounds = video.getBoundingClientRect();
+        const position = event.clientX - bounds.left;
+
+        return {
+          left: position < bounds.width / 3,
+          right: position > bounds.width * 2 / 3,
+        };
+      }
+
+      function seek(seconds) {
+        const duration = Number.isFinite(video.duration)
+          ? video.duration
+          : Infinity;
+
+        video.currentTime = Math.max(
+          0,
+          Math.min(video.currentTime + seconds, duration),
+        );
+      }
+
+      function preventNativeFullscreen(event) {
+        const zone = getSeekZone(event);
+
+        if (zone.left || zone.right) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }
+
+      video.addEventListener("pointerdown", preventNativeFullscreen, true);
+      video.addEventListener("mousedown", preventNativeFullscreen, true);
+
+      let pendingSeekClick;
+
+      video.addEventListener("click", (event) => {
+        const zone = getSeekZone(event);
+
+        if (!zone.left && !zone.right) {
+          return;
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+
+        // Delay single-click seeking so a double-click only seeks once.
+        clearTimeout(pendingSeekClick);
+        pendingSeekClick = setTimeout(() => {
+          seek(zone.left ? -10 : 10);
+          pendingSeekClick = undefined;
+        }, 250);
+      }, true);
+
+      video.addEventListener("dblclick", async (event) => {
+        const zone = getSeekZone(event);
+
+        if (zone.left || zone.right) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          event.stopPropagation();
+
+          clearTimeout(pendingSeekClick);
+          pendingSeekClick = undefined;
+          seek(zone.left ? -10 : 10);
+          return;
+        }
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
+
+        if (!document.fullscreenElement) {
+          await video.requestFullscreen?.();
+        } else {
+          await document.exitFullscreen?.();
+        }
+      }, true);
+    </script>
+  </body>
+</html>

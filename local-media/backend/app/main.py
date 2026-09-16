@@ -1,0 +1,29 @@
+import os
+
+from flask import Flask, redirect, url_for
+
+from app.frontend import frontend_blueprint
+from app.backend import backend_blueprint
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "0") == "1"
+
+    @app.route("/")
+    def root():
+        return redirect(url_for("frontend.index"))
+
+    app.register_blueprint(backend_blueprint)
+    app.register_blueprint(frontend_blueprint)
+    return app
+
+
+app = create_app()
+
+if __name__ == '__main__':
+    app.run(
+        host="0.0.0.0",
+        port=int(os.getenv("PORT", "5000")),
+        debug=app.config["DEBUG"],
+    )

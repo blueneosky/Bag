@@ -1,0 +1,131 @@
+import hashlib
+import io
+import json
+import os
+import subprocess
+import threading
+from pathlib import Path
+
+from flask import Blueprint, jsonify, request, send_file
+
+from app.tools import encode_media_reference, local_media_path, resolve_media_path, resolve_media_request
+
+backend_blueprint = Blueprint('api', __name__)
+
+preview_cache = {}
+preview_cache_lock = threading.Lock()
+
+
+def preview_response(image_bytes, cache_key):
+    response = send_file(io.BytesIO(image_bytes), mimetype="image/jpeg")
+    etag = hashlib.sha256(repr(cache_key).encode()).hexdigest()
+    response.headers["Cache-Control"] = "public, max-age=86400"
+    response.headers["ETag"] = f'"{etag}"'
+    return response
+
+@backend_blueprint.route('/api/files', methods=['GET'])
+def get_files():
+    current_path, error = resolve_media_path(request.args.get("path", ""))
+    if error:
+        return error
+
+    if not current_path.is_dir():
+        return jsonify({"error": "path must be an existing folder"}), 404
+
+    def build_file_entry(entry):
+        relative_path = Path(os.path.relpath(entry.path, local_media_path())).as_posix()
+        return {
+            "name": entry.name,
+            "type": "folder" if entry.is_dir(follow_symlinks=False) else "file",
+            "id": encode_media_reference(relative_path),
+        }
+
+    files = sorted(
+        [build_file_entry(entry) for entry in os.scandir(current_path)],
+        key=lambda item: (item["type"] != "folder", item["name"].casefold()),
+    )
+    return jsonify({"files": files})
+
+
+@backend_blueprint.route('/api/files/<media_id>', methods=['GET'])
+def video_file(media_id=None):
+    current_path, error = resolve_media_request(media_id)
+    if error:
+        return error
+
+    if not current_path.is_file():
+        return jsonify({"error": "path must be a video file"}), 400
+
+    return send_file(current_path, conditional=True)
+
+
+
+@backend_blueprint.route('/api/files/preview/<media_id>', methods=['GET'])
+def preview_file(media_id=None):
+    current_path, error = resolve_media_request(media_id)
+    if error:
+        return error
+
+    if not current_path.is_file():
+        return jsonify({"error": "path is not a video file"}), 400
+
+    try:
+        file_signature = (current_path.stat().st_size, current_path.stat().st_mtime_ns)
+    except OSError:
+        return jsonify({"error": "could not access video file"}), 404
+
+    cache_key = (str(current_path), file_signature)
+    with preview_cache_lock:
+        cached_image = preview_cache.get(cache_key)
+    if cached_image is not None:
+        return preview_response(cached_image, cache_key)
+
+    probe = subprocess.run(
+        [
+            "ffprobe",
+            "-v", "error",
+            "-select_streams", "v:0",
+            "-show_entries", "stream=codec_type:format=duration",
+            "-of", "json",
+            str(current_path),
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if probe.returncode != 0:
+        return jsonify({"error": "path is not a video file"}), 400
+
+    try:
+        probe_data = json.loads(probe.stdout)
+        if not probe_data.get("streams") or probe_data["streams"][0].get("codec_type") != "video":
+            return jsonify({"error": "path is not a video file"}), 400
+        duration = float(probe_data["format"]["duration"])
+    except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+        return jsonify({"error": "could not determine video duration"}), 422
+
+    timestamp = duration / 3 if duration < 20 * 60 else 10 * 60
+    extract = subprocess.run(
+        [
+            "ffmpeg",
+            "-v", "error",
+            "-ss", str(timestamp),
+            "-i", str(current_path),
+            "-frames:v", "1",
+            "-vf", "scale='min(128,iw)':-1",
+            "-f", "image2pipe",
+            "-vcodec", "mjpeg",
+            "-q:v", "5",
+            "pipe:1",
+        ],
+        capture_output=True,
+        check=False,
+    )
+    if extract.returncode != 0 or not extract.stdout:
+        return jsonify({"error": "could not extract video preview"}), 422
+
+    with preview_cache_lock:
+        preview_cache[cache_key] = extract.stdout
+
+    return preview_response(extract.stdout, cache_key)
+
