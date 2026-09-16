@@ -64,9 +64,9 @@
         autoplay
         controls
         controlslist="nodownload nofullscreen"
+        data-path="{{ path }}"
         disablepictureinpicture
         playsinline
-        src="{{ video_url }}"
       >
         Your browser does not support video playback.
       </video>
@@ -74,6 +74,10 @@
 
   <script>
       const video = document.querySelector("video");
+      const videoUrl = new URL("../api/files/video", window.location.href);
+      videoUrl.searchParams.set("path", video.dataset.path);
+      video.src = videoUrl;
+      console.log("Video URL:", videoUrl);
 
       function getSeekZone(event) {
         const bounds = video.getBoundingClientRect();

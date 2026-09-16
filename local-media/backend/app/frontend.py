@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for
+from flask import Blueprint, render_template, request
 
 frontend_blueprint = Blueprint(
     "frontend",
@@ -22,5 +22,4 @@ def player():
     return render_template(
         "player.html",
         path=path,
-        video_url=url_for("api.video_file", path=path),
     )
