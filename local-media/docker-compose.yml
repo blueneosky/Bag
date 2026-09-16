@@ -1,0 +1,28 @@
+services:
+  backend:
+    profiles: ["prod"]
+    build:
+      context: ./backend
+    environment:
+      FLASK_DEBUG: "0"
+      PORT: "5010"
+    ports:
+      - "5010:5010"
+    volumes:
+      - /srv/local-media:/srv:ro
+    command: ["gunicorn", "--bind", "0.0.0.0:5010", "app.main:app"]
+
+  backend-dev:
+    profiles: ["dev"]
+    build:
+      context: ./backend
+    environment:
+      FLASK_DEBUG: "1"
+      FLASK_APP: app.main
+      PORT: "5010"
+    ports:
+      - "5010:5010"
+    volumes:
+      - ./backend:/app
+      - /srv/local-media:/srv:ro
+    command: ["flask", "--app", "app.main", "run", "--host", "0.0.0.0", "--port", "5010", "--debug"]

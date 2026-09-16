@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Local Media</title>
+    <style>
+      body {
+        background: #171a1f;
+        color: #e8eaed;
+        font-family: sans-serif;
+        margin: 0;
+      }
+
+      main {
+        margin: 0 auto;
+        max-width: 60rem;
+        padding: 2rem;
+      }
+
+      table {
+        background: #20242b;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        width: min(100%, 50rem);
+      }
+
+      th,
+      td {
+        border: 1px solid #3a414c;
+        padding: 0.6rem 0.8rem;
+        text-align: left;
+      }
+
+      th {
+        background: #2b313a;
+      }
+
+      #status {
+        color: #aeb6c2;
+      }
+
+      #current-path {
+        color: #aeb6c2;
+        font-family: monospace;
+      }
+
+      a {
+        color: #70b7ff;
+      }
+
+      .preview {
+        height: 72px;
+        object-fit: contain;
+        width: 128px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Local Media</h1>
+      <p>Path: <span id="current-path">/</span></p>
+      <p id="status">Loading files...</p>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Preview</th>
+            <th scope="col">Name</th>
+          </tr>
+        </thead>
+        <tbody id="files-list"></tbody>
+      </table>
+    </main>
+
+    <script>
+      const status = document.querySelector("#status");
+      const filesList = document.querySelector("#files-list");
+      const currentPath = new URLSearchParams(window.location.search).get("path") || "";
+      document.querySelector("#current-path").textContent = currentPath || "/";
+
+      function getFolderUrl(folderName) {
+        const nextPath = currentPath
+          ? `${currentPath.replace(/\/+$/, "")}/${folderName}`
+          : folderName;
+        const url = new URL(window.location.href);
+        url.search = "";
+        url.searchParams.set("path", nextPath);
+        return url.toString();
+      }
+
+      function getFilePath(fileName) {
+        return currentPath
+          ? `${currentPath.replace(/\/+$/, "")}/${fileName}`
+          : fileName;
+      }
+
+      function getPreviewUrl(fileName) {
+        const url = new URL("/api/files/preview", window.location.origin);
+        url.searchParams.set("path", getFilePath(fileName));
+        return url.toString();
+      }
+
+      function getPlayerUrl(fileName) {
+        const url = new URL("/front/player", window.location.origin);
+        url.searchParams.set("path", getFilePath(fileName));
+        return url.toString();
+      }
+
+      async function loadFiles() {
+        try {
+          const query = new URLSearchParams();
+          if (currentPath) {
+            query.set("path", currentPath);
+          }
+          const response = await fetch(`/api/files?${query}`);
+          if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+          }
+
+          const data = await response.json();
+          const files = Array.isArray(data.files) ? data.files : [];
+          const previews = [];
+
+          files.forEach((file) => {
+            const row = document.createElement("tr");
+            const preview = document.createElement("td");
+            const name = document.createElement("td");
+            if (file.type === "folder") {
+              const link = document.createElement("a");
+              link.href = getFolderUrl(file.name);
+              link.textContent = file.name;
+              name.appendChild(link);
+            } else {
+              const playerUrl = getPlayerUrl(file.name);
+              const previewLink = document.createElement("a");
+              const nameLink = document.createElement("a");
+              previewLink.href = playerUrl;
+              nameLink.href = playerUrl;
+              preview.textContent = "Loading preview...";
+              previewLink.appendChild(preview.firstChild);
+              preview.replaceChildren(previewLink);
+              previews.push({ file, preview });
+              nameLink.textContent = file.name;
+              name.appendChild(nameLink);
+            }
+            row.appendChild(preview);
+            row.appendChild(name);
+            filesList.appendChild(row);
+          });
+
+          status.textContent = files.length
+            ? `${files.length} item${files.length === 1 ? "" : "s"}`
+            : "No files or folders found.";
+
+          requestAnimationFrame(() => {
+            previews.forEach(({ file, preview }) => {
+              const image = document.createElement("img");
+              image.className = "preview";
+              image.alt = `Preview of ${file.name}`;
+              image.src = getPreviewUrl(file.name);
+              preview.querySelector("a").replaceChildren(image);
+            });
+          });
+        } catch (error) {
+          status.textContent = `Unable to load files: ${error.message}`;
+        }
+      }
+
+      loadFiles();
+    </script>
+  </body>
+</html>
