@@ -3,7 +3,7 @@ import os
 from flask import Flask, redirect, url_for
 
 from app.frontend import frontend_blueprint
-from app.routes import api_blueprint
+from app.backend import backend_blueprint
 
 
 def create_app():
@@ -14,7 +14,7 @@ def create_app():
     def root():
         return redirect(url_for("frontend.index"))
 
-    app.register_blueprint(api_blueprint)
+    app.register_blueprint(backend_blueprint)
     app.register_blueprint(frontend_blueprint)
     return app
 

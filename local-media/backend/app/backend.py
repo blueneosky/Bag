@@ -8,7 +8,7 @@ from pathlib import Path
 
 from flask import Blueprint, jsonify, request, send_file
 
-api_blueprint = Blueprint('api', __name__)
+backend_blueprint = Blueprint('api', __name__)
 
 local_media_path = Path("/srv").resolve()
 preview_cache = {}
@@ -35,7 +35,7 @@ def preview_response(image_bytes, cache_key):
     response.headers["ETag"] = f'"{etag}"'
     return response
 
-@api_blueprint.route('/api/files', methods=['GET'])
+@backend_blueprint.route('/api/files', methods=['GET'])
 def get_files():
     current_path, error = resolve_media_path(request.args.get("path", ""))
     if error:
@@ -54,7 +54,7 @@ def get_files():
     return jsonify({"files": files})
 
 
-@api_blueprint.route('/api/files/preview', methods=['GET'])
+@backend_blueprint.route('/api/files/preview', methods=['GET'])
 def preview_file():
     current_path, error = resolve_media_path(request.args.get("path", ""))
     if error:
@@ -124,7 +124,7 @@ def preview_file():
     return preview_response(extract.stdout, cache_key)
 
 
-@api_blueprint.route('/api/files/video', methods=['GET'])
+@backend_blueprint.route('/api/files/video', methods=['GET'])
 def video_file():
     current_path, error = resolve_media_path(request.args.get("path", ""))
     if error:
