@@ -63,8 +63,7 @@
       <video
         autoplay
         controls
-        controlslist="nodownload nofullscreen"
-        data-path="{{ path }}"
+        controlslist="nodownload"
         disablepictureinpicture
         playsinline
       >
@@ -74,10 +73,8 @@
 
   <script>
       const video = document.querySelector("video");
-      const videoUrl = new URL("../api/files/video", window.location.href);
-      videoUrl.searchParams.set("path", video.dataset.path);
+      const videoUrl = new URL("../../api/files/{{ id }}", window.location.href);
       video.src = videoUrl;
-      console.log("Video URL:", videoUrl);
 
       function getSeekZone(event) {
         const bounds = video.getBoundingClientRect();

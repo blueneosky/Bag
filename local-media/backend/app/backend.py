@@ -1,6 +1,6 @@
+import hashlib
 import io
 import json
-import hashlib
 import os
 import subprocess
 import threading
@@ -8,24 +8,12 @@ from pathlib import Path
 
 from flask import Blueprint, jsonify, request, send_file
 
+from app.tools import encode_media_reference, local_media_path, resolve_media_path, resolve_media_request
+
 backend_blueprint = Blueprint('api', __name__)
 
-local_media_path = Path("/srv").resolve()
 preview_cache = {}
 preview_cache_lock = threading.Lock()
-
-
-def resolve_media_path(relative_path):
-    requested_path = Path(relative_path)
-
-    if requested_path.is_absolute():
-        return None, (jsonify({"error": "path must be relative"}), 400)
-
-    current_path = (local_media_path / requested_path).resolve()
-    if current_path != local_media_path and local_media_path not in current_path.parents:
-        return None, (jsonify({"error": "path must stay inside the media folder"}), 400)
-
-    return current_path, None
 
 
 def preview_response(image_bytes, cache_key):
@@ -44,19 +32,37 @@ def get_files():
     if not current_path.is_dir():
         return jsonify({"error": "path must be an existing folder"}), 404
 
-    files = sorted([
-        {
+    def build_file_entry(entry):
+        relative_path = Path(os.path.relpath(entry.path, local_media_path())).as_posix()
+        return {
             "name": entry.name,
             "type": "folder" if entry.is_dir(follow_symlinks=False) else "file",
+            "id": encode_media_reference(relative_path),
         }
-        for entry in os.scandir(current_path)
-    ], key=lambda item: (item["type"] != "folder", item["name"].casefold()))
+
+    files = sorted(
+        [build_file_entry(entry) for entry in os.scandir(current_path)],
+        key=lambda item: (item["type"] != "folder", item["name"].casefold()),
+    )
     return jsonify({"files": files})
 
 
-@backend_blueprint.route('/api/files/preview', methods=['GET'])
-def preview_file():
-    current_path, error = resolve_media_path(request.args.get("path", ""))
+@backend_blueprint.route('/api/files/<media_id>', methods=['GET'])
+def video_file(media_id=None):
+    current_path, error = resolve_media_request(media_id)
+    if error:
+        return error
+
+    if not current_path.is_file():
+        return jsonify({"error": "path must be a video file"}), 400
+
+    return send_file(current_path, conditional=True)
+
+
+
+@backend_blueprint.route('/api/files/preview/<media_id>', methods=['GET'])
+def preview_file(media_id=None):
+    current_path, error = resolve_media_request(media_id)
     if error:
         return error
 
@@ -122,16 +128,4 @@ def preview_file():
         preview_cache[cache_key] = extract.stdout
 
     return preview_response(extract.stdout, cache_key)
-
-
-@backend_blueprint.route('/api/files/video', methods=['GET'])
-def video_file():
-    current_path, error = resolve_media_path(request.args.get("path", ""))
-    if error:
-        return error
-
-    if not current_path.is_file():
-        return jsonify({"error": "path must be a video file"}), 400
-
-    return send_file(current_path, conditional=True)
 

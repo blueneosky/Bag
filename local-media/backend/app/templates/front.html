@@ -96,15 +96,14 @@
           : fileName;
       }
 
-      function getPreviewUrl(fileName) {
-        const url = new URL("../api/files/preview", frontendBaseUrl);
-        url.searchParams.set("path", getFilePath(fileName));
+      function getPreviewUrl(fileId) {
+        const url = new URL(`../api/files/preview/${encodeURIComponent(fileId)}`, frontendBaseUrl);
         return url.toString();
       }
 
-      function getPlayerUrl(fileName) {
-        const url = new URL("./player", frontendBaseUrl);
-        url.searchParams.set("path", getFilePath(fileName));
+      function getPlayerUrl(fileId) {
+        const url = new URL(`./player/${fileId}`, frontendBaseUrl);
+        //url.searchParams.set("id", fileId);
         return url.toString();
       }
 
@@ -135,7 +134,7 @@
               link.textContent = file.name;
               name.appendChild(link);
             } else {
-              const playerUrl = getPlayerUrl(file.name);
+              const playerUrl = getPlayerUrl(file.id);
               const previewLink = document.createElement("a");
               const nameLink = document.createElement("a");
               previewLink.href = playerUrl;
@@ -161,7 +160,7 @@
               const image = document.createElement("img");
               image.className = "preview";
               image.alt = `Preview of ${file.name}`;
-              image.src = getPreviewUrl(file.name);
+              image.src = getPreviewUrl(file.id);
               preview.querySelector("a").replaceChildren(image);
             });
           });
