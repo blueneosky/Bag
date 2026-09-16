@@ -1,6 +1,7 @@
 services:
   backend:
     profiles: ["prod"]
+    restart: unless-stopped
     build:
       context: ./backend
     environment:

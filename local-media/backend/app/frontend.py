@@ -8,7 +8,7 @@ frontend_blueprint = Blueprint(
 )
 
 
-@frontend_blueprint.route("/", methods=["GET"])
+@frontend_blueprint.route("", methods=["GET"], strict_slashes=False)
 def index():
     return render_template("front.html")
 

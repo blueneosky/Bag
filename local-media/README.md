@@ -34,7 +34,7 @@ docker compose --profile prod up --build -d
 Accès local :
 - Backend : http://localhost:5010
 
-> Si un serveur Nginx externe est déjà présent sur la machine, le frontend peut aussi être redirigé via `proxy_pass http://localhost:5010;`.
+> Si un serveur Nginx externe est déjà présent sur la machine, le frontend peut aussi être redirigé via `proxy_pass http://localhost:5010;` (go check nginx-snippet.txt)
 
 ## 4. Arrêt des services
 ```bash
