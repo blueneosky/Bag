@@ -1,0 +1,7 @@
+services:
+  backend:
+    restart: unless-stopped
+    ports:
+      - "${HOST_PORT:?Set HOST_PORT in the instance env file}:4200"
+    volumes:
+      - "${MEDIA_PATH:?Set MEDIA_PATH in the instance env file}:/srv:ro"
