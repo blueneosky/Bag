@@ -12,34 +12,65 @@ Cette application permet de :
 - `README.md` : documentation du projet.
 
 ## 3. Configurations Docker
-Le projet utilise un split clair entre le mode développement et le mode production.
+La configuration commune est dans `docker-compose.yml`. Les configurations de
+développement et de production sont séparées dans `docker-compose.dev.yml` et
+`docker-compose.prod.yml`. La variable `COMPOSE_FILE`, définie dans le fichier
+de valeurs du mode ou de l'instance, indique quels fichiers fusionner.
 
 ### Mode développement
-Le backend tourne avec Flask en mode debug, avec rechargement activé.
+Le backend tourne avec Flask en mode debug, avec rechargement activé. Le code est
+monté depuis `backend/`.
+
+Copiez le modèle une fois :
 
 ```bash
-docker compose --profile dev up --build
+cp .env.dev.example .env.dev
+```
+
+Puis lancez le mode dev :
+
+```bash
+docker compose --env-file .env.dev up --build
 ```
 
 Accès local :
-- Backend : http://localhost:5010
+- Backend : http://localhost:4200
 
 ### Mode production
-Le backend tourne avec Gunicorn, sans debug.
+Le backend tourne avec Gunicorn, sans debug. Chaque instance doit utiliser un
+nom de projet Compose unique, un port hôte dédié et son propre chemin de médias.
+
+Copiez le modèle de valeurs pour créer le fichier de l'instance, puis adaptez
+`COMPOSE_PROJECT_NAME`, `HOST_PORT` et `MEDIA_PATH` si nécessaire :
 
 ```bash
-docker compose --profile prod up --build -d
+cp .env.prod.example .env.prod.media-a
+```
+
+Lancez l'instance :
+
+```bash
+docker compose --env-file .env.prod.media-a up --build -d
 ```
 
 Accès local :
 - Backend : http://localhost:5010
 
-> Si un serveur Nginx externe est déjà présent sur la machine, le frontend peut aussi être redirigé via `proxy_pass http://localhost:5010;` (go check nginx-snippet.txt)
+Pour déployer une deuxième instance, copiez le modèle dans un nouveau fichier,
+puis définissez un nom de projet, un port hôte disponible et un chemin média
+différents. Le chemin média indiqué dans `MEDIA_PATH` est monté en lecture seule
+dans `/srv` du conteneur. Les fichiers locaux `.env.dev` et `.env.prod.*` sont
+ignorés par Git, à l'exception des modèles `.env.dev.example` et
+`.env.prod.example`.
+
+Si un serveur Nginx externe est déjà présent sur la machine, configurez son
+`proxy_pass` vers le port hôte correspondant à l'instance (par exemple
+`http://127.0.0.1:5010` pour le modèle fourni). Voir `nginx-snippet.txt`.
 
 ## 4. Arrêt des services
 ```bash
-docker compose --profile dev down
-docker compose --profile prod down
+docker compose --env-file .env.dev down
+docker compose --env-file .env.prod.media-a down
 ```
 
 ## 5. Notes importantes
