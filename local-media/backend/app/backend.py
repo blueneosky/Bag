@@ -16,11 +16,11 @@ from app.tools import (
 backend_blueprint = Blueprint('api', __name__)
 
 
-def load_file_metadata(media_directory, files):
+def read_metadata(media_directory):
     try:
         metadata_directory = ensure_metadata_directory(media_directory)
     except OSError as e:
-        return None, (jsonify({"error": f"could not access metadata folder {e}"}), 500)
+        return None, None, (jsonify({"error": f"could not access metadata folder {e}"}), 500)
 
     metadata_path = metadata_directory / ".data.json"
     try:
@@ -32,47 +32,164 @@ def load_file_metadata(media_directory, files):
         else:
             metadata = {}
     except (OSError, json.JSONDecodeError, ValueError) as e:
-        return None, (jsonify({"error": f"could not read metadata file {e}"}), 500)
+        return None, None, (jsonify({"error": f"could not read metadata file {e}"}), 500)
+
+    return metadata, metadata_path, None
+
+
+def save_metadata(metadata_path, metadata):
+    try:
+        with metadata_path.open("w", encoding="utf-8") as metadata_file:
+            json.dump(metadata, metadata_file, ensure_ascii=False, indent=2)
+            metadata_file.write("\n")
+    except OSError as e:
+        return jsonify({"error": f"could not save metadata file {e}"}), 500
+    return None
+
+
+def get_file_metadata(metadata, file_name):
+    changed = False
+    if file_name not in metadata:
+        metadata[file_name] = {}
+        changed = True
+
+    file_metadata = metadata[file_name]
+    if not isinstance(file_metadata, dict):
+        return None, False, (jsonify({"error": f"invalid metadata for {file_name}"}), 500)
+
+    if "rating" not in file_metadata:
+        file_metadata["rating"] = 0
+        changed = True
+    rating = file_metadata["rating"]
+    if isinstance(rating, bool) or not isinstance(rating, int) or not 0 <= rating <= 5:
+        return None, False, (jsonify({"error": f"invalid rating for {file_name}"}), 500)
+
+    if "tags" not in file_metadata:
+        file_metadata["tags"] = []
+        changed = True
+    if not isinstance(file_metadata["tags"], list) or not all(
+        isinstance(tag, str) for tag in file_metadata["tags"]
+    ):
+        return None, False, (jsonify({"error": f"invalid tags for {file_name}"}), 500)
+
+    return file_metadata, changed, None
+
+
+def load_file_metadata(media_directory, files):
+    metadata, metadata_path, error = read_metadata(media_directory)
+    if error:
+        return None, error
 
     changed = False
     for file_entry in files:
         if file_entry["type"] != "file":
             continue
 
-        if file_entry["name"] not in metadata:
-            metadata[file_entry["name"]] = {}
-            changed = True
-        file_metadata = metadata[file_entry["name"]]
-        if not isinstance(file_metadata, dict):
-            return None, (jsonify({"error": f"invalid metadata for {file_entry['name']}"}), 500)
-
-        if "rating" not in file_metadata:
-            file_metadata["rating"] = 0
-            changed = True
-        rating = file_metadata["rating"]
-        if isinstance(rating, bool) or not isinstance(rating, int) or not 0 <= rating <= 5:
-            return None, (jsonify({"error": f"invalid rating for {file_entry['name']}"}), 500)
-
-        if "tags" not in file_metadata:
-            file_metadata["tags"] = []
-            changed = True
-        if not isinstance(file_metadata["tags"], list) or not all(
-            isinstance(tag, str) for tag in file_metadata["tags"]
-        ):
-            return None, (jsonify({"error": f"invalid tags for {file_entry['name']}"}), 500)
-
-        file_entry["rating"] = rating
+        file_metadata, entry_changed, error = get_file_metadata(metadata, file_entry["name"])
+        if error:
+            return None, error
+        changed = changed or entry_changed
+        file_entry["rating"] = file_metadata["rating"]
         file_entry["tags"] = file_metadata["tags"]
 
     if changed or not metadata_path.exists():
-        try:
-            with metadata_path.open("w", encoding="utf-8") as metadata_file:
-                json.dump(metadata, metadata_file, ensure_ascii=False, indent=2)
-                metadata_file.write("\n")
-        except OSError as e:
-            return None, (jsonify({"error": f"could not save metadata file {e}"}), 500)
+        error = save_metadata(metadata_path, metadata)
+        if error:
+            return None, error
 
     return files, None
+
+
+def file_metadata_response(media_id):
+    current_path, error = resolve_media_request(media_id)
+    if error:
+        return None, None, error
+    if not current_path.is_file():
+        return None, None, (jsonify({"error": "path must be a video file"}), 404)
+
+    metadata, metadata_path, error = read_metadata(current_path.parent)
+    if error:
+        return None, None, error
+
+    file_metadata, changed, error = get_file_metadata(metadata, current_path.name)
+    if error:
+        return None, None, error
+    if changed or not metadata_path.exists():
+        error = save_metadata(metadata_path, metadata)
+        if error:
+            return None, None, error
+
+    return current_path, file_metadata, None
+
+
+@backend_blueprint.route('/api/files/<media_id>/metadata', methods=['GET'])
+def get_video_metadata(media_id):
+    _, file_metadata, error = file_metadata_response(media_id)
+    if error:
+        return error
+    return jsonify({
+        "rating": file_metadata["rating"],
+        "tags": file_metadata["tags"],
+    })
+
+
+@backend_blueprint.route('/api/files/<media_id>/metadata/rating', methods=['PUT'])
+def update_video_rating(media_id):
+    if not request.is_json:
+        return jsonify({"error": "request body must be JSON"}), 415
+    data = request.get_json()
+    rating = data.get("rating") if isinstance(data, dict) else None
+    if isinstance(rating, bool) or not isinstance(rating, int) or not 0 <= rating <= 5:
+        return jsonify({"error": "rating must be an integer from 0 to 5"}), 400
+
+    current_path, _, error = file_metadata_response(media_id)
+    if error:
+        return error
+    metadata, metadata_path, error = read_metadata(current_path.parent)
+    if error:
+        return error
+    file_metadata, _, error = get_file_metadata(metadata, current_path.name)
+    if error:
+        return error
+    file_metadata["rating"] = rating
+    error = save_metadata(metadata_path, metadata)
+    if error:
+        return error
+    return jsonify({"rating": rating})
+
+
+@backend_blueprint.route('/api/files/<media_id>/metadata/tags', methods=['POST', 'DELETE'])
+def update_video_tags(media_id):
+    if not request.is_json:
+        return jsonify({"error": "request body must be JSON"}), 415
+    data = request.get_json()
+    tag = data.get("tag") if isinstance(data, dict) else None
+    if not isinstance(tag, str) or not tag.strip():
+        return jsonify({"error": "tag must be a non-empty string"}), 400
+    tag = tag.strip()
+
+    current_path, _, error = file_metadata_response(media_id)
+    if error:
+        return error
+    metadata, metadata_path, error = read_metadata(current_path.parent)
+    if error:
+        return error
+    file_metadata, _, error = get_file_metadata(metadata, current_path.name)
+    if error:
+        return error
+    tags = file_metadata["tags"]
+    if request.method == "POST":
+        if tag not in tags:
+            tags.append(tag)
+    elif tag not in tags:
+        return jsonify({"error": "tag not found"}), 404
+    else:
+        tags.remove(tag)
+
+    error = save_metadata(metadata_path, metadata)
+    if error:
+        return error
+    return jsonify({"tags": tags})
 
 
 def preview_response(image_path):

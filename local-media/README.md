@@ -9,6 +9,15 @@ Cette application permet de :
 Les métadonnées de chaque fichier affiché sont conservées dans `.local-media/.data.json`,
 dans son dossier parent. Une entrée contient une note de `0` à `5` et une liste de tags,
 initialisées respectivement à `0` et `[]`. La note est affichée dans la vue dossier.
+Dans le player, la note et les tags peuvent également être consultés et modifiés.
+
+L'API des métadonnées du player expose les opérations suivantes, où `<media_id>` est
+l'identifiant renvoyé par `GET /api/files` :
+- `GET /api/files/<media_id>/metadata` : lire la note et les tags.
+- `PUT /api/files/<media_id>/metadata/rating` avec `{"rating": 0}` à `{"rating": 5}` :
+  modifier la note.
+- `POST /api/files/<media_id>/metadata/tags` avec `{"tag": "nom"}` : ajouter un tag.
+- `DELETE /api/files/<media_id>/metadata/tags` avec `{"tag": "nom"}` : supprimer un tag.
 
 ## 2. Structure du projet
 - `backend/` : backend Flask.

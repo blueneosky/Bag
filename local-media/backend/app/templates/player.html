@@ -31,22 +31,17 @@
         padding: 1.5rem 2rem 2rem;
       }
 
-      h1 {
-        font-size: 1.25rem;
-        margin: 0;
-      }
-
       .back-button {
         align-items: center;
         border: 1px solid #3a414c;
         border-radius: 0.35rem;
         color: #e8eaed;
-        display: flex;
-        font-size: 1.5rem;
-        height: 2.5rem;
+        display: inline-flex;
+        flex: 0 0 2.75rem;
+        height: 2.75rem;
         justify-content: center;
         text-decoration: none;
-        width: 2.5rem;
+        width: 2.75rem;
       }
 
       .back-button:hover {
@@ -59,11 +54,101 @@
         gap: 0.75rem;
       }
 
-      .path {
-        color: #aeb6c2;
-        font-family: monospace;
+      .video-title {
+        font-size: 1.25rem;
         margin: 0;
         overflow-wrap: anywhere;
+      }
+
+      .video-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .metadata-row {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.75rem;
+      }
+
+      .rating {
+        align-items: center;
+        display: flex;
+        flex: 0 0 auto;
+      }
+
+      .rating-star {
+        background: transparent;
+        border: 0;
+        color: #806b3a;
+        cursor: pointer;
+        font-size: 2rem;
+        height: 3rem;
+        line-height: 1;
+        min-width: 2.75rem;
+        padding: 0;
+        touch-action: manipulation;
+      }
+
+      .rating-star.is-filled {
+        color: #ffd166;
+      }
+
+      .rating-star:focus-visible,
+      .tag:focus-visible,
+      .add-tag:focus-visible {
+        outline: 2px solid #70b7ff;
+        outline-offset: 2px;
+      }
+
+      .tag-list {
+        align-items: center;
+        display: flex;
+        flex: 1 1 12rem;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        min-width: 0;
+      }
+
+      .tag,
+      .add-tag {
+        align-items: center;
+        background: #2b313a;
+        border: 1px solid #46505e;
+        border-radius: 999px;
+        color: #e8eaed;
+        cursor: pointer;
+        display: inline-flex;
+        justify-content: center;
+        min-height: 2.5rem;
+        padding: 0.35rem 0.8rem;
+        touch-action: manipulation;
+      }
+
+      .tag:hover,
+      .add-tag:hover {
+        background: #39424e;
+      }
+
+      .add-tag {
+        font-size: 1.25rem;
+        min-width: 2.5rem;
+        padding: 0.25rem;
+      }
+
+      .metadata-status {
+        color: #ffb4ab;
+        margin: 0;
+      }
+
+      .metadata-status:empty {
+        display: none;
+      }
+
+      .metadata-status[data-success="true"] {
+        color: #aeb6c2;
       }
 
       video {
@@ -85,14 +170,27 @@
   </head>
   <body>
     <main>
-      <div class="video-header">
-        <a
-          class="back-button"
-          href="{{ url_for('frontend.index', path=folder_path) }}"
-          aria-label="Back to folder"
-          title="Back to folder"
-        >←</a>
-        <p class="path">{{ path }}</p>
+      <div class="video-details">
+        <div class="video-header">
+          <a
+            class="back-button"
+            href="{{ url_for('frontend.index', path=folder_path) }}"
+            aria-label="Back to folder"
+            title="Back to folder"
+          >
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 14 4 9l5-5"></path>
+              <path d="M4 9h9a7 7 0 0 1 0 14h-2"></path>
+            </svg>
+          </a>
+          <h1 class="video-title">{{ video_name }}</h1>
+        </div>
+        <div class="metadata-row">
+          <div class="rating" role="group" aria-label="Video rating"></div>
+          <div class="tag-list" aria-label="Video tags"></div>
+          <button class="add-tag" type="button" aria-label="Add a tag" title="Add a tag">+</button>
+        </div>
+        <p class="metadata-status" role="status" aria-live="polite"></p>
       </div>
       <video
         autoplay
@@ -108,6 +206,118 @@
       const video = document.querySelector("video");
       const videoUrl = new URL("../../api/files/{{ id }}", window.location.href);
       video.src = videoUrl;
+      const metadataUrl = new URL("../../api/files/{{ id }}/metadata", window.location.href);
+      const ratingElement = document.querySelector(".rating");
+      const tagList = document.querySelector(".tag-list");
+      const metadataStatus = document.querySelector(".metadata-status");
+      let rating = 0;
+      let tags = [];
+
+      function showMetadataStatus(message, isSuccess = false) {
+        metadataStatus.textContent = message;
+        metadataStatus.dataset.success = String(isSuccess);
+      }
+
+      async function updateMetadata(method, endpoint, body) {
+        const response = await fetch(endpoint, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || `Request failed with status ${response.status}`);
+        }
+        return data;
+      }
+
+      function renderRating() {
+        ratingElement.replaceChildren();
+        for (let score = 1; score <= 5; score += 1) {
+          const star = document.createElement("button");
+          star.className = `rating-star${score <= rating ? " is-filled" : ""}`;
+          star.type = "button";
+          star.textContent = score <= rating ? "★" : "☆";
+          star.setAttribute("aria-label", `${score} out of 5 stars`);
+          star.setAttribute("aria-pressed", String(score === rating));
+          star.addEventListener("click", async () => {
+            try {
+              const data = await updateMetadata("PUT", `${metadataUrl}/rating`, { rating: score });
+              rating = data.rating;
+              renderRating();
+              showMetadataStatus("");
+            } catch (error) {
+              console.error("Unable to update the video rating:", error);
+              showMetadataStatus(`Unable to update rating: ${error.message}`);
+            }
+          });
+          ratingElement.appendChild(star);
+        }
+      }
+
+      function renderTags() {
+        tagList.replaceChildren();
+        tags.forEach((tag) => {
+          const tagButton = document.createElement("button");
+          tagButton.className = "tag";
+          tagButton.type = "button";
+          tagButton.textContent = tag;
+          tagButton.setAttribute("aria-label", `Delete tag ${tag}`);
+          tagButton.title = "Click to delete this tag";
+          tagButton.addEventListener("click", async () => {
+            if (!window.confirm(`Delete the tag "${tag}"?`)) {
+              return;
+            }
+            try {
+              const data = await updateMetadata("DELETE", `${metadataUrl}/tags`, { tag });
+              tags = data.tags;
+              renderTags();
+              showMetadataStatus("");
+            } catch (error) {
+              console.error("Unable to delete the video tag:", error);
+              showMetadataStatus(`Unable to delete tag: ${error.message}`);
+            }
+          });
+          tagList.appendChild(tagButton);
+        });
+      }
+
+      document.querySelector(".add-tag").addEventListener("click", async () => {
+        const tag = window.prompt("Enter a new tag:");
+        if (tag === null || !tag.trim()) {
+          return;
+        }
+        try {
+          const data = await updateMetadata("POST", `${metadataUrl}/tags`, { tag });
+          tags = data.tags;
+          renderTags();
+          showMetadataStatus("");
+        } catch (error) {
+          console.error("Unable to add the video tag:", error);
+          showMetadataStatus(`Unable to add tag: ${error.message}`);
+        }
+      });
+
+      async function loadMetadata() {
+        try {
+          const response = await fetch(metadataUrl);
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error || `Request failed with status ${response.status}`);
+          }
+          rating = data.rating;
+          tags = data.tags;
+          renderRating();
+          renderTags();
+        } catch (error) {
+          console.error("Unable to load video metadata:", error);
+          showMetadataStatus(`Unable to load metadata: ${error.message}`);
+          renderRating();
+          renderTags();
+        }
+      }
+
+      loadMetadata();
 
       function consumeInternalNavigationMarker() {
         const navigationId = new URLSearchParams(window.location.search).get("navigation_id");
