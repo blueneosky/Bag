@@ -11,12 +11,11 @@
       <h1>Local Media</h1>
       <p><span id="current-path">/</span></p>
       <p id="status">Loading files...</p>
-      <table>
-        <thead>
+      <table class="file-list">
+        <thead class="visually-hidden">
           <tr>
-            <th scope="col">Preview</th>
-            <th scope="col">Rating</th>
-            <th scope="col">Name</th>
+            <th scope="col">Preview and rating</th>
+            <th scope="col">Name and tags</th>
           </tr>
         </thead>
         <tbody id="files-list"></tbody>
@@ -137,14 +136,21 @@
 
           files.forEach((file) => {
             const row = document.createElement("tr");
-            const preview = document.createElement("td");
-            const rating = document.createElement("td");
-            const name = document.createElement("td");
+            const visual = document.createElement("td");
+            const details = document.createElement("td");
+            visual.className = "item-visual";
+            details.className = "item-details";
             if (file.type === "folder") {
-              const link = document.createElement("a");
-              link.href = getFolderUrl(file.name);
-              link.textContent = file.name;
-              name.appendChild(link);
+              const icon = document.createElement("span");
+              icon.className = "folder-icon";
+              icon.setAttribute("aria-hidden", "true");
+              icon.textContent = "📁";
+              visual.appendChild(icon);
+              const name = document.createElement("a");
+              name.href = getFolderUrl(file.name);
+              name.className = "item-name";
+              name.textContent = file.name;
+              details.appendChild(name);
             } else {
               const playerUrl = getPlayerUrl(file.id);
               const previewLink = document.createElement("a");
@@ -153,12 +159,15 @@
               nameLink.dataset.player = "";
               previewLink.href = playerUrl;
               nameLink.href = playerUrl;
-              preview.textContent = "Loading preview...";
-              previewLink.appendChild(preview.firstChild);
-              preview.replaceChildren(previewLink);
-              previews.push({ file, preview });
+              previewLink.className = "preview-link";
+              previewLink.textContent = "Loading preview...";
+              visual.appendChild(previewLink);
+              previews.push({ file, preview: previewLink });
+              nameLink.className = "item-name";
               nameLink.textContent = file.name;
-              name.appendChild(nameLink);
+              details.appendChild(nameLink);
+
+              const rating = document.createElement("div");
               rating.className = "rating";
               const filledStars = document.createElement("span");
               filledStars.className = "rating-filled";
@@ -167,11 +176,23 @@
               emptyStars.className = "rating-empty";
               emptyStars.textContent = "☆".repeat(5 - file.rating);
               rating.append(filledStars, emptyStars);
+              rating.setAttribute("role", "img");
               rating.setAttribute("aria-label", `Rating: ${file.rating} out of 5`);
+              visual.appendChild(rating);
+
+              if (file.tags.length) {
+                const tags = document.createElement("div");
+                tags.className = "item-tags";
+                file.tags.forEach((tag) => {
+                  const tagElement = document.createElement("span");
+                  tagElement.className = "item-tag";
+                  tagElement.textContent = tag;
+                  tags.appendChild(tagElement);
+                });
+                details.appendChild(tags);
+              }
             }
-            row.appendChild(preview);
-            row.appendChild(rating);
-            row.appendChild(name);
+            row.append(visual, details);
             filesList.appendChild(row);
           });
 
@@ -185,7 +206,7 @@
               image.className = "preview";
               image.alt = `Preview of ${file.name}`;
               image.src = getPreviewUrl(file.id);
-              preview.querySelector("a").replaceChildren(image);
+              preview.replaceChildren(image);
             });
           });
         } catch (error) {
