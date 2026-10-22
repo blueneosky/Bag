@@ -16,6 +16,65 @@ from app.tools import (
 backend_blueprint = Blueprint('api', __name__)
 
 
+def load_file_metadata(media_directory, files):
+    try:
+        metadata_directory = ensure_metadata_directory(media_directory)
+    except OSError as e:
+        return None, (jsonify({"error": f"could not access metadata folder {e}"}), 500)
+
+    metadata_path = metadata_directory / ".data.json"
+    try:
+        if metadata_path.exists():
+            with metadata_path.open(encoding="utf-8") as metadata_file:
+                metadata = json.load(metadata_file)
+            if not isinstance(metadata, dict):
+                raise ValueError("metadata must contain a JSON object")
+        else:
+            metadata = {}
+    except (OSError, json.JSONDecodeError, ValueError) as e:
+        return None, (jsonify({"error": f"could not read metadata file {e}"}), 500)
+
+    changed = False
+    for file_entry in files:
+        if file_entry["type"] != "file":
+            continue
+
+        if file_entry["name"] not in metadata:
+            metadata[file_entry["name"]] = {}
+            changed = True
+        file_metadata = metadata[file_entry["name"]]
+        if not isinstance(file_metadata, dict):
+            return None, (jsonify({"error": f"invalid metadata for {file_entry['name']}"}), 500)
+
+        if "rating" not in file_metadata:
+            file_metadata["rating"] = 0
+            changed = True
+        rating = file_metadata["rating"]
+        if isinstance(rating, bool) or not isinstance(rating, int) or not 0 <= rating <= 5:
+            return None, (jsonify({"error": f"invalid rating for {file_entry['name']}"}), 500)
+
+        if "tags" not in file_metadata:
+            file_metadata["tags"] = []
+            changed = True
+        if not isinstance(file_metadata["tags"], list) or not all(
+            isinstance(tag, str) for tag in file_metadata["tags"]
+        ):
+            return None, (jsonify({"error": f"invalid tags for {file_entry['name']}"}), 500)
+
+        file_entry["rating"] = rating
+        file_entry["tags"] = file_metadata["tags"]
+
+    if changed or not metadata_path.exists():
+        try:
+            with metadata_path.open("w", encoding="utf-8") as metadata_file:
+                json.dump(metadata, metadata_file, ensure_ascii=False, indent=2)
+                metadata_file.write("\n")
+        except OSError as e:
+            return None, (jsonify({"error": f"could not save metadata file {e}"}), 500)
+
+    return files, None
+
+
 def preview_response(image_path):
     response = send_file(image_path, mimetype="image/jpeg", conditional=True)
     response.headers["Cache-Control"] = "public, max-age=86400"
@@ -47,6 +106,10 @@ def get_files():
         ],
         key=lambda item: (item["type"] != "folder", item["name"].casefold()),
     )
+    files, error = load_file_metadata(current_path, files)
+    if error:
+        return error
+
     folder_path = current_path.relative_to(local_media_path()).as_posix()
     if folder_path == ".":
         folder_path = ""

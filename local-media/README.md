@@ -6,6 +6,10 @@ Cette application permet de :
 - Permettre la lecture des vidéos dans la page
 - Le backedn héberge aussi le front
 
+Les métadonnées de chaque fichier affiché sont conservées dans `.local-media/.data.json`,
+dans son dossier parent. Une entrée contient une note de `0` à `5` et une liste de tags,
+initialisées respectivement à `0` et `[]`. La note est affichée dans la vue dossier.
+
 ## 2. Structure du projet
 - `backend/` : backend Flask.
 - `docker-compose.yml` : configuration Docker Compose.
