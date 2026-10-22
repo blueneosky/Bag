@@ -32,6 +32,18 @@
         text-align: left;
       }
 
+      th:nth-child(-n + 2),
+      td:nth-child(-n + 2) {
+        white-space: nowrap;
+        width: 1%;
+      }
+
+      th:last-child,
+      td:last-child {
+        overflow-wrap: anywhere;
+        width: auto;
+      }
+
       th {
         background: #2b313a;
       }
@@ -58,6 +70,18 @@
         object-fit: contain;
         width: 128px;
       }
+
+      .rating {
+        white-space: nowrap;
+      }
+
+      .rating-filled {
+        color: #ffd166;
+      }
+
+      .rating-empty {
+        color: #806b3a;
+      }
     </style>
   </head>
   <body>
@@ -69,6 +93,7 @@
         <thead>
           <tr>
             <th scope="col">Preview</th>
+            <th scope="col">Rating</th>
             <th scope="col">Name</th>
           </tr>
         </thead>
@@ -191,6 +216,7 @@
           files.forEach((file) => {
             const row = document.createElement("tr");
             const preview = document.createElement("td");
+            const rating = document.createElement("td");
             const name = document.createElement("td");
             if (file.type === "folder") {
               const link = document.createElement("a");
@@ -211,8 +237,18 @@
               previews.push({ file, preview });
               nameLink.textContent = file.name;
               name.appendChild(nameLink);
+              rating.className = "rating";
+              const filledStars = document.createElement("span");
+              filledStars.className = "rating-filled";
+              filledStars.textContent = "★".repeat(file.rating);
+              const emptyStars = document.createElement("span");
+              emptyStars.className = "rating-empty";
+              emptyStars.textContent = "☆".repeat(5 - file.rating);
+              rating.append(filledStars, emptyStars);
+              rating.setAttribute("aria-label", `Rating: ${file.rating} out of 5`);
             }
             row.appendChild(preview);
+            row.appendChild(rating);
             row.appendChild(name);
             filesList.appendChild(row);
           });
