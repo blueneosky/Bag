@@ -58,8 +58,10 @@ Accès local :
 
 Pour déployer une deuxième instance, copiez le modèle dans un nouveau fichier,
 puis définissez un nom de projet, un port hôte disponible et un chemin média
-différents. Le chemin média indiqué dans `MEDIA_PATH` est monté en lecture seule
-dans `/srv` du conteneur. Les fichiers locaux `.env.dev` et `.env.prod.*` sont
+différents. Le chemin média indiqué dans `MEDIA_PATH` est monté dans `/srv` du
+conteneur en lecture-écriture afin que l'application puisse enregistrer les
+miniatures dans le sous-dossier `.local-media` de chaque dossier média. Les
+fichiers locaux `.env.dev` et `.env.prod.*` sont
 ignorés par Git, à l'exception des modèles `.env.dev.example` et
 `.env.prod.example`.
 

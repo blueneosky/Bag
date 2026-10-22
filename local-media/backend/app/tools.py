@@ -8,6 +8,12 @@ def local_media_path():
     return __local_media_path
 
 
+def ensure_metadata_directory(media_directory):
+    metadata_directory = media_directory / ".local-media"
+    metadata_directory.mkdir(exist_ok=True)
+    return metadata_directory
+
+
 def encode_media_reference(relative_path):
     encoded = base64.urlsafe_b64encode(relative_path.encode("utf-8")).decode("ascii")
     return encoded.rstrip("=")
@@ -34,6 +40,9 @@ def resolve_media_path(relative_path):
     current_path = (local_media_path() / requested_path).resolve()
     if current_path != local_media_path() and local_media_path() not in current_path.parents:
         return None, (jsonify({"error": "path must stay inside the media folder"}), 400)
+
+    if ".local-media" in current_path.relative_to(local_media_path()).parts:
+        return None, (jsonify({"error": "metadata folders are not accessible"}), 404)
 
     return current_path, None
 
