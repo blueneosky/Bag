@@ -1,27 +1,26 @@
-import hashlib
-import io
 import json
 import os
 import subprocess
-import threading
 from pathlib import Path
 
 from flask import Blueprint, jsonify, request, send_file
 
-from app.tools import encode_media_reference, local_media_path, resolve_media_path, resolve_media_request
+from app.tools import (
+    encode_media_reference,
+    ensure_metadata_directory,
+    local_media_path,
+    resolve_media_path,
+    resolve_media_request,
+)
 
 backend_blueprint = Blueprint('api', __name__)
 
-preview_cache = {}
-preview_cache_lock = threading.Lock()
 
-
-def preview_response(image_bytes, cache_key):
-    response = send_file(io.BytesIO(image_bytes), mimetype="image/jpeg")
-    etag = hashlib.sha256(repr(cache_key).encode()).hexdigest()
+def preview_response(image_path):
+    response = send_file(image_path, mimetype="image/jpeg", conditional=True)
     response.headers["Cache-Control"] = "public, max-age=86400"
-    response.headers["ETag"] = f'"{etag}"'
     return response
+
 
 @backend_blueprint.route('/api/files', methods=['GET'])
 def get_files():
@@ -41,7 +40,11 @@ def get_files():
         }
 
     files = sorted(
-        [build_file_entry(entry) for entry in os.scandir(current_path)],
+        [
+            build_file_entry(entry)
+            for entry in os.scandir(current_path)
+            if entry.name != ".local-media"
+        ],
         key=lambda item: (item["type"] != "folder", item["name"].casefold()),
     )
     return jsonify({"files": files})
@@ -70,15 +73,13 @@ def preview_file(media_id=None):
         return jsonify({"error": "path is not a video file"}), 400
 
     try:
-        file_signature = (current_path.stat().st_size, current_path.stat().st_mtime_ns)
-    except OSError:
-        return jsonify({"error": "could not access video file"}), 404
+        metadata_directory = ensure_metadata_directory(current_path.parent)
+    except OSError as e:
+        return jsonify({"error": f"could not access metadata folder {e}"}), 500
 
-    cache_key = (str(current_path), file_signature)
-    with preview_cache_lock:
-        cached_image = preview_cache.get(cache_key)
-    if cached_image is not None:
-        return preview_response(cached_image, cache_key)
+    preview_path = metadata_directory / f"{current_path.stem}.jpeg"
+    if preview_path.is_file():
+        return preview_response(preview_path)
 
     probe = subprocess.run(
         [
@@ -124,8 +125,9 @@ def preview_file(media_id=None):
     if extract.returncode != 0 or not extract.stdout:
         return jsonify({"error": "could not extract video preview"}), 422
 
-    with preview_cache_lock:
-        preview_cache[cache_key] = extract.stdout
+    try:
+        preview_path.write_bytes(extract.stdout)
+    except OSError:
+        return jsonify({"error": "could not save video preview"}), 500
 
-    return preview_response(extract.stdout, cache_key)
-
+    return preview_response(preview_path)
