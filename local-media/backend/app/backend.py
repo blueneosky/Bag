@@ -3,7 +3,7 @@ import os
 import subprocess
 from pathlib import Path
 
-from flask import Blueprint, jsonify, request, send_file
+from flask import Blueprint, jsonify, request, send_file, url_for
 
 from app.tools import (
     encode_media_reference,
@@ -47,7 +47,14 @@ def get_files():
         ],
         key=lambda item: (item["type"] != "folder", item["name"].casefold()),
     )
-    return jsonify({"files": files})
+    folder_path = current_path.relative_to(local_media_path()).as_posix()
+    if folder_path == ".":
+        folder_path = ""
+
+    return jsonify({
+        "files": files,
+        "folder_url": url_for("frontend.index", path=folder_path),
+    })
 
 
 @backend_blueprint.route('/api/files/<media_id>', methods=['GET'])
