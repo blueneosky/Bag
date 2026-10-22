@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, redirect, url_for
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from app.frontend import frontend_blueprint
 from app.backend import backend_blueprint
@@ -8,6 +9,7 @@ from app.backend import backend_blueprint
 
 def create_app():
     app = Flask(__name__)
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_prefix=1)
     app.config["DEBUG"] = os.getenv("FLASK_DEBUG", "0") == "1"
 
     @app.route("/")
