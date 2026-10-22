@@ -109,6 +109,53 @@
       const videoUrl = new URL("../../api/files/{{ id }}", window.location.href);
       video.src = videoUrl;
 
+      function consumeInternalNavigationMarker() {
+        const navigationId = new URLSearchParams(window.location.search).get("navigation_id");
+        if (!navigationId) {
+          return false;
+        }
+
+        const markerKey = `local-media-navigation:${navigationId}`;
+        try {
+          const isInternal = sessionStorage.getItem(markerKey) === "1";
+          sessionStorage.removeItem(markerKey);
+          return isInternal;
+        } catch (error) {
+          console.warn("Unable to verify internal navigation:", error);
+          return false;
+        }
+      }
+
+      const isInternalNavigation = consumeInternalNavigationMarker();
+      const backButton = document.querySelector(".back-button");
+      backButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+
+        if (isInternalNavigation) {
+          window.history.back();
+          return;
+        }
+
+        try {
+          const folderApiUrl = new URL("../../api/files", window.location.href);
+          folderApiUrl.searchParams.set("path", {{ folder_path|tojson }});
+          const response = await fetch(folderApiUrl);
+          if (!response.ok) {
+            throw new Error(`Request failed with status ${response.status}`);
+          }
+
+          const data = await response.json();
+          if (typeof data.folder_url !== "string") {
+            throw new Error("The files API did not provide a folder URL");
+          }
+
+          window.location.assign(data.folder_url);
+        } catch (error) {
+          console.error("Unable to navigate back to the folder:", error);
+          window.location.assign(backButton.href);
+        }
+      });
+
       function getSeekZone(event) {
         const bounds = video.getBoundingClientRect();
         const position = event.clientX - bounds.left;

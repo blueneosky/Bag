@@ -136,9 +136,40 @@
 
       function getPlayerUrl(fileId) {
         const url = new URL(`./player/${fileId}`, frontendBaseUrl);
-        //url.searchParams.set("id", fileId);
         return url.toString();
       }
+
+      filesList.addEventListener("click", (event) => {
+        if (
+          event.button !== 0
+          || event.ctrlKey
+          || event.metaKey
+          || event.shiftKey
+          || event.altKey
+        ) {
+          return;
+        }
+
+        const link = event.target instanceof Element
+          ? event.target.closest("a[data-player]")
+          : null;
+        if (!link || !filesList.contains(link) || (link.target && link.target !== "_self")) {
+          return;
+        }
+
+        const navigationId = window.crypto?.randomUUID?.()
+          ?? `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+        try {
+          sessionStorage.setItem(`local-media-navigation:${navigationId}`, "1");
+        } catch (error) {
+          console.warn("Unable to mark internal navigation:", error);
+          return;
+        }
+
+        const playerUrl = new URL(link.href);
+        playerUrl.searchParams.set("navigation_id", navigationId);
+        link.href = playerUrl.toString();
+      });
 
       async function loadFiles() {
         try {
@@ -170,6 +201,8 @@
               const playerUrl = getPlayerUrl(file.id);
               const previewLink = document.createElement("a");
               const nameLink = document.createElement("a");
+              previewLink.dataset.player = "";
+              nameLink.dataset.player = "";
               previewLink.href = playerUrl;
               nameLink.href = playerUrl;
               preview.textContent = "Loading preview...";
