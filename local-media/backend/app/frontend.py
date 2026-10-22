@@ -27,7 +27,7 @@ def player(media_id=None):
 
     return render_template(
         "player.html",
-        path=current_path.relative_to(local_media_path()),
+        video_name=current_path.name,
         folder_path=folder_path,
         id=media_id,
     )
