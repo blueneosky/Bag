@@ -1,6 +1,7 @@
 import json
 import os
 import subprocess
+import unicodedata
 from pathlib import Path
 
 from flask import Blueprint, jsonify, request, send_file, url_for
@@ -98,6 +99,13 @@ def load_file_metadata(media_directory, files):
             return None, error
 
     return files, None
+
+
+def normalize_search_text(value):
+    normalized = unicodedata.normalize("NFD", value.casefold())
+    return "".join(
+        character for character in normalized if not unicodedata.combining(character)
+    )
 
 
 def file_metadata_response(media_id):
@@ -226,6 +234,32 @@ def get_files():
     files, error = load_file_metadata(current_path, files)
     if error:
         return error
+
+    keywords = {
+        normalize_search_text(keyword)
+        for keyword in request.args.get("q", "").split()
+    }
+    keywords.discard("")
+    if keywords:
+        matching_files = []
+        for file_entry in files:
+            if file_entry["type"] != "file":
+                continue
+            matching_keywords = {
+                keyword
+                for keyword in keywords
+                if any(
+                    keyword in normalize_search_text(tag)
+                    for tag in file_entry["tags"]
+                )
+            }
+            if matching_keywords:
+                matching_files.append((-len(matching_keywords), file_entry))
+        ranked_files = sorted(
+            matching_files,
+            key=lambda item: (item[0], item[1]["name"].casefold()),
+        )
+        files = [file_entry for _, file_entry in ranked_files]
 
     folder_path = current_path.relative_to(local_media_path()).as_posix()
     if folder_path == ".":

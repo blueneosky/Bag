@@ -19,6 +19,13 @@ l'identifiant renvoyé par `GET /api/files` :
 - `POST /api/files/<media_id>/metadata/tags` avec `{"tag": "nom"}` : ajouter un tag.
 - `DELETE /api/files/<media_id>/metadata/tags` avec `{"tag": "nom"}` : supprimer un tag.
 
+`GET /api/files` accepte également le paramètre optionnel `q` pour rechercher dans les
+tags, par exemple `/api/files?path=films&q=ete%20hiver`. La recherche est limitée au
+dossier demandé et correspond si un tag contient au moins un mot recherché, sans tenir
+compte des accents ni de la casse. Les fichiers sont classés selon le nombre de mots
+distincts trouvés ; les dossiers et les fichiers sans correspondance sont masqués
+pendant la recherche.
+
 ## 2. Structure du projet
 - `backend/` : backend Flask.
 - `docker-compose.yml` : configuration Docker Compose.
@@ -33,6 +40,12 @@ de valeurs du mode ou de l'instance, indique quels fichiers fusionner.
 ### Mode développement
 Le backend tourne avec Flask en mode debug, avec rechargement activé. Le code est
 monté depuis `backend/`.
+
+Pour compiler le code avant de lancer ou valider l'application, utiliser :
+
+```bash
+docker compose --env-file .env.dev build
+```
 
 Copiez le modèle une fois :
 

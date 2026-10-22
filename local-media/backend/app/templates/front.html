@@ -10,7 +10,14 @@
     <main>
       <h1>Local Media</h1>
       <p><span id="current-path">/</span></p>
-      <p id="status">Loading files...</p>
+      <div class="list-toolbar">
+        <p id="status">Loading files...</p>
+        <form id="search-form" action="{{ url_for('frontend.index') }}" method="get">
+          <label class="visually-hidden" for="tag-search">Search tags</label>
+          <input id="tag-search" name="q" type="search" placeholder="Search tags...">
+          <button type="submit">Search</button>
+        </form>
+      </div>
       <table class="file-list">
         <thead class="visually-hidden">
           <tr>
@@ -25,7 +32,19 @@
     <script>
       const status = document.querySelector("#status");
       const filesList = document.querySelector("#files-list");
-      const currentPath = new URLSearchParams(window.location.search).get("path") || "";
+      const pageQuery = new URLSearchParams(window.location.search);
+      const currentPath = pageQuery.get("path") || "";
+      const searchQuery = pageQuery.get("q") || "";
+      const searchForm = document.querySelector("#search-form");
+      const searchInput = document.querySelector("#tag-search");
+      searchInput.value = searchQuery;
+      if (currentPath) {
+        const pathInput = document.createElement("input");
+        pathInput.type = "hidden";
+        pathInput.name = "path";
+        pathInput.value = currentPath;
+        searchForm.appendChild(pathInput);
+      }
       const frontendBaseUrl = new URL(window.location.href);
       frontendBaseUrl.pathname = `${frontendBaseUrl.pathname.replace(/\/+$/, "")}/`;
 
@@ -122,6 +141,9 @@
           const query = new URLSearchParams();
           if (currentPath) {
             query.set("path", currentPath);
+          }
+          if (searchQuery.trim()) {
+            query.set("q", searchQuery);
           }
           const filesUrl = new URL("../api/files", frontendBaseUrl);
           filesUrl.search = query;
