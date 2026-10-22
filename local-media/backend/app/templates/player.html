@@ -25,8 +25,9 @@
         </div>
         <div class="metadata-row">
           <div class="rating" role="group" aria-label="Video rating"></div>
-          <div class="tag-list" aria-label="Video tags"></div>
-          <button class="add-tag" type="button" aria-label="Add a tag" title="Add a tag">+</button>
+          <div class="tag-list" aria-label="Video tags">
+            <button class="add-tag" type="button" aria-label="Add a tag" title="Add a tag">+</button>
+          </div>
         </div>
         <p class="metadata-status" role="status" aria-live="polite"></p>
       </div>
@@ -47,6 +48,7 @@
       const metadataUrl = new URL("../../api/files/{{ id }}/metadata", window.location.href);
       const ratingElement = document.querySelector(".rating");
       const tagList = document.querySelector(".tag-list");
+      const addTagButton = document.querySelector(".add-tag");
       const metadataStatus = document.querySelector(".metadata-status");
       let rating = 0;
       let tags = [];
@@ -118,9 +120,10 @@
           });
           tagList.appendChild(tagButton);
         });
+        tagList.appendChild(addTagButton);
       }
 
-      document.querySelector(".add-tag").addEventListener("click", async () => {
+      addTagButton.addEventListener("click", async () => {
         const tag = window.prompt("Enter a new tag:");
         if (tag === null || !tag.trim()) {
           return;
