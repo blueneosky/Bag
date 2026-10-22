@@ -21,8 +21,13 @@ def player(media_id=None):
     if error:
         return "Video not found", 404
 
+    folder_path = current_path.parent.relative_to(local_media_path()).as_posix()
+    if folder_path == ".":
+        folder_path = ""
+
     return render_template(
         "player.html",
         path=current_path.relative_to(local_media_path()),
+        folder_path=folder_path,
         id=media_id,
     )

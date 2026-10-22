@@ -36,6 +36,29 @@
         margin: 0;
       }
 
+      .back-button {
+        align-items: center;
+        border: 1px solid #3a414c;
+        border-radius: 0.35rem;
+        color: #e8eaed;
+        display: flex;
+        font-size: 1.5rem;
+        height: 2.5rem;
+        justify-content: center;
+        text-decoration: none;
+        width: 2.5rem;
+      }
+
+      .back-button:hover {
+        background: #2b313a;
+      }
+
+      .video-header {
+        align-items: center;
+        display: flex;
+        gap: 0.75rem;
+      }
+
       .path {
         color: #aeb6c2;
         font-family: monospace;
@@ -62,7 +85,15 @@
   </head>
   <body>
     <main>
-      <p class="path">{{ path }}</p>
+      <div class="video-header">
+        <a
+          class="back-button"
+          href="{{ url_for('frontend.index', path=folder_path) }}"
+          aria-label="Back to folder"
+          title="Back to folder"
+        >←</a>
+        <p class="path">{{ path }}</p>
+      </div>
       <video
         autoplay
         controls
