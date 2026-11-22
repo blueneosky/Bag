@@ -48,7 +48,7 @@ public class WebApiAuthentication
     private async Task ApplyAuthorizationAsync(AuthenticationInfo info, HttpClient client)
     {
         // login/pass info
-        if (string.IsNullOrWhiteSpace(_webApiUserPass) || string.IsNullOrWhiteSpace(_webApiUserPass))
+        if (string.IsNullOrWhiteSpace(_webApiUserName) || string.IsNullOrWhiteSpace(_webApiUserPass))
             return; // no authentication info
 
         try

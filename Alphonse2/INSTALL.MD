@@ -1,5 +1,15 @@
-INSTALLING
-==========
+# INSTALLING (with Podman)
+
+## Déployement
+
+**TODO**
+
+## Dev
+
+podman build --tag alphonse-listener:dev --file src/Alphonse.Listener/Dockerfile
+
+
+# INSTALLING (on host - old way, not maintened)
 
 We give some predfined directories.
 Do what you want - more a  remainder for me and my config
