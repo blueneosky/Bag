@@ -87,6 +87,9 @@ internal sealed class AlphonseConsoleRunner : BackgroundService
         catch (Exception ex)
         {
             Debug.Fail($"Fail to connect: {ex}");
+            this._logger.LogError(ex, "fail to listen. Will retry in 5 seconds");
+
+            await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken).ConfigureAwait(false);
         }
         finally
         {
