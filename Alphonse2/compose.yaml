@@ -1,0 +1,74 @@
+services:
+  alphonse-listener:
+    build:
+      context: ./src/Alphonse.Listener
+      dockerfile: Dockerfile
+    image: localhost/alphonse-listener:latest
+    container_name: alphonse-listener
+    restart: unless-stopped
+    networks:
+      - alphonse-net
+    depends_on:
+      - alphonse-webapi
+    secrets:
+      - source: listener-user-pass
+        target: Alphonse__WebApiUserPass
+    devices:
+      - "/dev/serial/by-id/usb-Conexant_USB_Modem_12345678-if00:/dev/ttyACM0:rwm"
+    group_add:
+      - "keep-groups"
+    environment:
+      #Alphonse__ModemPort:   # DONT'T, let the autodetection do it's job. You will add only one modem to the container, so it will be detected automatically.
+      #Alphonse__AutoResetTime: "03:00:00"
+      Alphonse__WebApiBaseUri: "http://alphonse-webapi:80/api"
+      Alphonse__WebApiUserName: "__alphonse__"
+      # Alphonse__WebApiUserPass: => secrets
+      #Alphonse__BlacklistHangupDelay: "00:00:01"
+      #Alphonse__UnknownNumberHangupDelay: "00:00:13"
+      #Alphonse__PhonebookUpdateInterval: "00:10:00"
+      NLog__rules__2__minLevel: "Debug"
+
+  alphonse-webapi:
+    build:
+      context: ./src/Alphonse.WebApi
+      dockerfile: Dockerfile
+    image: localhost/alphonse-webapi:latest
+    container_name: alphonse-webapi
+    networks:
+      - alphonse-net
+    restart: unless-stopped
+    ports:
+      - "6101:80"
+    secrets:
+      - source: listener-user-pass
+        type: env
+        target: Alphonse__AlphonseListenerUserPass
+      - source: webapi-jwt-secret-key
+        type: env
+        target: Alphonse__JwtSecretKey
+    volumes:
+      - ~/.config/alphonse/Alphonse.db:/var/lib/alphonse/Alphonse.db
+    environment:
+      AllowedHosts: "*"
+      Alphonse__ListenPort: 80
+      Alphonse__ListenOnAllInterfaces: true
+      #Alphonse__JwtSecretKey => secrets
+      #Alphonse__JwtIssuer: ""
+      #Alphonse__JwtAudience: ""
+      Alphonse__DataDirPath: "/var/lib/alphonse"
+      Alphonse__DbPath: "./Alphonse.db"
+      Alphonse__FallbackAdminUserName: "root"
+      Alphonse__FallbackAdminUserPass: "root"
+      Alphonse__AlphonseListenerUserName: "__alphonse__"
+      #Alphonse__AlphonseListenerUserPass: => secrets
+      Alphonse__ForceSwagger: true
+
+secrets:
+  listener-user-pass:
+    file: ~/.local/share/alphonse/listener-user-pass.txt
+  webapi-jwt-secret-key:
+    file: ~/.local/share/alphonse/webapi-jwt-secret-key.txt
+
+networks:
+  alphonse-net:
+    driver: bridge
