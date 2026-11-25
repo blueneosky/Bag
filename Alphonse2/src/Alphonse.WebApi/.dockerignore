@@ -1,0 +1,11 @@
+#misc
+.dockerignore
+.vscode
+.gitignore
+Dockerfile
+
+#specific
+systemd
+*.config
+*.sh
+*.sln

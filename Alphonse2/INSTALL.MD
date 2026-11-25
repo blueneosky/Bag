@@ -8,6 +8,8 @@
 
 podman build --tag alphonse-listener:dev --file src/Alphonse.Listener/Dockerfile
 
+podman build --tag alphonse-webapi:dev --file src/Alphonse.WebApi/Dockerfile
+
 
 # INSTALLING (on host - old way, not maintened)
 

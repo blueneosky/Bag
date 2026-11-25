@@ -40,7 +40,7 @@ internal class MinimumAccessRolePolicyProvider : IAuthorizationPolicyProvider
         var accessRoles = ExtractAccessRolesFrom(policyName);
         if (accessRoles is null)
         {
-            this._logger.LogWarning("Fail to extract Access roles from policy name 'Policy'", policyName);
+            this._logger.LogWarning("Fail to extract Access roles from policy name {PolicyName}", policyName);
             return _fallbackPolicyProvider.GetPolicyAsync(policyName);
         }
 

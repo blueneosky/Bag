@@ -21,11 +21,16 @@ public static class KestrelSetup
                 logger?.LogWarning($"{nameof(AlphonseSettings.ListenPort)} was not defined - fallback to {{ListenPort}}", port.Value);
             }
 
-            kestrelServerOptions.ListenLocalhost(port.Value, listenOptions =>
+            Action<Microsoft.AspNetCore.Server.Kestrel.Core.ListenOptions> configureListenOptions = listenOptions =>
             {
                 if(alphonseSettings.WithKestrelConnectionLogging)
                     listenOptions.UseConnectionLogging();
-            });
+            };
+
+            if (alphonseSettings.ListenOnAllInterfaces)
+                kestrelServerOptions.ListenAnyIP(port.Value, configureListenOptions);
+            else
+                kestrelServerOptions.ListenLocalhost(port.Value, configureListenOptions);
         });
 
     }
