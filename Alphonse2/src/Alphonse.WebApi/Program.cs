@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     ContentRootPath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase,
 });
 
+builder.Configuration.AddKeyPerFile(directoryPath: "/run/secrets", optional: true);
+
 builder.ConfigureNLog();
 
 builder.ConfigureOptions();

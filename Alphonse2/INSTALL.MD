@@ -1,5 +1,62 @@
-INSTALLING
-==========
+# INSTALLING (with Podman)
+
+## Déployement
+
+### Setup access to modem device
+From your podman account
+```bash
+sudo usermod -aG dialout $USER
+```
+Then logout and login again !
+
+### Identify your modem device
+Should by an `/dev/ttyUSB0` or `/dev/ttyACM0` or something like that
+But prefer using id ref like `/dev/serial/by-id/usb-xxx_Modem_[...]`.
+
+Test the link
+```bash
+#preparation - build image
+podman build --jobs 3 --tag localhost/alphonse-listener:latest --file src/Alphonse.Listener/Dockerfile
+
+#find your device
+ls -la /dev/serial/by-id
+
+#adapt '--device' argument with modem device path
+podman run --rm -it \
+  --device /dev/serial/by-id/usb-Conexant_USB_Modem_[...] \
+  --group-add keep-groups \
+  localhost/alphonse-listener:latest
+```
+
+If success (`podman run` will show the usage of the device), change `device` of `alphonse-listener` section in `compose.yaml`.
+You can use 'by-id' name for the left part and the real device name ('ttyXXX') for the right part. Don't remove `:rwm` at the end.
+
+
+### Create conf & secrets
+
+```bash
+mkdir -p ~/.config/alphonse
+chmod 700 ~/.config/alphonse
+touch ~/.config/alphonse/Alphonse.db
+#or copy your db backup
+chmod 600 ~/.config/alphonse/*
+
+mkdir -p ~/.local/share/alphonse
+tr -d '\n' < /proc/sys/kernel/random/uuid > ~/.local/share/alphonse/listener-user-pass.txt
+tr -d '\n' < /proc/sys/kernel/random/uuid > ~/.local/share/alphonse/webapi-jwt-secret-key.txt
+chmod 700 ~/.local/share/alphonse
+chmod 600 ~/.local/share/alphonse/*
+```
+
+
+## Dev
+
+podman build --tag alphonse-listener:dev --file src/Alphonse.Listener/Dockerfile
+
+podman build --tag alphonse-webapi:dev --file src/Alphonse.WebApi/Dockerfile
+
+
+# INSTALLING (on host - old way, not maintened)
 
 We give some predfined directories.
 Do what you want - more a  remainder for me and my config

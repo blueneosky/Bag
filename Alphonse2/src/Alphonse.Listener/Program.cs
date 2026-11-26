@@ -16,12 +16,12 @@ using System.Net;
 
 //=== DI/IoC =========================
 
-var config = new ConfigurationBuilder()
-    .SetBasePath(AppDomain.CurrentDomain.SetupInformation.ApplicationBase ?? ".")
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .Build();
 
 await Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((_, configuration) =>
+    {
+        configuration.AddKeyPerFile(directoryPath: "/run/secrets", optional: true);
+    })
     .UseContentRoot(AppDomain.CurrentDomain.SetupInformation.ApplicationBase ?? ".")
     .UseSystemd()
     .ConfigureLogging((hostContext, logging) =>
@@ -30,7 +30,7 @@ await Host.CreateDefaultBuilder(args)
         // source : https://github.com/NLog/NLog.Extensions.Logging/wiki/NLog-configuration-with-appsettings.json
         logging.ClearProviders();
         logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-        logging.AddNLog(config);
+        logging.AddNLog(hostContext.Configuration);
     })
     .ConfigureServices((hostContext, services) =>
     {

@@ -3,6 +3,7 @@ namespace Alphonse.WebApi.Setup;
 public class AlphonseSettings
 {
     public int? ListenPort { get; set; }
+    public bool ListenOnAllInterfaces { get; set; }
     public bool WithoutAuthorization { get; set; }
     public string? JwtSecretKey { get; set; }
     public string? JwtIssuer { get; set; }

@@ -3,7 +3,7 @@ Description=Alphonse phone pickup - WebApi [dotnet kestrel app]
 
 [Service]
 WorkingDirectory=/var/lib/alphonse
-ExecStart=/usr/bin/dotnet /usr/local/lib/alphonse/Alphonse.WebApi/Alphonse.WebApi.dll
+ExecStart=/usr/bin/dotnet /usr/local/bin/alphonse/Alphonse.WebApi/Alphonse.WebApi.dll
 Restart=always
 # Restart service after 10 seconds if the dotnet service crashes:
 RestartSec=10
